@@ -209,12 +209,12 @@ We should evaluate on a specific set of scenarios, and make sure that all models
 
 MODELS:  
 
-qwen 0 5b instruct - HF
-qwen 3b instruct - HF
-qwen 7b instruct - HF
-mistral 7b instruct - HF
-phi 3 5 mini instruct - Microsoft PHi
-gpt 5.5 - openAI
+* qwen 0 5b instruct - HF
+* qwen 3b instruct - HF
+* qwen 7b instruct - HF
+* mistral 7b instruct - HF
+* phi 3 5 mini instruct - Microsoft PHi
+* gpt 5.5 - openAI
 
 The performance of the open source model should be compared with gpt5.5 so as to see the potential, and perf / price. gpt5.5 performance should be treated as a ceiling, not an expected result.
 
