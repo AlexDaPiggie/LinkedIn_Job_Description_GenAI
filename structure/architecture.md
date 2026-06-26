@@ -53,7 +53,7 @@ The MVP should not require LLM-driven question selection (which is not that nece
 We should have the following objects to allow the objective to be implemented: 
 
 ```python 
-Job Info:
+JobInfo:
     company_name: str
     role_title: str
     location: str
