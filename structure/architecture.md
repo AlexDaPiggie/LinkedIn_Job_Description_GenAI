@@ -188,3 +188,34 @@ If draft_outdated = True, refinement should be blocked with a message telling th
 
 LLM Evaluation ?
 This could be implemented after the data 
+
+## Text Generation
+Generated result should follow the below structure so that evaluation is easier
+
+```python
+LLMResult:
+    text: str
+    provider: str
+    model: str
+    latency_seconds: float
+    input_tokens: int | None
+    output_tokens: int | None
+    estimated_cost: float | None
+```
+
+## Evaluation 
+We should evaluate on a specific set of scenarios, and make sure that all models are tested on the same context. In each scenario, we test the modle's ability to geenerate intial job description JSNO, and refine the generated job description JSON
+
+
+MODELS:  
+
+qwen 0 5b instruct - HF
+qwen 3b instruct - HF
+qwen 7b instruct - HF
+mistral 7b instruct - HF
+phi 3 5 mini instruct - Microsoft PHi
+gpt 5.5 - openAI
+
+The performance of the open source model should be compared with gpt5.5 so as to see the potential, and perf / price. gpt5.5 performance should be treated as a ceiling, not an expected result.
+
+## Scenario
