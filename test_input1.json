@@ -1,0 +1,34 @@
+{
+    "job_info": {
+        "company_name": "Alex AI",
+        "role_title": "AI Engineer",
+        "role_summary": "Build and evaluate AI systems for a LinkedIn job description generator.",
+        "responsibilities": [
+            "Monitor machine learning pipelines",
+            "Evaluate model performance",
+            "Handle data quality issues"
+        ],
+        "requirements": [
+            "Python",
+            "SQL",
+            "Machine learning fundamentals"
+        ],
+        "company_description": null,
+        "nice_to_haves": [],
+        "benefits": [],
+        "why_join_us": "",
+        "equal_opportunity": "no",
+        "tone": "professional",
+        "target_length": "long"
+    },
+    "skipped_fields": [
+        "company_description",
+        "nice_to_haves",
+        "salary_range",
+        "benefits",
+        "why_join_us",
+        "equal_opportunity"
+    ],
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-7B-Instruct"
+}

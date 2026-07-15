@@ -1,0 +1,39 @@
+{
+    "job_info": {
+        "company_name": "Alex AI",
+        "role_title": "AI Engineer Intern",
+        "role_summary": "Help build, monitor, and evaluate AI systems that generate high-quality LinkedIn job descriptions.",
+        "responsibilities": [
+            "Monitor machine learning pipelines",
+            "Evaluate model output quality",
+            "Prepare and clean training data",
+            "Support prompt testing and model comparison"
+        ],
+        "requirements": [
+            "Python",
+            "SQL",
+            "Basic machine learning knowledge",
+            "Experience working with data pipelines"
+        ],
+        "company_description": "Alex AI is a startup building tools that help companies create better hiring content using AI.",
+        "nice_to_haves": [
+            "System design",
+            "Figma",
+            "Frontend development",
+            "Signal processing"
+        ],
+        "benefits": [
+            "Health insurance",
+            "Lunch, breakfast, and dinner covered",
+            "Hands-on AI engineering experience"
+        ],
+        "why_join_us": "Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have visible impact.",
+        "equal_opportunity": "yes",
+        "tone": "enthusiastic, startup-like, and professional",
+        "target_length": "long"
+    },
+    "skipped_fields": [],
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-7B-Instruct"
+}
+
