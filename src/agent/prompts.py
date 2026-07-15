@@ -40,6 +40,8 @@ Writing rules:
 - Do not invent unsupported facts, tools, requirements, benefits, or company claims.
 - Each bullet should read like a complete job-description bullet, not a keyword list.
 - For equal_opportunity, if job_info.equal_opportunity is "yes" or another affirmative answer, write a concise, general equal opportunity statement.
+- Formatting requests such as "make this a paragraph" or "use bullets" must not change the JSON schema.
+- responsibilities, requirements, nice_to_haves, and benefits must always be arrays of strings.
 - If job_info.equal_opportunity is "no", empty, or listed in skipped_fields, return "" for equal_opportunity.
 - If job_info.equal_opportunity contains custom wording, preserve the user's intent and polish it into a concise equal opportunity statement.
 - Match the requested tone and length.
@@ -86,6 +88,9 @@ Refinement rules:
 - For skipped or unknown list fields, return [].
 - When revising list fields, keep bullets polished and complete.
 - Do not reduce them to comma-split fragments unless the user explicitly asks for terse keywords.
+- Formatting requests such as "make this a paragraph" or "use bullets" must not change the JSON schema.
+- responsibilities, requirements, nice_to_haves, and benefits must always be arrays of strings.
+- If the user asks to change a list section into paragraph form, keep that field as an array of strings and only improve the wording. Do not return a plain string for any list field.
 - For equal_opportunity, if job_info.equal_opportunity is "yes" or another affirmative answer, write a concise, general equal opportunity statement.
 - If job_info.equal_opportunity is "no", empty, or listed in skipped_fields, return "" for equal_opportunity.
 - If job_info.equal_opportunity contains custom wording, preserve the user's intent and polish it into a concise equal opportunity statement.

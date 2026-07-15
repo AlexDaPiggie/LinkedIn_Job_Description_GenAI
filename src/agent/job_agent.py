@@ -6,6 +6,7 @@ from src.llm.client import LLMResult, generate_text
 from src.rendering.markdown import render_job_description
 from src.schema.job_description import JobDescriptionDraft
 from src.schema.job_info import JobInfo
+from src.rendering.options import RenderOptions
 
 '''
 Structured data to store the ouput of the agents together
@@ -31,6 +32,7 @@ class JobAgent:
         provider: str,
         model: str,
         skipped_fields: list[str] | None = None,
+        render_options: list[str] | None = None,
     ):
         skipped = skipped_fields or []
         prompt = build_generation_prompt(job_info, skipped)
@@ -42,6 +44,7 @@ class JobAgent:
                 draft, 
                 company_name = job_info.company_name,
                 skipped_fields=skipped,
+                render_options=render_options,
             ),
             llm_result = llm_result,
         )
@@ -53,7 +56,8 @@ class JobAgent:
         user_request: str,
         provider: str,
         model: str,
-        skipped_fields: list[str] | None = None
+        skipped_fields: list[str] | None = None,
+        render_options: RenderOptions | None = None,
     ): 
         skipped = skipped_fields or []
         prompt = build_refinement_prompt(job_info, current_draft, user_request, skipped)
@@ -65,6 +69,7 @@ class JobAgent:
                 draft,
                 company_name = job_info.company_name,
                 skipped_fields = skipped,
+                render_options= render_options,
             ),
             llm_result=llm_result,
         )
