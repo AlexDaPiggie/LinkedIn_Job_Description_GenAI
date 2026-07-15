@@ -4,11 +4,12 @@ version = "0.1.0"
 description = "LinkedIn Job Description Generator"
 requires-python = ">=3.11"
 dependencies = [
-    "gradio>=4.44.0",
     "pydantic>=2.7.0",
     "python-dotenv>=1.0.1",
     "openai>=1.40.0",
     "huggingface-hub>=0.24.0",
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
 ]
 
 [project.optional-dependencies]
