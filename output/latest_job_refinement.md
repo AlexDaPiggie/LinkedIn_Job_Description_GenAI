@@ -8,26 +8,26 @@
  
  At Alex AI, we are seeking an enthusiastic AI Engineer Intern to join our team. This role is pivotal in the development and improvement of AI systems that generate high-quality LinkedIn job descriptions. You will be at the forefront of creating impactful solutions that streamline the hiring process and improve candidate engagement.
  
-## Responsibilities
-
-- Monitor machine learning pipelines to ensure optimal performance and reliability, evaluate model output quality to identify and address any issues, prepare and clean training data to maintain data integrity and accuracy, and support prompt testing and model comparison to refine and enhance the AI systems
+## Responsibilities 
  
-## Requirements
-
+ Monitor machine learning pipelines to ensure optimal performance and reliability, evaluate model output quality to identify and address any issues, prepare and clean training data to maintain data integrity and accuracy, support prompt testing and model comparison to refine and enhance the AI systems
+ 
+## Requirements 
+ 
 - Proficiency in Python for data manipulation and model development
 - Experience with SQL for database management and data retrieval
 - Basic understanding of machine learning concepts and techniques
 - Experience working with data pipelines to manage and process large datasets
  
-## Nice to Have
-
+## Nice to Have 
+ 
 - Experience in system design to optimize AI model performance
 - Familiarity with Figma for UI/UX design
 - Background in frontend development to integrate AI-generated content into web applications
 - Knowledge of signal processing for audio or video data analysis
  
-## Benefits
-
+## Benefits 
+ 
 - Comprehensive health insurance coverage
 - All meals covered (breakfast, lunch, and dinner)
 - Hands-on experience in AI engineering, providing a unique learning opportunity
