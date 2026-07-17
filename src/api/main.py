@@ -1,13 +1,30 @@
+import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from src.api.schemas import GenerateRequest,GenerateResponse, QuestionResponse, RefineRequest
 from src.api.services import generate_job_description, list_questions, refine_job_description
 from src.storage.markdown_files import load_markdown
 from pathlib import Path
 
+def allowed_frontend_origins() -> list[str]:
+    configured_origins = os.getenv(
+        "FRONTEND_ALLOWED_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    )
+    return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
+
 app = FastAPI(
     title = 'LinkedIn Job Description Generator',
     version = '0.1.0',
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_frontend_origins(),
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
 )
 
 @app.get('/health')
