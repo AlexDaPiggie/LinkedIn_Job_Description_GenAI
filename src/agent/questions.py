@@ -48,11 +48,6 @@ QUESTIONS = [
         answer_type = "list",
     ),
     IntakeQuestion(
-        question_name="salary_range",
-        question_text="What salary range you want to include?",
-        required = False,
-    ),
-    IntakeQuestion(
         question_name="company_description",
         question_text="How would you describe the company in a few sentences?",
         required=False,

@@ -38,7 +38,10 @@ def _append_bullet_section(
         return 
     cleaned = [item.strip() for item in items if item.strip()]
     if cleaned: 
-        sections.append (f"## {heading} \n \n" + "\n".join(f"- {item}" for item in cleaned))
+        if len(cleaned) == 1:
+            _append_text_section(sections, heading, cleaned[0], section_key, suppressed_sections)
+        else:
+            sections.append (f"## {heading} \n \n" + "\n".join(f"- {item}" for item in cleaned))
     
 def render_job_description (
     draft: JobDescriptionDraft, 
