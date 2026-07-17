@@ -24,7 +24,6 @@
     "skipped_fields": [
         "company_description",
         "nice_to_haves",
-        "salary_range",
         "benefits",
         "why_join_us",
         "equal_opportunity"
