@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LinkedIn Job Description Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="question-rail" aria-label="Question navigation">
+      <div class="rail-hint" aria-hidden="true">
+        <span class="rail-hint-hover">Hover</span>
+        <span>Question</span>
+      </div>
+      <button id="railToggle" class="rail-toggle" type="button" aria-pressed="false" title="Keep question numbers visible">
+        <span class="rail-toggle-text">Keep open</span>
+      </button>
+      <div id="questionRail" class="rail-list"></div>
+    </nav>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">LinkedIn hiring copy</p>
+          <h1>Job Description Generator</h1>
+          <p class="lead-copy">Shape a clean, polished role brief from your answers, then refine the draft without leaving the page.</p>
+        </div>
+        <div class="status-row">
+          <span id="apiStatus" class="status-pill">Checking service</span>
+          <span id="progressText" class="status-pill muted">0 answered</span>
+        </div>
+      </header>
+
+      <section class="workspace-grid">
+        <section class="builder">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Intake</p>
+              <h2>Answer the questions</h2>
+            </div>
+            <button id="sampleButton" class="secondary-button" type="button">Fill sample</button>
+          </div>
+
+          <div id="questionList" class="question-list" aria-live="polite"></div>
+        </section>
+
+        <section class="result-section">
+          <div class="section-head result-heading">
+            <div>
+              <p class="eyebrow">Draft</p>
+              <h2>Generate the job description</h2>
+            </div>
+            <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
+          </div>
+
+          <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
+          <div id="messageBox" class="message-box hidden"></div>
+          <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
+
+          <div class="refine-panel">
+            <label for="refineInput">Refine the draft</label>
+            <textarea id="refineInput" rows="4" placeholder="Example: Make it more concise and more technical."></textarea>
+            <button id="refineButton" class="primary-button" type="button">Refine</button>
+          </div>
+
+          <div class="draft-actions">
+            <div>
+              <p class="eyebrow">Delivery</p>
+              <h3>Use the finished draft</h3>
+              <p>Copy keeps the generated text ready for LinkedIn, email, or Google Docs. Export PDF opens the browser print window so you can save the draft as a PDF file.</p>
+            </div>
+            <div class="action-buttons">
+              <button id="copyButton" class="secondary-button" type="button">Copy text</button>
+              <button id="exportPdfButton" class="secondary-button" type="button">Export PDF</button>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
