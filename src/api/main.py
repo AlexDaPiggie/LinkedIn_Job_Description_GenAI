@@ -7,13 +7,6 @@ from src.api.services import generate_job_description, list_questions, refine_jo
 from src.storage.markdown_files import load_markdown
 from pathlib import Path
 
-def allowed_frontend_origins() -> list[str]:
-    configured_origins = os.getenv(
-        "FRONTEND_ALLOWED_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173",
-    )
-    return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
-
 app = FastAPI(
     title = 'LinkedIn Job Description Generator',
     version = '0.1.0',
@@ -21,7 +14,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_frontend_origins(),
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "VERCEL_ORIGIN_PLACEHOLDER",
+    ],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
