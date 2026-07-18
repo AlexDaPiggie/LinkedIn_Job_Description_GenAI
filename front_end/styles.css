@@ -39,6 +39,7 @@ body {
     linear-gradient(115deg, rgba(10, 102, 194, 0.11), transparent 34%),
     linear-gradient(292deg, rgba(19, 191, 213, 0.18), transparent 40%),
     var(--canvas);
+    overflow-x: hidden;
 }
 
 body::before {
