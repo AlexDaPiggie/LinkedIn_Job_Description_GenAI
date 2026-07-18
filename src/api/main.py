@@ -9,7 +9,7 @@ from pathlib import Path
 
 def allowed_frontend_origins() -> list[str]:
     configured_origins = os.getenv(
-        "file:///D:/PROJECT%20TIME/linkedin%20AI/LinkedIn_Job_Description_Generator/frontend/index.html",
+        "FRONTEND_ALLOWED_ORIGINS",
         "http://localhost:5173,http://127.0.0.1:5173",
     )
     return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
