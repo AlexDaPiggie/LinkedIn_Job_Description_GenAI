@@ -9,7 +9,7 @@ const fallbackQuestions = [
   { question_name: "role_summary", question_text: "Why is the company hiring this role, and what should this person help accomplish?", required: true, answer_type: "text" },
   { question_name: "responsibilities", question_text: "What will this person be responsible for?", required: true, answer_type: "list" },
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
-  { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
+  { question_name: "nice_to_have", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
   { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },

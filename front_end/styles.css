@@ -74,8 +74,8 @@ button {
 .app-shell {
   position: relative;
   z-index: 1;
-  width: min(1500px, calc(100vw - 140px));
-  margin: 0 18px 0 122px;
+  width: min(1520px, calc(100vw - 158px));
+  margin: 0 28px 0 130px;
   padding: 34px 0 52px;
 }
 
@@ -126,8 +126,8 @@ button {
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: minmax(520px, 1fr) minmax(580px, 1fr);
-  gap: 18px;
+  grid-template-columns: minmax(430px, 0.94fr) minmax(540px, 1.06fr);
+  gap: clamp(20px, 2vw, 30px);
   align-items: start;
 }
 
@@ -829,14 +829,75 @@ button:disabled {
   font-weight: 600;
 }
 
+@media (min-width: 1710px) {
+  .app-shell {
+    width: min(1580px, calc(100vw - 190px));
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 1500px) {
+  .app-shell {
+    width: calc(100vw - 150px);
+    margin-right: 24px;
+    margin-left: 126px;
+  }
+
+  .workspace-grid {
+    grid-template-columns: minmax(410px, 0.96fr) minmax(520px, 1.04fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .app-shell {
+    width: calc(100vw - 136px);
+    margin-right: 20px;
+    margin-left: 116px;
+  }
+
+  .workspace-grid {
+    grid-template-columns: minmax(390px, 0.98fr) minmax(0, 1.02fr);
+    gap: 20px;
+  }
+
+  .builder,
+  .result-section {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    width: calc(100vw - 116px);
+    margin-right: 18px;
+    margin-left: 98px;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .status-row {
+    justify-content: start;
+  }
+
+  .workspace-grid {
+    grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
+    gap: 18px;
+  }
+}
+
 @media (max-width: 1080px) {
   .app-shell {
     width: min(100vw - 32px, 920px);
-    margin: 0 auto;
   }
 
   .workspace-grid {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .result-section {
@@ -848,9 +909,90 @@ button:disabled {
   }
 }
 
+@media (max-width: 900px) {
+  .app-shell {
+    width: min(100vw - 24px, 820px);
+  }
+
+  .topbar h1 {
+    font-size: clamp(42px, 10vw, 66px);
+  }
+
+  .lead-copy {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    width: min(100vw - 14px, 520px);
+    padding-top: 16px;
+    padding-bottom: 32px;
+  }
+
+  .topbar {
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(36px, 12vw, 48px);
+    line-height: 1;
+  }
+
+  .lead-copy {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .section-head,
+  .status-row,
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .status-pill,
+  .secondary-button,
+  .primary-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-summary {
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .question-number {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .question-text {
+    font-size: 14px;
+  }
+
+  .expand-label {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-body {
+    padding: 0 13px 13px;
+  }
+
+  .markdown-preview {
+    min-height: 260px;
+    padding: 15px;
+  }
+}
+
 @media (max-width: 720px) {
   .app-shell {
-    width: min(100vw - 14px, 680px);
+    width: min(100vw - 18px, 680px);
     padding-top: 22px;
   }
 
@@ -949,6 +1091,7 @@ button:disabled {
 @media print {
   body {
     background: #ffffff;
+    overflow: visible;
   }
 
   body::before,
@@ -989,3 +1132,5 @@ button:disabled {
     overflow: visible;
   }
 }
+
+
