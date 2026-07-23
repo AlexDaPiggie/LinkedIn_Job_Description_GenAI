@@ -20,13 +20,18 @@ const fallbackQuestions = [
 ];
 
 const sampleAnswers = {
-  company_name: "Northstar Labs",
-  role_title: "Product Manager",
+  company_name: "AlexAI",
+  role_title: "AI Engineer",
   role_summary: "Lead planning and delivery for a growing hiring platform used by small recruiting teams.",
   responsibilities: "Define product requirements\nCoordinate design and engineering work\nReview product metrics and user feedback",
   requirements: "Product management experience\nStrong written communication\nComfort working with cross-functional teams",
+  nice_to_haves: "System design, Figma, Frontend development, Signal processing",
+  company_description: "Alex AI is a startup building tools that help companies create better hiring content using AI.",
+  why_join_us: "Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have visible impact.",
+  benefits: "Health insurance, Lunch, breakfast, and dinner covered, Hands-on AI engineering experience",
   tone: "professional",
   target_length: "long",
+  equal_opportunity: "yes",
 };
 
 const fieldsAcceptedByApi = new Set([
