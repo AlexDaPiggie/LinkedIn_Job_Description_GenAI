@@ -328,7 +328,7 @@ async function generateDraft() {
 
   state.missingRequired.clear();
   renderQuestions();
-  const restore = setLoading(elements.generateButton, "Generating");
+  const restore = setLoading(elements.generateButton, "Generating...");
   setMessage("Generating your draft. This can take a moment.", "info");
   try {
     const data = await callApi("/generate", {
@@ -363,7 +363,7 @@ async function refineDraft() {
     return;
   }
 
-  const restore = setLoading(elements.refineButton, "Refining");
+  const restore = setLoading(elements.refineButton, "Refining...");
   setMessage("Refining your draft. This can take a moment.", "info");
   try {
     const data = await callApi("/refine", {
