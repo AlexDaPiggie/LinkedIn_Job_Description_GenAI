@@ -19,8 +19,8 @@ const fallbackQuestions = [
 ];
 
 const sampleAnswers = {
-  company_name: "Northstar Labs",
-  role_title: "Product Manager",
+  company_name: "AlexAI",
+  role_title: "AI Engineer",
   role_summary: "Lead planning and delivery for a growing hiring platform used by small recruiting teams.",
   responsibilities: "Define product requirements\nCoordinate design and engineering work\nReview product metrics and user feedback",
   requirements: "Product management experience\nStrong written communication\nComfort working with cross-functional teams",
