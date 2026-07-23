@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from pydantic import BaseModel
-from src.llm.providers import generate_with_huggingface, generate_with_openai
+from src.llm.providers import generate_with_huggingface, generate_with_openai, generate_with_gemini, generate_with_deepseek
 
 '''
 Structured container for the result of one LLM call
@@ -36,6 +36,8 @@ def generate_text (
     providers = provider_functions or {
         "openai": generate_with_openai,
         "huggingface": generate_with_huggingface,
+        "gemini": generate_with_gemini,
+        "deepseek": generate_with_deepseek,
     }
 
     if provider not in providers:

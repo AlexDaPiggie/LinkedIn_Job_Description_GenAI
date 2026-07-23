@@ -1,6 +1,6 @@
 {
     "BACKEND_URL": "http://localhost:8000",
     "FRONT_END_URL": "http://127.0.0.1:5500",
-    "LLM_PROVIDER": "openai",
-    "LLM_MODEL": "gpt-4o-mini"
+    "LLM_PROVIDER": "gemini",
+    "LLM_MODEL": "gemini-flash-latest"
 }
