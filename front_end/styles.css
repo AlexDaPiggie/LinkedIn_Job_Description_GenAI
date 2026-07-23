@@ -32,6 +32,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   color: var(--ink);
   font-family: var(--body-font);
   background:
@@ -893,6 +894,7 @@ button:disabled {
 @media (max-width: 1080px) {
   .app-shell {
     width: min(100vw - 32px, 920px);
+    margin: 0 auto;
   }
 
   .workspace-grid {
@@ -920,73 +922,6 @@ button:disabled {
 
   .lead-copy {
     max-width: 100%;
-  }
-}
-
-@media (max-width: 560px) {
-  .app-shell {
-    width: min(100vw - 14px, 520px);
-    padding-top: 16px;
-    padding-bottom: 32px;
-  }
-
-  .topbar {
-    gap: 18px;
-    margin-bottom: 18px;
-  }
-
-  .topbar h1 {
-    font-size: clamp(36px, 12vw, 48px);
-    line-height: 1;
-  }
-
-  .lead-copy {
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  .section-head,
-  .status-row,
-  .action-buttons {
-    gap: 8px;
-  }
-
-  .status-pill,
-  .secondary-button,
-  .primary-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .question-summary {
-    grid-template-columns: 38px 1fr;
-    gap: 10px;
-    padding: 13px;
-  }
-
-  .question-number {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
-  }
-
-  .question-text {
-    font-size: 14px;
-  }
-
-  .expand-label {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .question-body {
-    padding: 0 13px 13px;
-  }
-
-  .markdown-preview {
-    min-height: 260px;
-    padding: 15px;
   }
 }
 
@@ -1088,10 +1023,76 @@ button:disabled {
   }
 }
 
+@media (max-width: 560px) {
+  .app-shell {
+    width: min(100vw - 14px, 520px);
+    padding-top: 16px;
+    padding-bottom: 32px;
+  }
+
+  .topbar {
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(36px, 12vw, 48px);
+    line-height: 1;
+  }
+
+  .lead-copy {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .section-head,
+  .status-row,
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .status-pill,
+  .secondary-button,
+  .primary-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-summary {
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+    padding: 13px;
+  }
+
+  .question-number {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .question-text {
+    font-size: 14px;
+  }
+
+  .expand-label {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-body {
+    padding: 0 13px 13px;
+  }
+
+  .markdown-preview {
+    min-height: 260px;
+    padding: 15px;
+  }
+}
+
 @media print {
   body {
     background: #ffffff;
-    overflow: visible;
   }
 
   body::before,
@@ -1132,5 +1133,4 @@ button:disabled {
     overflow: visible;
   }
 }
-
 

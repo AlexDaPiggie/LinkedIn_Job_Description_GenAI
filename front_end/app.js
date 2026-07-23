@@ -1,6 +1,6 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
-const PROVIDER = "huggingface";
-const MODEL = "Qwen/Qwen2.5-7B-Instruct";
+let API_BASE_URL = "http://127.0.0.1:8000";
+let PROVIDER = "huggingface";
+let MODEL = "Qwen/Qwen2.5-7B-Instruct";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 
 const fallbackQuestions = [
@@ -9,7 +9,7 @@ const fallbackQuestions = [
   { question_name: "role_summary", question_text: "Why is the company hiring this role, and what should this person help accomplish?", required: true, answer_type: "text" },
   { question_name: "responsibilities", question_text: "What will this person be responsible for?", required: true, answer_type: "list" },
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
-  { question_name: "nice_to_have", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
+  { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
   { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },
@@ -71,7 +71,7 @@ const elements = {
   messageBox: document.querySelector("#messageBox"),
   markdownPreview: document.querySelector("#markdownPreview"),
   copyButton: document.querySelector("#copyButton"),
-  exportPdfButton: document.querySelector("#exportPdfButton"),
+  exportDocxButton: document.querySelector("#exportDocxButton"),
   refineInput: document.querySelector("#refineInput"),
   refineButton: document.querySelector("#refineButton"),
 };
@@ -262,7 +262,7 @@ function renderDraft() {
   elements.draftWarning.classList.toggle("hidden", !state.draftOutdated);
   elements.refineButton.disabled = !state.currentDraft || state.draftOutdated;
   elements.copyButton.disabled = !state.currentMarkdown;
-  elements.exportPdfButton.disabled = !state.currentMarkdown;
+  elements.exportDocxButton.disabled = !state.currentMarkdown;
 
   if (!state.currentMarkdown) {
     elements.markdownPreview.classList.add("empty");
@@ -313,6 +313,7 @@ async function callApi(path, payload) {
   }
   return data;
 }
+
 async function generateDraft() {
   const missing = missingRequiredFields();
   if (missing.length) {
@@ -429,6 +430,113 @@ function markdownToHtml(markdown) {
   return html.join("");
 }
 
+function cleanPreviewText() {
+  return elements.markdownPreview.innerText.replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function stripInlineMarkdown(value) {
+  return value
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`(.*?)`/g, "$1")
+    .trim();
+}
+
+function fileSafeName(value) {
+  return value
+    .replace(/[<>:"/\\|?*]+/g, "")
+    .replace(/\s+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 80) || "Generated_Job_Description";
+}
+
+function docxParagraphsFromMarkdown(markdown) {
+  const { HeadingLevel, Paragraph, TextRun } = window.docx;
+  const paragraphs = [];
+
+  for (const rawLine of markdown.split("\n")) {
+    const line = rawLine.trim();
+    if (!line) {
+      paragraphs.push(new Paragraph({ text: "", spacing: { after: 120 } }));
+      continue;
+    }
+
+    if (line.startsWith("# ")) {
+      paragraphs.push(new Paragraph({
+        text: stripInlineMarkdown(line.slice(2)),
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 180 },
+      }));
+      continue;
+    }
+
+    if (line.startsWith("## ")) {
+      paragraphs.push(new Paragraph({
+        text: stripInlineMarkdown(line.slice(3)),
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 220, after: 120 },
+      }));
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      paragraphs.push(new Paragraph({
+        text: stripInlineMarkdown(line.slice(4)),
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 160, after: 80 },
+      }));
+      continue;
+    }
+
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      paragraphs.push(new Paragraph({
+        children: [new TextRun(stripInlineMarkdown(line.slice(2)))],
+        bullet: { level: 0 },
+        spacing: { after: 80 },
+      }));
+      continue;
+    }
+
+    paragraphs.push(new Paragraph({
+      children: [new TextRun(stripInlineMarkdown(line))],
+      spacing: { after: 120 },
+    }));
+  }
+
+  return paragraphs;
+}
+
+async function exportDocx() {
+  if (!state.currentMarkdown) return;
+  if (!window.docx) {
+    setMessage("DOCX export library did not load. Check your internet connection and try again.");
+    return;
+  }
+
+  const { Document, Packer } = window.docx;
+  const roleTitle = state.answers.role_title?.trim() || "Generated";
+  const fileName = `${fileSafeName(roleTitle)}_Job_Description.docx`;
+  const doc = new Document({
+    creator: "LinkedIn Job Description Generator",
+    title: `${roleTitle} Job Description`,
+    sections: [{
+      properties: {},
+      children: docxParagraphsFromMarkdown(state.currentMarkdown),
+    }],
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  setMessage("DOCX downloaded.", "info");
+}
+
 function escapeHtml(value) {
   return value
     .replaceAll("&", "&amp;")
@@ -480,16 +588,28 @@ elements.railToggle.addEventListener("click", () => {
 elements.generateButton.addEventListener("click", generateDraft);
 elements.refineButton.addEventListener("click", refineDraft);
 elements.copyButton.addEventListener("click", async () => {
-  if (!state.currentMarkdown) return;
-  await navigator.clipboard.writeText(state.currentMarkdown);
-  setMessage("Markdown copied.", "info");
+  const textToCopy = cleanPreviewText();
+  if (!state.currentMarkdown || !textToCopy) return;
+  await navigator.clipboard.writeText(textToCopy);
+  setMessage("Job description copied.", "info");
 });
-elements.exportPdfButton.addEventListener("click", () => {
-  if (!state.currentMarkdown) return;
-  document.title = "Generated Job Description";
-  window.print();
-});
+elements.exportDocxButton.addEventListener("click", exportDocx);
 
-checkApi();
-renderRailPin();
-loadQuestions();
+async function initApp (){
+  try{
+      const response = await fetch ("../src/config.json");
+      if (response.ok) {
+        const config = await response.json();
+        API_BASE_URL = config.BACKEND_URL;
+        PROVIDER = config.LLM_PROVIDER;
+        MODEL = config.LLM_MODEL;
+      }
+  } catch (error) {
+    console.warn ("Could not load config.json, using defaults.", error);
+  }
+
+  checkApi();
+  renderRailPin();
+  loadQuestions();
+}
+initApp();

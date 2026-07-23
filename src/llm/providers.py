@@ -13,7 +13,7 @@ TOKENIZER_CACHE = {}
 def generate_with_openai (prompt: str, model: str): 
     from src.llm.client import LLMResult
     load_dotenv()
-    client = OpenAI(api_key = os.getenv ("OPEN_API_KEY"))
+    client = OpenAI(api_key = os.getenv ("OPENAI_API_KEY"))
     start = time.perf_counter()
     response = client.responses.create (
         model = model,
