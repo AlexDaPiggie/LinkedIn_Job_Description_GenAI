@@ -2,6 +2,10 @@ from pydantic import BaseModel, Field
 from src.schema.job_description import JobDescriptionDraft
 from src.schema.job_info import JobInfo
 
+# PROVIDER = 'huggingface'
+# MODEL = 'HuggingFaceH4/zephyr-7b-beta'
+PROVIDER = 'openai'
+MODEL = 'gpt-5.5'
 class QuestionResponse (BaseModel):
     question_name: str
     question_text: str
@@ -11,8 +15,8 @@ class QuestionResponse (BaseModel):
 class GenerateRequest (BaseModel):
     job_info: JobInfo
     skipped_fields: list[str] = Field(default_factory=list)
-    provider: str = 'huggingface'
-    model: str = 'Qwen/Qwen2.5-7B-Instruct'
+    provider: str = PROVIDER
+    model: str = MODEL
 
 class GenerateResponse (BaseModel):
     draft: JobDescriptionDraft
@@ -23,8 +27,8 @@ class RefineRequest (BaseModel):
     current_draft: JobDescriptionDraft
     user_request: str
     skipped_fields: list[str] = Field(default_factory=list)
-    provider: str = 'huggingface'
-    model: str = 'Qwen/Qwen2.5-7B-Instruct'
+    provider: str = PROVIDER
+    model: str = MODEL
 
 class ErrorResponse (BaseModel): 
     detail: str

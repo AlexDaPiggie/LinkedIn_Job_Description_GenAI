@@ -12,10 +12,10 @@ MODELS_TO_EVALUATE = [
         "purpose": "small model baseline",
     },
     {
-        "name": "phi_3_5_mini_instruct",
+        "name": "llama_3_1_8b_instruct",
         "provider": "huggingface",
-        "model_id": "microsoft/Phi-3.5-mini-instruct",
-        "purpose": "compact open model candidate",
+        "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "purpose": "state-of-the-art 8B candidate",
     },
     {
         "name": "qwen_7b_instruct",
@@ -24,10 +24,22 @@ MODELS_TO_EVALUATE = [
         "purpose": "balanced open model candidate",
     },
     {
-        "name": "mistral_7b_instruct",
+        "name": "mistral_7b_instruct_v0_2",
         "provider": "huggingface",
-        "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+        "model_id": "mistralai/Mistral-7B-Instruct-v0.2",
         "purpose": "strong open 7B reference",
+    },
+    {
+        "name": "gemma_2_9b_it",
+        "provider": "huggingface",
+        "model_id": "google/gemma-2-9b-it",
+        "purpose": "high reasoning 9B candidate",
+    },
+    {
+        "name": "zephyr_7b_beta",
+        "provider": "huggingface",
+        "model_id": "HuggingFaceH4/zephyr-7b-beta",
+        "purpose": "chat fine-tuned 7B candidate",
     },
     {
         "name": "openai_flagship_reference",
