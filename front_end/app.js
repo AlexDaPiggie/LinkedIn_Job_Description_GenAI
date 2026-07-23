@@ -1,6 +1,6 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
-const PROVIDER = "openai";
-const MODEL = "gpt-5.5";
+let API_BASE_URL = "http://127.0.0.1:8000";
+let PROVIDER = "huggingface";
+let MODEL = "Qwen/Qwen2.5-7B-Instruct";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 
 const fallbackQuestions = [
@@ -596,6 +596,21 @@ elements.copyButton.addEventListener("click", async () => {
 });
 elements.exportDocxButton.addEventListener("click", exportDocx);
 
-checkApi();
-renderRailPin();
-loadQuestions();
+async function initApp (){
+  try{
+      const response = await fetch ("../src/config.json");
+      if (response.ok) {
+        const config = await response.json();
+        API_BASE_URL = config.BACKEND_URL;
+        PROVIDER = config.LLM_PROVIDER;
+        MODEL = config.LLM_MODEL;
+      }
+  } catch (error) {
+    console.warn ("Could not load config.json, using defaults.", error);
+  }
+
+  checkApi();
+  renderRailPin();
+  loadQuestions();
+}
+initApp();
