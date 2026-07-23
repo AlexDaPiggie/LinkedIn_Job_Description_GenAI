@@ -11,7 +11,7 @@ try:
     PROVIDER = config.get ("LLM_PROVIDER")
     MODEL = config.get ("LLM_MODEL")
 except Exception as e:
-    print (f"Warning: Could not load config.json. Using defaults. Erro: {e}")
+    print (f"Warning: Could not load config.json. Using defaults. Error: {e}")
     PROVIDER = 'huggingface'
     MODEL = 'Qwen/Qwen2.5-7B-Instruct'
 
