@@ -3,3 +3,4 @@ tests
 src/API_Key.py
 output
 src/agent/__pycache__
+.pyc
