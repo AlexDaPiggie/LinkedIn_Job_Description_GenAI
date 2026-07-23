@@ -75,8 +75,9 @@ button {
 .app-shell {
   position: relative;
   z-index: 1;
-  width: min(1520px, calc(100vw - 158px));
-  margin: 0 28px 0 130px;
+  width: calc(100vw - 165px);
+  max-width: 1850px;
+  margin: 0 35px 0 130px;
   padding: 34px 0 52px;
 }
 
@@ -127,7 +128,7 @@ button {
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: minmax(430px, 0.94fr) minmax(540px, 1.06fr);
+  grid-template-columns: minmax(400px, 0.85fr) minmax(520px, 1.15fr);
   gap: clamp(20px, 2vw, 30px);
   align-items: start;
 }
@@ -1133,4 +1134,3 @@ button:disabled {
     overflow: visible;
   }
 }
-
