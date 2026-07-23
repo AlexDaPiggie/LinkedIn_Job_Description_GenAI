@@ -2,5 +2,6 @@ docs
 tests
 src/API_Key.py
 src/agent/__pycache__
+src/llm/__pycache__
 *.docx
 *.pyc
