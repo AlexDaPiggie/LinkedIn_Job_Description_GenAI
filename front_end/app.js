@@ -1,6 +1,6 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
-const PROVIDER = "huggingface";
-const MODEL = "Qwen/Qwen2.5-7B-Instruct";
+const PROVIDER = "openai";
+const MODEL = "gpt-5.5";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 
 const fallbackQuestions = [
