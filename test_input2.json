@@ -33,7 +33,7 @@
         "target_length": "long"
     },
     "skipped_fields": [],
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-7B-Instruct"
+    "provider": "openai",
+    "model": "gpt-5.5"
 }
 
