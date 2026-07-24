@@ -389,10 +389,22 @@ button {
   border-bottom: 1px solid rgba(10, 102, 194, 0.09);
 }
 
+.draft-button-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .generate-button {
   min-width: 132px;
   min-height: 44px;
   font-size: 14px;
+}
+
+.sample-output-button {
+  min-height: 44px;
 }
 
 .draft-title {
@@ -676,6 +688,15 @@ textarea:focus {
   background: #ffffff;
   color: var(--blue-deep);
   transform: translateY(-1px);
+}
+
+.button-success,
+.button-success:hover {
+  border-color: rgba(8, 120, 82, 0.48);
+  background: linear-gradient(135deg, #087852, #12b884);
+  color: #ffffff;
+  box-shadow: 0 14px 26px rgba(8, 120, 82, 0.22);
+  transform: translateY(-1px) scale(1.02);
 }
 
 button:disabled {
@@ -986,6 +1007,10 @@ button:disabled {
     padding: 8px;
   }
 
+  .draft-button-group {
+    justify-content: start;
+  }
+
   .rail-toggle,
   .rail-list {
     opacity: 1;
@@ -1058,6 +1083,10 @@ button:disabled {
   .primary-button {
     width: 100%;
     justify-content: center;
+  }
+
+  .draft-button-group {
+    width: 100%;
   }
 
   .question-summary {
@@ -1134,3 +1163,4 @@ button:disabled {
     overflow: visible;
   }
 }
+
