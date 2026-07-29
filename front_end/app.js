@@ -1,6 +1,6 @@
-let API_BASE_URL = "http://127.0.0.1:8000";
-let PROVIDER = "huggingface";
-let MODEL = "Qwen/Qwen2.5-7B-Instruct";
+const API_BASE_URL = "http://127.0.0.1:8000";
+const PROVIDER = "huggingface";
+const MODEL = "Qwen/Qwen2.5-7B-Instruct";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 
 const fallbackQuestions = [
@@ -10,6 +10,7 @@ const fallbackQuestions = [
   { question_name: "responsibilities", question_text: "What will this person be responsible for?", required: true, answer_type: "list" },
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
   { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
+  { question_name: "salary_range", question_text: "What salary range do you want to include?", required: false, answer_type: "text" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
   { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },
@@ -19,19 +20,78 @@ const fallbackQuestions = [
 ];
 
 const sampleAnswers = {
-  company_name: "AlexAI",
-  role_title: "AI Engineer",
+  company_name: "Northstar Labs",
+  role_title: "Product Manager",
   role_summary: "Lead planning and delivery for a growing hiring platform used by small recruiting teams.",
   responsibilities: "Define product requirements\nCoordinate design and engineering work\nReview product metrics and user feedback",
   requirements: "Product management experience\nStrong written communication\nComfort working with cross-functional teams",
-  nice_to_haves: "System design, Figma, Frontend development, Signal processing",
-  company_description: "Alex AI is a startup building tools that help companies create better hiring content using AI.",
-  why_join_us: "Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have visible impact.",
-  benefits: "Health insurance, Lunch, breakfast, and dinner covered, Hands-on AI engineering experience",
   tone: "professional",
   target_length: "long",
-  equal_opportunity: "yes",
 };
+
+const sampleDraft = {
+  title: "Product Manager",
+  about_company: "Northstar Labs builds practical hiring tools for small recruiting teams that need clearer workflows, better candidate communication, and faster role planning.",
+  about_role: "The Product Manager will lead planning and delivery for a growing hiring platform. This person will work closely with design, engineering, and customer-facing teams to turn recruiter feedback into focused product improvements.",
+  responsibilities: [
+    "Define product requirements, priorities, and success metrics for new hiring workflow features.",
+    "Coordinate design and engineering work from discovery through launch.",
+    "Review product analytics, customer feedback, and user research to identify practical improvements.",
+    "Partner with stakeholders to keep releases focused, useful, and aligned with business goals.",
+  ],
+  requirements: [
+    "Experience managing software products from planning through delivery.",
+    "Strong written communication and comfort turning ambiguity into clear product direction.",
+    "Ability to work with cross-functional teams across design, engineering, and go-to-market.",
+    "Comfort using product metrics and qualitative feedback to make decisions.",
+  ],
+  nice_to_haves: [
+    "Experience with recruiting, HR technology, or workflow automation products.",
+    "Familiarity with B2B SaaS product development.",
+  ],
+  benefits: [
+    "Flexible remote-friendly work culture.",
+    "Health, dental, and vision coverage.",
+    "Learning budget for courses, books, and conferences.",
+  ],
+  why_join_us: "This is a chance to shape a product that helps lean recruiting teams write better roles, move faster, and create a more thoughtful candidate experience.",
+  equal_opportunity: "Northstar Labs is an equal opportunity employer and welcomes applicants from all backgrounds.",
+};
+
+const sampleMarkdown = `# Product Manager
+
+## About Northstar Labs
+Northstar Labs builds practical hiring tools for small recruiting teams that need clearer workflows, better candidate communication, and faster role planning.
+
+## About the Role
+The Product Manager will lead planning and delivery for a growing hiring platform. This person will work closely with design, engineering, and customer-facing teams to turn recruiter feedback into focused product improvements.
+
+## Responsibilities
+- Define product requirements, priorities, and success metrics for new hiring workflow features.
+- Coordinate design and engineering work from discovery through launch.
+- Review product analytics, customer feedback, and user research to identify practical improvements.
+- Partner with stakeholders to keep releases focused, useful, and aligned with business goals.
+
+## Requirements
+- Experience managing software products from planning through delivery.
+- Strong written communication and comfort turning ambiguity into clear product direction.
+- Ability to work with cross-functional teams across design, engineering, and go-to-market.
+- Comfort using product metrics and qualitative feedback to make decisions.
+
+## Nice to Have
+- Experience with recruiting, HR technology, or workflow automation products.
+- Familiarity with B2B SaaS product development.
+
+## Benefits
+- Flexible remote-friendly work culture.
+- Health, dental, and vision coverage.
+- Learning budget for courses, books, and conferences.
+
+## Why Join Us
+This is a chance to shape a product that helps lean recruiting teams write better roles, move faster, and create a more thoughtful candidate experience.
+
+## Equal Opportunity
+Northstar Labs is an equal opportunity employer and welcomes applicants from all backgrounds.`;
 
 const fieldsAcceptedByApi = new Set([
   "company_name",
@@ -66,6 +126,7 @@ const elements = {
   railToggle: document.querySelector("#railToggle"),
   questionList: document.querySelector("#questionList"),
   sampleButton: document.querySelector("#sampleButton"),
+  sampleOutputButton: document.querySelector("#sampleOutputButton"),
   generateButton: document.querySelector("#generateButton"),
   draftWarning: document.querySelector("#draftWarning"),
   messageBox: document.querySelector("#messageBox"),
@@ -297,6 +358,18 @@ function setLoading(button, loadingText) {
   };
 }
 
+function showButtonSuccess(button, successText) {
+  const originalText = button.dataset.originalText || button.textContent;
+  button.dataset.originalText = originalText;
+  button.textContent = successText;
+  button.classList.add("button-success");
+  window.clearTimeout(button._successTimer);
+  button._successTimer = window.setTimeout(() => {
+    button.textContent = originalText;
+    button.classList.remove("button-success");
+  }, 1800);
+}
+
 async function callApi(path, payload) {
   const response = await fetch(apiUrl(path), {
     method: "POST",
@@ -430,16 +503,120 @@ function markdownToHtml(markdown) {
   return html.join("");
 }
 
-function cleanPreviewText() {
-  return elements.markdownPreview.innerText.replace(/\n{3,}/g, "\n\n").trim();
-}
-
 function stripInlineMarkdown(value) {
   return value
     .replace(/\*\*(.*?)\*\*/g, "$1")
     .replace(/\*(.*?)\*/g, "$1")
     .replace(/`(.*?)`/g, "$1")
     .trim();
+}
+
+function formatMarkdownForCopy(markdown) {
+  const lines = [];
+
+  for (const rawLine of markdown.split("\n")) {
+    const line = rawLine.trim();
+    if (!line) {
+      if (lines.length && lines[lines.length - 1] !== "") lines.push("");
+      continue;
+    }
+
+    if (line.startsWith("# ")) {
+      if (lines.length && lines[lines.length - 1] !== "") lines.push("");
+      lines.push(stripInlineMarkdown(line.slice(2)));
+      lines.push("");
+      continue;
+    }
+
+    if (line.startsWith("## ")) {
+      if (lines.length && lines[lines.length - 1] !== "") lines.push("");
+      lines.push(stripInlineMarkdown(line.slice(3)));
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      if (lines.length && lines[lines.length - 1] !== "") lines.push("");
+      lines.push(stripInlineMarkdown(line.slice(4)));
+      continue;
+    }
+
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      lines.push(`- ${stripInlineMarkdown(line.slice(2))}`);
+      continue;
+    }
+
+    lines.push(stripInlineMarkdown(line));
+  }
+
+  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+function markdownToClipboardHtml(markdown) {
+  const blocks = [];
+  let listItems = [];
+
+  const closeList = () => {
+    if (!listItems.length) return;
+    blocks.push(`<ul style="margin: 0 0 12px 22px; padding: 0;">${listItems.join("")}</ul>`);
+    listItems = [];
+  };
+
+  for (const rawLine of markdown.split("\n")) {
+    const line = rawLine.trim();
+    if (!line) {
+      closeList();
+      continue;
+    }
+
+    if (line.startsWith("# ")) {
+      closeList();
+      blocks.push(`<p style="margin: 0 0 14px; color: #102033; font-size: 22px; font-weight: 700; line-height: 1.25;">${escapeHtml(stripInlineMarkdown(line.slice(2)))}</p>`);
+      continue;
+    }
+
+    if (line.startsWith("## ")) {
+      closeList();
+      blocks.push(`<p style="margin: 18px 0 8px; color: #102033; font-size: 18px; font-weight: 700; line-height: 1.3;">${escapeHtml(stripInlineMarkdown(line.slice(3)))}</p>`);
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      closeList();
+      blocks.push(`<p style="margin: 14px 0 6px; color: #102033; font-size: 16px; font-weight: 700; line-height: 1.35;">${escapeHtml(stripInlineMarkdown(line.slice(4)))}</p>`);
+      continue;
+    }
+
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      listItems.push(`<li style="margin: 0 0 5px;">${escapeHtml(stripInlineMarkdown(line.slice(2)))}</li>`);
+      continue;
+    }
+
+    closeList();
+    blocks.push(`<p style="margin: 0 0 10px; color: #102033; font-size: 14px; line-height: 1.55;">${escapeHtml(stripInlineMarkdown(line))}</p>`);
+  }
+
+  closeList();
+  return `<div style="color: #102033; font-family: Arial, sans-serif;">${blocks.join("")}</div>`;
+}
+
+async function copyDraft() {
+  const textToCopy = formatMarkdownForCopy(state.currentMarkdown);
+  if (!state.currentMarkdown || !textToCopy) return;
+
+  if (window.ClipboardItem) {
+    const htmlToCopy = markdownToClipboardHtml(state.currentMarkdown);
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        "text/html": new Blob([htmlToCopy], { type: "text/html" }),
+        "text/plain": new Blob([textToCopy], { type: "text/plain" }),
+      }),
+    ]);
+  } else {
+    await navigator.clipboard.writeText(textToCopy);
+  }
+
+  showButtonSuccess(elements.copyButton, "Copied");
+  setMessage("Job description copied.", "info");
 }
 
 function fileSafeName(value) {
@@ -451,7 +628,7 @@ function fileSafeName(value) {
 }
 
 function docxParagraphsFromMarkdown(markdown) {
-  const { HeadingLevel, Paragraph, TextRun } = window.docx;
+  const { Paragraph, TextRun } = window.docx;
   const paragraphs = [];
 
   for (const rawLine of markdown.split("\n")) {
@@ -463,17 +640,25 @@ function docxParagraphsFromMarkdown(markdown) {
 
     if (line.startsWith("# ")) {
       paragraphs.push(new Paragraph({
-        text: stripInlineMarkdown(line.slice(2)),
-        heading: HeadingLevel.HEADING_1,
-        spacing: { after: 180 },
+        children: [new TextRun({
+          text: stripInlineMarkdown(line.slice(2)),
+          bold: true,
+          color: "102033",
+          size: 34,
+        })],
+        spacing: { after: 220 },
       }));
       continue;
     }
 
     if (line.startsWith("## ")) {
       paragraphs.push(new Paragraph({
-        text: stripInlineMarkdown(line.slice(3)),
-        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun({
+          text: stripInlineMarkdown(line.slice(3)),
+          bold: true,
+          color: "102033",
+          size: 28,
+        })],
         spacing: { before: 220, after: 120 },
       }));
       continue;
@@ -481,8 +666,12 @@ function docxParagraphsFromMarkdown(markdown) {
 
     if (line.startsWith("### ")) {
       paragraphs.push(new Paragraph({
-        text: stripInlineMarkdown(line.slice(4)),
-        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun({
+          text: stripInlineMarkdown(line.slice(4)),
+          bold: true,
+          color: "102033",
+          size: 24,
+        })],
         spacing: { before: 160, after: 80 },
       }));
       continue;
@@ -490,7 +679,11 @@ function docxParagraphsFromMarkdown(markdown) {
 
     if (line.startsWith("- ") || line.startsWith("* ")) {
       paragraphs.push(new Paragraph({
-        children: [new TextRun(stripInlineMarkdown(line.slice(2)))],
+        children: [new TextRun({
+          text: stripInlineMarkdown(line.slice(2)),
+          color: "102033",
+          size: 22,
+        })],
         bullet: { level: 0 },
         spacing: { after: 80 },
       }));
@@ -498,7 +691,11 @@ function docxParagraphsFromMarkdown(markdown) {
     }
 
     paragraphs.push(new Paragraph({
-      children: [new TextRun(stripInlineMarkdown(line))],
+      children: [new TextRun({
+        text: stripInlineMarkdown(line),
+        color: "102033",
+        size: 22,
+      })],
       spacing: { after: 120 },
     }));
   }
@@ -509,7 +706,7 @@ function docxParagraphsFromMarkdown(markdown) {
 async function exportDocx() {
   if (!state.currentMarkdown) return;
   if (!window.docx) {
-    setMessage("DOCX export library did not load. Check your internet connection and try again.");
+    setMessage("Word export library did not load. Check your internet connection and try again.");
     return;
   }
 
@@ -534,7 +731,8 @@ async function exportDocx() {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-  setMessage("DOCX downloaded.", "info");
+  showButtonSuccess(elements.exportDocxButton, "Exported");
+  setMessage("Word file downloaded.", "info");
 }
 
 function escapeHtml(value) {
@@ -579,7 +777,16 @@ function loadSample() {
   renderAll();
 }
 
+function loadSampleOutput() {
+  state.currentDraft = { ...sampleDraft };
+  state.currentMarkdown = sampleMarkdown;
+  state.draftOutdated = false;
+  renderDraft();
+  setMessage("Sample draft loaded.", "info");
+}
+
 elements.sampleButton.addEventListener("click", loadSample);
+elements.sampleOutputButton.addEventListener("click", loadSampleOutput);
 elements.railToggle.addEventListener("click", () => {
   state.railPinned = !state.railPinned;
   localStorage.setItem(RAIL_PIN_STORAGE_KEY, String(state.railPinned));
@@ -587,29 +794,9 @@ elements.railToggle.addEventListener("click", () => {
 });
 elements.generateButton.addEventListener("click", generateDraft);
 elements.refineButton.addEventListener("click", refineDraft);
-elements.copyButton.addEventListener("click", async () => {
-  const textToCopy = cleanPreviewText();
-  if (!state.currentMarkdown || !textToCopy) return;
-  await navigator.clipboard.writeText(textToCopy);
-  setMessage("Job description copied.", "info");
-});
+elements.copyButton.addEventListener("click", copyDraft);
 elements.exportDocxButton.addEventListener("click", exportDocx);
 
-async function initApp (){
-  try{
-      const response = await fetch ("../src/config.json");
-      if (response.ok) {
-        const config = await response.json();
-        API_BASE_URL = config.BACKEND_URL;
-        PROVIDER = config.LLM_PROVIDER;
-        MODEL = config.LLM_MODEL;
-      }
-  } catch (error) {
-    console.warn ("Could not load config.json, using defaults.", error);
-  }
-
-  checkApi();
-  renderRailPin();
-  loadQuestions();
-}
-initApp();
+checkApi();
+renderRailPin();
+loadQuestions();
