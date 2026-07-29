@@ -54,6 +54,7 @@ def generate_with_openai (prompt: str, model: str):
 def generate_with_gemini(prompt: str, model: str = "gemini-2.5-flash"):
     from src.llm.client import LLMResult
     from google import genai
+    #We don't use openAI framework because google genAI provides free token for flash model everyday, that's a great idea for everything.
     
     load_dotenv()
     api_key = os.getenv("GEMINI_API_KEY")

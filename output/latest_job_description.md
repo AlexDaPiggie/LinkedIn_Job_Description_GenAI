@@ -2,41 +2,41 @@
  
 ## About AlexAI 
  
- AlexAI is an innovative startup dedicated to developing advanced tools that empower organizations to create superior hiring content through artificial intelligence. Our focus is on enhancing the recruitment experience for small teams by leveraging cutting-edge technology.
+ AlexAI is an innovative, fast-growing startup focused on building intelligent tools that help companies create higher-quality hiring content using artificial intelligence. Our mission is to modernize talent acquisition workflows by providing intuitive, AI-driven solutions that simplify content creation and help recruiting teams communicate more effectively with prospective candidates. By developing technology tailored to the needs of modern organizations, AlexAI enables teams to optimize their recruiting materials, streamline communication, and deliver better hiring outcomes. As our team and platform continue to expand, we remain committed to fostering an environment where innovation, technical excellence, and impactful problem-solving drive everything we build.
  
 ## About the Role 
  
- As an AI Engineer, you will lead the planning and delivery of our rapidly expanding hiring platform. This role is essential for driving our mission to make recruitment seamless and efficient for small recruiting teams. You will collaborate closely with various stakeholders to define product visions and transform them into actionable plans.
+ We are looking for a skilled and proactive AI Engineer to lead the planning and delivery for our growing hiring platform, designed specifically for small recruiting teams. In this role, you will bridge technical execution and strategic platform development, driving projects from early-stage conceptualization through to successful implementation and rollout. You will be responsible for ensuring that our hiring platform continues to deliver actionable value, high reliability, and intuitive functionality to small recruiting teams who depend on our software daily. Working in a close-knit startup setting, you will actively shape platform functionality, collaborate across cross-functional domains, and analyze user insights to guide the ongoing evolution of our core product offerings.
  
 ## Responsibilities 
  
-- Define and articulate product requirements, ensuring clarity and alignment across all teams involved in the project lifecycle.
-- Coordinate design and engineering efforts to guarantee that all elements of the product come together harmoniously and meet our high standards.
-- Review product metrics and analyze user feedback to derive insights that will guide future development and enhancements.
+- Define, articulate, and document detailed product requirements to guide product development, establish clear project milestones, and support ongoing platform delivery.
+- Coordinate and facilitate ongoing collaborative workflows between design and engineering teams to maintain project momentum, align technical execution with design intent, and meet delivery timelines.
+- Regularly review key product performance metrics and evaluate qualitative user feedback to inform feature iterations, enhance system usability, and address direct user needs.
  
 ## Requirements 
  
-- Demonstrated experience in product management, with a proven track record of successfully driving projects from conception through implementation.
-- Exceptional written communication skills, allowing you to convey complex ideas effectively to diverse audiences.
-- Ability to collaborate comfortably with cross-functional teams, fostering a positive environment for idea exchange and creative problem solving.
+- Proven experience in product management, with a track record of driving software products or technical initiatives through the full planning and delivery lifecycle.
+- Strong written communication skills, with a demonstrated capability to craft clear documentation, explain technical considerations, and communicate effectively with stakeholders.
+- Demonstrated comfort and effectiveness working in collaborative, cross-functional team environments alongside engineering, design, and product stakeholders.
  
 ## Nice to Have 
  
-- Experience with system design methodologies that can contribute to the scalability of our platform.
-- Familiarity with design tools such as Figma to facilitate effective visual communication.
-- Knowledge of frontend development principles to enhance user engagement with the platform.
-- Experience in signal processing to inform AI model development and application.
+- Familiarity or practical background with system design principles and architectural planning.
+- Experience using Figma for reviewing design assets, providing feedback, and supporting design-to-engineering handoffs.
+- Prior experience or foundational knowledge in frontend development.
+- Exposure to or foundational understanding of signal processing concepts.
  
 ## Benefits 
  
-- Comprehensive health insurance plans to support your well-being and peace of mind.
-- Daily meals including breakfast, lunch, and dinner provided to foster a productive and enjoyable work environment.
-- Opportunities to gain hands-on experience in AI engineering, working with real systems and making tangible contributions to our goals.
+- Comprehensive health insurance coverage.
+- Fully covered daily meal program including breakfast, lunch, and dinner.
+- Invaluable hands-on AI engineering experience working directly on production-level artificial intelligence systems.
  
 ## Why Join Us 
  
- By joining AlexAI, you will be part of a dynamic, fast-moving startup environment where every member contributes to real AI systems. You will have the opportunity to learn swiftly and make a visible impact on the company’s trajectory.
+ Joining AlexAI means becoming a core contributor at a fast-moving, high-impact startup where team members—including interns and early-career engineers—work directly on real artificial intelligence systems. We prioritize an environment where you can learn quickly, take true ownership of critical platform features, and see the tangible results of your work utilized by growing recruiting teams. If you are eager to deepen your technical expertise, solve practical challenges in talent acquisition, and make a visible difference within a collaborative and supportive team, AlexAI is the ideal place to accelerate your career.
  
 ## Equal Opportunity Statement 
  
- We are an equal opportunity employer and value diversity at our company. We do not discriminate on the basis of race, color, ethnicity, gender, sexual orientation, age, marital status, disability, or any other protected status.
+ AlexAI is an Equal Opportunity Employer. We are committed to creating an inclusive and diverse workplace where all employees feel valued, regardless of race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability status, protected veteran status, or any other characteristic protected by law.
