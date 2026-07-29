@@ -1,42 +1,45 @@
-# AI Engineer
+# AI Engineer Intern
  
-## About AlexAI 
+## About Alex AI 
  
- AlexAI is an innovative startup dedicated to developing advanced tools that empower organizations to create superior hiring content through artificial intelligence. Our focus is on enhancing the recruitment experience for small teams by leveraging cutting-edge technology.
+ Alex AI is a startup dedicated to developing innovative tools that enhance the hiring process for companies by leveraging advanced AI technologies. Our mission is to create better hiring content, making the job search more efficient and effective for both job seekers and employers.
  
 ## About the Role 
  
- As an AI Engineer, you will lead the planning and delivery of our rapidly expanding hiring platform. This role is essential for driving our mission to make recruitment seamless and efficient for small recruiting teams. You will collaborate closely with various stakeholders to define product visions and transform them into actionable plans.
+ As an AI Engineer Intern at Alex AI, you will play a crucial role in building, monitoring, and evaluating AI systems that generate high-quality LinkedIn job descriptions. This is a unique opportunity to work on cutting-edge technology and contribute to the development of tools that will revolutionize the way companies present job opportunities to candidates.
  
 ## Responsibilities 
  
-- Define and articulate product requirements, ensuring clarity and alignment across all teams involved in the project lifecycle.
-- Coordinate design and engineering efforts to guarantee that all elements of the product come together harmoniously and meet our high standards.
-- Review product metrics and analyze user feedback to derive insights that will guide future development and enhancements.
+- Monitor machine learning pipelines to ensure they run smoothly and efficiently, identifying and resolving any issues that arise.
+- Evaluate the quality of model output to ensure it meets the high standards of our clients and users, providing feedback and suggestions for improvement.
+- Prepare and clean training data to ensure it is accurate and relevant for our AI models, enhancing the overall performance of our systems.
+- Support prompt testing and model comparison by conducting experiments and analyzing results to determine the best approach for generating high-quality job descriptions.
  
 ## Requirements 
  
-- Demonstrated experience in product management, with a proven track record of successfully driving projects from conception through implementation.
-- Exceptional written communication skills, allowing you to convey complex ideas effectively to diverse audiences.
-- Ability to collaborate comfortably with cross-functional teams, fostering a positive environment for idea exchange and creative problem solving.
+- Proficiency in Python, with a strong understanding of its syntax and best practices.
+- Experience with SQL for data manipulation and querying, including familiarity with databases and data management.
+- Basic knowledge of machine learning concepts and techniques, including familiarity with common algorithms and models.
+- Experience working with data pipelines, including data ingestion, transformation, and processing.
  
 ## Nice to Have 
  
-- Experience with system design methodologies that can contribute to the scalability of our platform.
-- Familiarity with design tools such as Figma to facilitate effective visual communication.
-- Knowledge of frontend development principles to enhance user engagement with the platform.
-- Experience in signal processing to inform AI model development and application.
+- Experience in system design, including understanding of system architecture and scalability considerations.
+- Familiarity with Figma for UI/UX design, enabling you to contribute to the visual aspects of our tools.
+- Background in frontend development, allowing you to work on the user-facing components of our applications.
+- Knowledge of signal processing techniques, which can be valuable for enhancing the accuracy and relevance of our AI-generated content.
  
 ## Benefits 
  
-- Comprehensive health insurance plans to support your well-being and peace of mind.
-- Daily meals including breakfast, lunch, and dinner provided to foster a productive and enjoyable work environment.
-- Opportunities to gain hands-on experience in AI engineering, working with real systems and making tangible contributions to our goals.
+- Comprehensive health insurance coverage to support your well-being.
+- Free breakfast and lunch provided to ensure you stay energized throughout the day.
+- Hands-on AI engineering experience that will provide you with practical skills and knowledge to advance your career.
+- Opportunities for professional development and learning, including access to training and mentorship programs.
  
 ## Why Join Us 
  
- By joining AlexAI, you will be part of a dynamic, fast-moving startup environment where every member contributes to real AI systems. You will have the opportunity to learn swiftly and make a visible impact on the company’s trajectory.
+ Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have a visible impact on the product. You will be part of a dynamic team that values innovation and creativity, and you will have the chance to contribute to the development of tools that will change the way companies present job opportunities to candidates.
  
 ## Equal Opportunity Statement 
  
- We are an equal opportunity employer and value diversity at our company. We do not discriminate on the basis of race, color, ethnicity, gender, sexual orientation, age, marital status, disability, or any other protected status.
+ At Alex AI, we are committed to fostering an inclusive and diverse work environment. We believe that everyone deserves the opportunity to succeed and thrive, regardless of their race, ethnicity, gender, sexual orientation, religion, age, or disability. We are dedicated to providing equal opportunities for all candidates and employees, and we strive to create a workplace where everyone feels valued and respected.
