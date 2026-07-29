@@ -1,42 +1,45 @@
-# AI Engineer
+# AI Engineer Intern
  
-## About AlexAI 
+## About Alex AI 
  
- AlexAI is an innovative, fast-growing startup focused on building intelligent tools that help companies create higher-quality hiring content using artificial intelligence. Our mission is to modernize talent acquisition workflows by providing intuitive, AI-driven solutions that simplify content creation and help recruiting teams communicate more effectively with prospective candidates. By developing technology tailored to the needs of modern organizations, AlexAI enables teams to optimize their recruiting materials, streamline communication, and deliver better hiring outcomes. As our team and platform continue to expand, we remain committed to fostering an environment where innovation, technical excellence, and impactful problem-solving drive everything we build.
+ Alex AI is a startup dedicated to developing innovative tools that enhance the hiring process for companies by leveraging advanced AI technologies. Our mission is to create better hiring content, making the job search more efficient and effective for both job seekers and employers.
  
 ## About the Role 
  
- We are looking for a skilled and proactive AI Engineer to lead the planning and delivery for our growing hiring platform, designed specifically for small recruiting teams. In this role, you will bridge technical execution and strategic platform development, driving projects from early-stage conceptualization through to successful implementation and rollout. You will be responsible for ensuring that our hiring platform continues to deliver actionable value, high reliability, and intuitive functionality to small recruiting teams who depend on our software daily. Working in a close-knit startup setting, you will actively shape platform functionality, collaborate across cross-functional domains, and analyze user insights to guide the ongoing evolution of our core product offerings.
+ As an AI Engineer Intern at Alex AI, you will play a crucial role in building, monitoring, and evaluating AI systems that generate high-quality LinkedIn job descriptions. This is a unique opportunity to work on cutting-edge technology and contribute to the development of tools that will revolutionize the way companies present job opportunities to candidates.
  
 ## Responsibilities 
  
-- Define, articulate, and document detailed product requirements to guide product development, establish clear project milestones, and support ongoing platform delivery.
-- Coordinate and facilitate ongoing collaborative workflows between design and engineering teams to maintain project momentum, align technical execution with design intent, and meet delivery timelines.
-- Regularly review key product performance metrics and evaluate qualitative user feedback to inform feature iterations, enhance system usability, and address direct user needs.
+- Monitor machine learning pipelines to ensure they run smoothly and efficiently, identifying and resolving any issues that arise.
+- Evaluate the quality of model output to ensure it meets the high standards of our clients and users, providing feedback and suggestions for improvement.
+- Prepare and clean training data to ensure it is accurate and relevant for our AI models, enhancing the overall performance of our systems.
+- Support prompt testing and model comparison by conducting experiments and analyzing results to determine the best approach for generating high-quality job descriptions.
  
 ## Requirements 
  
-- Proven experience in product management, with a track record of driving software products or technical initiatives through the full planning and delivery lifecycle.
-- Strong written communication skills, with a demonstrated capability to craft clear documentation, explain technical considerations, and communicate effectively with stakeholders.
-- Demonstrated comfort and effectiveness working in collaborative, cross-functional team environments alongside engineering, design, and product stakeholders.
+- Proficiency in Python, with a strong understanding of its syntax and best practices.
+- Experience with SQL for data manipulation and querying, including familiarity with databases and data management.
+- Basic knowledge of machine learning concepts and techniques, including familiarity with common algorithms and models.
+- Experience working with data pipelines, including data ingestion, transformation, and processing.
  
 ## Nice to Have 
  
-- Familiarity or practical background with system design principles and architectural planning.
-- Experience using Figma for reviewing design assets, providing feedback, and supporting design-to-engineering handoffs.
-- Prior experience or foundational knowledge in frontend development.
-- Exposure to or foundational understanding of signal processing concepts.
+- Experience in system design, including understanding of system architecture and scalability considerations.
+- Familiarity with Figma for UI/UX design, enabling you to contribute to the visual aspects of our tools.
+- Background in frontend development, allowing you to work on the user-facing components of our applications.
+- Knowledge of signal processing techniques, which can be valuable for enhancing the accuracy and relevance of our AI-generated content.
  
 ## Benefits 
  
-- Comprehensive health insurance coverage.
-- Fully covered daily meal program including breakfast, lunch, and dinner.
-- Invaluable hands-on AI engineering experience working directly on production-level artificial intelligence systems.
+- Comprehensive health insurance coverage to support your well-being.
+- Free breakfast and lunch provided to ensure you stay energized throughout the day.
+- Hands-on AI engineering experience that will provide you with practical skills and knowledge to advance your career.
+- Opportunities for professional development and learning, including access to training and mentorship programs.
  
 ## Why Join Us 
  
- Joining AlexAI means becoming a core contributor at a fast-moving, high-impact startup where team members—including interns and early-career engineers—work directly on real artificial intelligence systems. We prioritize an environment where you can learn quickly, take true ownership of critical platform features, and see the tangible results of your work utilized by growing recruiting teams. If you are eager to deepen your technical expertise, solve practical challenges in talent acquisition, and make a visible difference within a collaborative and supportive team, AlexAI is the ideal place to accelerate your career.
+ Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have a visible impact on the product. You will be part of a dynamic team that values innovation and creativity, and you will have the chance to contribute to the development of tools that will change the way companies present job opportunities to candidates.
  
 ## Equal Opportunity Statement 
  
- AlexAI is an Equal Opportunity Employer. We are committed to creating an inclusive and diverse workplace where all employees feel valued, regardless of race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability status, protected veteran status, or any other characteristic protected by law.
+ At Alex AI, we are committed to fostering an inclusive and diverse work environment. We believe that everyone deserves the opportunity to succeed and thrive, regardless of their race, ethnicity, gender, sexual orientation, religion, age, or disability. We are dedicated to providing equal opportunities for all candidates and employees, and we strive to create a workplace where everyone feels valued and respected.
