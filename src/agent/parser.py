@@ -8,7 +8,7 @@ def strip_json (text: str):
     This function is simply to strip the important information from the json output
     '''
     stripped = text.strip()
-    match = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", stripped, flags=re.DOTALL)
+    match = re.search(r"```(?:json)?\s*(.*?)\s*```", stripped, flags=re.DOTALL)
     if match: 
         return match.group (1).strip()
     return stripped

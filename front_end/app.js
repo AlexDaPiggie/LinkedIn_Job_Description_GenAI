@@ -1,6 +1,6 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
-const PROVIDER = "huggingface";
-const MODEL = "Qwen/Qwen2.5-7B-Instruct";
+const PROVIDER = "openrouter";
+const MODEL = "mistralai/mistral-small-24b-instruct-2501";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 
 const fallbackQuestions = [
@@ -10,7 +10,6 @@ const fallbackQuestions = [
   { question_name: "responsibilities", question_text: "What will this person be responsible for?", required: true, answer_type: "list" },
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
   { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
-  { question_name: "salary_range", question_text: "What salary range do you want to include?", required: false, answer_type: "text" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
   { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },
@@ -151,6 +150,7 @@ function parseList(value) {
 }
 
 function formatFieldName(name) {
+  if (name == "nice_to_haves") return "Nice To Have" //Need this line to keep the stupid http stable.
   return name.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 

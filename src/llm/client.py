@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from pydantic import BaseModel
-from src.llm.providers import generate_with_huggingface, generate_with_openai, generate_with_gemini, generate_with_deepseek
+from src.llm.providers import generate_with_huggingface, generate_with_openai, generate_with_gemini, generate_with_deepseek, generate_with_openrouter
 
 '''
 Structured container for the result of one LLM call
@@ -34,6 +34,7 @@ def generate_text (
     This function is to call the correct provider model, knowing the names of provider, model, and function
     '''
     providers = provider_functions or {
+        "openrouter": generate_with_openrouter,
         "openai": generate_with_openai,
         "huggingface": generate_with_huggingface,
         "gemini": generate_with_gemini,
