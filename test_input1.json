@@ -28,6 +28,6 @@
         "why_join_us",
         "equal_opportunity"
     ],
-    "provider": "openai",
-    "model": "gpt-5.5"
+    "provider": "openrouter",
+    "model": "mistralai/mistral-small-24b-instruct-2501"
 }

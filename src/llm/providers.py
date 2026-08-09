@@ -26,6 +26,59 @@ def count_tokens (text: str, model: str):
     except Exception:
         return max(1, int(len(text.split()) * 1.33))
 
+def generate_with_openrouter(prompt: str, model: str): 
+    from src.llm.client import LLMResult
+    from openai import OpenAI, APIError
+    load_dotenv()
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key: 
+        raise ValueError("The API Key for open Router is not availablle")
+    client = OpenAI(
+        api_key = api_key,
+        base_url = "https://openrouter.ai/api/v1",
+    )
+    max_retries = 3
+    backoff_factor = 2
+    delay = 1
+
+    for attempt in range (max_retries):
+        try: 
+            start = time.perf_counter()
+            response = client.chat.completions.create(
+                model = model, 
+                messages = [{"role": "user", "content": prompt}],
+                extra_headers = {
+                    'HTTP-Referer': (
+                        "https://github.com/alexdapiggie/"
+                        "LinkedIn_Job_Description_Generator"
+                    ),
+                    "Vercel": "LinkedIn Job Descriotion Generator",
+                }
+            )
+            latency = time.perf_counter() - start
+            break
+        except APIError as e: 
+            if attempt < max_retries - 1 and (e.status_code in [429, 502, 503, 504]):
+                time.sleep(delay)
+                delay *= backoff_factor
+                continue 
+            raise e
+    text = response.choices[0].message.content or "" 
+
+    usage = getattr(response, "usage", None) 
+    input_tokens = getattr (usage, "input_tokens", None) if usage else None
+    output_tokens = getattr (usage, "completion_tokens", None) if usage else None
+
+    return LLMResult (
+        text = text, 
+        provider = "openrouter",
+        model = model, 
+        latency_seconds = latency,
+        input_tokens = input_tokens,
+        output_tokens = output_tokens,
+        estimated_cost = None,
+    )
+
 
 def generate_with_openai (prompt: str, model: str): 
     from src.llm.client import LLMResult
@@ -51,21 +104,35 @@ def generate_with_openai (prompt: str, model: str):
         estimated_cost = None,
     )
 
-def generate_with_gemini(prompt: str, model: str = "gemini-2.5-flash"):
+def generate_with_gemini(prompt: str, model: str = "gemini-2.0-flash"):
     from src.llm.client import LLMResult
     from google import genai
-    #We don't use openAI framework because google genAI provides free token for flash model everyday, that's a great idea for everything.
+    from google.genai.errors import ClientError, ServerError
     
     load_dotenv()
     api_key = os.getenv("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
     
-    start = time.perf_counter()
-    response = client.models.generate_content(
-        model=model,
-        contents=prompt,
-    )
-    latency = time.perf_counter() - start
+    max_retries = 5
+    backoff_factor = 2
+    delay = 1
+    
+    for attempt in range(max_retries):
+        try:
+            start = time.perf_counter()
+            response = client.models.generate_content(
+                model=model,
+                contents=prompt,
+            )
+            latency = time.perf_counter() - start
+            break
+        except (ClientError, ServerError) as e:
+            # Check if this is a transient 503 / 429
+            if attempt < max_retries - 1 and ("503" in str(e) or "429" in str(e) or "UNAVAILABLE" in str(e) or "RESOURCE_EXHAUSTED" in str(e)):
+                time.sleep(delay)
+                delay *= backoff_factor
+                continue
+            raise e
     
     usage = getattr(response, "usage_metadata", None)
     input_tokens = getattr(usage, "prompt_token_count", None) if usage else None
@@ -146,3 +213,4 @@ def generate_with_huggingface (prompt: str, model: str):
         output_tokens = count_tokens(text, model),
         estimated_cost=None,
     )
+
