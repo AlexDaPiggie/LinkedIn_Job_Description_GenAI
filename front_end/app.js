@@ -386,7 +386,7 @@ async function callApi(path, payload) {
   const data = contentType.includes("application/json") ? await response.json() : await response.text();
 
   if (!response.ok) {
-    const detail = typeof data === "string" ? data : data.detail || JSON.stringify(data, null, 2);
+    const detail = typeof data === "string" ? data.detail : JSON.stringify(data, null, 2);
     throw new Error(detail);
   }
   return data;
@@ -444,11 +444,11 @@ async function refineDraft() {
   const restore = setLoading(elements.refineButton, "Refining...");
   setMessage("Refining your draft. This can take a moment.", "info");
   try {
+    //removeing the skipped fields and answered questions
     const data = await callApi("/refine", {
-      job_info: buildJobInfo(),
+      company_name: state.answers.company_name,
       current_draft: state.currentDraft,
       user_request: request,
-      skipped_fields: getSkippedFields(),
       provider: PROVIDER,
       model: MODEL,
     });

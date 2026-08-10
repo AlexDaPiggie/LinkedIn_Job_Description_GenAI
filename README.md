@@ -12,3 +12,7 @@ rendering: render model into .md structure
 llm: call provider models, extract the model's performance for evaluation
 
 evaluation: test model's performance on different scenarios, comparing latency - cost - specificity - completeness
+
+NOTE:
+switch to a faster model for refining
+backend response is not matching with front-end

@@ -55,9 +55,9 @@ def evaluate_quality_with_judge (
         response = generate_text(
             prompt = prompt,
             provider = "openai",
-            model="openai/gpt-4o",
+            model="gpt-4o",
         )
-        data = json.loads(response.content)
+        data = json.loads(response.text)
         return data
     except Exception:
         return {

@@ -12,15 +12,13 @@ app = FastAPI(
     version = '0.1.0',
 )
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:5500",
-        "VERCEL_ORIGIN_PLACEHOLDER",
-    ],
+    allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get('/health')

@@ -48,23 +48,28 @@ class JobAgent:
     
     def refine_draft(
         self,
-        job_info: JobInfo,
+        company_name: str,
         current_draft: JobDescriptionDraft,
         user_request: str,
         provider: str,
         model: str,
-        skipped_fields: list[str] | None = None,
+        skipped_fields: list[str] | None = None
     ): 
         skipped = skipped_fields or []
-        prompt = build_refinement_prompt(job_info, current_draft, user_request, skipped)
+        prompt = build_refinement_prompt(
+            company_name=company_name, 
+            current_draft=current_draft, 
+            user_request=user_request, 
+            skipped_fields=skipped
+        )
         llm_result = self.generate_text_fn(prompt, provider, model)
         draft = parse_job_description(llm_result.text)
         return AgentResult(
             draft = draft,
             markdown=render_job_description(
-                draft,
-                company_name = job_info.company_name,
-                skipped_fields = skipped,
+                draft=draft,
+                company_name=company_name,
+                skipped_fields=skipped,
             ),
             llm_result=llm_result,
         )

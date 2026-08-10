@@ -30,7 +30,7 @@ MODELS_TO_EVALUATE = [
         "purpose": "Ultra-fast, low-cost model optimized for structured prompt adherence",
     },
     {
-        "name": "openrouter_claude_3_5_haiku",
+        "name": "openrouter_claude_3_haiku",
         "provider": "openrouter",
         "model_id": "anthropic/claude-3.5-haiku",
         "purpose": "Lightweight, highly accurate structured JSON generator",

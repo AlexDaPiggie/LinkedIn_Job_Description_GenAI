@@ -32,7 +32,7 @@ class GenerateResponse (BaseModel):
     markdown: str
 
 class RefineRequest (BaseModel):
-    job_info: JobInfo
+    company_name: str
     current_draft: JobDescriptionDraft
     user_request: str
     skipped_fields: list[str] = Field(default_factory=list)

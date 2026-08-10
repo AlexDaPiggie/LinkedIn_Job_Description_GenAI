@@ -64,10 +64,10 @@ skipped_fields:
 
 
 def build_refinement_prompt (
-    job_info: JobInfo,
+    company_name: str,
     current_draft: JobDescriptionDraft,
     user_request: str, 
-    skipped_fields: list[str]
+    skipped_fields: list[str] | None = None
 ):
     skipped = skipped_fields or []
     return f"""
@@ -98,9 +98,6 @@ Refinement rules:
 
 User request: 
 {user_request}
-
-Job information: 
-{json.dumps (job_info.model_dump(), indent=2)}
 
 skipped_fields: 
 {json.dumps(skipped, indent = 2)}
