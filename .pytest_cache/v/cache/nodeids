@@ -1,0 +1,4 @@
+[
+  "tests/test_model_sequence.py::test_fall_back_primary_model",
+  "tests/test_model_sequence.py::test_fallback_secondary_model"
+]

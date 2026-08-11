@@ -57,8 +57,19 @@ def evaluate_quality_with_judge (
             provider = "openai",
             model="gpt-4o",
         )
+
+        # Helps to parse the prompt inside DOCSTRING
+        text_content = response.text.strip()
+        if text_content.startswith("```"):
+            lines = text_content.splitlines()
+            if lines[0].startswith ("```"):
+                lines = lines[:1]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+                text_content = "\n".join (lines).strip()
         data = json.loads(response.text)
         return data
+    
     except Exception:
         return {
             "specificity_score": 0.0,

@@ -1,3 +1,10 @@
+MODEL_FALLBACKS = {
+    "mistralai/mistral-small-24b-instruct-2501": [
+        "meta-llama/llama-3.3-70b-instruct",
+        "deepseek/deepseek-chat",
+    ]
+}
+
 MODELS_TO_EVALUATE = [
     {
         "name": "openrouter_gpt_4o_mini",
