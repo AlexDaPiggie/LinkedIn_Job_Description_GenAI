@@ -56,7 +56,7 @@ def _build_row(
     model_config: dict, 
     scenario: dict, 
     task_type: str, 
-    agent_result
+    agent_result,
 ):
     
     schema_scores = score_schema_result(agent_result.draft)

@@ -50,12 +50,13 @@ def generate_text (
         return providers[provider](prompt, model)
     except Exception as e:
         last_error = e
-        for fallback in fallback_models:
-            print (f"Main model is not available: {e}. Trying fallback models {fallback}....")
-            try:
-                return providers[provider](prompt, fallback)
-            except Exception as fallback_error: 
-                last_error = fallback_error
-                continue
+        if fallback_models:
+            for fallback in fallback_models:
+                print (f"Main model is not available: {e}. Trying fallback models {fallback}....")
+                try:
+                    return providers[provider](prompt, fallback)
+                except Exception as fallback_error: 
+                    last_error = fallback_error
+                    continue
 
     raise last_error or RuntimeError ("All models are not available")

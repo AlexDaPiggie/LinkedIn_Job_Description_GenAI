@@ -1,17 +1,16 @@
 from src.schema.job_description import JobDescriptionDraft
 import json
 from src.llm.client import generate_text
+import re
 
 #Storing input/output price per 1M tokens information for Calculating the cost of the token
 MODEL_PRICING = {
-    "google/gemini-2.0-flash-001": (0.10, 0.40),
     "openai/gpt-4o-mini": (0.15, 0.60),
     "deepseek/deepseek-chat": (0.14, 0.28),
     "meta-llama/llama-3.3-70b-instruct": (0.12, 0.30),
-    "qwern/qwen-2.5b-72b-instruct": (0.35, 0.40),
+    "qwen/qwen-2.5-72b-instruct": (0.35, 0.40),
     "mistralai/mistral-small-24b-instruct-2501": (0.10, 0.30),
     "anthropic/claude-3.5-haiku": (0.80, 4.00),
-    "google/gemini-flash-1.5": (0.075, 0.30),
 }
 
 #This functioni is for calculating the cose, knowing the output token and the price
@@ -19,7 +18,7 @@ def calculate_cost (model_id: str,input_tokens: int, output_tokens: int):
     if not input_tokens or not output_tokens:
         return 0.0
     input_rate, output_rate = MODEL_PRICING.get (model_id, (0.20, 0.80))
-    cost = (input_tokens / 1e6 * input_rate) + (output_tokens / 1e6 + output_rate)
+    cost = (float(input_tokens) * float(input_rate) * 1e-6) + (float(output_tokens) * float(output_rate) * 1e-6)
     return round (cost, 6)
 
 # Implement LLM-as-judge technique to evaluate the performance of the model
@@ -29,7 +28,7 @@ You are an expert HR evaluation judge. Evaluate the following generated LinkedIn
 
 1. sepcificity_score (1-5): Clear requirements, tool, responsibilites
 2. tone_score (1-5): How well the draft matches the requested tone (specified in Job Info under "tone") and any tone-related adjustments in the refinement request. 
-3. faithfulness_score (1-5): Accurate to input job info, no hallucinations.
+3. faithfullness_score (1-5): Accurate to input job info, no hallucinations.
 4. linkedin_readiness_score (1-5): Directly ready to post on LinkedIn.
 5. refinement_quality_score (1-5): Appropriately addressed refinement request (or 5.0 of initial generation). 
 
@@ -54,19 +53,21 @@ def evaluate_quality_with_judge (
     try: 
         response = generate_text(
             prompt = prompt,
-            provider = "openai",
-            model="gpt-4o",
+            provider = "openrouter",
+            model="gpt-4.1",
         )
 
         # Helps to parse the prompt inside DOCSTRING
         text_content = response.text.strip()
-        if text_content.startswith("```"):
-            lines = text_content.splitlines()
-            if lines[0].startswith ("```"):
-                lines = lines[:1]
-            if lines and lines[-1].startswith("```"):
-                lines = lines[:-1]
-                text_content = "\n".join (lines).strip()
+        match = re.search(
+            r"```(?:json)?(.*?)```",
+            text_content,
+            re.DOTALL,
+        )
+
+        if match:
+            text_content = match.group(1).strip()
+    
         data = json.loads(response.text)
         return data
     

@@ -86,23 +86,23 @@ def generate_with_openai (prompt: str, model: str):
     load_dotenv()
     client = OpenAI(api_key = os.getenv ("OPENAI_API_KEY"))
     start = time.perf_counter()
-    response = client.responses.create (
+    response = client.chat.completions.create (
         model = model,
         messages = [
             {
                 "role": "user",
                 "content": prompt,
             }
-        ]
+        ],
     )
     latency = time.perf_counter() - start
     usage = getattr (response, "usage", None)
-    input_tokens = getattr(usage, "input_tokens", None) if usage else None
-    output_tokens = getattr (usage, "output_tokens", None) if usage else None
+    input_tokens = getattr(usage, "prompt_tokens", None) if usage else None
+    output_tokens = getattr (usage, "completion_tokens", None) if usage else None
 
     return LLMResult(
-        text = response.output_text,
-        provider = "openapi",
+        text = response.choices[0].message.content,
+        provider = "openai",
         model = model,
         latency_seconds=latency,
         input_tokens = input_tokens,
