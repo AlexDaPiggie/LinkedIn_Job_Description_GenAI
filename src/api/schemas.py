@@ -12,8 +12,8 @@ try:
     MODEL = config.get ("LLM_MODEL")
 except Exception as e:
     print (f"Warning: Could not load config.json. Using defaults. Error: {e}")
-    PROVIDER = 'huggingface'
-    MODEL = 'Qwen/Qwen2.5-7B-Instruct'
+    PROVIDER = 'openai'
+    MODEL = 'gpt-4o'
 
 class QuestionResponse (BaseModel):
     question_name: str

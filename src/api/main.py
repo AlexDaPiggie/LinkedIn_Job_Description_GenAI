@@ -1,7 +1,6 @@
 import os
 import stripe
 from fastapi import FastAPI, HTTPException, Request, Header
-from src.storage.credits import deduct_user_credit, add_user_credits, get_user_account, get_user_credits
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from slowapi import _rate_limit_exceeded_handler
@@ -9,8 +8,17 @@ from slowapi.util import get_remote_address
 from src.api.schemas import GenerateRequest,GenerateResponse, QuestionResponse, RefineRequest
 from src.api.services import generate_job_description, list_questions, refine_job_description
 from src.storage.markdown_files import load_markdown
+from src.database.session import get_db, init_db
+from src.database.credits import deduct_user_db_credit, add_user_db_credits, get_user_db_credits
+from sqlalchemy.orm import Session
+from pydantic import BaseModel
+from src.auth.google_verifier import verify_google_id_token
+from src.auth.services import register_or_login_google_user
+from fastapi import Depends
 from pathlib import Path
 
+class GoogleLoginRequest(BaseModel):
+    token: str
 
 #INitializing backend config
 app = FastAPI(
@@ -18,7 +26,30 @@ app = FastAPI(
     version = '0.1.0',
 )
 
-#Initializing rate limit config
+#Intializing a placeholder for Goolge token
+@app.post("/auth/google")
+def google_login(
+    payload: GoogleLoginRequest,
+    db: Session = Depends(get_db)
+):
+    try:
+        email = verify_google_id_token(payload.token)
+        user = register_or_login_google_user(db, email)
+
+        return {
+            "status": "success",
+            "email": user.email,
+            "free_credits": user.free_credits,
+            "purchased_credits": user.purchased_credits,
+        }
+    
+    except ValueError as exc:
+        raise HTTPException(status_code=401, detail = str(exc))
+
+#Initializing the database config
+@app.on_event("startup")
+def startup_event():
+    init_db()
 
 
 #Intializing credits payment config
@@ -49,7 +80,11 @@ def create_checkout_session(user_id: str):
         raise HTTPException(status_code=400, detail = str(e))
 
 @app.post ("/webhook")
-async def stripe_webhook (request: Request, stripe_signature: str = Header(None)):
+async def stripe_webhook (
+    request: Request, 
+    stripe_signature: str = Header(None),
+    db: Session = Depends(get_db)
+):
     payload = await request.body()
     webhook_secret = os.getenv ("STRIPE_WEBHOOK_SECRET")
     try: 
@@ -65,13 +100,13 @@ async def stripe_webhook (request: Request, stripe_signature: str = Header(None)
         session = event['data']['object']
         user_id = session.get ("client_reference_id")
         if user_id: 
-            add_user_credits(user_id, 5) #Add 5 credits for each 100 cents
+            add_user_db_credits(db, user_id, 20) #Add 20 credits for each user
 
     return {"status": "success"}
     
 @app.get("/user/credits/{user_id}")
-def check_credits (user_id: str):
-    return {"user_id": user_id, "credits": get_user_credits(user_id)}
+def check_credits (user_id: str, db: Session = Depends(get_db)):
+    return {"user_id": user_id, "credits": get_user_db_credits(db,user_id)}
 
 app.add_middleware(
     CORSMiddleware,
@@ -94,11 +129,12 @@ def get_questions():
 def generate (
     request: Request, 
     payload: GenerateRequest,
-    user_id: str = "default_user"
+    user_id: str = "default_user",
+    db: Session = Depends(get_db)
 ): 
 
     #deduct user's credits by 1
-    if not deduct_user_credit(user_id):
+    if not deduct_user_db_credit(db, user_id):
         raise HTTPException(
             status_code = 402,
             detail = "Insufficient credits"
@@ -114,9 +150,10 @@ def generate (
 def refine (
     request: Request, 
     payload: RefineRequest,
-    user_id: str = "default_user"
+    user_id: str = "default_user",
+    db: Session = Depends(get_db),
 ): 
-    if not deduct_user_credit(user_id):
+    if not deduct_user_db_credit(db, user_id):
         raise HTTPException(status_code=402, detail = "Insufficient credits.")
     
     if not payload.user_request.strip():

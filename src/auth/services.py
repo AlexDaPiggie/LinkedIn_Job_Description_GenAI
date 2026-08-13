@@ -18,7 +18,7 @@ def create_local_user (
 
     db_user = User (
         email = email,
-        hash_password = hash_password(password),
+        hashed_password = hash_password(password),
         auth_provider = "local",
         free_credits = 20,
         purchased_credits = 0,
@@ -52,7 +52,7 @@ def register_or_login_google_user (
     user = db.query (User).filter (
         User.email == email,
         User.auth_provider == "google"
-    ).filter()
+    ).first()
 
     if not user:
         user = User (
@@ -67,5 +67,5 @@ def register_or_login_google_user (
         db.commit()
         db.refresh(user)
 
-        return user
+    return user
  
