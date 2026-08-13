@@ -1,6 +1,6 @@
 {
     "BACKEND_URL": "http://localhost:8000",
     "FRONT_END_URL": "http://127.0.0.1:5500",
-    "LLM_PROVIDER": "gemini",
-    "LLM_MODEL": "gemini-flash-latest"
+    "LLM_PROVIDER": "openrouter",
+    "LLM_MODEL": "google/gemini-2.5-flash-lite"
 }
