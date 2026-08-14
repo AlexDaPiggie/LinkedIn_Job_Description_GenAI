@@ -1,7 +1,6 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
-const PROVIDER = "openrouter";
-const MODEL = "mistralai/mistral-small-24b-instruct-2501";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
+const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
 
 const fallbackQuestions = [
   { question_name: "company_name", question_text: "What is your company name?", required: true, answer_type: "text" },
@@ -121,11 +120,25 @@ const state = {
   currentMarkdown: "",
   draftOutdated: false,
   railPinned: localStorage.getItem(RAIL_PIN_STORAGE_KEY) === "true",
+  authMode: "login",
+  accessToken: localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || "",
+  user: null,
+  credits: null,
 };
 
 const elements = {
   apiStatus: document.querySelector("#apiStatus"),
   progressText: document.querySelector("#progressText"),
+  creditStatus: document.querySelector("#creditStatus"),
+  authTitle: document.querySelector("#authTitle"),
+  authSubtitle: document.querySelector("#authSubtitle"),
+  authForm: document.querySelector("#authForm"),
+  usernameInput: document.querySelector("#usernameInput"),
+  emailInput: document.querySelector("#emailInput"),
+  passwordInput: document.querySelector("#passwordInput"),
+  authSubmitButton: document.querySelector("#authSubmitButton"),
+  authModeButton: document.querySelector("#authModeButton"),
+  logoutButton: document.querySelector("#logoutButton"),
   questionRail: document.querySelector("#questionRail"),
   railToggle: document.querySelector("#railToggle"),
   questionList: document.querySelector("#questionList"),
@@ -150,7 +163,7 @@ function parseList(value) {
 }
 
 function formatFieldName(name) {
-  if (name == "nice_to_haves") return "Nice To Have" //Need this line to keep the stupid http stable.
+  if (name == "nice_to_haves") return "Nice To Have";
   return name.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
@@ -158,6 +171,60 @@ function setMessage(text = "", type = "error") {
   elements.messageBox.textContent = text;
   elements.messageBox.classList.toggle("hidden", !text);
   elements.messageBox.classList.toggle("info", type === "info");
+}
+
+function setAuthState(data) {
+  state.user = data?.user || null;
+  state.credits = data?.credits || null;
+  if (data?.access_token) {
+    state.accessToken = data.access_token;
+    localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, data.access_token);
+  }
+  renderAuth();
+}
+
+function clearAuthState() {
+  state.user = null;
+  state.credits = null;
+  state.accessToken = "";
+  localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
+  renderAuth();
+}
+
+function renderAuth() {
+  const signedIn = Boolean(state.user);
+  const freeCredits = creditValue("free_balance", "free_credits_remaining");
+  const paidCredits = creditValue("paid_balance", "paid_credits_remaining");
+  const totalCredits = creditValue("balance", "credits_remaining", freeCredits + paidCredits);
+  elements.creditStatus.className = `credit-summary${totalCredits < 1 ? " credit-summary-empty" : ""}`;
+  elements.creditStatus.innerHTML = `
+    <span class="credit-prefix">You have:</span>
+    <span class="credit-card credit-card-free"><span class="credit-amount">${freeCredits}</span> <span class="credit-name">Free ${creditWord(freeCredits)}</span></span>
+    <span class="credit-card credit-card-paid"><span class="credit-amount">${paidCredits}</span> <span class="credit-name">Paid ${creditWord(paidCredits)}</span></span>
+  `;
+
+  elements.authTitle.textContent = signedIn ? `Signed in as ${state.user.username}` : state.authMode === "signup" ? "Create your account" : "Sign in to use credits";
+  elements.authSubtitle.textContent = signedIn
+    ? "Monthly allowance is used first. Reserve credits stay until used."
+    : "New accounts start with 20 credits. The monthly allowance refreshes to 5 after that.";
+  elements.usernameInput.classList.toggle("hidden", state.authMode !== "signup" || signedIn);
+  elements.emailInput.classList.toggle("hidden", signedIn);
+  elements.passwordInput.classList.toggle("hidden", signedIn);
+  elements.authSubmitButton.classList.toggle("hidden", signedIn);
+  elements.authModeButton.classList.toggle("hidden", signedIn);
+  elements.logoutButton.classList.toggle("hidden", !signedIn);
+  elements.authSubmitButton.textContent = state.authMode === "signup" ? "Create account" : "Sign in";
+  elements.authModeButton.textContent = state.authMode === "signup" ? "Use sign in" : "Create account";
+}
+
+function creditValue(primaryKey, responseKey, fallback = 0) {
+  if (!state.credits) return fallback;
+  const value = state.credits[primaryKey] ?? state.credits[responseKey];
+  return typeof value === "number" ? value : fallback;
+}
+
+function creditWord(value) {
+  return value === 0 || value === 1 ? "Credit" : "Credits";
 }
 
 function updateAnswer(field, value) {
@@ -321,7 +388,7 @@ function renderQuestionStatus(field) {
 
 function renderProgress() {
   const answeredCount = state.questions.filter((question) => state.answers[question.question_name]?.trim()).length;
-  elements.progressText.textContent = `${answeredCount} answered`;
+  if (elements.progressText) elements.progressText.textContent = `${answeredCount} answered`;
 }
 
 function renderDraft() {
@@ -376,9 +443,12 @@ function showButtonSuccess(button, successText) {
 }
 
 async function callApi(path, payload) {
+  const headers = { "Content-Type": "application/json" };
+  if (state.accessToken) headers.Authorization = `Bearer ${state.accessToken}`;
+
   const response = await fetch(apiUrl(path), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(payload),
   });
 
@@ -386,13 +456,72 @@ async function callApi(path, payload) {
   const data = contentType.includes("application/json") ? await response.json() : await response.text();
 
   if (!response.ok) {
-    const detail = typeof data === "string" ? data.detail : JSON.stringify(data, null, 2);
+    const detail = typeof data === "string" ? data : data.detail || JSON.stringify(data, null, 2);
     throw new Error(detail);
   }
   return data;
 }
 
+async function getApi(path) {
+  const headers = {};
+  if (state.accessToken) headers.Authorization = `Bearer ${state.accessToken}`;
+  const response = await fetch(apiUrl(path), { headers });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.detail || "Request failed");
+  return data;
+}
+
+async function submitAuth(event) {
+  event.preventDefault();
+  const username = elements.usernameInput.value.trim();
+  const email = elements.emailInput.value.trim();
+  const password = elements.passwordInput.value;
+  if (state.authMode === "signup" && !username) {
+    setMessage("Username is required.");
+    return;
+  }
+  if (!email || !password) {
+    setMessage("Email and password are required.");
+    return;
+  }
+
+  const restore = setLoading(elements.authSubmitButton, state.authMode === "signup" ? "Creating..." : "Signing in...");
+  try {
+    const data = await callApi(state.authMode === "signup" ? "/auth/signup" : "/auth/login", {
+      username,
+      email,
+      password,
+    });
+    setAuthState(data);
+    elements.passwordInput.value = "";
+    setMessage("Account ready.", "info");
+  } catch (error) {
+    setMessage(error.message);
+  } finally {
+    restore();
+    renderAuth();
+  }
+}
+
+async function loadSession() {
+  if (!state.accessToken) {
+    renderAuth();
+    return;
+  }
+  try {
+    const data = await getApi("/auth/me");
+    setAuthState(data);
+  } catch {
+    clearAuthState();
+  }
+}
+
 async function generateDraft() {
+  if (!state.accessToken) {
+    setMessage("Please sign in before generating. Each generate costs 1 credit.");
+    return;
+  }
+
   const missing = missingRequiredFields();
   if (missing.length) {
     state.missingRequired = new Set(missing);
@@ -412,11 +541,18 @@ async function generateDraft() {
     const data = await callApi("/generate", {
       job_info: buildJobInfo(),
       skipped_fields: getSkippedFields(),
-      provider: PROVIDER,
-      model: MODEL,
     });
     state.currentDraft = data.draft;
     state.currentMarkdown = data.markdown;
+    if (typeof data.credits_remaining === "number") {
+      state.credits = {
+        ...(state.credits || {}),
+        balance: data.credits_remaining,
+        free_balance: data.free_credits_remaining ?? state.credits?.free_balance ?? 0,
+        paid_balance: data.paid_credits_remaining ?? state.credits?.paid_balance ?? 0,
+      };
+      renderAuth();
+    }
     state.draftOutdated = false;
     setMessage("");
   } catch (error) {
@@ -427,6 +563,11 @@ async function generateDraft() {
 }
 
 async function refineDraft() {
+  if (!state.accessToken) {
+    setMessage("Please sign in before refining. Each refine costs 1 credit.");
+    return;
+  }
+
   const request = elements.refineInput.value.trim();
   if (!state.currentDraft) {
     setMessage("Generate a draft before refining.");
@@ -444,16 +585,23 @@ async function refineDraft() {
   const restore = setLoading(elements.refineButton, "Refining...");
   setMessage("Refining your draft. This can take a moment.", "info");
   try {
-    //removeing the skipped fields and answered questions
     const data = await callApi("/refine", {
-      company_name: state.answers.company_name,
+      job_info: buildJobInfo(),
       current_draft: state.currentDraft,
       user_request: request,
-      provider: PROVIDER,
-      model: MODEL,
+      skipped_fields: getSkippedFields(),
     });
     state.currentDraft = data.draft;
     state.currentMarkdown = data.markdown;
+    if (typeof data.credits_remaining === "number") {
+      state.credits = {
+        ...(state.credits || {}),
+        balance: data.credits_remaining,
+        free_balance: data.free_credits_remaining ?? state.credits?.free_balance ?? 0,
+        paid_balance: data.paid_credits_remaining ?? state.credits?.paid_balance ?? 0,
+      };
+      renderAuth();
+    }
     elements.refineInput.value = "";
     setMessage("");
   } catch (error) {
@@ -792,6 +940,15 @@ function loadSampleOutput() {
 
 elements.sampleButton.addEventListener("click", loadSample);
 elements.sampleOutputButton.addEventListener("click", loadSampleOutput);
+elements.authForm.addEventListener("submit", submitAuth);
+elements.authModeButton.addEventListener("click", () => {
+  state.authMode = state.authMode === "signup" ? "login" : "signup";
+  renderAuth();
+});
+elements.logoutButton.addEventListener("click", () => {
+  clearAuthState();
+  setMessage("Signed out.", "info");
+});
 elements.railToggle.addEventListener("click", () => {
   state.railPinned = !state.railPinned;
   localStorage.setItem(RAIL_PIN_STORAGE_KEY, String(state.railPinned));
@@ -804,4 +961,5 @@ elements.exportDocxButton.addEventListener("click", exportDocx);
 
 checkApi();
 renderRailPin();
+loadSession();
 loadQuestions();

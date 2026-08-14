@@ -143,6 +143,8 @@ button {
 
 .status-row {
   flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-end;
   justify-content: flex-end;
 }
 
@@ -174,6 +176,177 @@ button {
 
 .status-pill.muted {
   color: var(--muted);
+}
+
+.credit-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 11px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  box-shadow: none;
+  backdrop-filter: none;
+  white-space: nowrap;
+}
+
+.credit-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 160px;
+  min-height: 50px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.credit-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  transform: translateX(-120%);
+  transition: transform 420ms ease;
+}
+
+.credit-card:hover {
+  transform: translateY(-1px);
+}
+
+.credit-card:hover::after {
+  transform: translateX(120%);
+}
+
+.credit-card-free {
+  border: 1px solid rgba(7, 63, 122, 0.46);
+  background:
+    linear-gradient(135deg, rgba(10, 102, 194, 0.98), rgba(10, 139, 212, 0.95) 54%, rgba(19, 191, 213, 0.92)),
+    var(--blue);
+  color: #ffffff;
+  box-shadow: 0 18px 36px rgba(10, 102, 194, 0.24);
+}
+
+.credit-card-paid {
+  border: 1px solid rgba(7, 63, 122, 0.2);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.99), rgba(239, 250, 255, 0.97) 52%, rgba(222, 246, 252, 0.95)),
+    #ffffff;
+  color: var(--blue-deep);
+  box-shadow: 0 14px 30px rgba(7, 63, 122, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.credit-card-paid::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+.credit-prefix,
+.credit-name {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.credit-prefix {
+  color: var(--blue-deep);
+  margin-right: 2px;
+  font-family: var(--heading-font);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 1;
+}
+
+.credit-amount {
+  position: relative;
+  z-index: 1;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.credit-card-paid .credit-amount {
+  background: linear-gradient(135deg, var(--blue-deep), var(--blue), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.credit-summary-empty .credit-card-free {
+  background: linear-gradient(135deg, #6d7f92, #8ea1b4);
+  box-shadow: 0 14px 28px rgba(51, 71, 95, 0.14);
+}
+
+.auth-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(520px, 1.1fr);
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(232, 251, 255, 0.82));
+  box-shadow: var(--shadow-small);
+  backdrop-filter: blur(20px);
+}
+
+.auth-panel h2 {
+  margin: 0 0 8px;
+  color: #101f31;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.auth-panel p:not(.eyebrow) {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(130px, 1fr)) auto auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.auth-form input:focus {
+  border-color: rgba(10, 102, 194, 0.56);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(19, 191, 213, 0.11);
 }
 
 .question-rail {
@@ -904,12 +1077,21 @@ button:disabled {
   }
 
   .status-row {
+    align-items: flex-start;
     justify-content: start;
   }
 
   .workspace-grid {
     grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
     gap: 18px;
+  }
+
+  .auth-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-form {
+    grid-template-columns: repeat(3, minmax(130px, 1fr));
   }
 }
 
@@ -972,12 +1154,17 @@ button:disabled {
   }
 
   .status-row {
+    align-items: flex-start;
     justify-content: start;
   }
 
   .builder,
   .result-section {
     padding: 15px;
+  }
+
+  .auth-form {
+    grid-template-columns: 1fr 1fr;
   }
 
   .question-rail {
@@ -1079,10 +1266,36 @@ button:disabled {
   }
 
   .status-pill,
+  .auth-form input,
+  .auth-form button,
   .secondary-button,
   .primary-button {
     width: 100%;
     justify-content: center;
+  }
+
+  .credit-summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    justify-content: stretch;
+    white-space: normal;
+  }
+
+  .credit-prefix {
+    width: 100%;
+    margin-right: 0;
+    text-align: left;
+  }
+
+  .credit-card {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .auth-form {
+    grid-template-columns: 1fr;
   }
 
   .draft-button-group {

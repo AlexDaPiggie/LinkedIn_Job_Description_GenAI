@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=credit-service-swap-5" />
   </head>
   <body>
     <nav class="question-rail" aria-label="Question navigation">
@@ -30,9 +30,25 @@
         </div>
         <div class="status-row">
           <span id="apiStatus" class="status-pill">Checking service</span>
-          <span id="progressText" class="status-pill muted">0 answered</span>
+          <span id="creditStatus" class="credit-summary"></span>
         </div>
       </header>
+
+      <section class="auth-panel">
+        <div>
+          <p class="eyebrow">Account</p>
+          <h2 id="authTitle">Sign in to use credits</h2>
+          <p id="authSubtitle">Each account gets 5 free credits every month. Generate and refine each cost 1 credit.</p>
+        </div>
+        <form id="authForm" class="auth-form">
+          <input id="usernameInput" type="text" placeholder="Username" autocomplete="username" />
+          <input id="emailInput" type="email" placeholder="Gmail" autocomplete="email" required />
+          <input id="passwordInput" type="password" placeholder="Password" autocomplete="current-password" required />
+          <button id="authSubmitButton" class="primary-button" type="submit">Sign in</button>
+          <button id="authModeButton" class="secondary-button" type="button">Create account</button>
+          <button id="logoutButton" class="secondary-button hidden" type="button">Sign out</button>
+        </form>
+      </section>
 
       <section class="workspace-grid">
         <section class="builder">
@@ -47,7 +63,7 @@
           <div id="questionList" class="question-list" aria-live="polite"></div>
         </section>
 
-        <section- class="result-section">
+        <section class="result-section">
           <div class="section-head result-heading">
             <div>
               <p class="eyebrow">Draft</p>
@@ -80,11 +96,11 @@
               <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
             </div>
           </div>
-        </section->
+        </section>
       </section>
     </main>
 
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=credit-service-swap-5"></script>
   </body>
 </html>
