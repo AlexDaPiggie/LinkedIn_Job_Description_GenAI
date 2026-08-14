@@ -18,6 +18,9 @@ from fastapi import Depends
 from pathlib import Path
 from contextlib import asynccontextmanager
 
+from src.database.supabase_client import supabase
+from src.database.supabase_credits import deduct_supabase_credits, add_supabase_credits, get_supabase_credits
+
 class GoogleLoginRequest(BaseModel):
     token: str
 
@@ -33,6 +36,24 @@ app = FastAPI(
     version = '0.1.0',
     lifespan = lifespan,
 )
+
+#Initializing stripe api key
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+
+#This function is to get the user_id from the authentication
+def get_user_id_from_auth (authorization: str = Header (None)): 
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException (
+            status_code= 401,
+            detail = "The token is either missing or invalid"
+        )
+    token = authorization.split(" ")[1]
+    try: 
+        user_heap = supabase.auth.get_user(token)
+        return user_heap.user.id
+
+    except Exception as e:
+        raise HTTPException(status_code=401, detail = "Unauthorized")
 
 #Intializing a placeholder for Goolge token
 @app.post("/auth/google")
@@ -55,27 +76,25 @@ def google_login(
         raise HTTPException(status_code=401, detail = str(exc))
 
 #Intializing credits payment config
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 @app.post ("/create-checkout-session")
 def create_checkout_session(user_id: str): 
     try: 
         session = stripe.checkout.Session.create(
-            payment_method_types = ["card"],
+            payment_method_types=["card"],
             line_items = [{
-                "price_data": {
+                "price_data":{
                     "currency": "usd",
                     "product_data": {
-                        "name": "20 Credits",
-                        "description": "Each credit can be used for job description generate or refine"
+                        "name": "30 credits",
+                        "description": "Each credit can be used for either 'refining' or 'generating'",
                     },
-                    "unit_amount": 150, #1.5 dollars = 150 cents
+                    "unit_amount": 100, #1 dollar gives 30 credits
                 },
                 "quantity": 1
             }],
             mode = "payment",
-            success_url = "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url = "http://localhost:3000/cancel",
-            client_reference_id = user_id,
+            success_url = "http://localhost:3000/sucess?session_id={CHECKOUT_SESSION_ID}",
+            client_reference_id=user_id,
         )
         return {"checkout_url": session.url}
     except Exception as e:
@@ -85,7 +104,6 @@ def create_checkout_session(user_id: str):
 async def stripe_webhook (
     request: Request, 
     stripe_signature: str = Header(None),
-    db: Session = Depends(get_db)
 ):
     payload = await request.body()
     webhook_secret = os.getenv ("STRIPE_WEBHOOK_SECRET")
@@ -102,13 +120,13 @@ async def stripe_webhook (
         session = event['data']['object']
         user_id = session.get ("client_reference_id")
         if user_id: 
-            add_user_db_credits(db, user_id, 20) #Add 20 credits for each user
+            add_supabase_credits(user_id, 30) #Add 30 credits for each user
 
     return {"status": "success"}
     
 @app.get("/user/credits/{user_id}")
 def check_credits (user_id: str, db: Session = Depends(get_db)):
-    return {"user_id": user_id, "credits": get_user_db_credits(db,user_id)}
+    return {"user_id": user_id, "credits": get_supabase_credits(db,user_id)}
 
 app.add_middleware(
     CORSMiddleware,
@@ -129,14 +147,12 @@ def get_questions():
 
 @app.post ('/generate', response_model=GenerateResponse)
 def generate (
-    request: Request, 
     payload: GenerateRequest,
-    user_id: str = "default_user",
-    db: Session = Depends(get_db)
+    user_id: str = Depends(get_user_id_from_auth),
 ): 
 
     #deduct user's credits by 1
-    if not deduct_user_db_credit(db, user_id):
+    if not deduct_user_db_credit(user_id):
         raise HTTPException(
             status_code = 402,
             detail = "Insufficient credits"
@@ -150,12 +166,10 @@ def generate (
 @app.post ('/refine', response_model = GenerateResponse)
 
 def refine (
-    request: Request, 
     payload: RefineRequest,
-    user_id: str = "default_user",
-    db: Session = Depends(get_db),
+    user_id: str = Depends(get_user_id_from_auth),
 ): 
-    if not deduct_user_db_credit(db, user_id):
+    if not deduct_user_db_credit(user_id):
         raise HTTPException(status_code=402, detail = "Insufficient credits.")
     
     if not payload.user_request.strip():

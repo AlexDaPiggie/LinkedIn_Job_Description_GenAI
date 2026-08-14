@@ -36,7 +36,13 @@ class JobAgent:
         
         skipped = skipped_fields or []
         prompt = build_generation_prompt(job_info, skipped)
-        llm_result = self.generate_text_fn(prompt, provider, model)
+
+        llm_result = self.generate_text_fn(
+            prompt,
+            provider,
+            model,
+            fallbacks,
+        )
         draft = parse_job_description(llm_result.text)
 
         #add the fallback models for sequencing in case the main model is not available
@@ -49,12 +55,7 @@ class JobAgent:
                 company_name = job_info.company_name,
                 skipped_fields=skipped,
             ),
-            llm_result = self.generate_text_fn(
-                prompt,
-                provider,
-                model,
-                fallback_models = fallbacks,
-            ),
+            llm_result = llm_result,
         )
     
     def refine_draft(
@@ -82,14 +83,9 @@ class JobAgent:
         return AgentResult(
             draft = draft,
             markdown=render_job_description(
-                draft=draft,
+                draft = draft,
                 company_name=company_name,
                 skipped_fields=skipped,
             ),
-            llm_result=self.generate_text_fn(
-                prompt,
-                provider,
-                model,
-                fallback_models = fallbacks,
-            ),
+            llm_result=llm_result,
         )
