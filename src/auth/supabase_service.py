@@ -1,4 +1,5 @@
 from src.database.supabase_client import supabase
+from src.database.supabase_credits import get_supabase_credits
 
 def signup_user (email: str, password: str):
     "This function is for user to register a new account"
@@ -11,18 +12,64 @@ def signup_user (email: str, password: str):
     #in case there's no response from the system
     if not response.user: 
         raise ValueError("Signup Process is failed")
+    
+    #Return status info. Profile row will be created once OTP has been verified
+    return {
+        "status": "pending_verification",
+        "email": email,
+        "message": "Verification code has been sent to your email",
+    }
 
-    #Create a new row in the profile table
-    supabase.table("profiles") .insert ({
-        "id": response.user.id,
-        "email": email
-    }).execute()
+def verify_user_otp(email: str, token: str):
+    #Vefify if the 6-digit otp token is created
+    response = supabase.auth.verify_otp({
+        "email": email,
+        "token": token,
+        "type": "signup",
+    })
+    #Check if the system doesn't response with the session or user's account
+    if not response.user or not response.session:
+        raise ValueError("Invalid or expired verification code")
+    user_id = response.user.id
+    profile_check = supabase.table("profiles").select("*").eq("id", user_id).execute()
 
-    return response
+    #if that user's account doesn't exist
+    if not profile_check.data:
+        supabase.table("profiles").insert({
+            "id": user_id,
+            "email": email,
+        }).execute()
+
+    credits = get_supabase_credits(user_id)
+    return {
+        "access_token": response.session.access_token,
+        "user": {
+            "id": user_id,
+            "email": response.user.email,
+        },
+        "credits": credits,
+    }
+    
+
+# This function is to return the acconut of the user's profile
+def get_current_user_profile (token: str):
+    response = supabase.auth.get_user(token)
+    if not response.user:
+        raise ValueError("Invalid or expired session")
+    credits = get_supabase_credits(response.user.id)
+
+    return {
+        "access_token": token,
+        "user": {
+            "id": response.user.id,
+            "email": response.user.email
+        },
+        "credits": credits
+    }
 
 #This function is for users to login into their account
 def login_user (email: str, password: str):
-    "Login into a user's existiing account"
+    #Login into a user's existiing account
     response = supabase.auth.sign_in_with_password({
         "email": email,
         "password": password,
@@ -31,4 +78,53 @@ def login_user (email: str, password: str):
     # In case the system doesn't response with the request to login
     if not response.user or not response.session:
         raise ValueError("The login process fails")
-    return response 
+
+    credits = get_supabase_credits(response.user.id)
+
+    return {
+        "access_token": response.session.access_token,
+        "user": {
+            "id": response.user.id,
+            "email": response.user.email,
+        },
+        "credits": credits
+    }
+
+# THis functino is to send the OTP to email in order to reset password
+def request_password_reset(email: str):
+    response = supabase.auth.reset_password_email(email)
+    return {
+        "status": "success",
+        "message": "Password reset code sent."
+    }
+
+#This function is to confirm that the password has been reseted
+def confirm_password_reset (email: str, token: str, new_password: str):
+    verify_response = supabase.auth.verify_otp({
+        "email": email,
+        "token": token,
+        "type": "recovery",
+    })
+
+    #This is to check if the system rejects the sessin or the token
+    if not verify_response.user or not verify_response.session:
+        raise ValueError("Invalid or expired reset code")
+
+    #update the new password if the token is valid
+    update_response = supabase.auth.update_user({
+        "password": new_password
+    })
+
+    #if update fails
+    if not update_response.user:
+        raise ValueError("Failed to update password!")
+
+    credits = get_supabase_credits(verify_response.user.id)
+    return {
+        "access_token": verify_response.session.access_token,
+        "user": {
+            "id": verify_response.user.id,
+            "email": verify_response.user.email,
+        },
+        "credits": credits,
+    }

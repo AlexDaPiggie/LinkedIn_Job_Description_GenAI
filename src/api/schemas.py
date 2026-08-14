@@ -42,3 +42,40 @@ class RefineRequest (BaseModel):
 class ErrorResponse (BaseModel): 
     detail: str
 
+class AuthSignupRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+class AuthLoginRequest (BaseModel):
+    email: str
+    password: str
+
+class UserDetail (BaseModel):
+    id: str
+    email: str
+    username: str | None = None
+
+class AuthResponse(BaseModel):
+    access_token: str
+    user: UserDetail
+    credits: int
+    
+class VerifyOtpRequest(BaseModel):
+    email: str
+    token: str
+
+class SignupStatusResponse(BaseModel):
+    status: str
+    email: str
+    message: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class ResetPasswordConfirmRequest(BaseModel):
+    email: str
+    token: str
+    new_password: str
+
+    
