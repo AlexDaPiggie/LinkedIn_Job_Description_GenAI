@@ -23,6 +23,6 @@ class User (Base):
         nullable=True, #passowrd is not needed for userse using Google Auth
     )
     auth_provider = Column (String, default = "local") # it's either local or from Google
-    free_credits = Column (Integer, default = 20)
+    free_credits = Column (Integer, default = 40)
     purchased_credits = Column(Integer, default = 0)
     last_reset_month = Column (String, nullable=True)

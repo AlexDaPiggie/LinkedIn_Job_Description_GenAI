@@ -20,7 +20,7 @@ def create_local_user (
         email = email,
         hashed_password = hash_password(password),
         auth_provider = "local",
-        free_credits = 20,
+        free_credits = 30,
         purchased_credits = 0,
         last_reset_month = get_current_us_month()
     )

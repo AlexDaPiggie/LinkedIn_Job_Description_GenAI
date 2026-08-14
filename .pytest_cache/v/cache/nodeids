@@ -34,6 +34,8 @@
   "tests/test_database.py::test_credits_flow_database",
   "tests/test_database.py::test_google_user_auth",
   "tests/test_database.py::test_local_user_signup_and_login",
+  "tests/test_google_auth.py::test_google_login_invalid_token",
+  "tests/test_google_auth.py::test_google_login_success",
   "tests/test_llm_judge.py::test_judge_raw_response",
   "tests/test_llm_judge.py::test_openai_api_call",
   "tests/test_model_sequence.py::test_fall_back_primary_model",

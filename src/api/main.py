@@ -16,14 +16,22 @@ from src.auth.google_verifier import verify_google_id_token
 from src.auth.services import register_or_login_google_user
 from fastapi import Depends
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 class GoogleLoginRequest(BaseModel):
     token: str
+
+#Initializing the database config
+@asynccontextmanager
+async def lifespan (app: FastAPI):
+    init_db()
+    yield
 
 #INitializing backend config
 app = FastAPI(
     title = 'LinkedIn Job Description Generator',
     version = '0.1.0',
+    lifespan = lifespan,
 )
 
 #Intializing a placeholder for Goolge token
@@ -45,12 +53,6 @@ def google_login(
     
     except ValueError as exc:
         raise HTTPException(status_code=401, detail = str(exc))
-
-#Initializing the database config
-@app.on_event("startup")
-def startup_event():
-    init_db()
-
 
 #Intializing credits payment config
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
