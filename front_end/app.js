@@ -1265,6 +1265,19 @@ elements.userUsername.addEventListener("click", openUsernameModal);
 elements.closeUsernameModalBtn.addEventListener("click", closeUsernameModal);
 elements.modalUsernameForm.addEventListener("submit", submitUsernameChange);
 
+// Toggle password visibility
+document.querySelectorAll(".toggle-password-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const input = btn.previousElementSibling;
+    if (input) {
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      const slashLine = btn.querySelector(".eye-slash");
+      slashLine?.classList.toggle("hidden", !isPassword);
+    }
+  });
+});
+
 // SPA routing logic
 const navLinks = document.querySelectorAll(".nav-link");
 const pageViews = document.querySelectorAll(".page-view");
