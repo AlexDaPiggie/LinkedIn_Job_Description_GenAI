@@ -6,7 +6,7 @@ def deduct_supabase_credits (user_id: str):
     # incase the database is empty
     if not result.data:
         return False
-    current_credits = result.data[0]["credits"]
+    current_credits = result.data[0]["credits"] or 0
 
     # if the user doesn't have any credits, there's no point deducting
     if current_credits <= 0:
@@ -27,13 +27,13 @@ def get_supabase_credits(user_id: str):
     if not result.data:
         return 0
 
-    return result.data[0]["credits"]
+    return result.data[0]["credits"] or 0
 
 #This function is to add more credits to the user's account
 def add_supabase_credits(user_id: str, amount: int):
     result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
     if result.data:
-        current_credits = result.data[0]["credits"]
+        current_credits = result.data[0]["credits"] or 0
         supabase.table ("profiles").update ({
             "credits": current_credits + amount
         }).eq("id", user_id).execute()

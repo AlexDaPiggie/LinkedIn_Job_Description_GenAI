@@ -30,6 +30,7 @@ class GenerateRequest (BaseModel):
 class GenerateResponse (BaseModel):
     draft: JobDescriptionDraft
     markdown: str
+    credits_remaining: int | None = None
 
 class RefineRequest (BaseModel):
     company_name: str
@@ -77,5 +78,8 @@ class ResetPasswordConfirmRequest(BaseModel):
     email: str
     token: str
     new_password: str
+
+class ChangeUsernameRequest(BaseModel):
+    new_username: str
 
     

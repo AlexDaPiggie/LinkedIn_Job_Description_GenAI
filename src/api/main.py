@@ -28,6 +28,7 @@ from src.api.schemas import (
     SignupStatusResponse,
     ForgotPasswordRequest,
     ResetPasswordConfirmRequest,
+    ChangeUsernameRequest,
 )
 from src.auth.supabase_service import (
     signup_user, 
@@ -36,6 +37,7 @@ from src.auth.supabase_service import (
     verify_user_otp,
     request_password_reset,
     confirm_password_reset,
+    change_supabase_username,
 )
 
 class GoogleLoginRequest(BaseModel):
@@ -105,8 +107,18 @@ def google_login(
 
 #Intializing credits payment config
 @app.post ("/create-checkout-session")
-def create_checkout_session(user_id: str): 
+def create_checkout_session(user_id: str, amount: int = 1, redirect_url: str = "http://localhost:3000"): 
+    if amount < 1:
+        raise HTTPException(status_code=400, detail="Amount must be at least 1 dollar")
+    
+    # Stripe requires http:// or https:// for redirect URLs
+    if not redirect_url.startswith("http://") and not redirect_url.startswith("https://"):
+        redirect_url = "http://localhost:3000"
+        
     try: 
+        connector = "&" if "?" in redirect_url else "?"
+        success_url = f"{redirect_url}{connector}session_id={{CHECKOUT_SESSION_ID}}"
+        
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items = [{
@@ -118,10 +130,10 @@ def create_checkout_session(user_id: str):
                     },
                     "unit_amount": 100, #1 dollar gives 30 credits
                 },
-                "quantity": 1
+                "quantity": amount
             }],
             mode = "payment",
-            success_url = "http://localhost:3000/sucess?session_id={CHECKOUT_SESSION_ID}",
+            success_url = success_url,
             client_reference_id=user_id,
         )
         return {"checkout_url": session.url}
@@ -146,9 +158,17 @@ async def stripe_webhook (
     
     if event["type"] == "checkout.session.completed":
         session = event['data']['object']
-        user_id = session.get ("client_reference_id")
-        if user_id: 
-            add_supabase_credits(user_id, 30) #Add 30 credits for each user
+        user_id = getattr(session, "client_reference_id", None)
+        amount_total = getattr(session, "amount_total", None)
+        if user_id and amount_total: 
+            try:
+                credits_to_add = (amount_total // 100) * 30
+                add_supabase_credits(user_id, credits_to_add)
+            except Exception as e:
+                import traceback
+                print("Error processing webhook credits:")
+                traceback.print_exc()
+                raise HTTPException(status_code=500, detail=str(e))
 
     return {"status": "success"}
     
@@ -168,6 +188,7 @@ def auth_signup(request: AuthSignupRequest):
         return signup_user(
             request.email,
             request.password,
+            request.username,
         )
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -225,6 +246,20 @@ def auth_me (authorization: str | None = Header (default = None)):
             detail = str(exc)
         ) from exc
 
+@app.post('/auth/change-username', response_model = AuthResponse)
+def auth_change_username(request: ChangeUsernameRequest, authorization: str | None = Header(default=None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Please sign in first")
+    if not request.new_username.strip():
+        raise HTTPException(status_code=422, detail="username is required")
+    token = authorization.split(" ")[1]
+    try:
+        return change_supabase_username(token, request.new_username.strip())
+    except ValueError as exc:
+        raise HTTPException(status_code=401, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -257,7 +292,13 @@ def generate (
         )
     
     try:
-        return generate_job_description(payload, user_id)
+        resp = generate_job_description(payload)
+        credits = get_supabase_credits(user_id)
+        return GenerateResponse(
+            draft=resp.draft,
+            markdown=resp.markdown,
+            credits_remaining=credits
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail = str(exc)) from exc
     
@@ -274,7 +315,13 @@ def refine (
         raise HTTPException(status_code=422, detail = 'user_request is required')
     
     try: 
-        return refine_job_description(payload, user_id)
+        resp = refine_job_description(payload)
+        credits = get_supabase_credits(user_id)
+        return GenerateResponse(
+            draft=resp.draft,
+            markdown=resp.markdown,
+            credits_remaining=credits
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail = str(exc)) from exc
     

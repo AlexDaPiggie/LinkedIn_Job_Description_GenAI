@@ -36,17 +36,14 @@ class JobAgent:
         
         skipped = skipped_fields or []
         prompt = build_generation_prompt(job_info, skipped)
-
+        fallbacks = MODEL_FALLBACKS.get(model, [])
         llm_result = self.generate_text_fn(
             prompt,
             provider,
             model,
-            fallbacks,
+            fallback_models=fallbacks,
         )
         draft = parse_job_description(llm_result.text)
-
-        #add the fallback models for sequencing in case the main model is not available
-        fallbacks = MODEL_FALLBACKS.get(model, [])
 
         return AgentResult(
             draft = draft,
@@ -74,11 +71,14 @@ class JobAgent:
             user_request=user_request, 
             skipped_fields=skipped
         )
-        llm_result = self.generate_text_fn(prompt, provider, model)
+        fallbacks = MODEL_FALLBACKS.get(model, [])
+        llm_result = self.generate_text_fn(
+            prompt, 
+            provider, 
+            model, 
+            fallback_models=fallbacks
+        )
         draft = parse_job_description(llm_result.text)
-
-        #add the fallback models
-        fallbacks = MODEL_FALLBACKS.get (model, [])
 
         return AgentResult(
             draft = draft,

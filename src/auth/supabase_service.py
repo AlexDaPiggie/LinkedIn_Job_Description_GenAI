@@ -1,12 +1,17 @@
 from src.database.supabase_client import supabase
 from src.database.supabase_credits import get_supabase_credits
 
-def signup_user (email: str, password: str):
+def signup_user(email: str, password: str, username: str):
     "This function is for user to register a new account"
     response = supabase.auth.sign_up(
         {
             "email": email,
-            "password": password
+            "password": password,
+            "options": {
+                "data": {
+                    "username": username
+                }
+            }
         }
     )
     #in case there's no response from the system
@@ -21,7 +26,7 @@ def signup_user (email: str, password: str):
     }
 
 def verify_user_otp(email: str, token: str):
-    #Vefify if the 6-digit otp token is created
+    #Verify if the 6-digit otp token is created
     response = supabase.auth.verify_otp({
         "email": email,
         "token": token,
@@ -46,6 +51,7 @@ def verify_user_otp(email: str, token: str):
         "user": {
             "id": user_id,
             "email": response.user.email,
+            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
         },
         "credits": credits,
     }
@@ -62,7 +68,8 @@ def get_current_user_profile (token: str):
         "access_token": token,
         "user": {
             "id": response.user.id,
-            "email": response.user.email
+            "email": response.user.email,
+            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
         },
         "credits": credits
     }
@@ -86,6 +93,7 @@ def login_user (email: str, password: str):
         "user": {
             "id": response.user.id,
             "email": response.user.email,
+            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
         },
         "credits": credits
     }
@@ -100,6 +108,26 @@ def request_password_reset(email: str):
 
 #This function is to confirm that the password has been reseted
 def confirm_password_reset (email: str, token: str, new_password: str):
+    try:
+        # Check if the password is already correct
+        signin_response = supabase.auth.sign_in_with_password({
+            "email": email,
+            "password": new_password
+        })
+        if signin_response.user and signin_response.session:
+            credits = get_supabase_credits(signin_response.user.id)
+            return {
+                "access_token": signin_response.session.access_token,
+                "user": {
+                    "id": signin_response.user.id,
+                    "email": signin_response.user.email,
+                    "username": signin_response.user.user_metadata.get("username") if signin_response.user.user_metadata else None
+                },
+                "credits": credits,
+            }
+    except Exception:
+        pass
+
     verify_response = supabase.auth.verify_otp({
         "email": email,
         "token": token,
@@ -121,10 +149,39 @@ def confirm_password_reset (email: str, token: str, new_password: str):
 
     credits = get_supabase_credits(verify_response.user.id)
     return {
-        "access_token": verify_response.session.access_token,
+      "access_token": verify_response.session.access_token,
+      "user": {
+        "id": verify_response.user.id,
+        "email": verify_response.user.email,
+        "username": verify_response.user.user_metadata.get("username") if verify_response.user.user_metadata else None
+      },
+      "credits": credits,
+    }
+
+def change_supabase_username(token: str, new_username: str):
+    response = supabase.auth.get_user(token)
+    if not response.user:
+        raise ValueError("Invalid or expired session")
+    
+    # 1. Update Auth user metadata
+    supabase.auth.update_user({
+        "data": {
+            "username": new_username
+        }
+    })
+    
+    # 2. Update profiles table
+    supabase.table("profiles").update({
+        "username": new_username
+    }).eq("id", response.user.id).execute()
+    
+    credits = get_supabase_credits(response.user.id)
+    return {
+        "access_token": token,
         "user": {
-            "id": verify_response.user.id,
-            "email": verify_response.user.email,
+            "id": response.user.id,
+            "email": response.user.email,
+            "username": new_username
         },
-        "credits": credits,
+        "credits": credits
     }

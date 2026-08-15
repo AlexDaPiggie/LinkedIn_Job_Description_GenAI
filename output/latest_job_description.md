@@ -2,43 +2,43 @@
  
 ## About Alex AI 
  
- Alex AI is a dynamic startup dedicated to revolutionizing the hiring process by developing innovative AI tools that empower companies to create compelling and effective job descriptions. Our mission is to leverage cutting-edge technology to enhance the recruitment experience for both employers and job seekers.
+ Alex AI is a dynamic startup at the forefront of innovation, dedicated to empowering companies with AI-driven solutions for crafting superior hiring content. We leverage cutting-edge technology to revolutionize how businesses communicate their employment opportunities.
  
 ## About the Role 
  
- As an AI Engineer Intern at Alex AI, you will play a pivotal role in building, monitoring, and evaluating AI systems designed to generate high-quality LinkedIn job descriptions. This is an exciting opportunity to contribute to real-world AI projects, gain hands-on experience, and make a tangible impact in a fast-paced startup environment.
+ As an AI Engineer Intern at Alex AI, you will play a crucial role in the development, monitoring, and evaluation of sophisticated AI systems. Your contributions will directly impact our ability to generate high-quality LinkedIn job descriptions, ensuring our clients attract top talent effectively. This is a unique opportunity to gain hands-on experience in a fast-paced, startup environment.
  
 ## Responsibilities 
  
-- Monitor and maintain machine learning pipelines to ensure optimal performance and reliability.
-- Evaluate the quality of model outputs and provide insights to improve AI-generated job descriptions.
-- Prepare and clean training data to enhance the accuracy and effectiveness of our AI models.
-- Support the testing of various prompts and facilitate model comparisons to identify the most effective solutions.
+- Proactively monitor and maintain the health and performance of our machine learning pipelines, ensuring seamless operation and optimal efficiency.
+- Rigorously evaluate the quality and accuracy of model outputs, providing critical feedback for continuous improvement.
+- Prepare, clean, and preprocess large datasets to ensure they are suitable for model training and fine-tuning.
+- Actively participate in prompt testing initiatives and conduct thorough model comparisons to identify areas for enhancement and innovation.
  
 ## Requirements 
  
-- Proficient in Python programming for data manipulation and analysis.
-- Strong SQL skills for database management and querying.
-- Foundational knowledge of machine learning concepts and techniques.
-- Experience working with data pipelines to streamline data flow and processing.
+- Proficiency in Python for data manipulation, scripting, and model development.
+- Strong understanding and practical experience with SQL for database querying and data management.
+- Foundational knowledge of machine learning principles, algorithms, and their applications.
+- Demonstrated experience working with data pipelines and understanding their architecture and functionality.
  
 ## Nice to Have 
  
-- Familiarity with system design principles to architect scalable and efficient solutions.
-- Experience with Figma for designing user interfaces and improving user experience.
-- Basic knowledge of frontend development to enhance the integration of AI models with web applications.
-- Understanding of signal processing techniques to improve data analysis and model performance.
+- Familiarity with system design principles and best practices.
+- Experience with Figma for UI/UX design collaboration.
+- Exposure to frontend development technologies.
+- Understanding of signal processing techniques and their relevance to AI.
  
 ## Benefits 
  
-- Comprehensive health insurance coverage to support your well-being.
-- Complimentary breakfast and lunch to keep you energized throughout the day.
-- Hands-on AI engineering experience to accelerate your learning and career growth.
-- A collaborative and inclusive work environment where your contributions are valued and recognized.
+- Comprehensive health insurance coverage.
+- Provided daily meals, including breakfast and lunch.
+- Invaluable hands-on experience in cutting-edge AI engineering.
+- Opportunities for professional growth and skill development within a supportive team environment.
  
 ## Why Join Us 
  
- Join a fast-moving startup where interns can work on real AI systems, learn quickly, and have a visible impact. At Alex AI, you'll be part of a team that values innovation, collaboration, and continuous learning. This is your chance to make a difference in the hiring landscape and gain invaluable experience in the AI field.
+ Join a rapidly scaling startup where your contributions have a tangible and visible impact. As an AI Engineer Intern, you will work directly on real-world AI systems, benefit from accelerated learning opportunities, and be an integral part of a collaborative and innovative team driving the future of hiring content.
  
 ## Equal Opportunity Statement 
  

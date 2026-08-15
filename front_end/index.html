@@ -24,31 +24,18 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">LinkedIn hiring copy</p>
-          <h1>Job Description Generator</h1>
+          <p class="eyebrow">GEN AI MODEL  |  LINKEDIN</p>
+          <h1><span class="gradient-letter">J</span>ob Description Generator</h1>
           <p class="lead-copy">Shape a clean, polished role brief from your answers, then refine the draft without leaving the page.</p>
         </div>
-        <div class="status-row">
-          <span id="apiStatus" class="status-pill">Checking service</span>
-          <span id="creditStatus" class="credit-summary"></span>
+        <div class="header-auth" id="headerAuth">
+          <button id="signInBtn" class="primary-button" type="button">Sign In</button>
+          <div id="userProfile" class="user-profile hidden">
+            <span id="userUsername" class="user-username"></span>
+            <button id="signOutBtn" class="secondary-button" type="button">Sign Out</button>
+          </div>
         </div>
       </header>
-
-      <section class="auth-panel">
-        <div>
-          <p class="eyebrow">Account</p>
-          <h2 id="authTitle">Sign in to use credits</h2>
-          <p id="authSubtitle">Each account gets 5 free credits every month. Generate and refine each cost 1 credit.</p>
-        </div>
-        <form id="authForm" class="auth-form">
-          <input id="usernameInput" type="text" placeholder="Username" autocomplete="username" />
-          <input id="emailInput" type="email" placeholder="Gmail" autocomplete="email" required />
-          <input id="passwordInput" type="password" placeholder="Password" autocomplete="current-password" required />
-          <button id="authSubmitButton" class="primary-button" type="submit">Sign in</button>
-          <button id="authModeButton" class="secondary-button" type="button">Create account</button>
-          <button id="logoutButton" class="secondary-button hidden" type="button">Sign out</button>
-        </form>
-      </section>
 
       <section class="workspace-grid">
         <section class="builder">
@@ -63,42 +50,141 @@
           <div id="questionList" class="question-list" aria-live="polite"></div>
         </section>
 
-        <section class="result-section">
-          <div class="section-head result-heading">
-            <div>
-              <p class="eyebrow">Draft</p>
-              <h2>Generate the job description</h2>
-            </div>
-            <div class="draft-button-group">
-              <button id="sampleOutputButton" class="secondary-button sample-output-button" type="button">Sample output</button>
-              <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
-            </div>
+        <div class="result-column">
+          <div id="creditsContainer" class="credits-container hidden">
+            <span id="workspaceCredits" class="credit-badge">30 Credits</span>
+            <button id="buyCreditsBtn" class="primary-button" type="button">Buy more credits</button>
           </div>
-
-          <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
-          <div id="messageBox" class="message-box hidden"></div>
-          <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
-
-          <div class="refine-panel">
-            <label for="refineInput">Refine the draft</label>
-            <textarea id="refineInput" rows="4" placeholder="Example: Make it more concise and more technical."></textarea>
-            <button id="refineButton" class="primary-button" type="button">Refine</button>
-          </div>
-
-          <div class="draft-actions">
-            <div>
-              <p class="eyebrow">Delivery</p>
-              <h3>Use the finished draft</h3>
-              <p>Copy to keep the clean generated text ready for LinkedIn, email, or Google Docs. Export to download a Word file you can open in Google Docs.</p>
+          <section class="result-section">
+            <div class="section-head result-heading">
+              <div>
+                <p class="eyebrow">Draft</p>
+                <h2>Generate the job description</h2>
+              </div>
+              <div class="draft-button-group">
+                <button id="sampleOutputButton" class="secondary-button sample-output-button" type="button">Sample output</button>
+                <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
+              </div>
             </div>
-            <div class="action-buttons">
-              <button id="copyButton" class="secondary-button" type="button">Copy text</button>
-              <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
+
+            <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
+            <div id="messageBox" class="message-box hidden"></div>
+            <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
+
+            <div class="refine-panel">
+              <label for="refineInput">Refine the draft</label>
+              <textarea id="refineInput" rows="4" placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"></textarea>
+              <button id="refineButton" class="primary-button" type="button">Refine</button>
             </div>
-          </div>
-        </section>
+
+            <div class="draft-actions">
+              <div>
+                <p class="eyebrow">Delivery</p>
+                <h3>Use the finished draft</h3>
+                <p>Copy to keep the clean generated text ready for LinkedIn, email, or Google Docs. Export to download a Word file you can open in Google Docs.</p>
+              </div>
+              <div class="action-buttons">
+                <button id="copyButton" class="secondary-button" type="button">Copy text</button>
+                <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
+              </div>
+            </div>
+          </section>
+        </div>
       </section>
     </main>
+
+    <!-- Auth Modal Overlay -->
+    <div id="authModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <!-- Login / Signup View -->
+        <div id="authView">
+          <h2 id="modalTitle">Sign In</h2>
+          <p id="modalSubtitle">Access your credits and generation history.</p>
+          <form id="modalAuthForm" class="modal-form">
+            <input id="modalUsername" type="text" placeholder="Username" autocomplete="username" class="hidden" />
+            <input id="modalEmail" type="email" placeholder="Email" autocomplete="email" required />
+            <input id="modalPassword" type="password" placeholder="Password" autocomplete="current-password" required />
+            <button id="modalForgotPasswordBtn" class="link-button" type="button" style="text-align: right; margin-top: -6px; margin-bottom: 6px; font-size: 13px;">Forgot password?</button>
+            <button id="modalSubmitBtn" class="primary-button" type="submit">Sign In</button>
+            <button id="modalToggleModeBtn" class="link-button" type="button">Create account</button>
+          </form>
+        </div>
+
+        <!-- OTP Verification View -->
+        <div id="otpView" class="hidden">
+          <h2>Verify Email</h2>
+          <p>Enter the 6-digit verification code sent to your email.</p>
+          <form id="modalOtpForm" class="modal-form">
+            <input id="modalOtp" type="text" placeholder="Verification code" required />
+            <button id="modalOtpSubmitBtn" class="primary-button" type="submit">Verify Code</button>
+          </form>
+        </div>
+
+        <!-- Reset Password View -->
+        <div id="resetPasswordView" class="hidden">
+          <h2>Reset Password</h2>
+          <p>Enter the verification code sent to your email and your new password.</p>
+          <form id="modalResetPasswordForm" class="modal-form" autocomplete="off">
+            <input id="resetOtp" type="text" placeholder="Verification code" required autocomplete="one-time-code" />
+            <input id="resetNewPassword" type="password" placeholder="New Password" required minlength="6" autocomplete="new-password" />
+            <button id="modalResetPasswordSubmitBtn" class="primary-button" type="submit">Reset Password</button>
+            <button id="modalCancelResetBtn" class="link-button" type="button">Back to Sign In</button>
+          </form>
+        </div>
+        
+        <div id="modalMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
+    <!-- Billing Modal Overlay -->
+    <div id="billingModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeBillingModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <div id="billingView">
+          <h2>Buy Credits</h2>
+          <p class="modal-sub">Add credits to generate and refine job descriptions.</p>
+          
+          <div class="billing-yield-headline">
+            <span id="billingCreditCount">30</span> Credits
+          </div>
+          
+          <div class="billing-selector-row">
+            <button id="billingDecBtn" class="secondary-button selector-btn" type="button">-</button>
+            <div class="billing-input-wrapper">
+              <span class="currency-symbol">$</span>
+              <input id="billingAmountInput" class="billing-amount-input" type="number" min="1" value="1" step="1" />
+            </div>
+            <button id="billingIncBtn" class="secondary-button selector-btn" type="button">+</button>
+          </div>
+          
+          <p class="billing-rate-info">Rate: $1 = 30 credits</p>
+          
+          <button id="payCreditsBtn" class="primary-button pay-credits-button" type="button">Pay $1.00</button>
+        </div>
+        
+        <div id="billingMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
+
+    <!-- Username Edit Modal Overlay -->
+    <div id="usernameModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeUsernameModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <div>
+          <h2>Change Username</h2>
+          <p class="modal-sub">Update your display name.</p>
+          <form id="modalUsernameForm" class="modal-form" autocomplete="off">
+            <input id="newUsernameInput" type="text" placeholder="New Username" required />
+            <button id="saveUsernameBtn" class="primary-button" type="submit">Save</button>
+          </form>
+        </div>
+        
+        <div id="usernameMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
 
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="app.js?v=credit-service-swap-5"></script>
