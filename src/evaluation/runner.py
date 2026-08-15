@@ -31,7 +31,7 @@ def run_single_evaluation (
 
     try:
         refined = agent.refine_draft(
-            job_info,
+            job_info.company_name,
             generated.draft,
             scenario["refinement_request"],
             provider=model_config["provider"],
@@ -56,7 +56,7 @@ def _build_row(
     model_config: dict, 
     scenario: dict, 
     task_type: str, 
-    agent_result
+    agent_result,
 ):
     
     schema_scores = score_schema_result(agent_result.draft)
@@ -71,7 +71,6 @@ def _build_row(
         model_config["model_id"],
         agent_result.llm_result.input_tokens,
         agent_result.llm_result.output_tokens,
-        
     )
 
     #evaluate quality with judge
@@ -97,13 +96,13 @@ def _build_row(
         "latency_seconds": agent_result.llm_result.latency_seconds,
         "input_tokens": agent_result.llm_result.input_tokens,
         "output_tokens": agent_result.llm_result.output_tokens,
-        "estimated_cost": agent_result.llm_result.estimated_cost,
-        "specificity_score": "",
-        "professional_tone_score": "",
-        "faithfulness_score": "",
-        "linkedin_readiness_score": "",
-        "refinement_quality_score": "",
-        "overall_quality_score": "",
+        "estimated_cost": cost,
+        "specificity_score": quality_scores.get("specificity_score", ""),
+        "tone_score": quality_scores.get("tone_score", ""),
+        "faithfullness_score": quality_scores.get("faithfullness_score", ""),
+        "linkedin_readiness_score": quality_scores.get("linkedin_readiness_score", ""),
+        "refinement_quality_score": quality_scores.get("refinement_quality_score", ""),
+        "overall_quality_score": quality_scores.get("overall_quality_score", ""),
         "notes": "",
     }
 
@@ -125,8 +124,8 @@ def _build_failed_row(model_config: dict, scenario: dict, task_type: str, error_
         "output_tokens": None,
         "estimated_cost": None,
         "specificity_score": "",
-        "professional_tone_score": "",
-        "faithfulness_score": "",
+        "tone_score": "",
+        "faithfullness_score": "",
         "linkedin_readiness_score": "",
         "refinement_quality_score": "",
         "overall_quality_score": "",

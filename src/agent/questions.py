@@ -31,7 +31,7 @@ QUESTIONS = [
     ),
     IntakeQuestion(
         question_name="responsibilities",
-        question_text="What is the role the applicates with be responsible for?",
+        question_text="What are the primary responsibilities for this role?",
         required = True,
         answer_type = "list",
     ),
@@ -54,18 +54,18 @@ QUESTIONS = [
     ),
     IntakeQuestion (
         question_name="why_join_us",
-        question_text="Why should candidates be excited to join this company or team? " "Mention things like mission, culture, growth, impact, or interesting work.",
+        question_text="Why should candidates be excited to join this company or team?\n(mission, culture, growth, impact, or interesting work.)",
         required = False,
     ),
     IntakeQuestion(
         question_name="benefits",
-        question_text="Are there any benefit, perk, or compensation you would like  to include?",
+        question_text="Are there any benefit, perk, or compensation details you would like  to include?",
         required = False,
         answer_type = "list",
     ),
     IntakeQuestion(
         question_name="tone",
-        question_text="What tone do you want the job description to sound?",
+        question_text="What tone should the job description have?\n(professional, conversationsal, bold,...)",
         required = False,
     ),
     IntakeQuestion(

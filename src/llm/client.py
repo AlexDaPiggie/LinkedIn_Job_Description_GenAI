@@ -28,6 +28,7 @@ def generate_text (
     provider: str,
     model: str,
     provider_functions: dict[str, ProviderFunction] | None = None,
+    fallback_models: list[str] | None = None
 ):
     
     '''
@@ -43,4 +44,19 @@ def generate_text (
 
     if provider not in providers:
         raise ValueError(f"Unsupported LLM provider: {provider}")
-    return providers[provider](prompt, model)
+
+    #Build a sequence of model to work in case the current model is not available 
+    try: 
+        return providers[provider](prompt, model)
+    except Exception as e:
+        last_error = e
+        if fallback_models:
+            for fallback in fallback_models:
+                print (f"Main model is not available: {e}. Trying fallback models {fallback}....")
+                try:
+                    return providers[provider](prompt, fallback)
+                except Exception as fallback_error: 
+                    last_error = fallback_error
+                    continue
+
+    raise last_error or RuntimeError ("All models are not available")

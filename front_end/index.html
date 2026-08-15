@@ -7,9 +7,268 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=spa-nav-v3" />
+    <style>
+      /* --- SPA Navigation Bar --- */
+      .nav-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        padding: 14px 24px;
+        background: transparent;
+        border-bottom: 1px solid transparent;
+        box-shadow: none;
+        transition: all 250ms ease;
+        box-sizing: border-box;
+        opacity: 1;
+      }
+
+      .nav-bar.scrolled {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        padding: 10px 24px !important;
+        border-bottom: 1px solid transparent !important;
+        box-shadow: none !important;
+        opacity: 0.4;
+      }
+
+      .nav-bar.scrolled:hover {
+        opacity: 1;
+      }
+
+      .nav-link {
+        background: none !important;
+        border: none !important;
+        font-family: 'Manrope', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #4a5d6e !important;
+        padding: 6px 0 !important;
+        cursor: pointer !important;
+        position: relative !important;
+        transition: color 150ms ease !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .nav-link:hover {
+        color: #0a66c2 !important;
+      }
+
+      .nav-link.active {
+        color: #0a66c2 !important;
+      }
+
+      .nav-link.active::after {
+        content: "" !important;
+        position: absolute !important;
+        bottom: -4px !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 2px !important;
+        background: #0a66c2 !important;
+        border-radius: 1px !important;
+      }
+
+      .app-shell {
+        padding-top: 64px !important;
+      }
+
+      /* --- Simple Page Card Layout --- */
+      .simple-page-card {
+        border: 1px solid rgba(255, 255, 255, 0.86) !important;
+        border-radius: 10px !important;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(249, 253, 255, 0.84)) !important;
+        box-shadow: var(--shadow-panel) !important;
+        backdrop-filter: blur(22px) !important;
+        padding: 32px !important;
+        max-width: 900px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+      }
+
+      .simple-page-card h2 {
+        color: #101f31 !important;
+        font-size: 28px !important;
+        font-weight: 600 !important;
+        margin: 0 0 8px !important;
+      }
+
+      .authors-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 28px !important;
+        margin-top: 24px !important;
+      }
+
+      @media (max-width: 600px) {
+        .authors-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      .author-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 28px 24px !important;
+        border: 1px solid rgba(19, 54, 89, 0.08) !important;
+        border-radius: 8px !important;
+        background: rgba(255, 255, 255, 0.5) !important;
+        box-sizing: border-box !important;
+      }
+
+      .author-photo-wrapper {
+        width: 130px !important;
+        height: 130px !important;
+        border-radius: 50% !important;
+        overflow: hidden !important;
+        margin-bottom: 18px !important;
+        border: 2px solid rgba(10, 102, 194, 0.2) !important;
+        background: #f1f8fc !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+      }
+
+      .author-photo {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        z-index: 2 !important;
+      }
+
+      .author-photo-fallback {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        color: #4a5d6e !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-align: center !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+        z-index: 1 !important;
+      }
+
+      .author-card h3 {
+        margin: 0 0 4px !important;
+        font-size: 19px !important;
+        color: #101f31 !important;
+      }
+
+      .author-role {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #0a66c2 !important;
+        margin: 0 0 12px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+      }
+
+      .author-desc {
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+        color: #4a5d6e !important;
+        margin: 0 0 20px !important;
+        flex-grow: 1 !important;
+      }
+
+      .author-contacts {
+        display: flex !important;
+        gap: 16px !important;
+      }
+
+      .contact-link {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #4a5d6e !important;
+        text-decoration: none !important;
+        border: 1px solid rgba(19, 54, 89, 0.15) !important;
+        padding: 6px 16px !important;
+        border-radius: 20px !important;
+        background: #ffffff !important;
+        transition: all 150ms ease !important;
+        box-shadow: none !important;
+      }
+
+      .contact-link:hover {
+        color: #0a66c2 !important;
+        border-color: #0a66c2 !important;
+        background: rgba(10, 102, 194, 0.04) !important;
+      }
+
+      .authors-title-gradient {
+        font-family: var(--heading-font) !important;
+        font-size: 24px !important;
+        font-weight: 600 !important;
+        color: #0a66c2 !important;
+        letter-spacing: 0.5px !important;
+        text-align: center !important;
+        margin: 0 0 32px 0 !important;
+      }
+
+      .github-info-box {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        padding: 16px 24px !important;
+        background: rgba(10, 102, 194, 0.05) !important;
+        border: 1px solid rgba(10, 102, 194, 0.12) !important;
+        border-radius: 8px !important;
+        margin-top: 36px !important;
+        box-sizing: border-box !important;
+      }
+
+      .github-info-box p {
+        margin: 0 !important;
+        font-size: 14px !important;
+        color: #4a5d6e !important; /* ink-soft equivalent */
+        line-height: 1.5 !important;
+      }
+
+      .github-icon {
+        color: #0b2239 !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .github-link {
+        color: #0a66c2 !important;
+        font-weight: 600 !important;
+        text-decoration: underline !important;
+        transition: color 150ms ease !important;
+      }
+
+      .github-link:hover {
+        color: #004182 !important;
+      }
+    </style>
   </head>
   <body>
+    <nav class="nav-bar">
+      <button class="nav-link active" data-target="homeView">Home</button>
+      <button class="nav-link" data-target="authorsView">Authors</button>
+    </nav>
+
     <nav class="question-rail" aria-label="Question navigation">
       <div class="rail-hint" aria-hidden="true">
         <span class="rail-hint-hover">Hover</span>
@@ -24,67 +283,190 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">LinkedIn hiring copy</p>
-          <h1>Job Description Generator</h1>
+          <p class="eyebrow">GEN AI MODEL  |  LINKEDIN</p>
+          <h1><span class="gradient-letter">J</span>ob Description Generator</h1>
           <p class="lead-copy">Shape a clean, polished role brief from your answers, then refine the draft without leaving the page.</p>
         </div>
-        <div class="status-row">
-          <span id="apiStatus" class="status-pill">Checking service</span>
-          <span id="progressText" class="status-pill muted">0 answered</span>
+        <div class="header-auth" id="headerAuth">
+          <button id="signInBtn" class="primary-button" type="button">Sign In</button>
+          <div id="userProfile" class="user-profile hidden">
+            <span id="userUsername" class="user-username"></span>
+            <button id="signOutBtn" class="secondary-button" type="button">Sign Out</button>
+          </div>
         </div>
       </header>
 
-      <section class="workspace-grid">
-        <section class="builder">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">Intake</p>
-              <h2>Answer the questions</h2>
+      <!-- Home View -->
+      <div id="homeView" class="page-view">
+        <section class="workspace-grid">
+          <section class="builder">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Intake</p>
+                <h2>Answer the questions</h2>
+              </div>
+              <button id="sampleButton" class="secondary-button" type="button">Fill sample</button>
             </div>
-            <button id="sampleButton" class="secondary-button" type="button">Fill sample</button>
-          </div>
 
-          <div id="questionList" class="question-list" aria-live="polite"></div>
+            <div id="questionList" class="question-list" aria-live="polite"></div>
+          </section>
+
+          <div class="result-column">
+            <div id="creditsContainer" class="credits-container hidden">
+              <span id="workspaceCredits" class="credit-badge">30 Credits</span>
+              <button id="buyCreditsBtn" class="primary-button" type="button">Buy more credits</button>
+            </div>
+            <section class="result-section">
+              <div class="section-head result-heading">
+                <div>
+                  <p class="eyebrow">Draft</p>
+                  <h2>Generate the job description</h2>
+                </div>
+                <div class="draft-button-group">
+                  <button id="sampleOutputButton" class="secondary-button sample-output-button" type="button">Sample output</button>
+                  <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
+                </div>
+              </div>
+
+              <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
+              <div id="messageBox" class="message-box hidden"></div>
+              <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
+
+              <div class="refine-panel">
+                <label for="refineInput">Refine the draft</label>
+                <textarea id="refineInput" rows="4" placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"></textarea>
+                <button id="refineButton" class="primary-button" type="button">Refine</button>
+              </div>
+
+              <div class="draft-actions">
+                <div>
+                  <p class="eyebrow">Delivery</p>
+                  <h3>Use the finished draft</h3>
+                  <p>Copy to keep the clean generated text ready for LinkedIn, email, or Google Docs. Export to download a Word file you can open in Google Docs.</p>
+                </div>
+                <div class="action-buttons">
+                  <button id="copyButton" class="secondary-button" type="button">Copy text</button>
+                  <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
+                </div>
+              </div>
+            </section>
+          </div>
         </section>
+      </div>
 
-        <section class="result-section">
-          <div class="section-head result-heading">
-            <div>
-              <p class="eyebrow">Draft</p>
-              <h2>Generate the job description</h2>
-            </div>
-            <div class="draft-button-group">
-              <button id="sampleOutputButton" class="secondary-button sample-output-button" type="button">Sample output</button>
-              <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
-            </div>
+      <!-- Authors View -->
+      <div id="authorsView" class="page-view hidden">
+        <section class="simple-page-card" style="max-width: 900px;">
+          <h2 class="authors-title-gradient">Authors</h2>
+          <div id="authorsGrid" class="authors-grid">
+            <!-- Dynamically populated from data/authors.json -->
           </div>
 
-          <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
-          <div id="messageBox" class="message-box hidden"></div>
-          <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
-
-          <div class="refine-panel">
-            <label for="refineInput">Refine the draft</label>
-            <textarea id="refineInput" rows="4" placeholder="Example: Make it more concise and more technical."></textarea>
-            <button id="refineButton" class="primary-button" type="button">Refine</button>
-          </div>
-
-          <div class="draft-actions">
-            <div>
-              <p class="eyebrow">Delivery</p>
-              <h3>Use the finished draft</h3>
-              <p>Copy to keep the clean generated text ready for LinkedIn, email, or Google Docs. Export to download a Word file you can open in Google Docs.</p>
-            </div>
-            <div class="action-buttons">
-              <button id="copyButton" class="secondary-button" type="button">Copy text</button>
-              <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
-            </div>
+          <!-- Github CTA Info Box -->
+          <div class="github-info-box">
+            <span class="github-icon">
+              <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+            </span>
+            <p>Wanna know more about how we implement the backend and database? Visit our <a href="https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator" target="_blank" class="github-link">Github Repo</a>.</p>
           </div>
         </section>
-      </section>
+      </div>
     </main>
 
+    <!-- Auth Modal Overlay -->
+    <div id="authModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <!-- Login / Signup View -->
+        <div id="authView">
+          <h2 id="modalTitle">Sign In</h2>
+          <p id="modalSubtitle">Access your credits and generation history.</p>
+          <form id="modalAuthForm" class="modal-form">
+            <input id="modalUsername" type="text" placeholder="Username" autocomplete="username" class="hidden" />
+            <input id="modalEmail" type="email" placeholder="Email" autocomplete="email" required />
+            <input id="modalPassword" type="password" placeholder="Password" autocomplete="current-password" required />
+            <button id="modalForgotPasswordBtn" class="link-button" type="button" style="text-align: right; margin-top: -6px; margin-bottom: 6px; font-size: 13px;">Forgot password?</button>
+            <button id="modalSubmitBtn" class="primary-button" type="submit">Sign In</button>
+            <button id="modalToggleModeBtn" class="link-button" type="button">Create account</button>
+          </form>
+        </div>
+
+        <!-- OTP Verification View -->
+        <div id="otpView" class="hidden">
+          <h2>Verify Email</h2>
+          <p>Enter the 6-digit verification code sent to your email.</p>
+          <form id="modalOtpForm" class="modal-form">
+            <input id="modalOtp" type="text" placeholder="Verification code" required />
+            <button id="modalOtpSubmitBtn" class="primary-button" type="submit">Verify Code</button>
+          </form>
+        </div>
+
+        <!-- Reset Password View -->
+        <div id="resetPasswordView" class="hidden">
+          <h2>Reset Password</h2>
+          <p>Enter the verification code sent to your email and your new password.</p>
+          <form id="modalResetPasswordForm" class="modal-form" autocomplete="off">
+            <input id="resetOtp" type="text" placeholder="Verification code" required autocomplete="one-time-code" />
+            <input id="resetNewPassword" type="password" placeholder="New Password" required minlength="6" autocomplete="new-password" />
+            <button id="modalResetPasswordSubmitBtn" class="primary-button" type="submit">Reset Password</button>
+            <button id="modalCancelResetBtn" class="link-button" type="button">Back to Sign In</button>
+          </form>
+        </div>
+        
+        <div id="modalMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
+    <!-- Billing Modal Overlay -->
+    <div id="billingModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeBillingModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <div id="billingView">
+          <h2>Buy Credits</h2>
+          <p class="modal-sub">Add credits to generate and refine job descriptions.</p>
+          
+          <div class="billing-yield-headline">
+            <span id="billingCreditCount">30</span> Credits
+          </div>
+          
+          <div class="billing-selector-row">
+            <button id="billingDecBtn" class="secondary-button selector-btn" type="button">-</button>
+            <div class="billing-input-wrapper">
+              <span class="currency-symbol">$</span>
+              <input id="billingAmountInput" class="billing-amount-input" type="number" min="1" value="1" step="1" />
+            </div>
+            <button id="billingIncBtn" class="secondary-button selector-btn" type="button">+</button>
+          </div>
+          
+          <p class="billing-rate-info">Rate: $1 = 30 credits</p>
+          
+          <button id="payCreditsBtn" class="primary-button pay-credits-button" type="button">Pay $1.00</button>
+        </div>
+        
+        <div id="billingMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
+
+    <!-- Username Edit Modal Overlay -->
+    <div id="usernameModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <button id="closeUsernameModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
+        
+        <div>
+          <h2>Change Username</h2>
+          <p class="modal-sub">Update your display name.</p>
+          <form id="modalUsernameForm" class="modal-form" autocomplete="off">
+            <input id="newUsernameInput" type="text" placeholder="New Username" required />
+            <button id="saveUsernameBtn" class="primary-button" type="submit">Save</button>
+          </form>
+        </div>
+        
+        <div id="usernameMessageBox" class="message-box hidden"></div>
+      </div>
+    </div>
+
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=spa-nav-v3"></script>
   </body>
 </html>

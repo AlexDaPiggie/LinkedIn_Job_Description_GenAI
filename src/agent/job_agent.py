@@ -6,6 +6,7 @@ from src.llm.client import LLMResult, generate_text
 from src.rendering.markdown import render_job_description
 from src.schema.job_description import JobDescriptionDraft
 from src.schema.job_info import JobInfo
+from src.llm.models import MODEL_FALLBACKS
 
 '''
 Structured data to store the ouput of the agents together
@@ -32,10 +33,18 @@ class JobAgent:
         model: str,
         skipped_fields: list[str] | None = None,
     ):
+        
         skipped = skipped_fields or []
         prompt = build_generation_prompt(job_info, skipped)
-        llm_result = self.generate_text_fn(prompt, provider, model)
+        fallbacks = MODEL_FALLBACKS.get(model, [])
+        llm_result = self.generate_text_fn(
+            prompt,
+            provider,
+            model,
+            fallback_models=fallbacks,
+        )
         draft = parse_job_description(llm_result.text)
+
         return AgentResult(
             draft = draft,
             markdown = render_job_description(
@@ -48,23 +57,35 @@ class JobAgent:
     
     def refine_draft(
         self,
-        job_info: JobInfo,
+        company_name: str,
         current_draft: JobDescriptionDraft,
         user_request: str,
         provider: str,
         model: str,
-        skipped_fields: list[str] | None = None,
+        skipped_fields: list[str] | None = None
     ): 
         skipped = skipped_fields or []
-        prompt = build_refinement_prompt(job_info, current_draft, user_request, skipped)
-        llm_result = self.generate_text_fn(prompt, provider, model)
+        prompt = build_refinement_prompt(
+            company_name=company_name, 
+            current_draft=current_draft, 
+            user_request=user_request, 
+            skipped_fields=skipped
+        )
+        fallbacks = MODEL_FALLBACKS.get(model, [])
+        llm_result = self.generate_text_fn(
+            prompt, 
+            provider, 
+            model, 
+            fallback_models=fallbacks
+        )
         draft = parse_job_description(llm_result.text)
+
         return AgentResult(
             draft = draft,
             markdown=render_job_description(
-                draft,
-                company_name = job_info.company_name,
-                skipped_fields = skipped,
+                draft = draft,
+                company_name=company_name,
+                skipped_fields=skipped,
             ),
             llm_result=llm_result,
         )

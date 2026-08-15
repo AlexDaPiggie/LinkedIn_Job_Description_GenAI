@@ -12,8 +12,8 @@ try:
     MODEL = config.get ("LLM_MODEL")
 except Exception as e:
     print (f"Warning: Could not load config.json. Using defaults. Error: {e}")
-    PROVIDER = 'huggingface'
-    MODEL = 'Qwen/Qwen2.5-7B-Instruct'
+    PROVIDER = 'openai'
+    MODEL = 'gpt-4o'
 
 class QuestionResponse (BaseModel):
     question_name: str
@@ -30,9 +30,10 @@ class GenerateRequest (BaseModel):
 class GenerateResponse (BaseModel):
     draft: JobDescriptionDraft
     markdown: str
+    credits_remaining: int | None = None
 
 class RefineRequest (BaseModel):
-    job_info: JobInfo
+    company_name: str
     current_draft: JobDescriptionDraft
     user_request: str
     skipped_fields: list[str] = Field(default_factory=list)
@@ -42,3 +43,43 @@ class RefineRequest (BaseModel):
 class ErrorResponse (BaseModel): 
     detail: str
 
+class AuthSignupRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+class AuthLoginRequest (BaseModel):
+    email: str
+    password: str
+
+class UserDetail (BaseModel):
+    id: str
+    email: str
+    username: str | None = None
+
+class AuthResponse(BaseModel):
+    access_token: str
+    user: UserDetail
+    credits: int
+    
+class VerifyOtpRequest(BaseModel):
+    email: str
+    token: str
+
+class SignupStatusResponse(BaseModel):
+    status: str
+    email: str
+    message: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class ResetPasswordConfirmRequest(BaseModel):
+    email: str
+    token: str
+    new_password: str
+
+class ChangeUsernameRequest(BaseModel):
+    new_username: str
+
+    

@@ -35,12 +35,12 @@ def generate_job_description (request: GenerateRequest):
 
 def refine_job_description(request: RefineRequest): 
     result = JobAgent().refine_draft(
-        request.job_info,
+        request.company_name,
         request.current_draft,
         request.user_request,
         request.provider,
         request.model,
-        skipped_fields = request.skipped_fields,
+        request.skipped_fields,
     )
 
     save_markdown ('latest_job_refinement.md', result.markdown)

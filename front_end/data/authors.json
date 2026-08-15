@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Phong Nguyen",
+    "role": "AI Engineering & Database",
+    "desc": "Building the backend, Refining the databases, Evaluating AI Models",
+    "image": "images/phong.jpg",
+    "contacts": [
+      { "label": "Github", "url": "https://github.com/AlexDaPiggie" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/hoai-phong-nguyen-9367a4384/" }
+    ]
+  },
+  {
+    "name": "Huy Phan",
+    "role": "Frontend & Database",
+    "desc": "Developing the Web's UI & UX, Designing the original structure of databases",
+    "image": "images/huy.jpg",
+    "contacts": [
+      { "label": "Github", "url": "https://github.com/hertzy-da-poet" },
+      { "label": "Portfolio Website", "url": "https://hertzy-da-poet.github.io/Hugo-Portfolio/" }
+    ]
+  }
+]
