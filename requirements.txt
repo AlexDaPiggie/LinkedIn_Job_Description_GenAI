@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+stripe
+supabase
+python-dotenv
+slowapi
+sqlalchemy
+google-auth
+requests
+openai
+google-genai
+huggingface_hub
+transformers
+pydantic

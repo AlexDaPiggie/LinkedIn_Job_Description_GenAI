@@ -3,6 +3,16 @@ from src.database.supabase_credits import get_supabase_credits
 
 def signup_user(email: str, password: str, username: str):
     "This function is for user to register a new account"
+    # Check if email is already registered
+    email_check = supabase.table("profiles").select("*").eq("email", email).execute()
+    if email_check.data:
+        raise ValueError("Email is already registered")
+
+    # Check if username is already taken
+    username_check = supabase.table("profiles").select("id").eq("username", username).execute()
+    if username_check.data:
+        raise ValueError("Username is already taken")
+
     response = supabase.auth.sign_up(
         {
             "email": email,
