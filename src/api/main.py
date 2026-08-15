@@ -153,13 +153,14 @@ async def stripe_webhook (
             stripe_signature,
             webhook_secret,
         )
-    except Exception:
+    except Exception as e:
+        print("Webhook signature verification failed:", e)
         raise HTTPException(status_code=400, detail="Invalid webhook signature")
     
     if event["type"] == "checkout.session.completed":
         session = event['data']['object']
-        user_id = getattr(session, "client_reference_id", None)
-        amount_total = getattr(session, "amount_total", None)
+        user_id = session.get("client_reference_id")
+        amount_total = session.get("amount_total")
         if user_id and amount_total: 
             try:
                 credits_to_add = (amount_total // 100) * 30
