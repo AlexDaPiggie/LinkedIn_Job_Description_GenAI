@@ -1265,7 +1265,64 @@ elements.userUsername.addEventListener("click", openUsernameModal);
 elements.closeUsernameModalBtn.addEventListener("click", closeUsernameModal);
 elements.modalUsernameForm.addEventListener("submit", submitUsernameChange);
 
+// SPA routing logic
+const navLinks = document.querySelectorAll(".nav-link");
+const pageViews = document.querySelectorAll(".page-view");
+
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    const target = link.dataset.target;
+    
+    // Toggle active link class
+    navLinks.forEach(l => l.classList.toggle("active", l === link));
+    
+    // Toggle page views display
+    pageViews.forEach(view => view.classList.toggle("hidden", view.id !== target));
+  });
+});
+
+// Scroll event for glassmorphism nav bar
+window.addEventListener("scroll", () => {
+  const navBar = document.querySelector(".nav-bar");
+  if (navBar) {
+    navBar.classList.toggle("scrolled", window.scrollY > 15);
+  }
+});
+
+// Load and render authors from JSON
+async function loadAuthors() {
+  const grid = document.getElementById("authorsGrid");
+  if (!grid) return;
+  
+  try {
+    const response = await fetch("data/authors.json");
+    if (!response.ok) throw new Error("Failed to load authors data");
+    const authors = await response.json();
+    
+    grid.innerHTML = authors.map(author => `
+      <div class="author-card">
+        <div class="author-photo-wrapper">
+          <img class="author-photo" src="${author.image}" alt="${author.name}" onerror="this.style.display='none';" />
+          <div class="author-photo-fallback">${author.name.split(' ')[0]}'s Photo<br><span style="font-size: 11px; opacity: 0.7;">${author.image}</span></div>
+        </div>
+        <h3>${author.name}</h3>
+        <p class="author-role">${author.role}</p>
+        <p class="author-desc">${author.desc}</p>
+        <div class="author-contacts">
+          ${author.contacts.map(c => `
+            <a href="${c.url}" ${c.url.startsWith('http') ? 'target="_blank"' : ''} class="contact-link">${c.label}</a>
+          `).join('')}
+        </div>
+      </div>
+    `).join("");
+  } catch (error) {
+    console.error("Error loading authors:", error);
+    grid.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--ink-soft);">Failed to load authors.</p>`;
+  }
+}
+
 checkApi();
 renderRailPin();
 loadSession();
 loadQuestions();
+loadAuthors();
