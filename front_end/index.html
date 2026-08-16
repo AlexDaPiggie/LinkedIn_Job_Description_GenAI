@@ -6,7 +6,10 @@
     <title>LinkedIn Job Description Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css?v=spa-nav-v3" />
     <style>
       /* --- SPA Navigation Bar --- */
@@ -45,7 +48,7 @@
       .nav-link {
         background: none !important;
         border: none !important;
-        font-family: 'Manrope', sans-serif !important;
+        font-family: "Manrope", sans-serif !important;
         font-size: 14px !important;
         font-weight: 600 !important;
         color: #4a5d6e !important;
@@ -84,7 +87,11 @@
       .simple-page-card {
         border: 1px solid rgba(255, 255, 255, 0.86) !important;
         border-radius: 10px !important;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(249, 253, 255, 0.84)) !important;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.9),
+          rgba(249, 253, 255, 0.84)
+        ) !important;
         box-shadow: var(--shadow-panel) !important;
         backdrop-filter: blur(22px) !important;
         padding: 32px !important;
@@ -215,7 +222,6 @@
         background: rgba(10, 102, 194, 0.04) !important;
       }
 
-
       .authors-title-gradient {
         font-family: var(--heading-font) !important;
         font-size: 24px !important;
@@ -308,7 +314,13 @@
         <span class="rail-hint-hover">Hover</span>
         <span>Question</span>
       </div>
-      <button id="railToggle" class="rail-toggle" type="button" aria-pressed="false" title="Keep question numbers visible">
+      <button
+        id="railToggle"
+        class="rail-toggle"
+        type="button"
+        aria-pressed="false"
+        title="Keep question numbers visible"
+      >
         <span class="rail-toggle-text">Keep open</span>
       </button>
       <div id="questionRail" class="rail-list"></div>
@@ -317,15 +329,24 @@
     <main class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">GEN AI MODEL  |  LINKEDIN</p>
-          <h1><span class="gradient-letter">J</span>ob Description Generator</h1>
-          <p class="lead-copy">Shape a clean, polished role brief from your answers, then refine the draft without leaving the page.</p>
+          <p class="eyebrow">GEN AI MODEL | LINKEDIN</p>
+          <h1>
+            <span class="gradient-letter">J</span>ob Description Generator
+          </h1>
+          <p class="lead-copy">
+            Shape a clean, polished role brief from your answers, then refine
+            the draft without leaving the page.
+          </p>
         </div>
         <div class="header-auth" id="headerAuth">
-          <button id="signInBtn" class="primary-button" type="button">Sign In</button>
+          <button id="signInBtn" class="primary-button" type="button">
+            Sign In
+          </button>
           <div id="userProfile" class="user-profile hidden">
             <span id="userUsername" class="user-username"></span>
-            <button id="signOutBtn" class="secondary-button" type="button">Sign Out</button>
+            <button id="signOutBtn" class="secondary-button" type="button">
+              Sign Out
+            </button>
           </div>
         </div>
       </header>
@@ -339,16 +360,24 @@
                 <p class="eyebrow">Intake</p>
                 <h2>Answer the questions</h2>
               </div>
-              <button id="sampleButton" class="secondary-button" type="button">Fill sample</button>
+              <button id="sampleButton" class="secondary-button" type="button">
+                Fill sample
+              </button>
             </div>
 
-            <div id="questionList" class="question-list" aria-live="polite"></div>
+            <div
+              id="questionList"
+              class="question-list"
+              aria-live="polite"
+            ></div>
           </section>
 
           <div class="result-column">
             <div id="creditsContainer" class="credits-container hidden">
               <span id="workspaceCredits" class="credit-badge">30 Credits</span>
-              <button id="buyCreditsBtn" class="primary-button" type="button">Buy more credits</button>
+              <button id="buyCreditsBtn" class="primary-button" type="button">
+                Buy more credits
+              </button>
             </div>
             <section class="result-section">
               <div class="section-head result-heading">
@@ -357,30 +386,69 @@
                   <h2>Generate the job description</h2>
                 </div>
                 <div class="draft-button-group">
-                  <button id="sampleOutputButton" class="secondary-button sample-output-button" type="button">Sample output</button>
-                  <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
+                  <button
+                    id="sampleOutputButton"
+                    class="secondary-button sample-output-button"
+                    type="button"
+                  >
+                    Sample output
+                  </button>
+                  <button
+                    id="generateButton"
+                    class="primary-button generate-button"
+                    type="button"
+                  >
+                    Generate
+                  </button>
                 </div>
               </div>
 
-              <div id="draftWarning" class="notice hidden">Answers changed after generation. Regenerate before refining again.</div>
+              <div id="draftWarning" class="notice hidden">
+                Answers changed after generation. Regenerate before refining
+                again.
+              </div>
               <div id="messageBox" class="message-box hidden"></div>
-              <article id="markdownPreview" class="markdown-preview empty">Generate a draft to preview the job description.</article>
+              <article id="markdownPreview" class="markdown-preview empty">
+                Generate a draft to preview the job description.
+              </article>
 
               <div class="refine-panel">
                 <label for="refineInput">Refine the draft</label>
-                <textarea id="refineInput" rows="4" placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"></textarea>
-                <button id="refineButton" class="primary-button" type="button">Refine</button>
+                <textarea
+                  id="refineInput"
+                  rows="4"
+                  placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"
+                ></textarea>
+                <button id="refineButton" class="primary-button" type="button">
+                  Refine
+                </button>
               </div>
 
               <div class="draft-actions">
                 <div>
                   <p class="eyebrow">Delivery</p>
                   <h3>Use the finished draft</h3>
-                  <p>Copy to keep the clean generated text ready for LinkedIn, email, or Google Docs. Export to download a Word file you can open in Google Docs.</p>
+                  <p>
+                    Copy to keep the clean generated text ready for LinkedIn,
+                    email, or Google Docs. Export to download a Word file you
+                    can open in Google Docs.
+                  </p>
                 </div>
                 <div class="action-buttons">
-                  <button id="copyButton" class="secondary-button" type="button">Copy text</button>
-                  <button id="exportDocxButton" class="secondary-button" type="button">Export Word</button>
+                  <button
+                    id="copyButton"
+                    class="secondary-button"
+                    type="button"
+                  >
+                    Copy text
+                  </button>
+                  <button
+                    id="exportDocxButton"
+                    class="secondary-button"
+                    type="button"
+                  >
+                    Export Word
+                  </button>
                 </div>
               </div>
             </section>
@@ -390,7 +458,7 @@
 
       <!-- Authors View -->
       <div id="authorsView" class="page-view hidden">
-        <section class="simple-page-card" style="max-width: 900px;">
+        <section class="simple-page-card" style="max-width: 900px">
           <h2 class="authors-title-gradient">Authors</h2>
           <div id="authorsGrid" class="authors-grid">
             <!-- Dynamically populated from data/authors.json -->
@@ -399,9 +467,27 @@
           <!-- Github CTA Info Box -->
           <div class="github-info-box">
             <span class="github-icon">
-              <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+              <svg
+                viewBox="0 0 16 16"
+                width="18"
+                height="18"
+                fill="currentColor"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                ></path>
+              </svg>
             </span>
-            <p>Wanna know more about how we implement the backend and database? Visit our <a href="https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator" target="_blank" class="github-link">Github Repo</a>.</p>
+            <p>
+              Wanna know more about how we implement the backend and database?
+              Visit our
+              <a
+                href="https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator"
+                target="_blank"
+                class="github-link"
+                >Github Repo</a
+              >.
+            </p>
           </div>
         </section>
       </div>
@@ -410,24 +496,94 @@
     <!-- Auth Modal Overlay -->
     <div id="authModal" class="modal-overlay hidden">
       <div class="modal-content">
-        <button id="closeModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
-        
+        <button
+          id="closeModalBtn"
+          class="close-modal"
+          type="button"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
+
         <!-- Login / Signup View -->
         <div id="authView">
           <h2 id="modalTitle">Sign In</h2>
           <p id="modalSubtitle">Access your credits and generation history.</p>
           <form id="modalAuthForm" class="modal-form">
-            <input id="modalUsername" type="text" placeholder="Username" autocomplete="username" class="hidden" />
-            <input id="modalEmail" type="email" placeholder="Email" autocomplete="email" required />
+            <input
+              id="modalUsername"
+              type="text"
+              placeholder="Username"
+              autocomplete="username"
+              class="hidden"
+            />
+            <input
+              id="modalEmail"
+              type="email"
+              placeholder="Email"
+              autocomplete="email"
+              required
+            />
             <div class="password-wrapper">
-               <input id="modalPassword" type="password" placeholder="Password" autocomplete="current-password" required />
-               <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility">
-                 <svg class="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line class="eye-slash hidden" x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2"/></svg>
-               </button>
-             </div>
-            <button id="modalForgotPasswordBtn" class="link-button" type="button" style="text-align: right; margin-top: -6px; margin-bottom: 6px; font-size: 13px;">Forgot password?</button>
-            <button id="modalSubmitBtn" class="primary-button" type="submit">Sign In</button>
-            <button id="modalToggleModeBtn" class="link-button" type="button">Create account</button>
+              <input
+                id="modalPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                aria-label="Toggle password visibility"
+              >
+                <svg
+                  class="eye-icon"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    class="eye-open"
+                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                  />
+                  <circle cx="12" cy="12" r="3" />
+                  <line
+                    class="eye-slash hidden"
+                    x1="1"
+                    y1="1"
+                    x2="23"
+                    y2="23"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <button
+              id="modalForgotPasswordBtn"
+              class="link-button"
+              type="button"
+              style="
+                text-align: right;
+                margin-top: -6px;
+                margin-bottom: 6px;
+                font-size: 13px;
+              "
+            >
+              Forgot password?
+            </button>
+            <button id="modalSubmitBtn" class="primary-button" type="submit">
+              Sign In
+            </button>
+            <button id="modalToggleModeBtn" class="link-button" type="button">
+              Create account
+            </button>
           </form>
         </div>
 
@@ -436,58 +592,156 @@
           <h2>Verify Email</h2>
           <p>Enter the 6-digit verification code sent to your email.</p>
           <form id="modalOtpForm" class="modal-form">
-            <input id="modalOtp" type="text" placeholder="Verification code" required />
-            <button id="modalOtpSubmitBtn" class="primary-button" type="submit">Verify Code</button>
+            <input
+              id="modalOtp"
+              type="text"
+              placeholder="Verification code"
+              required
+            />
+            <button id="modalOtpSubmitBtn" class="primary-button" type="submit">
+              Verify Code
+            </button>
           </form>
         </div>
 
         <!-- Reset Password View -->
         <div id="resetPasswordView" class="hidden">
           <h2>Reset Password</h2>
-          <p>Enter the verification code sent to your email and your new password.</p>
-          <form id="modalResetPasswordForm" class="modal-form" autocomplete="off">
-            <input id="resetOtp" type="text" placeholder="Verification code" required autocomplete="one-time-code" />
-             <div class="password-wrapper">
-               <input id="resetNewPassword" type="password" placeholder="New Password" required minlength="6" autocomplete="new-password" />
-               <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility">
-                 <svg class="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="eye-open" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line class="eye-slash hidden" x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2"/></svg>
-               </button>
-             </div>
-            <button id="modalResetPasswordSubmitBtn" class="primary-button" type="submit">Reset Password</button>
-            <button id="modalCancelResetBtn" class="link-button" type="button">Back to Sign In</button>
+          <p>
+            Enter the verification code sent to your email and your new
+            password.
+          </p>
+          <form
+            id="modalResetPasswordForm"
+            class="modal-form"
+            autocomplete="off"
+          >
+            <input
+              id="resetOtp"
+              type="text"
+              placeholder="Verification code"
+              required
+              autocomplete="one-time-code"
+            />
+            <div class="password-wrapper">
+              <input
+                id="resetNewPassword"
+                type="password"
+                placeholder="New Password"
+                required
+                minlength="6"
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                aria-label="Toggle password visibility"
+              >
+                <svg
+                  class="eye-icon"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    class="eye-open"
+                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                  />
+                  <circle cx="12" cy="12" r="3" />
+                  <line
+                    class="eye-slash hidden"
+                    x1="1"
+                    y1="1"
+                    x2="23"
+                    y2="23"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+            </div>
+            <button
+              id="modalResetPasswordSubmitBtn"
+              class="primary-button"
+              type="submit"
+            >
+              Reset Password
+            </button>
+            <button id="modalCancelResetBtn" class="link-button" type="button">
+              Back to Sign In
+            </button>
           </form>
         </div>
-        
+
         <div id="modalMessageBox" class="message-box hidden"></div>
       </div>
     </div>
     <!-- Billing Modal Overlay -->
     <div id="billingModal" class="modal-overlay hidden">
       <div class="modal-content">
-        <button id="closeBillingModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
-        
+        <button
+          id="closeBillingModalBtn"
+          class="close-modal"
+          type="button"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
+
         <div id="billingView">
           <h2>Buy Credits</h2>
-          <p class="modal-sub">Add credits to generate and refine job descriptions.</p>
-          
+          <p class="modal-sub">
+            Add credits to generate and refine job descriptions.
+          </p>
+
           <div class="billing-yield-headline">
             <span id="billingCreditCount">30</span> Credits
           </div>
-          
+
           <div class="billing-selector-row">
-            <button id="billingDecBtn" class="secondary-button selector-btn" type="button">-</button>
+            <button
+              id="billingDecBtn"
+              class="secondary-button selector-btn"
+              type="button"
+            >
+              -
+            </button>
             <div class="billing-input-wrapper">
               <span class="currency-symbol">$</span>
-              <input id="billingAmountInput" class="billing-amount-input" type="number" min="1" value="1" step="1" />
+              <input
+                id="billingAmountInput"
+                class="billing-amount-input"
+                type="number"
+                min="1"
+                value="1"
+                step="1"
+              />
             </div>
-            <button id="billingIncBtn" class="secondary-button selector-btn" type="button">+</button>
+            <button
+              id="billingIncBtn"
+              class="secondary-button selector-btn"
+              type="button"
+            >
+              +
+            </button>
           </div>
-          
+
           <p class="billing-rate-info">Rate: $1 = 30 credits</p>
-          
-          <button id="payCreditsBtn" class="primary-button pay-credits-button" type="button">Pay $1.00</button>
+
+          <button
+            id="payCreditsBtn"
+            class="primary-button pay-credits-button"
+            type="button"
+          >
+            Pay $1.00
+          </button>
         </div>
-        
+
         <div id="billingMessageBox" class="message-box hidden"></div>
       </div>
     </div>
@@ -495,17 +749,31 @@
     <!-- Username Edit Modal Overlay -->
     <div id="usernameModal" class="modal-overlay hidden">
       <div class="modal-content">
-        <button id="closeUsernameModalBtn" class="close-modal" type="button" aria-label="Close modal">&times;</button>
-        
+        <button
+          id="closeUsernameModalBtn"
+          class="close-modal"
+          type="button"
+          aria-label="Close modal"
+        >
+          &times;
+        </button>
+
         <div>
           <h2>Change Username</h2>
           <p class="modal-sub">Update your display name.</p>
           <form id="modalUsernameForm" class="modal-form" autocomplete="off">
-            <input id="newUsernameInput" type="text" placeholder="New Username" required />
-            <button id="saveUsernameBtn" class="primary-button" type="submit">Save</button>
+            <input
+              id="newUsernameInput"
+              type="text"
+              placeholder="New Username"
+              required
+            />
+            <button id="saveUsernameBtn" class="primary-button" type="submit">
+              Save
+            </button>
           </form>
         </div>
-        
+
         <div id="usernameMessageBox" class="message-box hidden"></div>
       </div>
     </div>
