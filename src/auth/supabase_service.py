@@ -172,38 +172,34 @@ def change_supabase_username(token: str, new_username: str):
     from supabase import create_client
     import os
     
-    # Initialize a temporary, request-specific client
+    # 1. Initialize temporary client
     url = os.getenv("SUPABASE_URL")
     key = os.getenv("SUPABASE_ANON_KEY")
     client = create_client(url, key)
     
-    # Retrieve user using token
-    response = client.auth.get_user(token)
-    if not response.user:
-        raise ValueError("Invalid or expired session")
+    # 2. Populate the active session on the client
+    client.auth.set_session(access_token=token, refresh_token=token)
     
-    # Authorize client for Auth updates
-    client.auth._headers["Authorization"] = f"Bearer {token}"
-    
-    # 1. Update Auth user metadata
+    # 3. Update Auth user metadata
     client.auth.update_user({
         "data": {
             "username": new_username
         }
     })
     
-    # 2. Update profiles table using user context
+    # 4. Update profiles table
     client.postgrest.auth(token)
     client.table("profiles").update({
         "username": new_username
-    }).eq("id", response.user.id).execute()
+    }).eq("id", client.auth.get_user(token).user.id).execute()
     
-    credits = get_supabase_credits(response.user.id)
+    user = client.auth.get_user(token).user
+    credits = get_supabase_credits(user.id)
     return {
         "access_token": token,
         "user": {
-            "id": response.user.id,
-            "email": response.user.email,
+            "id": user.id,
+            "email": user.email,
             "username": new_username
         },
         "credits": credits
