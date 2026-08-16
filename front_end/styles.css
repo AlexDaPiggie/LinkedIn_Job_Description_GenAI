@@ -1645,13 +1645,68 @@ button:disabled {
 }
 
 .gradient-letter {
-  background: linear-gradient(135deg, var(--blue), #0a8bd4 55%, var(--cyan));
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 30% 15%, rgba(255, 255, 255, 0.32) 0 5%, rgba(113, 239, 255, 0.2) 7% 14%, transparent 24%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.2) 0 10%, transparent 22%),
+    linear-gradient(135deg, #1118e8 0%, #293bff 24%, #075ff0 45%, #079ff5 70%, #24f1df 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(10, 139, 212, 0.55));
-  -webkit-text-stroke: 0.6px rgba(7, 63, 122, 0.9);
+  filter:
+    drop-shadow(0 -2px 0 rgba(246, 255, 255, 0.9))
+    drop-shadow(0 2px 0 rgba(10, 16, 118, 0.95))
+    drop-shadow(0 5px 0 rgba(20, 23, 150, 0.42))
+    drop-shadow(0 10px 14px rgba(20, 58, 255, 0.42))
+    drop-shadow(0 18px 28px rgba(18, 216, 232, 0.34));
+  -webkit-text-stroke: 1.05px rgba(5, 16, 118, 0.98);
+}
+
+.gradient-letter::before,
+.gradient-letter::after {
+  content: "J";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gradient-letter::before {
+  z-index: 1;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.85px rgba(230, 254, 255, 0.86);
+  filter: blur(0.08px);
+  opacity: 0.82;
+  transform: translate(-0.018em, -0.024em);
+  text-shadow:
+    0 -3px 0 rgba(255, 255, 255, 0.84),
+    0 2px 3px rgba(85, 236, 255, 0.36),
+    0 6px 10px rgba(8, 18, 128, 0.34);
+}
+
+.gradient-letter::after {
+  z-index: 2;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background:
+    radial-gradient(ellipse at 28% 13%, rgba(255, 255, 255, 0.95) 0 3%, rgba(106, 239, 255, 0.5) 4% 8%, transparent 13%),
+    radial-gradient(ellipse at 72% 78%, rgba(126, 246, 255, 0.7) 0 4%, transparent 13%),
+    radial-gradient(ellipse at 54% 46%, rgba(85, 219, 255, 0.48) 0 5%, transparent 16%),
+    linear-gradient(112deg, transparent 0 15%, rgba(255, 255, 255, 0.78) 21%, rgba(87, 232, 255, 0.32) 30%, transparent 43%),
+    linear-gradient(24deg, transparent 0 50%, rgba(81, 234, 255, 0.34) 59%, transparent 72%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 0.6px rgba(232, 254, 255, 0.76);
+  opacity: 0.72;
+  transform: translate(-0.017em, -0.028em);
+  filter: blur(0.04px);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48),
+    1px 0 0 rgba(118, 244, 255, 0.28),
+    -1px 0 0 rgba(41, 59, 255, 0.18);
 }
 
 /* --- SPA Navigation Bar --- */
