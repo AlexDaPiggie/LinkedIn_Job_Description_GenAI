@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://linkedin-job-generator-api.onrender.com/";
+// const API_BASE_URL = "http://127.0.0.1:8000";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
 
@@ -1312,13 +1313,6 @@ async function loadAuthors() {
     if (!response.ok) throw new Error("Failed to load authors data");
     const authors = await response.json();
     
-    const parseEmojis = (text) => {
-      if (!text) return "";
-      return text
-        .replace(/:cursed_tears:/g, `<img src="images/cursed_tears.png" class="inline-emoji" alt="cursed tears" />`)
-        .replace(/:skull-cry:/g, `<img src="images/skull-cry.png" class="inline-emoji" alt="skull-cry" />`);
-    };
-
     grid.innerHTML = authors.map(author => `
       <div class="author-card">
         <div class="author-photo-wrapper">
@@ -1333,14 +1327,6 @@ async function loadAuthors() {
             <a href="${c.url}" ${c.url.startsWith('http') ? 'target="_blank"' : ''} class="contact-link">${c.label}</a>
           `).join('')}
         </div>
-        ${author.donation_qr ? `
-          <div class="author-donation">
-            <p class="donation-caption">"${parseEmojis(author.donation_caption)}"</p>
-            <a href="${author.donation_url}" target="_blank" class="qr-link" title="Click or scan to support">
-              <img src="${author.donation_qr}" alt="Donate QR" class="donation-qr" />
-            </a>
-          </div>
-        ` : ""}
       </div>
     `).join("");
   } catch (error) {
