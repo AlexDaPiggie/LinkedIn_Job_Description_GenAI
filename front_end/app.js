@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://linkedin-job-generator-api.onrender.com/";
+const API_BASE_URL = "https://linkedin-job-generator-api.onrender.com";
 // const API_BASE_URL = "http://127.0.0.1:8000";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
