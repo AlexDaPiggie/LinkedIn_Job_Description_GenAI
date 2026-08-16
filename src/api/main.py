@@ -153,8 +153,7 @@ async def stripe_webhook (
             stripe_signature,
             webhook_secret,
         )
-    except Exception as e:
-        print("Webhook signature verification failed:", e)
+    except Exception:
         raise HTTPException(status_code=400, detail="Invalid webhook signature")
     
     if event["type"] == "checkout.session.completed":
