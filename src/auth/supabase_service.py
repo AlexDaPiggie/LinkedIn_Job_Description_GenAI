@@ -169,19 +169,32 @@ def confirm_password_reset (email: str, token: str, new_password: str):
     }
 
 def change_supabase_username(token: str, new_username: str):
-    response = supabase.auth.get_user(token)
+    from supabase import create_client
+    import os
+    
+    # Initialize a temporary, request-specific client
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_ANON_KEY")
+    client = create_client(url, key)
+    
+    # Retrieve user using token
+    response = client.auth.get_user(token)
     if not response.user:
         raise ValueError("Invalid or expired session")
     
+    # Authorize client for Auth updates
+    client.auth._headers["Authorization"] = f"Bearer {token}"
+    
     # 1. Update Auth user metadata
-    supabase.auth.update_user({
+    client.auth.update_user({
         "data": {
             "username": new_username
         }
-    }, jwt = token)
+    })
     
-    # 2. Update profiles table
-    supabase.table("profiles").update({
+    # 2. Update profiles table using user context
+    client.postgrest.auth(token)
+    client.table("profiles").update({
         "username": new_username
     }).eq("id", response.user.id).execute()
     
