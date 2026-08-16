@@ -9,5 +9,6 @@
   "tests/test_all_models.py::test_model_generation[openrouter_o1_nmini]": true,
   "tests/test_all_models.py::test_model_generation[openrouter_o1_preview]": true,
   "tests/test_all_models.py::test_model_generation[openrouter_claude_3_sonnet]": true,
-  "tests/test_all_models.py::test_model_generation[openrouter_claude_3_opus]": true
+  "tests/test_all_models.py::test_model_generation[openrouter_claude_3_opus]": true,
+  "tests/test_google_auth.py": true
 }

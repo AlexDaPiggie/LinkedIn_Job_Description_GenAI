@@ -7,16 +7,22 @@
     "contacts": [
       { "label": "Github", "url": "https://github.com/AlexDaPiggie" },
       { "label": "LinkedIn", "url": "https://www.linkedin.com/in/hoai-phong-nguyen-9367a4384/" }
-    ]
+    ],
+    "donation_qr": "images/phong_kofi.png",
+    "donation_url": "https://ko-fi.com/phong_placeholder",
+    "donation_caption": "Support project maintenance :cursed_tears: Spent money on AI models, now I'm broke"
   },
   {
     "name": "Huy Phan",
-    "role": "Frontend & Database",
+    "role": "Web Developing & Database",
     "desc": "Developing the Web's UI & UX, Designing the original structure of databases",
     "image": "images/huy.jpg",
     "contacts": [
       { "label": "Github", "url": "https://github.com/hertzy-da-poet" },
       { "label": "Portfolio Website", "url": "https://hertzy-da-poet.github.io/Hugo-Portfolio/" }
-    ]
+    ],
+    "donation_qr": "images/huy_donor.png",
+    "donation_url": "https://ko-fi.com/huy_placeholder",
+    "donation_caption": "Help me fund the side quests. The main story is getting expensive :skull-cry:"
   }
 ]
