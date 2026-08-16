@@ -1816,6 +1816,7 @@ button:disabled {
   color: var(--ink-soft);
   margin: 0 0 20px;
   flex-grow: 1;
+  white-space: pre-line;
 }
 
 .author-contacts {

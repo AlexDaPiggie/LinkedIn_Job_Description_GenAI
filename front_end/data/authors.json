@@ -2,7 +2,7 @@
   {
     "name": "Phong Nguyen",
     "role": "AI Engineering & Database",
-    "desc": "Building the backend, Refining the databases, Evaluating AI Models",
+    "desc": "Building the backend, Refining the databases, \nFine-tuning & Evaluating AI Models",
     "image": "images/phong.jpg",
     "contacts": [
       { "label": "Github", "url": "https://github.com/AlexDaPiggie" },
