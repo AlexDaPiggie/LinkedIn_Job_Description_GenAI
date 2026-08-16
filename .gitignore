@@ -5,3 +5,4 @@ src/agent/__pycache__
 src/llm/__pycache__
 *.docx
 *.pyc
+.pytest_cache
