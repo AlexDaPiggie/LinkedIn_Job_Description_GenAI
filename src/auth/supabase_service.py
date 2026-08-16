@@ -178,7 +178,7 @@ def change_supabase_username(token: str, new_username: str):
         "data": {
             "username": new_username
         }
-    })
+    }, jwt = token)
     
     # 2. Update profiles table
     supabase.table("profiles").update({
