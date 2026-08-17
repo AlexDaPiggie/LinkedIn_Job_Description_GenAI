@@ -44,19 +44,6 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
 
 ---
 
-## Tech Stack
-
-| Layer | Technologies |
-|:---|:---|
-| **LLM & Prompt Engineering** | OpenAI API (`gpt-4o`, `gpt-4o-mini`), Hugging Face Inference API / Serverless (`Qwen2.5`, `Mistral-7B`, `Phi-3.5`), OpenRouter, Pydantic Schema Validation, Few-Shot Anti-Hallucination Prompting |
-| **Backend & APIs** | FastAPI, Uvicorn, Python 3.11, SlowAPI (Rate Limiting) |
-| **Database & Auth** | Supabase (PostgreSQL, Row-Level Security, Auth, Google OAuth) |
-| **Payments & Credits** | Stripe API, Webhook Verification |
-| **Evaluation Suite** | Automated Benchmark Harness (`runner.py`), LLM-as-a-Judge (`metrics.py`), Matplotlib / Jupyter Notebooks |
-| **Frontend** | Vanilla JavaScript (SPA), HTML5, CSS3 |
-
----
-
 ## Quickstart (Run Locally)
 
 ### Prerequisites
