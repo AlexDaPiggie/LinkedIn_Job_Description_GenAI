@@ -114,18 +114,12 @@ Measures end-to-end response time (seconds) across all test scenarios.
 * Larger open-weights models exhibited higher inference latency depending on endpoint hosting infrastructure.
 
 ## Model Sequencing & Fallback Architecture
-
-Based on benchmark results, the application implements an automated model sequencing and fallback strategy defined in [`src/llm/models.py`](src/llm/models.py) and executed via [`src/llm/client.py`](src/llm/client.py):
-
 * **Primary Model (`google/gemini-2.5-flash-lite`)**:
   * Chosen for its top overall performance: sub-2s generation latency, 100% schema and constraint pass rate, and high LinkedIn readiness scores at low token costs.
 * **Fallback Options**:
   1. `openai/gpt-4o`: SOTA reasoning backup if the primary model encounters rate limits or provider downtime.
   2. `openai/gpt-4o-mini`: Cost-efficient structured output backup.
   3. `mistralai/mistral-small-24b-instruct-2501`: High-speed open-weights alternative.
-* **When It Is Used**:
-  * Executed inside `JobAgent.generate_draft()` and `JobAgent.refine_draft()` in [`src/agent/job_agent.py`](src/agent/job_agent.py).
-  * Automatically catches API exceptions, connection timeouts, or provider 5xx errors and seamlessly retries with the next model in the fallback list without user-facing disruption.
 
 ---
 
