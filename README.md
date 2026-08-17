@@ -34,14 +34,6 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
 <p align="center">
   <img src="front_end\images\Workflow.drawio.png" alt="LinkedIn Job Description GenAI Architecture Workflow" width="100%"/>
 </p>
-
-1. **Intake (JobAgent + SessionState)**: Collets required & optional info.
-2. **Draft Generation (build_generation_prompt)**: Prompts LLM to turn short notes into an actual job description.
-3. **Parsing & Validation (parse_job_description)**: Cleans markdown, parses JSON, validates against JobDescriptionDraft.
-4. **Markdown Rendering (MarkdownRenderer)**: Formats sections into # Title, ## About the Role, ## Responsibilities, ## Requirements, ## Benefits.
-5. **Refinement (`build_refinement_prompt`)**: Takes existing JSON draft + user edit request -> Returns updated full JSON draft.
-6. **Billing & Auth Check**: Deducts 1 credit in Supabse before running LLM. `Generate` and `Refine` wil be blocked when running out of credits.
-
 ---
 
 ## Quickstart (Run Locally)
