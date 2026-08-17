@@ -34,6 +34,8 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
 <p align="center">
   <img src="front_end\images\Workflow.drawio.png" alt="LinkedIn Job Description GenAI Architecture Workflow" width="100%"/>
 </p>
+
+
 ---
 
 ## Quickstart (Run Locally)
