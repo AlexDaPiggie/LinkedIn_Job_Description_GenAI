@@ -20,12 +20,12 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
 
 ## Key Features
 
-- **Guided Step-by-Step Intake**: Fixed-sequence question flow captures required job details (role, responsibilities, requirements) and optional metadata (tone, perks, salary) without conversational drift.
-- **Strict JSON Schema Generation**: Prompts enforce structured JSON output matching `JobDescriptionDraft` schema, rendered cleanly into Markdown.
-- **Interactive Draft Refinement**: Users can request targeted edits (e.g. *"emphasize cloud infrastructure and make tone executive"*) with full schema preservation.
-- **Stale State Protection**: Edits to prior intake answers set `draft_outdated = True`, locking refinement until the draft is regenerated to prevent contradictory hallucinations.
-- **Comprehensive LLM Evaluation Harness**: Automated benchmarking suite testing 6+ models (`GPT-4o`, `Qwen 2.5 7B/3B/0.5B`, `Mistral 7B`, `Phi-3.5`) across Latency, Token Cost, Schema Pass Rate, Keyword Compliance, and LLM-as-a-Judge Quality Scores.
-- **Production Backend & Monetization**: FastAPI with Supabase Auth (Email + Google OAuth), SlowAPI rate-limiting, and Stripe credit balance management.
+- **Step-by-step questionaires**: User answers questions one by one. Required questions can't be skipped, optional ones can. These answers are then used to generate the draft.
+- **Strict JSON format**: Model outputs clean JSON matching Pydantic schema `JobDescriptionDraft`. This is to guarantee the output always follow LinkedIn structures, minimize problems caused by hallucination (broken text, missing section, ...).
+- **Markdown Converter**: Turns JSON draft into Markdown with headres and bullet points/paragrah (depending on the question)
+- **Interactive edit (Refine feature)**: user can type custom feedback (e.g. "make it sound start-up like, add Docker into requirments, remove the last bulletpoints,..."). Model edits draft without losing existing facts.
+- **Preventing Confusion between versions (`draft_outdated`)**: If user changes erlier answers after making a draft, app blocks `refine` feature until user clicks `generate` again. Stop model from mixing old and new info  
+- **Production Backend**: FastAPI backend with Supabase login, SlowAPI limit, and Stripe credits system.
 
 ---
 
@@ -34,11 +34,12 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
   <img src="front_end\images\Workflow.drawio.png" alt="LinkedIn Job Description GenAI Architecture Workflow" width="100%"/>
 </p>
 
-1. **Intake & State Management (`JobAgent + SessionState`)**: User answers structured questions; required fields are validated, optional fields can be skipped or edited.
-2. **Draft Generation (`build_generation_prompt`)**: Takes `JobInfo`, tone guidelines, length constraints, and passes them to the configured LLM provider.
-3. **Validation & Rendering (`parse_json_markdown + MarkdownRenderer`)**: Parses and validates JSON against Pydantic schema, renders clean Markdown with standard headers (`## About the Role`, `## Responsibilities`, etc.).
-4. **Targeted Refinement (`build_refinement_prompt`)**: Ingests existing draft and natural language feedback, returning an updated complete draft.
-5. **Credit & Rate Control**: Deducts user credits atomically in Supabase and enforces IP-based rate limits before calling external LLMs.
+1. **Intake (JobAgent + SessionState)**: Collets required & optional info.
+2. **Draft Generation (build_generation_prompt)**: Prompts LLM to turn short notes into an actual job description.
+3. **Parsing & Validation (parse_job_description)**: Cleans markdown, parses JSON, validates against JobDescriptionDraft.
+4. **Markdown Rendering (MarkdownRenderer)**: Formats sections into # Title, ## About the Role, ## Responsibilities, ## Requirements, ## Benefits.
+5. **Refinement (`build_refinement_prompt`)**: Takes existing JSON draft + user edit request -> Returns updated full JSON draft.
+6. **Billing & Auth Check**: Deducts 1 credit in Supabse before running LLM. `Generate` and `Refine` wil be blocked when running out of credits.
 
 ---
 
@@ -210,6 +211,19 @@ Scores generated job descriptions on a 1–5 scale across 6 core criteria: **Spe
 * **Overall Quality**: `gpt-4o` and `gemini-2.5-flash-lite` scored highest across LinkedIn readiness and tone fidelity.
 * **Faithfulness & Specificity**: Larger models showed lower hallucination rates, preserving exact intake parameters without inventing false company perks or responsibilities.
 
+## Model Sequencing & Fallback Architecture
+
+Based on benchmark results, the application implements an automated model sequencing and fallback strategy defined in [`src/llm/models.py`](src/llm/models.py) and executed via [`src/llm/client.py`](src/llm/client.py):
+
+* **Primary Model (`google/gemini-2.5-flash-lite`)**:
+  * Chosen for its top overall performance: sub-2s generation latency, 100% schema and constraint pass rate, and high LinkedIn readiness scores at low token costs.
+* **Fallback Options**:
+  1. `openai/gpt-4o`: SOTA reasoning backup if the primary model encounters rate limits or provider downtime.
+  2. `openai/gpt-4o-mini`: Cost-efficient structured output backup.
+  3. `mistralai/mistral-small-24b-instruct-2501`: High-speed open-weights alternative.
+* **When It Is Used**:
+  * Executed inside `JobAgent.generate_draft()` and `JobAgent.refine_draft()` in [`src/agent/job_agent.py`](src/agent/job_agent.py).
+  * Automatically catches API exceptions, connection timeouts, or provider 5xx errors and seamlessly retries with the next model in the fallback list without user-facing disruption.
 
 ---
 
