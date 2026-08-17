@@ -101,63 +101,6 @@ python -m http.server 3000
 
 ---
 
-## API Reference
-
-### `POST /generate`
-Generate a fresh job description draft from `JobInfo`.
-
-**Request Body:**
-```json
-{
-  "company_name": "Xavier AI",
-  "role_title": "Senior ML Engineer",
-  "location": "San Francisco, CA",
-  "work_arrangement": "Hybrid",
-  "role_summary": "Lead computer vision and foundation model deployment.",
-  "responsibilities": ["Train vision models", "Optimize inference on GPU"],
-  "requirements": ["5+ years PyTorch", "Experience with TensorRT"],
-  "tone": "technical",
-  "target_length": "medium"
-}
-```
-
-**Response:**
-```json
-{
-  "draft": {
-    "title": "Senior ML Engineer - Xavier AI",
-    "about_company": "Xavier AI is building cutting-edge agentic workflows...",
-    "about_role": "We are seeking a Senior ML Engineer to lead vision model deployment...",
-    "responsibilities": [
-      "Train vision models and foundation architectures",
-      "Optimize low-latency inference on serverless GPUs"
-    ],
-    "requirements": [
-      "5+ years of production experience with PyTorch",
-      "Hands-on expertise with TensorRT and ONNX Runtime"
-    ],
-    "nice_to_have": [],
-    "benefits": [],
-    "location": "San Francisco, CA (Hybrid)",
-    "equal_opportunity": "Xavier AI is an Equal Opportunity Employer."
-  },
-  "markdown": "# Senior ML Engineer - Xavier AI\n\n## About the Role...",
-  "llm_result": {
-    "provider": "openai",
-    "model": "gpt-4o-mini",
-    "latency_seconds": 1.28,
-    "input_tokens": 620,
-    "output_tokens": 480,
-    "estimated_cost": 0.00038
-  }
-}
-```
-
-### `POST /refine`
-Submit natural language refinement requests on an active draft.
-
----
-
 ## Model Evaluation & Benchmarking
 
 The project features an automated benchmarking suite (`src/evaluation/runner.py`) and evaluation analysis notebook ([Model_Comparison_Analysis.ipynb](file:///C:/Users/alexh/Coding/LinkedIn_Job_Description_GenAI/src/evaluation/Model_Comparison_Analysis.ipynb)) testing models across structured scenarios.
@@ -167,19 +110,7 @@ The project features an automated benchmarking suite (`src/evaluation/runner.py`
 python -m src.evaluation.runner
 ```
 
-### 1. Schema Pass Rate & Constraint Adherence
-
-Evaluates whether models strictly adhere to JSON schema, required keywords (`must_include`), and avoid prohibited keywords (`must_not_include`).
-
-<p align="center">
-  <img src="front_end/images/eval_failures_pass_rates.png" alt="Failure Types Count by Model and Scenario" width="95%"/>
-</p>
-
-* **Top Performers**: `gpt-4o` and `gemini-2.5-flash-lite` passed all test cases with 0 schema or constraint violations.
-* **Minor Constraint Violations**: `mistral-small`, `qwen-2.5-72b`, `mixtral-8x22b`, and `command-r` had only 1 `must_not_include` failure.
-* **Scenario Difficulty**: Scenarios with minimal inputs (Required Fields only) produced higher failure rates across weaker models compared to rich, complex prompts, showing the importance of input density for maintaining JSON structure.
-
-### 2. Token Usage & Cost Efficiency
+### 1. Token Usage & Cost Efficiency
 
 Measures the trade-off between input/output token consumption and cost per generation.
 
@@ -190,7 +121,7 @@ Measures the trade-off between input/output token consumption and cost per gener
 * **Most Cost-Effective**: `llama-3.3-70b`, `mistral-small`, and `gpt-4o-mini` achieved the lowest cost profile while maintaining concise output length.
 * **Token Efficiency**: Models like `gpt-4o-mini` generated structured drafts without token inflation, keeping API latency and expenses minimal.
 
-### 3. Generation Latency
+### 2. Generation Latency
 
 Measures end-to-end response time (seconds) across all test scenarios.
 
@@ -200,17 +131,6 @@ Measures end-to-end response time (seconds) across all test scenarios.
 
 * Fast, lightweight models like `gemini-2.5-flash-lite` and `gpt-4o-mini` delivered sub-2s generation times suitable for interactive applications.
 * Larger open-weights models exhibited higher inference latency depending on endpoint hosting infrastructure.
-
-### 4. LLM-as-a-Judge Quality Scores
-
-Scores generated job descriptions on a 1–5 scale across 6 core criteria: **Specificity**, **Tone**, **Faithfulness**, **LinkedIn Readiness**, **Refinement Quality**, and **Overall Quality**.
-
-<p align="center">
-  <img src="front_end/images/eval_quality_scores.png" alt="LLM Judge Quality Scores by Dimension" width="95%"/>
-</p>
-
-* **Overall Quality**: `gpt-4o` and `gemini-2.5-flash-lite` scored highest across LinkedIn readiness and tone fidelity.
-* **Faithfulness & Specificity**: Larger models showed lower hallucination rates, preserving exact intake parameters without inventing false company perks or responsibilities.
 
 ## Model Sequencing & Fallback Architecture
 
