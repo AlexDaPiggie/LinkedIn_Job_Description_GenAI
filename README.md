@@ -114,13 +114,16 @@ Measures end-to-end response time (seconds) across all test scenarios.
 * Larger open-weights models exhibited higher inference latency depending on endpoint hosting infrastructure.
 
 ## Model Sequencing & Fallback Architecture
+
+Based on benchmark results, the application implements an automated model sequencing and fallback options:
+
 * **Primary Model (`google/gemini-2.5-flash-lite`)**:
   * Chosen for its top overall performance: sub-2s generation latency, 100% schema and constraint pass rate, and high LinkedIn readiness scores at low token costs.
 * **Fallback Options**:
   1. `openai/gpt-4o`: SOTA reasoning backup if the primary model encounters rate limits or provider downtime.
   2. `openai/gpt-4o-mini`: Cost-efficient structured output backup.
   3. `mistralai/mistral-small-24b-instruct-2501`: High-speed open-weights alternative.
-
+  
 ---
 
 ## Repository Structure
