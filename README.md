@@ -1,4 +1,4 @@
-# LinkedIn Job Description GenAI[Click to see the Website](https://linked-in-gen-ai.vercel.app/)
+# LinkedIn Job Description GenAI[(Click to see the Website)](https://linked-in-gen-ai.vercel.app/)
 
 End-to-end GenAI application that turns structured intake answers into polished, LinkedIn-ready job descriptions with real-time prompt refinement, multi-provider LLM benchmarking, credit billing, and user authentication.
 
