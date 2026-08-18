@@ -46,14 +46,19 @@ def verify_user_otp(email: str, token: str):
     if not response.user or not response.session:
         raise ValueError("Invalid or expired verification code")
     user_id = response.user.id
+    metadata_username = response.user.user_metadata.get("username") if response.user.user_metadata else None
     profile_check = supabase.table("profiles").select("*").eq("id", user_id).execute()
 
-    #if that user's account doesn't exist
+    # if that user's account doesn't exist
     if not profile_check.data:
         supabase.table("profiles").insert({
             "id": user_id,
             "email": email,
+            "username": metadata_username,
         }).execute()
+        current_username = metadata_username
+    else:
+        current_username = profile_check.data[0].get("username") or metadata_username
 
     credits = get_supabase_credits(user_id)
     return {
@@ -61,7 +66,7 @@ def verify_user_otp(email: str, token: str):
         "user": {
             "id": user_id,
             "email": response.user.email,
-            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
+            "username": current_username
         },
         "credits": credits,
     }
@@ -72,14 +77,22 @@ def get_current_user_profile (token: str):
     response = supabase.auth.get_user(token)
     if not response.user:
         raise ValueError("Invalid or expired session")
-    credits = get_supabase_credits(response.user.id)
+    user_id = response.user.id
+    profile_check = supabase.table("profiles").select("username").eq("id", user_id).execute()
+    username = None
+    if profile_check.data and profile_check.data[0].get("username"):
+        username = profile_check.data[0]["username"]
+    elif response.user.user_metadata:
+        username = response.user.user_metadata.get("username")
+
+    credits = get_supabase_credits(user_id)
 
     return {
         "access_token": token,
         "user": {
-            "id": response.user.id,
+            "id": user_id,
             "email": response.user.email,
-            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
+            "username": username
         },
         "credits": credits
     }
@@ -96,14 +109,22 @@ def login_user (email: str, password: str):
     if not response.user or not response.session:
         raise ValueError("The login process fails")
 
-    credits = get_supabase_credits(response.user.id)
+    user_id = response.user.id
+    profile_check = supabase.table("profiles").select("username").eq("id", user_id).execute()
+    username = None
+    if profile_check.data and profile_check.data[0].get("username"):
+        username = profile_check.data[0]["username"]
+    elif response.user.user_metadata:
+        username = response.user.user_metadata.get("username")
+
+    credits = get_supabase_credits(user_id)
 
     return {
         "access_token": response.session.access_token,
         "user": {
-            "id": response.user.id,
+            "id": user_id,
             "email": response.user.email,
-            "username": response.user.user_metadata.get("username") if response.user.user_metadata else None
+            "username": username
         },
         "credits": credits
     }

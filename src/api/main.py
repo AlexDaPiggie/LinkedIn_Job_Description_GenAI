@@ -12,7 +12,6 @@ from src.database.supabase_client import supabase
 from src.database.supabase_credits import deduct_supabase_credits, get_supabase_credits, add_supabase_credits
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from src.auth.google_verifier import verify_google_id_token
 from fastapi import Depends
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -40,70 +39,28 @@ from src.auth.supabase_service import (
     change_supabase_username,
 )
 
-class GoogleLoginRequest(BaseModel):
-    token: str
-
-#INitializing backend config
+# Initializing backend config
 app = FastAPI(
-    title = 'LinkedIn Job Description Generator',
-    version = '0.1.0',
+    title='LinkedIn Job Description Generator',
+    version='0.1.0',
 )
 
-#Initializing stripe api key
+# Initializing stripe api key
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
-#This function is to get the user_id from the authentication
-def get_user_id_from_auth (authorization: str = Header (None)): 
+# This function is to get the user_id from the authentication
+def get_user_id_from_auth(authorization: str = Header(None)): 
     if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException (
-            status_code= 401,
-            detail = "The token is either missing or invalid"
+        raise HTTPException(
+            status_code=401,
+            detail="The token is either missing or invalid"
         )
     token = authorization.split(" ")[1]
     try: 
         user_heap = supabase.auth.get_user(token)
         return user_heap.user.id
-
-    except Exception as e:
-        raise HTTPException(status_code=401, detail = "Unauthorized")
-
-#Intializing a placeholder for Goolge token
-@app.post("/auth/google")
-def google_login(
-    payload: GoogleLoginRequest,
-):
-    try:
-        email = verify_google_id_token(payload.token)
-        result = supabase.table("profiles").select("*").eq("email", email).execute()
-
-        if not result.data:
-            import secrets
-            dummy_password = secrets.token_urlsafe(16)
-            resp = supabase.auth.sign_up({
-                "email": email,
-                "password": dummy_password,
-            })
-            if not resp.user:
-                raise ValueError("Google user registration failed")
-            user_id = resp.user.id
-
-            supabase.table("profiles").insert ({
-                "id": user_id,
-                "email": email,
-            }).execute()
-
-        else:
-            user_id = result.data[0]["id"]
-
-        credits = get_supabase_credits(user_id)
-        return {
-            "status": "success",
-            "email": email,
-            "credits": credits
-        }
-            
-    except ValueError as exc:
-        raise HTTPException(status_code=401, detail = str(exc))
+    except Exception:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 #Intializing credits payment config
 @app.post ("/create-checkout-session")

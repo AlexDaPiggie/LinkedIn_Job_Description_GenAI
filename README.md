@@ -136,7 +136,6 @@ Based on benchmark results, the application implements an automated model sequen
 
 ```
 LinkedIn_Job_Description_GenAI/
-├── docs/                       # Architecture diagrams & documentation
 ├── eval_results/               # Automated benchmark CSVs & analysis notebooks
 ├── front_end/                  # Frontend UI (HTML, CSS, JS)
 ├── src/
@@ -150,7 +149,7 @@ LinkedIn_Job_Description_GenAI/
 │   │   ├── main.py             # FastAPI entrypoint, auth, stripe & endpoints
 │   │   ├── schemas.py          # Request / Response Pydantic models
 │   │   └── services.py         # Business logic connectors
-│   ├── auth/                   # Supabase authentication & Google OAuth verifier
+│   ├── auth/                   # Supabase authentication & OTP service
 │   ├── database/               # Supabase PostgreSQL client & credit queries
 │   ├── evaluation/
 │   │   ├── metrics.py          # Schema validation, cost calculation & judge

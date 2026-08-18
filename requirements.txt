@@ -5,7 +5,6 @@ supabase
 python-dotenv
 slowapi
 sqlalchemy
-google-auth
 requests
 openai
 google-genai
