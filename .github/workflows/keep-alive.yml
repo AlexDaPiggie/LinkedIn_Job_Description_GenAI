@@ -10,8 +10,14 @@ jobs:
   ping-supabase:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase REST API
+      - name: Ping Supabase
         run: |
-          curl -f -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+          # Strip trailing slash from URL if present
+          URL="${{ secrets.SUPABASE_URL }}"
+          URL="${URL%/}"
+          
+          echo "Pinging Supabase at $URL..."
+          curl -f -s -S -o /dev/null -w "HTTP Status: %{http_code}\n" \
+            -X GET "$URL/rest/v1/profiles?select=id&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
