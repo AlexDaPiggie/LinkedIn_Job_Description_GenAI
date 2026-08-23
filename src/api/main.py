@@ -45,6 +45,11 @@ app = FastAPI(
     version='0.1.0',
 )
 
+# add root to keep the session alive 
+@app.get("/")
+def root():
+    """THis function is to create a root for uptime robot to keep the backend render session alive"""
+    return {"status": "ok", "message": "api is running,"}
 # Initializing stripe api key
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
