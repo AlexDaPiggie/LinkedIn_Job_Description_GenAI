@@ -228,7 +228,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/health', methods = [
+@app.api_route('/health', methods = [
     'GET',
     'HEAD',
 ])
