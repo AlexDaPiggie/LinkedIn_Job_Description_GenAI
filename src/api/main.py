@@ -228,7 +228,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/health')
+@app.get('/health', methods = [
+    'GET',
+    'HEAD',
+])
 def health(): 
     return {'status': 'ok'}
 
