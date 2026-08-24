@@ -1290,10 +1290,13 @@ navLinks.forEach(link => {
     pageViews.forEach(view => view.classList.toggle("hidden", view.id !== target));
 
     requestAnimationFrame(() => {
+      const isMobile = window.matchMedia("(max-width: 720px)").matches;
       if (target === "homeView") {
         window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (target === "authorsView") {
+      } else if (target === "authorsView" && !isMobile) {
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
   });
