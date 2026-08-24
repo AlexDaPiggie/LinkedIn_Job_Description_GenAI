@@ -1169,50 +1169,11 @@ button:disabled {
   }
 
   .question-rail {
-    position: sticky;
-    top: 8px;
-    width: auto;
-    max-height: none;
-    min-height: 0;
-    margin-bottom: 10px;
-    padding: 8px;
-    border-left: 1px solid rgba(255, 255, 255, 0.86);
-    border-radius: 10px;
-    overflow-x: auto;
-  }
-
-  .question-rail::before {
     display: none;
-  }
-
-  .rail-hint {
-    display: none;
-  }
-
-  .question-rail:hover,
-  .rail-pinned .question-rail {
-    width: auto;
-    padding: 8px;
   }
 
   .draft-button-group {
     justify-content: start;
-  }
-
-  .rail-toggle,
-  .rail-list {
-    opacity: 1;
-    transform: none;
-  }
-
-  .rail-toggle {
-    width: auto;
-    padding: 0 12px;
-  }
-
-  .rail-list {
-    display: flex;
-    min-width: max-content;
   }
 
   .question-summary {

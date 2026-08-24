@@ -1286,12 +1286,16 @@ const pageViews = document.querySelectorAll(".page-view");
 navLinks.forEach(link => {
   link.addEventListener("click", () => {
     const target = link.dataset.target;
-    
-    // Toggle active link class
     navLinks.forEach(l => l.classList.toggle("active", l === link));
-    
-    // Toggle page views display
     pageViews.forEach(view => view.classList.toggle("hidden", view.id !== target));
+
+    requestAnimationFrame(() => {
+      if (target === "homeView") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (target === "authorsView") {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+      }
+    });
   });
 });
 
