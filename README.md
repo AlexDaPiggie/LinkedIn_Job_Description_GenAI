@@ -42,7 +42,6 @@ Special thanks to my friend [Huy Phan, a.k.a. Hertzy](https://hertzy-da-poet.git
 5. **Refinement (`build_refinement_prompt`)**: Takes existing JSON draft + user edit request -> Returns updated full JSON draft.
 6. **Billing & Auth Check**: Deducts 1 credit in Supabase before running LLM. Blocks if out of credits or rate-limited.
 
-hello
 
 ---
 
