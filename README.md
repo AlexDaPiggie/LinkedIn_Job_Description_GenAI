@@ -1,8 +1,8 @@
-# [Linked In GenAI(Click to see the Website)](https://linked-in-gen-ai.vercel.app/)
+# [Linked In GenAI(Click to see the Website)](https://www.linkedingenai.tech)
 ## About
 - An end-to-end GenAI web-app to generate LinkedIn-ready Job Description Forms from user's descriptions. 
 - Better than most free-tier AI models, our app guarantees the output with professional LinkedIn Layout, with user-friendly interface, and very detailed output.
-- Different from other apps on the market which just generate, [linked-in-gen-ai](https://linked-in-gen-ai.vercel.app/) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
+- Different from other apps on the market which just generate, [linked-in-gen-ai](https://www.linkedingenai.tech) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
 - The App supports EXPORT Word file or COPY & PASTE straight to LinkedIn
 - Granting 30 free credits to every new user, and could be purchased more with only 1$/30 credits, we aspire to faciliate HR's as much as possible.
 
