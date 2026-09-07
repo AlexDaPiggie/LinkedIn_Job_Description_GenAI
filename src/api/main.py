@@ -239,7 +239,11 @@ app.add_middleware(
     'HEAD',
 ])
 def health(): 
-    return {'status': 'ok'}
+    try:
+        supabase.table("profiles").select("id").limit(1).execute()
+        return {'status': 'ok', 'database': 'connected'}
+    except Exception as e:
+        return {'status': 'ok', 'database_error': str(e)}
 
 @app.get ('/questions')
 def get_questions():
