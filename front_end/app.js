@@ -1302,13 +1302,18 @@ async function loadQuestions() {
 function clearAnswers() {
   state.answers = {};
   state.missingRequired.clear();
+  state.currentDraft = null;
+  state.currentMarkdown = "";
+  state.draftOutdated = false;
   try {
     localStorage.removeItem(ANSWERS_STORAGE_KEY);
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    localStorage.removeItem(MARKDOWN_STORAGE_KEY);
   } catch (err) {
-    console.warn("Could not clear answers from localStorage:", err);
+    console.warn("Could not clear workspace from localStorage:", err);
   }
   renderAll();
-  setMessage("Answers cleared.", "info");
+  setMessage("Answers and draft cleared.", "info");
 }
 
 /*
@@ -1478,6 +1483,7 @@ elements.railToggle.addEventListener("click", () => {
   localStorage.setItem(RAIL_PIN_STORAGE_KEY, String(state.railPinned));
   renderRailPin();
 });
+elements.clearButton?.addEventListener("click", clearAnswers);
 elements.generateButton.addEventListener("click", generateDraft);
 elements.refineButton.addEventListener("click", refineDraft);
 elements.copyButton.addEventListener("click", copyDraft);
