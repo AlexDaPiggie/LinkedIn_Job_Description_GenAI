@@ -12,3 +12,6 @@ huggingface_hub
 transformers
 pydantic
 python-multipart
+bcrypt
+pypdf
+python-docx
