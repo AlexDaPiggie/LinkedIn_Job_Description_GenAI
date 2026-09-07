@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=settings-v12" />
+    <link rel="stylesheet" href="styles.css?v=settings-v30" />
     <style>
       /* --- SPA Navigation Bar --- */
       .nav-bar {
@@ -316,12 +316,20 @@
       </div>
       <button
         id="railToggle"
-        class="rail-toggle"
+        class="rail-icon-toggle"
         type="button"
-        aria-pressed="false"
-        title="Keep question numbers visible"
+        aria-label="Toggle navigation pin"
+        title="Unpin / Auto-hide"
       >
-        <span class="rail-toggle-text">Keep open</span>
+        <svg class="icon-pin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <path d="M5 17h14v-2l-2-2V5a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8l-2 2v2z"></path>
+        </svg>
+        <svg class="icon-pin-off" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="2" y1="2" x2="22" y2="22"></line>
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <path d="M9 9v3l-2 2v2h8m2-2l-2-2V5a1 1 0 0 0-1-1H9"></path>
+        </svg>
       </button>
       <div id="questionRail" class="rail-list"></div>
     </nav>
@@ -359,23 +367,6 @@
                 Buy more credits
               </button>
             </div>
-
-            <div class="doc-upload-inline" id="docUploadBox">
-              <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" style="display: none;" />
-              <div class="doc-upload-content" id="docUploadContent">
-                <svg class="doc-upload-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="12" y1="18" x2="12" y2="12"></line>
-                  <line x1="9" y1="15" x2="15" y2="15"></line>
-                </svg>
-                <span class="doc-upload-text-link">Upload Job Spec or Brief<span class="doc-upload-types">(.pdf, .docx, .txt)</span></span>
-              </div>
-              <div class="doc-upload-status hidden" id="docUploadStatus">
-                <span class="doc-spinner"></span>
-                <span id="docUploadStatusText">Extracting with Gemini...</span>
-              </div>
-            </div>
           </div>
 
           <div class="preferences-bar">
@@ -406,7 +397,13 @@
                   class="eeo-info-badge"
                   id="eeoInfoBtn"
                   aria-label="What is EEO?"
-                >!</button>
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </button>
                 <div class="eeo-tooltip-card" id="eeoTooltip" role="tooltip">
                   <strong>Equal Employment Opportunity (EEO)</strong>
                   <p>A statement declaring that hiring is free from discrimination based on race, gender, age, disability, or background.</p>
@@ -435,6 +432,29 @@
               <button id="clearButton" class="secondary-button" type="button">
                 Clear answers
               </button>
+            </div>
+
+            <div class="doc-upload-row">
+              <span class="doc-upload-prompt">Have an existing Job Description?</span>
+              <div class="doc-upload-inline" id="docUploadBox" role="button" tabindex="0">
+                <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" style="display: none;" />
+                <div class="doc-upload-content" id="docUploadContent">
+                  <svg class="doc-upload-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                  </svg>
+                  <span class="doc-upload-text-link">Upload file & Auto-fill</span>
+                </div>
+                <div class="doc-upload-status hidden" id="docUploadStatus">
+                  <span class="doc-spinner"></span>
+                  <span id="docUploadStatusText">Extracting with Gemini...</span>
+                </div>
+                <div class="doc-upload-tooltip" role="tooltip">
+                  AI model parses your Job Description file and answers the questions below automatically
+                </div>
+              </div>
             </div>
 
             <div

@@ -121,7 +121,7 @@ const state = {
   currentDraft: null,
   currentMarkdown: "",
   draftOutdated: false,
-  railPinned: localStorage.getItem(RAIL_PIN_STORAGE_KEY) === "true",
+  railPinned: localStorage.getItem(RAIL_PIN_STORAGE_KEY) !== "false",
   authMode: "login",
   accessToken: localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || "",
   user: null,
@@ -462,10 +462,10 @@ function renderQuestions() {
 
 function renderRailPin() {
   document.body.classList.toggle("rail-pinned", state.railPinned);
-  elements.railToggle.setAttribute("aria-pressed", String(state.railPinned));
-  elements.railToggle.title = state.railPinned ? "Hide question numbers until hover" : "Keep question numbers visible";
-  const label = elements.railToggle.querySelector(".rail-toggle-text");
-  if (label) label.textContent = state.railPinned ? "Auto hide" : "Keep open";
+  if (elements.railToggle) {
+    elements.railToggle.setAttribute("aria-pressed", String(state.railPinned));
+    elements.railToggle.title = state.railPinned ? "Unpin / Auto-hide" : "Pin open";
+  }
 }
 
 function questionMetaText(question, value, isMissing) {
