@@ -138,5 +138,11 @@ MODELS_TO_EVALUATE = [
         "model_id": "anthropic/claude-3-haiku",
         "purpose": "Lightweight, highly accurate structured JSON generator",
     },
+    {
+        "name": "openrouter_phi_4",
+        "provider": "openrouter",
+        "model_id": "microsoft/phi-4",
+        "purpose": "Microsoft 14B state-of-the-art small language model with high reasoning ability",
+    },
 ]
 

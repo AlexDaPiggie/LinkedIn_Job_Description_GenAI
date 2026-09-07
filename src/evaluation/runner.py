@@ -43,13 +43,64 @@ def run_single_evaluation (
 
     return rows
 
-def run_benchmark (output_dir: str = "eval_results"):
-    rows: list[dict] = []
+def run_benchmark(
+    output_dir: str = "eval_results",
+    target_model: str | None = None,
+    skip_existing: bool = True,
+):
+    path = Path(output_dir)
+    json_path = path / "model_comparison.json"
+    existing_rows: list[dict] = []
+    evaluated_model_ids: set[str] = set()
+
+    if json_path.exists():
+        try:
+            existing_rows = json.loads(json_path.read_text(encoding="utf-8"))
+            evaluated_model_ids = {row["model_id"] for row in existing_rows}
+        except Exception as e:
+            print(f"Warning: Could not read existing results: {e}")
+
+    # Determine which models to run
+    models_to_run = []
+    target_clean = target_model.strip().lower() if target_model else None
+
     for model_config in MODELS_TO_EVALUATE:
+        m_id = model_config["model_id"]
+        m_name = model_config["name"]
+
+        # If user explicitly specifies a model via --model
+        if target_clean:
+            if target_clean == m_id.lower() or target_clean == m_name.lower():
+                models_to_run.append(model_config)
+            continue
+
+        # Default run: skip already evaluated models
+        if skip_existing and m_id in evaluated_model_ids:
+            print(f"Skipping already evaluated model: {m_id}")
+            continue
+        models_to_run.append(model_config)
+
+    if not models_to_run:
+        if target_model:
+            print(f"No matching model found for: {target_model}")
+        else:
+            print("No new models to evaluate.")
+        return existing_rows
+
+    # If re-evaluating specific model, remove previous results of that model from existing_rows
+    if target_clean:
+        target_ids = {m["model_id"] for m in models_to_run}
+        existing_rows = [row for row in existing_rows if row.get("model_id") not in target_ids]
+
+    new_rows: list[dict] = []
+    for model_config in models_to_run:
+        print(f"Running evaluation for: {model_config['name']} ({model_config['model_id']})")
         for scenario in EVALUATION_SCENARIOS:
-            rows.extend(run_single_evaluation(model_config, scenario))
-    _write_results(rows, output_dir)
-    return rows
+            new_rows.extend(run_single_evaluation(model_config, scenario))
+
+    combined_rows = existing_rows + new_rows
+    _write_results(combined_rows, output_dir)
+    return combined_rows
 
 # add new rows to the .csv file
 def _build_row(
@@ -151,4 +202,15 @@ def _write_results(rows: list[dict], output_dir: str):
             writer.writerows(rows)
 
 if __name__ == "__main__":
-    run_benchmark()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run LLM benchmark for job description generation.")
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Specific model ID or name to evaluate or re-evaluate (e.g. 'microsoft/phi-4' or 'openai/gpt-4o-mini')",
+    )
+    args = parser.parse_args()
+
+    run_benchmark(target_model=args.model)

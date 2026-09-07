@@ -179,3 +179,7 @@ openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_various_f
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_various_fields_sparse,various_fields,refine,False,False,False,False,False,,,,,,,,,,,Invalid job description JSON: Expecting value: line 1 column 1 (char 0)
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_complex_edge_case,complex_edge_case,generate,True,True,True,True,True,6.231541199987987,812,636,0.000671,4.2,4.3,4.5,4.0,3.8,4.16,
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_complex_edge_case,complex_edge_case,refine,True,True,True,True,True,6.1250195000029635,1145,744,0.000824,4.0,4.7,4.2,4.3,3.0,4.04,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_only_required_fields,required_only,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_all_fields,all_fields,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_various_fields_sparse,various_fields,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_complex_edge_case,complex_edge_case,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"

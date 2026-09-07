@@ -7,4 +7,4 @@ src/llm/__pycache__
 *.pyc
 .pytest_cache
 __pycache__
-
+.env

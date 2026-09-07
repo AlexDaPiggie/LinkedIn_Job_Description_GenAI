@@ -2,6 +2,9 @@ const API_BASE_URL = "https://linkedin-job-generator-api.onrender.com";
 // const API_BASE_URL = "http://127.0.0.1:8000";
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
+const ANSWERS_STORAGE_KEY = "linkedinJobGeneratorAnswers";
+const DRAFT_STORAGE_KEY = "linkedinJobGeneratorDraft";
+const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
 
 const fallbackQuestions = [
   { question_name: "company_name", question_text: "What is your company name?", required: true, answer_type: "text" },
@@ -179,8 +182,9 @@ const elements = {
   questionRail: document.querySelector("#questionRail"),
   railToggle: document.querySelector("#railToggle"),
   questionList: document.querySelector("#questionList"),
-  sampleButton: document.querySelector("#sampleButton"),
-  sampleOutputButton: document.querySelector("#sampleOutputButton"),
+  // sampleButton: document.querySelector("#sampleButton"),
+  // sampleOutputButton: document.querySelector("#sampleOutputButton"),
+  clearButton: document.querySelector("#clearButton"),
   generateButton: document.querySelector("#generateButton"),
   draftWarning: document.querySelector("#draftWarning"),
   messageBox: document.querySelector("#messageBox"),
@@ -256,6 +260,11 @@ function updateAnswer(field, value) {
   state.answers[field] = value;
   if (value.trim()) state.missingRequired.delete(field);
   if (state.currentDraft) state.draftOutdated = true;
+  try {
+    localStorage.setItem(ANSWERS_STORAGE_KEY, JSON.stringify(state.answers));
+  } catch (err) {
+    console.warn("Could not save answers to localStorage:", err);
+  }
   renderProgress();
   renderDraft();
   renderQuestionStatus(field);
@@ -795,6 +804,12 @@ async function generateDraft() {
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        try {
+          localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
+          localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
+        } catch (err) {
+          console.warn("Could not save draft to localStorage:", err);
+        }
         if (typeof data.credits_remaining === "number") {
           state.credits = data.credits_remaining;
           renderAuth();
@@ -854,6 +869,12 @@ async function refineDraft() {
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        try {
+          localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
+          localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
+        } catch (err) {
+          console.warn("Could not save draft to localStorage:", err);
+        }
         if (typeof data.credits_remaining === "number") {
           state.credits = data.credits_remaining;
           renderAuth();
@@ -1178,10 +1199,40 @@ async function loadQuestions() {
     state.questions = fallbackQuestions;
     setMessage("");
   }
+
+  // Restore saved answers from localStorage
+  try {
+    const savedAnswers = localStorage.getItem(ANSWERS_STORAGE_KEY);
+    if (savedAnswers) {
+      state.answers = JSON.parse(savedAnswers);
+    }
+    const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+    const savedMarkdown = localStorage.getItem(MARKDOWN_STORAGE_KEY);
+    if (savedDraft && savedMarkdown) {
+      state.currentDraft = JSON.parse(savedDraft);
+      state.currentMarkdown = savedMarkdown;
+    }
+  } catch (err) {
+    console.warn("Could not load from localStorage:", err);
+  }
+
   state.openQuestion = state.questions[0]?.question_name || null;
   renderAll();
 }
 
+function clearAnswers() {
+  state.answers = {};
+  state.missingRequired.clear();
+  try {
+    localStorage.removeItem(ANSWERS_STORAGE_KEY);
+  } catch (err) {
+    console.warn("Could not clear answers from localStorage:", err);
+  }
+  renderAll();
+  setMessage("Answers cleared.", "info");
+}
+
+/*
 function loadSample() {
   state.answers = { ...sampleAnswers };
   state.missingRequired.clear();
@@ -1197,6 +1248,7 @@ function loadSampleOutput() {
   renderDraft();
   setMessage("Sample draft loaded.", "info");
 }
+*/
 
 async function buyCredits(event) {
   event.preventDefault();
@@ -1233,8 +1285,9 @@ async function payCredits(event) {
   }
 }
 
-elements.sampleButton.addEventListener("click", loadSample);
-elements.sampleOutputButton.addEventListener("click", loadSampleOutput);
+// elements.sampleButton?.addEventListener("click", loadSample);
+// elements.sampleOutputButton?.addEventListener("click", loadSampleOutput);
+elements.clearButton?.addEventListener("click", clearAnswers);
 elements.signInBtn.addEventListener("click", openModal);
 elements.closeModalBtn.addEventListener("click", closeModal);
 elements.modalToggleModeBtn.addEventListener("click", toggleAuthMode);

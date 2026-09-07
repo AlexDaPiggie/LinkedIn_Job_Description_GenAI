@@ -11,6 +11,7 @@ MODEL_PRICING = {
     "qwen/qwen-2.5-72b-instruct": (0.35, 0.40),
     "mistralai/mistral-small-24b-instruct-2501": (0.10, 0.30),
     "anthropic/claude-3.5-haiku": (0.80, 4.00),
+    "microsoft/phi-4": (0.07, 0.14),
 }
 
 #This functioni is for calculating the cose, knowing the output token and the price

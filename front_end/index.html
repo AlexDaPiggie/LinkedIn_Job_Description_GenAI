@@ -360,8 +360,13 @@
                 <p class="eyebrow">Intake</p>
                 <h2>Answer the questions</h2>
               </div>
+              <!--
               <button id="sampleButton" class="secondary-button" type="button">
                 Fill sample
+              </button>
+              -->
+              <button id="clearButton" class="secondary-button" type="button">
+                Clear answers
               </button>
             </div>
 
@@ -386,6 +391,7 @@
                   <h2>Generate the job description</h2>
                 </div>
                 <div class="draft-button-group">
+                  <!--
                   <button
                     id="sampleOutputButton"
                     class="secondary-button sample-output-button"
@@ -393,6 +399,7 @@
                   >
                     Sample output
                   </button>
+                  -->
                   <button
                     id="generateButton"
                     class="primary-button generate-button"
@@ -779,6 +786,6 @@
     </div>
 
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js?v=stream-v1"></script>
+    <script src="app.js?v=storage-v1"></script>
   </body>
 </html>
