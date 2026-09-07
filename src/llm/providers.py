@@ -220,3 +220,81 @@ def generate_with_huggingface (prompt: str, model: str):
         estimated_cost=None,
     )
 
+
+def stream_with_openrouter(prompt: str, model: str):
+    from openai import OpenAI
+    load_dotenv()
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        raise ValueError("The API Key for OpenRouter is not available")
+    client = OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
+    stream = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        stream=True,
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content if chunk.choices else ""
+        if delta:
+            yield delta
+
+
+def stream_with_openai(prompt: str, model: str):
+    load_dotenv()
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    stream = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        stream=True,
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content if chunk.choices else ""
+        if delta:
+            yield delta
+
+
+def stream_with_gemini(prompt: str, model: str = "gemini-2.0-flash"):
+    from google import genai
+    load_dotenv()
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    response = client.models.generate_content_stream(
+        model=model,
+        contents=prompt,
+    )
+    for chunk in response:
+        if chunk.text:
+            yield chunk.text
+
+
+def stream_with_deepseek(prompt: str, model: str = "deepseek-chat"):
+    load_dotenv()
+    client = OpenAI(
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
+        base_url="https://api.deepseek.com",
+    )
+    stream = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        stream=True,
+    )
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content if chunk.choices else ""
+        if delta:
+            yield delta
+
+
+def stream_with_huggingface(prompt: str, model: str):
+    load_dotenv()
+    client = InferenceClient(token=os.getenv("HF_TOKEN"), timeout=600)
+    for chunk in client.chat_completion(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=2500,
+        temperature=0.3,
+        stream=True,
+    ):
+        delta = chunk.choices[0].delta.content if chunk.choices else ""
+        if delta:
+            yield delta
+
+

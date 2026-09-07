@@ -4,10 +4,16 @@ from src.api.schemas import AuthLoginRequest, AuthSignupRequest, AuthResponse
 from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, StreamingResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
-from src.api.services import generate_job_description, list_questions, refine_job_description
+from src.api.services import (
+    generate_job_description,
+    list_questions,
+    refine_job_description,
+    stream_generate_job_description,
+    stream_refine_job_description,
+)
 from src.storage.markdown_files import load_markdown
 from src.database.supabase_client import supabase
 from src.database.supabase_credits import deduct_supabase_credits, get_supabase_credits, add_supabase_credits
@@ -240,12 +246,11 @@ def get_questions():
     response_model = list[QuestionResponse]
     return list_questions()
 
-@app.post ('/generate', response_model=GenerateResponse)
+@app.post ('/generate')
 def generate (
     payload: GenerateRequest,
     user_id: str = Depends(get_user_id_from_auth),
 ): 
-
     #deduct user's credits by 1
     if not deduct_supabase_credits(user_id):
         raise HTTPException(
@@ -253,19 +258,24 @@ def generate (
             detail = "Insufficient credits"
         )
     
-    try:
-        resp = generate_job_description(payload)
-        credits = get_supabase_credits(user_id)
-        return GenerateResponse(
-            draft=resp.draft,
-            markdown=resp.markdown,
-            credits_remaining=credits
-        )
-    except ValueError as exc:
-        raise HTTPException(status_code=422, detail = str(exc)) from exc
-    
-@app.post ('/refine', response_model = GenerateResponse)
+    def event_stream():
+        import json as pyjson
+        try:
+            credits = get_supabase_credits(user_id)
+            for item in stream_generate_job_description(payload):
+                if item.get("event") == "done":
+                    item["credits_remaining"] = credits
+                yield f"data: {pyjson.dumps(item)}\n\n"
+        except Exception as exc:
+            yield f"data: {pyjson.dumps({'event': 'error', 'detail': str(exc)})}\n\n"
 
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
+    )
+    
+@app.post ('/refine')
 def refine (
     payload: RefineRequest,
     user_id: str = Depends(get_user_id_from_auth),
@@ -276,16 +286,22 @@ def refine (
     if not payload.user_request.strip():
         raise HTTPException(status_code=422, detail = 'user_request is required')
     
-    try: 
-        resp = refine_job_description(payload)
-        credits = get_supabase_credits(user_id)
-        return GenerateResponse(
-            draft=resp.draft,
-            markdown=resp.markdown,
-            credits_remaining=credits
-        )
-    except ValueError as exc:
-        raise HTTPException(status_code=422, detail = str(exc)) from exc
+    def event_stream():
+        import json as pyjson
+        try:
+            credits = get_supabase_credits(user_id)
+            for item in stream_refine_job_description(payload):
+                if item.get("event") == "done":
+                    item["credits_remaining"] = credits
+                yield f"data: {pyjson.dumps(item)}\n\n"
+        except Exception as exc:
+            yield f"data: {pyjson.dumps({'event': 'error', 'detail': str(exc)})}\n\n"
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
+    )
     
 @app.get ("/markdown/{filename}", response_class=PlainTextResponse)
 def get_markdown (filename: str): 

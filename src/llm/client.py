@@ -1,6 +1,17 @@
-from collections.abc import Callable
+from collections.abc import Callable, Generator
 from pydantic import BaseModel
-from src.llm.providers import generate_with_huggingface, generate_with_openai, generate_with_gemini, generate_with_deepseek, generate_with_openrouter
+from src.llm.providers import (
+    generate_with_huggingface,
+    generate_with_openai,
+    generate_with_gemini,
+    generate_with_deepseek,
+    generate_with_openrouter,
+    stream_with_openrouter,
+    stream_with_openai,
+    stream_with_gemini,
+    stream_with_deepseek,
+    stream_with_huggingface,
+)
 
 '''
 Structured container for the result of one LLM call
@@ -22,6 +33,7 @@ This support things like:
 * generate_with_huggingface
 '''
 ProviderFunction = Callable[[str, str], LLMResult]
+StreamProviderFunction = Callable[[str, str], Generator[str, None, None]]
 
 def generate_text (
     prompt: str,
@@ -60,3 +72,41 @@ def generate_text (
                     continue
 
     raise last_error or RuntimeError ("All models are not available")
+
+
+def stream_text(
+    prompt: str,
+    provider: str,
+    model: str,
+    stream_functions: dict[str, StreamProviderFunction] | None = None,
+    fallback_models: list[str] | None = None
+) -> Generator[str, None, None]:
+    streams = stream_functions or {
+        "openrouter": stream_with_openrouter,
+        "openai": stream_with_openai,
+        "huggingface": stream_with_huggingface,
+        "gemini": stream_with_gemini,
+        "deepseek": stream_with_deepseek,
+    }
+
+    if provider not in streams:
+        raise ValueError(f"Unsupported LLM provider: {provider}")
+
+    models_to_try = [model] + (fallback_models or [])
+    last_error = None
+
+    for candidate in models_to_try:
+        try:
+            gen = streams[provider](prompt, candidate)
+            # Peek at first chunk to make sure the stream successfully initialized
+            first_chunk = next(gen)
+            yield first_chunk
+            for chunk in gen:
+                yield chunk
+            return
+        except Exception as e:
+            last_error = e
+            continue
+
+    raise last_error or RuntimeError("All models failed during streaming")
+

@@ -49,3 +49,31 @@ def refine_job_description(request: RefineRequest):
         draft = result.draft,
         markdown = result.markdown,
     )
+
+
+def stream_generate_job_description(request: GenerateRequest):
+    agent = JobAgent()
+    for item in agent.stream_generate_draft(
+        job_info=request.job_info,
+        provider=request.provider,
+        model=request.model,
+        skipped_fields=request.skipped_fields,
+    ):
+        if item.get("event") == "done" and "markdown" in item:
+            save_markdown("latest_job_description.md", item["markdown"])
+        yield item
+
+
+def stream_refine_job_description(request: RefineRequest):
+    agent = JobAgent()
+    for item in agent.stream_refine_draft(
+        company_name=request.company_name,
+        current_draft=request.current_draft,
+        user_request=request.user_request,
+        provider=request.provider,
+        model=request.model,
+        skipped_fields=request.skipped_fields,
+    ):
+        if item.get("event") == "done" and "markdown" in item:
+            save_markdown("latest_job_refinement.md", item["markdown"])
+        yield item

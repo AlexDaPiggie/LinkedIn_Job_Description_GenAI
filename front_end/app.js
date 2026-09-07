@@ -502,6 +502,63 @@ async function callApi(path, body = null) {
   return data;
 }
 
+async function streamApi(path, body, onChunk, onDone) {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+  if (state.accessToken) {
+    headers["Authorization"] = `Bearer ${state.accessToken}`;
+  }
+  const response = await fetch(apiUrl(path), {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    let errData;
+    try {
+      errData = await response.json();
+    } catch {
+      errData = { detail: response.statusText };
+    }
+    throw new Error(formatErrorDetail(errData.detail || errData));
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    const lines = buffer.split("\n\n");
+    buffer = lines.pop(); // Retain incomplete line
+
+    for (const block of lines) {
+      const line = block.trim();
+      if (!line.startsWith("data:")) continue;
+      const jsonStr = line.replace(/^data:\s*/, "");
+      try {
+        const payload = JSON.parse(jsonStr);
+        if (payload.event === "chunk") {
+          onChunk(payload.data);
+        } else if (payload.event === "done") {
+          onDone(payload);
+        } else if (payload.event === "error") {
+          throw new Error(payload.detail || "Streaming error occurred");
+        }
+      } catch (err) {
+        if (err.message && !err.message.includes("Unexpected token")) {
+          throw err;
+        }
+      }
+    }
+  }
+}
+
 async function getApi(path) {
   const headers = {};
   if (state.accessToken) headers.Authorization = `Bearer ${state.accessToken}`;
@@ -715,22 +772,41 @@ async function generateDraft() {
   state.missingRequired.clear();
   renderQuestions();
   const restore = setLoading(elements.generateButton, "Generating...");
-  setMessage("Generating your draft. This can take a moment.", "info");
+  setMessage("Generating your draft in real-time...", "info");
+
+  elements.markdownPreview.classList.remove("empty");
+  elements.markdownPreview.innerHTML = "<div class='streaming-indicator' style='color: var(--ink-soft); font-style: italic;'>Starting draft generation...</div>";
+
+  let streamedRaw = "";
+
   try {
-    const data = await callApi("/generate", {
-      job_info: buildJobInfo(),
-      skipped_fields: getSkippedFields(),
-    });
-    state.currentDraft = data.draft;
-    state.currentMarkdown = data.markdown;
-    if (typeof data.credits_remaining === "number") {
-      state.credits = data.credits_remaining;
-      renderAuth();
-    }
-    state.draftOutdated = false;
-    setMessage("");
+    await streamApi(
+      "/generate",
+      {
+        job_info: buildJobInfo(),
+        skipped_fields: getSkippedFields(),
+      },
+      (chunk) => {
+        streamedRaw += chunk;
+        // Strip markdown code fences if present to show clean stream preview
+        const cleaned = streamedRaw.replace(/^```(?:json)?\s*/i, "");
+        elements.markdownPreview.textContent = cleaned;
+      },
+      (data) => {
+        state.currentDraft = data.draft;
+        state.currentMarkdown = data.markdown;
+        if (typeof data.credits_remaining === "number") {
+          state.credits = data.credits_remaining;
+          renderAuth();
+        }
+        state.draftOutdated = false;
+        renderDraft();
+        setMessage("");
+      }
+    );
   } catch (error) {
     setMessage(error.message);
+    renderDraft();
   } finally {
     restore();
   }
@@ -757,24 +833,39 @@ async function refineDraft() {
   }
 
   const restore = setLoading(elements.refineButton, "Refining...");
-  setMessage("Refining your draft. This can take a moment.", "info");
+  setMessage("Refining your draft in real-time...", "info");
+
+  let streamedRaw = "";
+
   try {
-    const data = await callApi("/refine", {
-      company_name: buildJobInfo().company_name,
-      current_draft: state.currentDraft,
-      user_request: request,
-      skipped_fields: getSkippedFields(),
-    });
-    state.currentDraft = data.draft;
-    state.currentMarkdown = data.markdown;
-    if (typeof data.credits_remaining === "number") {
-      state.credits = data.credits_remaining;
-      renderAuth();
-    }
-    elements.refineInput.value = "";
-    setMessage("");
+    await streamApi(
+      "/refine",
+      {
+        company_name: buildJobInfo().company_name,
+        current_draft: state.currentDraft,
+        user_request: request,
+        skipped_fields: getSkippedFields(),
+      },
+      (chunk) => {
+        streamedRaw += chunk;
+        const cleaned = streamedRaw.replace(/^```(?:json)?\s*/i, "");
+        elements.markdownPreview.textContent = cleaned;
+      },
+      (data) => {
+        state.currentDraft = data.draft;
+        state.currentMarkdown = data.markdown;
+        if (typeof data.credits_remaining === "number") {
+          state.credits = data.credits_remaining;
+          renderAuth();
+        }
+        elements.refineInput.value = "";
+        renderDraft();
+        setMessage("");
+      }
+    );
   } catch (error) {
     setMessage(error.message);
+    renderDraft();
   } finally {
     restore();
   }

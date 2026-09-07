@@ -2,7 +2,7 @@ from collections.abc import Callable
 from pydantic import BaseModel
 from src.agent.parser import parse_job_description
 from src.agent.prompts import build_generation_prompt, build_refinement_prompt
-from src.llm.client import LLMResult, generate_text
+from src.llm.client import LLMResult, generate_text, stream_text
 from src.rendering.markdown import render_job_description
 from src.schema.job_description import JobDescriptionDraft
 from src.schema.job_info import JobInfo
@@ -89,3 +89,58 @@ class JobAgent:
             ),
             llm_result=llm_result,
         )
+
+    def stream_generate_draft(
+        self,
+        job_info: JobInfo,
+        provider: str,
+        model: str,
+        skipped_fields: list[str] | None = None,
+        stream_text_fn: Callable = stream_text,
+    ):
+        skipped = skipped_fields or []
+        prompt = build_generation_prompt(job_info, skipped)
+        fallbacks = MODEL_FALLBACKS.get(model, [])
+        accumulated_text = ""
+        for chunk in stream_text_fn(prompt, provider, model, fallback_models=fallbacks):
+            accumulated_text += chunk
+            yield {"event": "chunk", "data": chunk}
+
+        draft = parse_job_description(accumulated_text)
+        markdown = render_job_description(
+            draft,
+            company_name=job_info.company_name,
+            skipped_fields=skipped,
+        )
+        yield {"event": "done", "draft": draft.model_dump(), "markdown": markdown}
+
+    def stream_refine_draft(
+        self,
+        company_name: str,
+        current_draft: JobDescriptionDraft,
+        user_request: str,
+        provider: str,
+        model: str,
+        skipped_fields: list[str] | None = None,
+        stream_text_fn: Callable = stream_text,
+    ):
+        skipped = skipped_fields or []
+        prompt = build_refinement_prompt(
+            company_name=company_name,
+            current_draft=current_draft,
+            user_request=user_request,
+            skipped_fields=skipped,
+        )
+        fallbacks = MODEL_FALLBACKS.get(model, [])
+        accumulated_text = ""
+        for chunk in stream_text_fn(prompt, provider, model, fallback_models=fallbacks):
+            accumulated_text += chunk
+            yield {"event": "chunk", "data": chunk}
+
+        draft = parse_job_description(accumulated_text)
+        markdown = render_job_description(
+            draft=draft,
+            company_name=company_name,
+            skipped_fields=skipped,
+        )
+        yield {"event": "done", "draft": draft.model_dump(), "markdown": markdown}
