@@ -105,3 +105,49 @@ skipped_fields:
 Current draft: 
 {json.dumps (current_draft.model_dump(), indent = 2)}
 """.strip()
+
+
+EXTRACTION_SCHEMA_DESCRIPTION = """
+{
+    "company_name": "string",
+    "role_title": "string",
+    "role_summary": "string",
+    "responsibilities": ["string"],
+    "requirements": ["string"],
+    "nice_to_haves": ["string"],
+    "company_description": "string",
+    "why_join_us": "string",
+    "benefits": ["string"],
+    "equal_opportunity": "yes | no | custom text"
+}
+""".strip()
+
+def build_extraction_prompt(doc_text: str) -> str:
+    return f"""
+You are an expert HR recruitment assistant.
+Analyze the following job description document / hiring brief and extract the structured information to populate intake form fields.
+
+Return ONLY valid JSON matching this schema:
+{EXTRACTION_SCHEMA_DESCRIPTION}
+
+Extraction guidelines:
+- Extract factual details present in the document.
+- company_name: The hiring organization's name. If not found, return "".
+- role_title: The specific job title (e.g., "Senior Software Engineer"). If not found, return "".
+- role_summary: Overview of the role's purpose, scope, and objectives.
+- responsibilities: List of key duties/tasks (as individual bullet points).
+- requirements: List of required skills, experience, degrees, or qualifications.
+- nice_to_haves: List of optional, preferred, or bonus qualifications.
+- company_description: Overview/background of the company.
+- why_join_us: Value proposition, mission, culture, or growth reasons to join.
+- benefits: Perks, compensation details, healthcare, PTO, bonuses, etc.
+- equal_opportunity: "yes" if the document mentions equal opportunity/diversity commitment or standard EEO statement, else "no".
+- If a field is not mentioned or cannot be inferred from the document, return "" for strings or [] for lists.
+- Never output markdown formatting outside the JSON code block.
+
+Document content:
+\"\"\"
+{doc_text[:12000]}
+\"\"\"
+""".strip()
+

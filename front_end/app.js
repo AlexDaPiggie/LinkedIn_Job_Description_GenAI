@@ -201,6 +201,14 @@ const elements = {
   settingTone: document.querySelector("#settingTone"),
   lengthControl: document.querySelector("#lengthControl"),
   eeoControl: document.querySelector("#eeoControl"),
+
+  // Document upload elements
+  docUploadBox: document.querySelector("#docUploadBox"),
+  docFileInput: document.querySelector("#docFileInput"),
+  docUploadContent: document.querySelector("#docUploadContent"),
+  docUploadStatus: document.querySelector("#docUploadStatus"),
+  docUploadStatusText: document.querySelector("#docUploadStatusText"),
+  triggerUploadBtn: document.querySelector("#triggerUploadBtn"),
 };
 
 function apiUrl(path) {
@@ -1567,6 +1575,121 @@ window.addEventListener("scroll", () => {
     navBar.classList.toggle("scrolled", window.scrollY > 15);
   }
 });
+
+// --- Document Upload & Auto-fill Handling ---
+async function handleDocUpload(file) {
+  if (!file) return;
+
+  if (!state.accessToken) {
+    setMessage("Please sign in first to use the auto-fill document feature.");
+    openModal();
+    return;
+  }
+
+  // Show status
+  elements.docUploadContent.classList.add("hidden");
+  elements.docUploadStatus.classList.remove("hidden");
+  elements.docUploadStatusText.textContent = `Analyzing ${file.name} with Gemini 2.5 Flash Lite...`;
+  setMessage("");
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const headers = {};
+    if (state.accessToken) {
+      headers["Authorization"] = `Bearer ${state.accessToken}`;
+    }
+
+    const response = await fetch(apiUrl("/api/extract-doc"), {
+      method: "POST",
+      headers,
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.detail || "Failed to extract info from document.");
+    }
+
+    const extracted = result.data || {};
+    let filledCount = 0;
+
+    for (const [key, val] of Object.entries(extracted)) {
+      if (!val) continue;
+
+      if (key === "equal_opportunity") {
+        const lower = String(val).trim().toLowerCase();
+        if (lower === "no") {
+          state.settings.equal_opportunity = "no";
+        } else {
+          state.settings.equal_opportunity = "yes";
+        }
+        saveSettings();
+        renderSettings();
+        continue;
+      }
+
+      let textValue = "";
+      if (Array.isArray(val)) {
+        textValue = val.join("\n");
+      } else {
+        textValue = String(val).trim();
+      }
+
+      if (textValue) {
+        state.answers[key] = textValue;
+        state.missingRequired.delete(key);
+        filledCount++;
+      }
+    }
+
+    try {
+      localStorage.setItem(ANSWERS_STORAGE_KEY, JSON.stringify(state.answers));
+    } catch (err) {
+      console.warn("Could not save answers to localStorage:", err);
+    }
+
+    if (state.currentDraft) state.draftOutdated = true;
+    renderAll();
+    setMessage(`Successfully auto-filled ${filledCount} field(s) from "${file.name}"!`, "info");
+  } catch (err) {
+    console.error("Document extraction error:", err);
+    setMessage(err.message || "Failed to parse document.");
+  } finally {
+    elements.docUploadContent.classList.remove("hidden");
+    elements.docUploadStatus.classList.add("hidden");
+    if (elements.docFileInput) elements.docFileInput.value = "";
+  }
+}
+
+if (elements.docUploadBox && elements.docFileInput) {
+  elements.docUploadBox.addEventListener("click", () => {
+    elements.docFileInput.click();
+  });
+
+  elements.docFileInput.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    if (file) handleDocUpload(file);
+  });
+
+  elements.docUploadBox.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    elements.docUploadBox.classList.add("dragover");
+  });
+
+  elements.docUploadBox.addEventListener("dragleave", () => {
+    elements.docUploadBox.classList.remove("dragover");
+  });
+
+  elements.docUploadBox.addEventListener("drop", (e) => {
+    e.preventDefault();
+    elements.docUploadBox.classList.remove("dragover");
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleDocUpload(file);
+  });
+}
+
 
 // Load and render authors from JSON
 async function loadAuthors() {

@@ -1,0 +1,43 @@
+=======================================================
+REQUISITION INTAKE FORM: Clinical Data Scientist
+=======================================================
+Company: BioVance Therapeutics
+Location: Boston, MA (Hybrid)
+Department: Translational Medicine & Bioinformatics
+
+1. ROLE SUMMARY:
+BioVance Therapeutics is seeking a skilled Clinical Data Scientist to lead statistical analysis of phase I/II clinical trial datasets, develop predictive biomarker pipelines, and support FDA submission dossiers.
+
+2. KEY RESPONSIBILITIES:
+- Analyze multi-omics and patient electronic health records (EHR) from ongoing oncology clinical trials.
+- Develop and validate machine learning models for patient stratification and treatment response prediction.
+- Collaborate with medical oncologists, clinical trial managers, and biostatisticians to generate clinical study reports.
+- Ensure strict adherence to CDISC SDTM and ADaM clinical data formatting standards.
+- Prepare regulatory data summaries and presentation decks for FDA and EMA advisory meetings.
+
+3. CANDIDATE REQUIREMENTS:
+- Ph.D. or Master's degree in Bioinformatics, Biostatistics, Computational Biology, or related quantitative field.
+- 3+ years experience analyzing clinical trial or real-world evidence (RWE) healthcare data.
+- Expert programming skills in Python (scikit-learn, pandas) and R (Bioconductor, survival analysis).
+- Solid understanding of GCP (Good Clinical Practice) and HIPAA compliance requirements.
+
+4. PREFERRED / NICE-TO-HAVE:
+- Familiarity with deep learning architectures applied to digital pathology or survival forecasting.
+- Proven track record of peer-reviewed publications in clinical oncology or bioinformatics journals.
+- Experience with cloud-based healthcare data warehouses such as Snowflake or AWS HealthLake.
+
+5. ABOUT THE COMPANY:
+BioVance Therapeutics is a clinical-stage biotechnology startup developing precision targeted therapies for solid tumor cancers with high unmet medical need.
+
+6. WHY JOIN US:
+Work directly on therapies entering human clinical trials, collaborate with world-class translational scientists, and contribute directly to life-saving cancer patient care.
+
+7. BENEFITS & PERKS:
+- Salary range ,000 - ,000 commensurate with experience + equity participation.
+- Comprehensive medical, dental, and vision health plans with HSA contribution.
+- 4 weeks paid vacation + 12 paid corporate holidays + annual winter break shutdown.
+- Parental leave: 16 weeks fully paid for primary and secondary caregivers.
+- 401(k) retirement plan with 5% dollar-for-dollar employer matching.
+
+8. EQUAL OPPORTUNITY STATEMENT:
+BioVance Therapeutics provides equal employment opportunities to all employees and applicants without regard to race, religion, color, national origin, gender, gender identity, age, or disability status.

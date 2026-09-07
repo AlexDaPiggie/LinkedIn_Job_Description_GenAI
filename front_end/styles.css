@@ -84,8 +84,8 @@ button {
 .topbar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 0;
+  margin-bottom: 18px;
 }
 
 .topbar-row {
@@ -93,18 +93,6 @@ button {
   align-items: end;
   justify-content: space-between;
   gap: 24px;
-}
-
-.topbar-lead-grid {
-  display: grid;
-  grid-template-columns: minmax(400px, 0.85fr) minmax(520px, 1.15fr);
-  gap: clamp(20px, 2vw, 30px);
-}
-
-@media (max-width: 960px) {
-  .topbar-lead-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .topbar h1,
@@ -123,13 +111,6 @@ button {
   line-height: 0.94;
 }
 
-.lead-copy {
-  grid-column: 1;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 16px;
-  line-height: 1.7;
-}
 
 .eyebrow {
   margin: 0 0 10px;
@@ -590,6 +571,13 @@ button {
   gap: clamp(20px, 2vw, 30px);
   margin-bottom: 14px;
   align-items: center;
+}
+
+.workspace-prebar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 960px) {
@@ -2162,6 +2150,86 @@ button:disabled {
   display: block;
   border-radius: 6px;
 }
+
+/* --- Document Upload (Secondary Button Style in Prebar) --- */
+.doc-upload-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(19, 54, 89, 0.16);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink-soft);
+  box-shadow: 0 4px 12px rgba(12, 39, 68, 0.04);
+  cursor: pointer;
+  transition: background 170ms ease, border-color 170ms ease, box-shadow 170ms ease, transform 170ms ease, color 170ms ease;
+  user-select: none;
+}
+
+.doc-upload-inline .doc-upload-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-upload-inline:hover,
+.doc-upload-inline.dragover {
+  border-color: var(--line-strong);
+  background: #ffffff;
+  color: var(--blue-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(10, 102, 194, 0.1);
+}
+
+.doc-upload-inline .doc-upload-icon {
+  color: var(--blue);
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+.doc-upload-inline:hover .doc-upload-icon {
+  transform: translateY(-1px);
+}
+
+.doc-upload-text-link {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.doc-upload-types {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+
+.doc-upload-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--blue-deep);
+  font-weight: 500;
+}
+
+.doc-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(10, 102, 194, 0.2);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: doc-spin 0.8s linear infinite;
+}
+
+@keyframes doc-spin {
+  to { transform: rotate(360deg); }
+}
+
+
 
 
 

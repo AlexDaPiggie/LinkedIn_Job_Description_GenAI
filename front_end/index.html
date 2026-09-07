@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=settings-v10" />
+    <link rel="stylesheet" href="styles.css?v=settings-v12" />
     <style>
       /* --- SPA Navigation Bar --- */
       .nav-bar {
@@ -347,22 +347,35 @@
             </div>
           </div>
         </div>
-        <div class="topbar-lead-grid">
-          <p class="lead-copy">
-            Shape a clean, polished role brief from your answers, then refine
-            the draft without leaving the page.
-          </p>
-        </div>
       </header>
 
       <!-- Home View -->
       <div id="homeView" class="page-view">
         <div class="workspace-prebar">
-          <div id="creditsContainer" class="credits-container hidden">
-            <span id="workspaceCredits" class="credit-badge">30 Credits</span>
-            <button id="buyCreditsBtn" class="primary-button" type="button">
-              Buy more credits
-            </button>
+          <div class="workspace-prebar-left">
+            <div id="creditsContainer" class="credits-container hidden">
+              <span id="workspaceCredits" class="credit-badge">30 Credits</span>
+              <button id="buyCreditsBtn" class="primary-button" type="button">
+                Buy more credits
+              </button>
+            </div>
+
+            <div class="doc-upload-inline" id="docUploadBox">
+              <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" style="display: none;" />
+              <div class="doc-upload-content" id="docUploadContent">
+                <svg class="doc-upload-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="18" x2="12" y2="12"></line>
+                  <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <span class="doc-upload-text-link">Upload Job Spec or Brief<span class="doc-upload-types">(.pdf, .docx, .txt)</span></span>
+              </div>
+              <div class="doc-upload-status hidden" id="docUploadStatus">
+                <span class="doc-spinner"></span>
+                <span id="docUploadStatusText">Extracting with Gemini...</span>
+              </div>
+            </div>
           </div>
 
           <div class="preferences-bar">

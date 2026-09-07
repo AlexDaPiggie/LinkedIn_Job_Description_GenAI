@@ -1,7 +1,7 @@
 import os
 import stripe
 from src.api.schemas import AuthLoginRequest, AuthSignupRequest, AuthResponse
-from fastapi import FastAPI, HTTPException, Request, Header
+from fastapi import FastAPI, HTTPException, Request, Header, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse, StreamingResponse
@@ -13,6 +13,7 @@ from src.api.services import (
     refine_job_description,
     stream_generate_job_description,
     stream_refine_job_description,
+    extract_job_info_from_doc,
 )
 from src.storage.markdown_files import load_markdown
 from src.database.supabase_client import supabase
@@ -310,6 +311,31 @@ def refine (
 @app.get ("/markdown/{filename}", response_class=PlainTextResponse)
 def get_markdown (filename: str): 
     return load_markdown(filename)
+
+@app.post("/api/extract-doc")
+async def extract_doc(
+    file: UploadFile = File(...),
+    user_id: str = Depends(get_user_id_from_auth),
+):
+    # Optional file type check
+    filename = file.filename or ""
+    allowed_exts = (".pdf", ".docx", ".doc", ".txt", ".md")
+    if not any(filename.lower().endswith(ext) for ext in allowed_exts):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported file type. Please upload one of: {', '.join(allowed_exts)}"
+        )
+    
+    file_bytes = await file.read()
+    if not file_bytes:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+    
+    try:
+        data = extract_job_info_from_doc(file_bytes, filename)
+        return {"status": "success", "data": data}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Failed to extract document: {str(exc)}")
+
 
 # Mount frontend directory to serve HTML/CSS/JS directly at "/"
 frontend_dir = Path(__file__).resolve().parent.parent.parent / "front_end"

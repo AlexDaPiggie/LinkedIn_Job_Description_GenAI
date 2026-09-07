@@ -76,4 +76,29 @@ def stream_refine_job_description(request: RefineRequest):
     ):
         if item.get("event") == "done" and "markdown" in item:
             save_markdown("latest_job_refinement.md", item["markdown"])
-        yield item
+        yield item
+
+
+def extract_job_info_from_doc(file_bytes: bytes, filename: str) -> dict:
+    from src.agent.doc_parser import extract_text_from_file
+    from src.agent.prompts import build_extraction_prompt
+    from src.agent.parser import parse_extracted_doc
+    from src.llm.client import generate_text
+    from src.llm.models import MODEL_FALLBACKS
+
+    text = extract_text_from_file(file_bytes, filename)
+    if not text.strip():
+        raise ValueError("The uploaded document is empty or could not be read.")
+
+    prompt = build_extraction_prompt(text)
+    model = "google/gemini-2.5-flash-lite"
+    fallbacks = MODEL_FALLBACKS.get(model, ["openai/gpt-4o-mini"])
+
+    result = generate_text(
+        prompt,
+        "openrouter",
+        model,
+        fallback_models=fallbacks,
+    )
+    return parse_extracted_doc(result.text)
+

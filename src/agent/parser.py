@@ -23,3 +23,14 @@ def parse_job_description(text: str):
         return JobDescriptionDraft.model_validate(data)
     except (json.JSONDecodeError, ValidationError) as exc:
         raise ValueError(f"Invalid job description JSON: {exc}") from exc
+
+def parse_extracted_doc(text: str) -> dict:
+    """
+    Parses JSON output from document extraction into a dictionary.
+    """
+    raw = strip_json(text)
+    try:
+        data = json.loads(raw)
+        return data if isinstance(data, dict) else {}
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid extraction JSON: {exc}") from exc
