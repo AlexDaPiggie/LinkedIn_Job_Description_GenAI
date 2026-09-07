@@ -348,7 +348,7 @@ button {
   position: fixed;
   z-index: 20;
   left: 0;
-  top: 96px;
+  top: 300px;
   width: 42px;
   height: 128px;
   max-height: calc(100vh - 120px);
