@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=settings-v30" />
+    <link rel="stylesheet" href="styles.css?v=settings-v33" />
     <style>
       /* --- SPA Navigation Bar --- */
       .nav-bar {
@@ -94,7 +94,7 @@
         ) !important;
         box-shadow: var(--shadow-panel) !important;
         backdrop-filter: blur(22px) !important;
-        padding: 32px !important;
+        padding: 16px 24px !important;
         max-width: 900px !important;
         margin: 0 auto !important;
         box-sizing: border-box !important;
@@ -102,16 +102,16 @@
 
       .simple-page-card h2 {
         color: #101f31 !important;
-        font-size: 28px !important;
+        font-size: 20px !important;
         font-weight: 600 !important;
-        margin: 0 0 8px !important;
+        margin: 0 0 6px !important;
       }
 
       .authors-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 28px !important;
-        margin-top: 24px !important;
+        gap: 16px !important;
+        margin-top: 10px !important;
       }
 
       @media (max-width: 600px) {
@@ -125,7 +125,7 @@
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
-        padding: 28px 24px !important;
+        padding: 18px 20px !important;
         border: 1px solid rgba(19, 54, 89, 0.08) !important;
         border-radius: 8px !important;
         background: rgba(255, 255, 255, 0.5) !important;
@@ -133,11 +133,11 @@
       }
 
       .author-photo-wrapper {
-        width: 130px !important;
-        height: 130px !important;
+        width: 95px !important;
+        height: 95px !important;
         border-radius: 50% !important;
         overflow: hidden !important;
-        margin-bottom: 18px !important;
+        margin-bottom: 14px !important;
         border: 2px solid rgba(10, 102, 194, 0.2) !important;
         background: #f1f8fc !important;
         display: flex !important;
@@ -167,49 +167,49 @@
         width: 100% !important;
         height: 100% !important;
         color: #4a5d6e !important;
-        font-size: 13px !important;
+        font-size: 11px !important;
         font-weight: 500 !important;
         text-align: center !important;
-        padding: 8px !important;
+        padding: 6px !important;
         box-sizing: border-box !important;
         z-index: 1 !important;
       }
 
       .author-card h3 {
-        margin: 0 0 4px !important;
-        font-size: 19px !important;
+        margin: 0 0 2px !important;
+        font-size: 16px !important;
         color: #101f31 !important;
       }
 
       .author-role {
-        font-size: 13px !important;
+        font-size: 11.5px !important;
         font-weight: 600 !important;
         color: #0a66c2 !important;
-        margin: 0 0 12px !important;
+        margin: 0 0 10px !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
       }
 
       .author-desc {
-        font-size: 14px !important;
-        line-height: 1.6 !important;
+        font-size: 12px !important;
+        line-height: 1.4 !important;
         color: #4a5d6e !important;
-        margin: 0 0 20px !important;
+        margin: 0 0 14px !important;
         flex-grow: 1 !important;
       }
 
       .author-contacts {
         display: flex !important;
-        gap: 16px !important;
+        gap: 10px !important;
       }
 
       .contact-link {
-        font-size: 13px !important;
+        font-size: 11.5px !important;
         font-weight: 600 !important;
         color: #4a5d6e !important;
         text-decoration: none !important;
         border: 1px solid rgba(19, 54, 89, 0.15) !important;
-        padding: 6px 16px !important;
+        padding: 4px 12px !important;
         border-radius: 20px !important;
         background: #ffffff !important;
         transition: all 150ms ease !important;
@@ -224,30 +224,55 @@
 
       .authors-title-gradient {
         font-family: var(--heading-font) !important;
-        font-size: 24px !important;
+        font-size: 20px !important;
         font-weight: 600 !important;
         color: #0a66c2 !important;
         letter-spacing: 0.5px !important;
         text-align: center !important;
-        margin: 0 0 32px 0 !important;
+        margin: 0 0 16px 0 !important;
+      }
+
+      .author-donation {
+        margin-top: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+
+      .donation-caption {
+        font-size: 11.5px !important;
+        color: #64748b !important;
+        font-style: italic !important;
+        line-height: 1.35 !important;
+        margin: 0 !important;
+        max-width: 280px !important;
+      }
+
+      .donation-qr {
+        width: 88px !important;
+        height: 88px !important;
+        display: block !important;
+        border-radius: 6px !important;
       }
 
       .github-info-box {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 12px !important;
-        padding: 16px 24px !important;
+        gap: 10px !important;
+        padding: 12px 20px !important;
         background: rgba(10, 102, 194, 0.05) !important;
         border: 1px solid rgba(10, 102, 194, 0.12) !important;
         border-radius: 8px !important;
-        margin-top: 36px !important;
+        margin-top: 20px !important;
         box-sizing: border-box !important;
       }
 
       .github-info-box p {
         margin: 0 !important;
-        font-size: 14px !important;
+        font-size: 12.5px !important;
         color: #4a5d6e !important; /* ink-soft equivalent */
         line-height: 1.5 !important;
       }
@@ -452,7 +477,7 @@
                   <span id="docUploadStatusText">Extracting with Gemini...</span>
                 </div>
                 <div class="doc-upload-tooltip" role="tooltip">
-                  AI model parses your Job Description file and answers the questions below automatically
+                  AI model reads your Job Description file and answers the questions below automatically
                 </div>
               </div>
             </div>

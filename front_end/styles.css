@@ -2012,8 +2012,8 @@ button:disabled {
 .authors-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin-top: 24px;
+  gap: 16px;
+  margin-top: 10px;
 }
 
 @media (max-width: 600px) {
@@ -2027,7 +2027,7 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 28px 24px;
+  padding: 18px 20px;
   border: 1px solid rgba(19, 54, 89, 0.08);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.5);
@@ -2035,11 +2035,11 @@ button:disabled {
 }
 
 .author-photo-wrapper {
-  width: 130px;
-  height: 130px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   border: 2px solid rgba(10, 102, 194, 0.2);
   background: #f1f8fc;
   display: flex;
@@ -2062,49 +2062,49 @@ button:disabled {
   width: 100%;
   height: 100%;
   color: var(--ink-soft);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
   text-align: center;
-  padding: 8px;
+  padding: 6px;
   box-sizing: border-box;
 }
 
 .author-card h3 {
-  margin: 0 0 4px;
-  font-size: 19px;
+  margin: 0 0 2px;
+  font-size: 16px;
   color: #101f31;
 }
 
 .author-role {
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--blue);
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .author-desc {
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--ink-soft);
-  margin: 0 0 20px;
+  margin: 0 0 14px;
   flex-grow: 1;
   white-space: pre-line;
 }
 
 .author-contacts {
   display: flex;
-  gap: 16px;
+  gap: 10px;
 }
 
 .contact-link {
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--ink-soft);
   text-decoration: none;
   border: 1px solid rgba(19, 54, 89, 0.15);
-  padding: 6px 16px;
+  padding: 4px 12px;
   border-radius: 20px;
   background: #ffffff;
   transition: all 150ms ease;
@@ -2118,37 +2118,37 @@ button:disabled {
 
 /* --- Donation Styling --- */
 .author-donation {
-  margin-top: 24px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
 }
 
 .donation-caption {
-  font-size: 13px;
+  font-size: 11.5px;
   color: #64748b;
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.35;
   margin: 0;
   max-width: 280px;
 }
 
 .inline-emoji {
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
   vertical-align: middle;
   display: inline-block;
-  margin: 0 3px;
+  margin: 0 2px;
 }
 
 .qr-link {
   display: inline-block;
-  padding: 6px;
+  padding: 4px;
   background: #ffffff;
   border: 1px solid rgba(19, 54, 89, 0.08);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.035);
   transition: transform 200ms ease, border-color 200ms ease;
 }
@@ -2159,14 +2159,16 @@ button:disabled {
 }
 
 .donation-qr {
-  width: 110px;
-  height: 110px;
+  width: 88px;
+  height: 88px;
   display: block;
   border-radius: 6px;
 }
 
 /* --- Document Upload Row (Above Intake Questions) --- */
 .doc-upload-row {
+  position: relative;
+  z-index: 30;
   display: inline-flex;
   flex-direction: column;
   align-items: stretch;
