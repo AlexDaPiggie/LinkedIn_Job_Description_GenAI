@@ -355,11 +355,33 @@ function renderQuestions() {
     titleMeta.textContent = questionMetaText(question, value, isMissing);
     title.append(titleStrong, titleMeta);
 
+    const actions = document.createElement("div");
+    actions.className = "question-actions";
+
+    if (isOpen) {
+      const clearBtn = document.createElement("span");
+      clearBtn.className = "clear-question-btn";
+      clearBtn.textContent = "Clear";
+      clearBtn.setAttribute("role", "button");
+      clearBtn.setAttribute("tabindex", "0");
+      clearBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        updateAnswer(question.question_name, "");
+        const textarea = card.querySelector("textarea");
+        if (textarea) {
+          textarea.value = "";
+          textarea.focus();
+        }
+      });
+      actions.append(clearBtn);
+    }
+
     const expand = document.createElement("span");
     expand.className = "expand-label";
     expand.textContent = isOpen ? "Close" : "Expand";
+    actions.append(expand);
 
-    summary.append(number, title, expand);
+    summary.append(number, title, actions);
 
     const body = document.createElement("div");
     body.className = "question-body";
