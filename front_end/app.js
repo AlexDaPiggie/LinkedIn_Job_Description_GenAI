@@ -360,7 +360,7 @@ function renderQuestions() {
 
     if (isOpen) {
       const clearBtn = document.createElement("span");
-      clearBtn.className = "clear-question-btn";
+      clearBtn.className = `clear-question-btn${value.trim() ? "" : " hidden"}`;
       clearBtn.textContent = "Clear";
       clearBtn.setAttribute("role", "button");
       clearBtn.setAttribute("tabindex", "0");
@@ -434,6 +434,8 @@ function renderQuestionStatus(field) {
   card.classList.toggle("answered", Boolean(value.trim()));
   const meta = card.querySelector(".question-meta");
   if (meta) meta.textContent = questionMetaText(question, value, isMissing);
+  const clearBtn = card.querySelector(".clear-question-btn");
+  if (clearBtn) clearBtn.classList.toggle("hidden", !value.trim());
   const questionIndex = state.questions.findIndex((item) => item.question_name === field);
   const railButton = elements.questionRail.children[questionIndex];
   if (railButton) {
