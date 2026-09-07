@@ -179,7 +179,11 @@ openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_various_f
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_various_fields_sparse,various_fields,refine,False,False,False,False,False,,,,,,,,,,,Invalid job description JSON: Expecting value: line 1 column 1 (char 0)
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_complex_edge_case,complex_edge_case,generate,True,True,True,True,True,6.231541199987987,812,636,0.000671,4.2,4.3,4.5,4.0,3.8,4.16,
 openrouter_claude_3_haiku,openrouter,anthropic/claude-3-haiku,scenario_complex_edge_case,complex_edge_case,refine,True,True,True,True,True,6.1250195000029635,1145,744,0.000824,4.0,4.7,4.2,4.3,3.0,4.04,
-openrouter_phi_4,openrouter,microsoft/phi-4,scenario_only_required_fields,required_only,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
-openrouter_phi_4,openrouter,microsoft/phi-4,scenario_all_fields,all_fields,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
-openrouter_phi_4,openrouter,microsoft/phi-4,scenario_various_fields_sparse,various_fields,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
-openrouter_phi_4,openrouter,microsoft/phi-4,scenario_complex_edge_case,complex_edge_case,generate,False,False,False,False,False,,,,,,,,,,,"Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_only_required_fields,required_only,generate,True,True,False,True,False,14.764150100003462,680,358,9.8e-05,4.5,4.5,4.8,4.7,4.5,4.5,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_only_required_fields,required_only,refine,True,True,True,True,False,16.94193850000738,783,374,0.000107,4.5,4.8,4.7,5.0,4.5,4.63,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_all_fields,all_fields,generate,True,True,True,True,True,32.59862449998036,795,732,0.000158,5.0,5.0,5.0,5.0,5.0,5.0,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_all_fields,all_fields,refine,True,True,True,True,True,15.499950800003717,1153,732,0.000183,4.5,5.0,4.8,4.5,5.0,4.76,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_various_fields_sparse,various_fields,generate,True,True,False,True,True,3.6436011999903712,671,235,8e-05,4.5,4.8,4.9,4.5,4.0,4.54,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_various_fields_sparse,various_fields,refine,True,True,False,True,True,3.9110597999824677,653,228,7.8e-05,4.0,5.0,4.5,4.0,4.5,4.4,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_complex_edge_case,complex_edge_case,generate,True,True,False,True,True,8.591435900016222,682,571,0.000128,4.5,5.0,4.8,4.5,5.0,4.76,
+openrouter_phi_4,openrouter,microsoft/phi-4,scenario_complex_edge_case,complex_edge_case,refine,True,True,False,True,True,10.635217199975159,996,521,0.000143,4.5,5.0,4.8,4.5,5.0,4.76,

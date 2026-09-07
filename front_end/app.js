@@ -5,6 +5,7 @@ const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
 const ANSWERS_STORAGE_KEY = "linkedinJobGeneratorAnswers";
 const DRAFT_STORAGE_KEY = "linkedinJobGeneratorDraft";
 const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
+const SETTINGS_STORAGE_KEY = "linkedinJobGeneratorSettings";
 
 const fallbackQuestions = [
   { question_name: "company_name", question_text: "What is your company name?", required: true, answer_type: "text" },
@@ -16,9 +17,6 @@ const fallbackQuestions = [
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
   { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },
-  { question_name: "tone", question_text: "What tone do you want the job description to sound?", required: false, answer_type: "text" },
-  { question_name: "target_length", question_text: "How long should the job description be: short, medium, or long?", required: false, answer_type: "text" },
-  { question_name: "equal_opportunity", question_text: "Do you want to include an equal opportunity statement?", required: false, answer_type: "text" },
 ];
 
 const sampleAnswers = {
@@ -128,6 +126,11 @@ const state = {
   accessToken: localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || "",
   user: null,
   credits: null,
+  settings: {
+    tone: "Professional & Authoritative",
+    target_length: "medium",
+    equal_opportunity: "yes",
+  },
 };
 
 const elements = {
@@ -193,6 +196,11 @@ const elements = {
   exportDocxButton: document.querySelector("#exportDocxButton"),
   refineInput: document.querySelector("#refineInput"),
   refineButton: document.querySelector("#refineButton"),
+
+  // Model settings elements
+  settingTone: document.querySelector("#settingTone"),
+  lengthControl: document.querySelector("#lengthControl"),
+  eeoControl: document.querySelector("#eeoControl"),
 };
 
 function apiUrl(path) {
@@ -271,9 +279,39 @@ function updateAnswer(field, value) {
 }
 
 function getSkippedFields() {
-  return state.questions
+  const skipped = state.questions
     .filter((question) => !question.required && !state.answers[question.question_name]?.trim())
     .map((question) => question.question_name);
+  if (state.settings.equal_opportunity === "no") {
+    skipped.push("equal_opportunity");
+  }
+  return skipped;
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(state.settings));
+  } catch (err) {
+    console.warn("Could not save settings to localStorage:", err);
+  }
+}
+
+function renderSettings() {
+  if (!elements.settingTone) return;
+
+  elements.settingTone.value = state.settings.tone;
+
+  if (elements.lengthControl) {
+    elements.lengthControl.querySelectorAll(".segment-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.value === state.settings.target_length);
+    });
+  }
+
+  if (elements.eeoControl) {
+    elements.eeoControl.querySelectorAll(".segment-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.value === state.settings.equal_opportunity);
+    });
+  }
 }
 
 function buildJobInfo() {
@@ -288,7 +326,7 @@ function buildJobInfo() {
     benefits: [],
     why_join_us: "",
     equal_opportunity: "",
-    tone: "professional",
+    tone: "Professional & Authoritative",
     target_length: "medium",
   };
 
@@ -298,6 +336,10 @@ function buildJobInfo() {
     if (!fieldsAcceptedByApi.has(field) || !rawValue) continue;
     jobInfo[field] = question.answer_type === "list" ? parseList(rawValue) : rawValue;
   }
+
+  jobInfo.tone = state.settings.tone;
+  jobInfo.target_length = state.settings.target_length;
+  jobInfo.equal_opportunity = state.settings.equal_opportunity;
 
   return jobInfo;
 }
@@ -468,6 +510,7 @@ function renderDraft() {
 function renderAll() {
   renderQuestions();
   renderProgress();
+  renderSettings();
   renderDraft();
 }
 
@@ -1236,6 +1279,10 @@ async function loadQuestions() {
       state.currentDraft = JSON.parse(savedDraft);
       state.currentMarkdown = savedMarkdown;
     }
+    const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (savedSettings) {
+      state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
+    }
   } catch (err) {
     console.warn("Could not load from localStorage:", err);
   }
@@ -1427,6 +1474,49 @@ elements.generateButton.addEventListener("click", generateDraft);
 elements.refineButton.addEventListener("click", refineDraft);
 elements.copyButton.addEventListener("click", copyDraft);
 elements.exportDocxButton.addEventListener("click", exportDocx);
+
+// Generation Preferences / Model settings listeners
+elements.settingTone?.addEventListener("change", (e) => {
+  state.settings.tone = e.target.value;
+  saveSettings();
+  renderSettings();
+  if (state.currentDraft) state.draftOutdated = true;
+  renderDraft();
+});
+
+elements.lengthControl?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".segment-btn");
+  if (!btn || !btn.dataset.value) return;
+  state.settings.target_length = btn.dataset.value;
+  saveSettings();
+  renderSettings();
+  if (state.currentDraft) state.draftOutdated = true;
+  renderDraft();
+});
+
+elements.eeoControl?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".segment-btn");
+  if (!btn || !btn.dataset.value) return;
+  state.settings.equal_opportunity = btn.dataset.value;
+  saveSettings();
+  renderSettings();
+  if (state.currentDraft) state.draftOutdated = true;
+  renderDraft();
+});
+
+// EEO info badge click toggle
+const eeoWrapper = document.querySelector(".eeo-tooltip-wrapper");
+const eeoInfoBtn = document.querySelector("#eeoInfoBtn");
+eeoInfoBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  eeoWrapper?.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+  if (!eeoWrapper?.contains(e.target)) {
+    eeoWrapper?.classList.remove("open");
+  }
+});
 elements.modalForgotPasswordBtn.addEventListener("click", forgotPassword);
 elements.modalResetPasswordForm.addEventListener("submit", submitResetPassword);
 elements.modalCancelResetBtn.addEventListener("click", showAuthView);

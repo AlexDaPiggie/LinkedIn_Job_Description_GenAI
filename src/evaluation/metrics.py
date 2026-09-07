@@ -1,7 +1,10 @@
 from src.schema.job_description import JobDescriptionDraft
 import json
 from src.llm.client import generate_text
+from dotenv import load_dotenv
 import re
+
+
 
 #Storing input/output price per 1M tokens information for Calculating the cost of the token
 MODEL_PRICING = {
@@ -55,7 +58,7 @@ def evaluate_quality_with_judge (
         response = generate_text(
             prompt = prompt,
             provider = "openrouter",
-            model="gpt-4.1",
+            model="openai/gpt-4o-mini",
         )
 
         # Helps to parse the prompt inside DOCSTRING
@@ -69,7 +72,7 @@ def evaluate_quality_with_judge (
         if match:
             text_content = match.group(1).strip()
     
-        data = json.loads(response.text)
+        data = json.loads(text_content)
         return data
     
     except Exception:

@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=clear-btn-v1" />
+    <link rel="stylesheet" href="styles.css?v=settings-v10" />
     <style>
       /* --- SPA Navigation Bar --- */
       .nav-bar {
@@ -328,31 +328,85 @@
 
     <main class="app-shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">GEN AI MODEL | LINKEDIN</p>
-          <h1>
-            <span class="gradient-letter">J</span>ob Description Generator
-          </h1>
+        <div class="topbar-row">
+          <div>
+            <p class="eyebrow">GEN AI MODEL | LINKEDIN</p>
+            <h1>
+              <span class="gradient-letter">J</span>ob Description Generator
+            </h1>
+          </div>
+          <div class="header-auth" id="headerAuth">
+            <button id="signInBtn" class="primary-button" type="button">
+              Sign In
+            </button>
+            <div id="userProfile" class="user-profile hidden">
+              <span id="userUsername" class="user-username"></span>
+              <button id="signOutBtn" class="secondary-button" type="button">
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="topbar-lead-grid">
           <p class="lead-copy">
             Shape a clean, polished role brief from your answers, then refine
             the draft without leaving the page.
           </p>
         </div>
-        <div class="header-auth" id="headerAuth">
-          <button id="signInBtn" class="primary-button" type="button">
-            Sign In
-          </button>
-          <div id="userProfile" class="user-profile hidden">
-            <span id="userUsername" class="user-username"></span>
-            <button id="signOutBtn" class="secondary-button" type="button">
-              Sign Out
-            </button>
-          </div>
-        </div>
       </header>
 
       <!-- Home View -->
       <div id="homeView" class="page-view">
+        <div class="workspace-prebar">
+          <div id="creditsContainer" class="credits-container hidden">
+            <span id="workspaceCredits" class="credit-badge">30 Credits</span>
+            <button id="buyCreditsBtn" class="primary-button" type="button">
+              Buy more credits
+            </button>
+          </div>
+
+          <div class="preferences-bar">
+            <div class="pref-item">
+              <label for="settingTone" class="pref-label">Tone</label>
+              <select id="settingTone" class="pref-select">
+                <option value="Professional & Authoritative" selected>Professional & Authoritative</option>
+                <option value="Conversational & Warm">Conversational & Warm</option>
+                <option value="Fast-Paced & Startup-like">Fast-Paced & Startup-like</option>
+                <option value="Bold, Modern & Visionary">Bold, Modern & Visionary</option>
+              </select>
+            </div>
+
+            <div class="pref-item">
+              <span class="pref-label">Length</span>
+              <div class="segmented-control" id="lengthControl">
+                <button type="button" class="segment-btn" data-value="short">Short</button>
+                <button type="button" class="segment-btn active" data-value="medium">Medium</button>
+                <button type="button" class="segment-btn" data-value="long">Long</button>
+              </div>
+            </div>
+
+            <div class="pref-item">
+              <span class="pref-label">EEO</span>
+              <div class="eeo-tooltip-wrapper">
+                <button
+                  type="button"
+                  class="eeo-info-badge"
+                  id="eeoInfoBtn"
+                  aria-label="What is EEO?"
+                >!</button>
+                <div class="eeo-tooltip-card" id="eeoTooltip" role="tooltip">
+                  <strong>Equal Employment Opportunity (EEO)</strong>
+                  <p>A statement declaring that hiring is free from discrimination based on race, gender, age, disability, or background.</p>
+                </div>
+              </div>
+              <div class="segmented-control" id="eeoControl">
+                <button type="button" class="segment-btn active" data-value="yes">Yes</button>
+                <button type="button" class="segment-btn" data-value="no">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <section class="workspace-grid">
           <section class="builder">
             <div class="section-head">
@@ -378,12 +432,6 @@
           </section>
 
           <div class="result-column">
-            <div id="creditsContainer" class="credits-container hidden">
-              <span id="workspaceCredits" class="credit-badge">30 Credits</span>
-              <button id="buyCreditsBtn" class="primary-button" type="button">
-                Buy more credits
-              </button>
-            </div>
             <section class="result-section">
               <div class="section-head result-heading">
                 <div>
@@ -786,6 +834,6 @@
     </div>
 
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js?v=clear-btn-v2"></script>
+    <script src="app.js?v=settings-v10"></script>
   </body>
 </html>

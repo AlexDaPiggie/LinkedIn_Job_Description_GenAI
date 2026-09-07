@@ -59,25 +59,10 @@ QUESTIONS = [
     ),
     IntakeQuestion(
         question_name="benefits",
-        question_text="Are there any benefit, perk, or compensation details you would like  to include?",
+        question_text="Are there any benefit, perk, or compensation details you would like to include?",
         required = False,
         answer_type = "list",
     ),
-    IntakeQuestion(
-        question_name="tone",
-        question_text="What tone should the job description have?\n(professional, conversationsal, bold,...)",
-        required = False,
-    ),
-    IntakeQuestion(
-        question_name="target_length",
-        question_text="How long should the job description be: short, medium, or long?",
-        required = False,
-    ),
-    IntakeQuestion(
-        question_name="equal_opportunity",
-        question_text="Do you want to include an equal opportunity statement in the job description?",
-        required = False,
-    )
 ]
 
 def get_next_question (index: int):
