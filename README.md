@@ -88,6 +88,21 @@ cd front_end
 python -m http.server 3000
 ```
 
+### 3. Run Benchmark (Optional)
+
+Run the automated LLM evaluation across test scenarios:
+
+```bash
+# Run benchmark across all models
+python -m src.evaluation.runner
+
+# Or evaluate a specific model
+python -m src.evaluation.runner --model "google/gemini-2.5-flash-lite"
+```
+
+- Results saved to: `eval_results/model_comparison.csv` and `eval_results/model_comparison.json`
+- Visual analysis notebook: `src/evaluation/Model_Comparison_Analysis.ipynb`
+
 ---
 
 ## Model Evaluation & Benchmarking
