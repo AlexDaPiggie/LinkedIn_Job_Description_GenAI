@@ -22,6 +22,7 @@
 ## Primary Features
 
 - **Simple Guiding Questions**: Provide simple questions for users to describe their form (e.g. company's name, length, tone,...). 
+- **Auto-fill questions from JD**: Upload Job Description file and the website uses **google/gemini-2.5-flash-lite** to fill in the answers automatically.
 - **Guarantee LinkedIn Format**: Model outputs clean JSON matching Pydantic schema in `JobDescriptionDraft`. This feature guarantees that the output will always follow LinkedIn format, minimize hallucination (e.g. broken text, missing section, ...).
 - **Markdown Format**: From JSON draft, this feature converst the messy JSON data into well-formatted Markdown file with headers & bullet points.
 - **Refine requests**: After receiving the draft of the Job Description Form, users can type their feedbacks of how the draft should be improved (e.g. "make it more professional, remove the last bulletpoints,..."). Such requests will be applied to the draft by the model while stil retaining the existing information.
