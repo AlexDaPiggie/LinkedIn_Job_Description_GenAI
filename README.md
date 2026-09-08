@@ -33,7 +33,7 @@
 
 - **Prevent mismatch between different versions**: In case users change their answers after having generated a draft, the web app will blocks `refine` feature until user clicks `generate` to generate a new draft again. 
 
-- **User Login/Signup & Paymenbt**: Crea te FastAPI endpoints for Supabase login, and Stripe credits payment plan to purchase new credits (1$/30 credits).
+- **User Login/Signup & Payment**: Create FastAPI endpoints for Supabase login, and Stripe credits payment plan to purchase new credits (1$/30 credits).
 
 ---
 
