@@ -151,6 +151,7 @@ Based on benchmark results (see more in [Model_Comparison.ipynb](src/evaluation/
 * **Fallback Options**:
   * openai/gpt-4o-mini
   * mistralai/mistral-small-24b-instruct-2501
+  * meta-llama/llama-3.1-70b-instruct
   
 ---
 
