@@ -113,7 +113,7 @@ python -m src.evaluation.runner --model "google/gemini-2.5-flash-lite"
 
 ## Model Evaluation & Benchmarking
 
-The project features an automated benchmarking suite (`src/evaluation/runner.py`) and evaluation analysis notebook ([Model_Comparison_Analysis.ipynb](file:///C:/Users/alexh/Coding/LinkedIn_Job_Description_GenAI/src/evaluation/Model_Comparison_Analysis.ipynb)) testing models across structured scenarios.
+The project features an automated [benchmarking script](src/evaluation/runner.py) and evaluation analysis notebook ([Model_Comparison_Analysis.ipynb](src/evaluation/Model_Comparison_Analysis.ipynb)) testing models across structured scenarios.
 
 ```bash
 # Run benchmark across models and scenarios
