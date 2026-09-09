@@ -125,18 +125,18 @@ python -m src.evaluation.runner
 Measures the trade-off between input/output token consumption and cost per generation.
 
 <p align="center">
-  <img src="front_end/images/eval_cost_and_tokens.png" alt="Estimated Cost vs Token Usage" width="85%"/>
+  <img src="src/output/eval_cost_and_tokens.png" alt="Estimated Cost vs Token Usage" width="85%"/>
 </p>
 
-* **Most Cost-Effective**: `llama-3.3-70b`, `mistral-small`, and `gpt-4o-mini` achieved the lowest cost profile while maintaining concise output length.
-* **Token Efficiency**: Models like `gpt-4o-mini` generated structured drafts without token inflation, keeping API latency and expenses minimal.
+* **Most Cost-Effective**: `phi4`, `llama-3.3-70b`, `mistral-small`, and `gpt-4o-mini` achieved the lowest cost profile while maintaining concise output length.
+* **Token Efficiency**: Models like `gpt-4o-mini` generated structured drafts without token hike, keeping API latency and expenses minimal.
 
 ### 2. Generation Latency
 
 Measures end-to-end response time (seconds) across all test scenarios.
 
 <p align="center">
-  <img src="front_end/images/eval_latency_comparison.png" alt="Average Generation Latency per Model" width="85%"/>
+  <img src="src/output/eval_latency_comparison.png" alt="Average Generation Latency per Model" width="85%"/>
 </p>
 
 * Fast models like `gemini-2.5-flash-lite` and `gpt-4o-mini` can generate a draft in less that 2 seconds, which is highly suitable for this project.
