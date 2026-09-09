@@ -229,6 +229,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://linkedingenai.vercel.app",
+        "https://linkedingenai.com",
+        "https://www.linkedingenai.com",
         "https://www.linkedingenai.tech",
     ],
     allow_credentials=False,
