@@ -3,7 +3,67 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LinkedIn Job Description Generator</title>
+    <title>LinkedIn Job Description Generator | AI Hiring Post Writer</title>
+    <meta
+      name="description"
+      content="Generate, refine, copy, and export polished LinkedIn job descriptions with an AI-powered writing tool built for hiring teams and recruiters."
+    />
+    <meta
+      name="keywords"
+      content="LinkedIn job description generator, AI job description writer, hiring post generator, recruiter tools, job posting template"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="LinkedIn GenAI" />
+    <link rel="canonical" href="https://www.linkedingenai.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LinkedIn GenAI" />
+    <meta
+      property="og:title"
+      content="LinkedIn Job Description Generator | AI Hiring Post Writer"
+    />
+    <meta
+      property="og:description"
+      content="Create LinkedIn-ready job descriptions from short role notes, then refine, copy, or export the final post."
+    />
+    <meta property="og:url" content="https://www.linkedingenai.com/" />
+    <meta
+      property="og:image"
+      content="https://www.linkedingenai.com/images/Workflow.drawio.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="LinkedIn Job Description Generator | AI Hiring Post Writer"
+    />
+    <meta
+      name="twitter:description"
+      content="Create LinkedIn-ready job descriptions from short role notes, then refine, copy, or export the final post."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.linkedingenai.com/images/Workflow.drawio.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "LinkedIn Job Description Generator",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://www.linkedingenai.com/",
+        "description": "AI-powered web app for generating, refining, copying, and exporting LinkedIn-ready job descriptions.",
+        "offers": {
+          "@type": "Offer",
+          "price": "1",
+          "priceCurrency": "USD",
+          "description": "$1 for 30 generation and refinement credits"
+        },
+        "creator": {
+          "@type": "Organization",
+          "name": "LinkedIn GenAI"
+        }
+      }
+    </script>
     <link rel="icon" type="image/png" href="images/favicon.png?v=1" />
     <link rel="shortcut icon" href="favicon.ico?v=1" />
     <link rel="apple-touch-icon" href="images/favicon.png?v=1" />
@@ -86,6 +146,12 @@
         padding-top: 64px !important;
       }
 
+      body.authors-active .question-rail {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translateX(-18px) !important;
+      }
+
       /* --- Simple Page Card Layout --- */
       .simple-page-card {
         border: 1px solid rgba(255, 255, 255, 0.86) !important;
@@ -97,24 +163,25 @@
         ) !important;
         box-shadow: var(--shadow-panel) !important;
         backdrop-filter: blur(22px) !important;
-        padding: 16px 24px !important;
-        max-width: 900px !important;
-        margin: 0 auto !important;
+        padding: 28px 32px 34px !important;
+        max-width: 980px !important;
+        margin: 56px auto 0 !important;
         box-sizing: border-box !important;
+        animation: authorsPanelIn 460ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
       }
 
       .simple-page-card h2 {
         color: #101f31 !important;
-        font-size: 20px !important;
+        font-size: 26px !important;
         font-weight: 600 !important;
-        margin: 0 0 6px !important;
+        margin: 0 0 18px !important;
       }
 
       .authors-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 16px !important;
-        margin-top: 10px !important;
+        gap: 20px !important;
+        margin-top: 16px !important;
       }
 
       @media (max-width: 600px) {
@@ -128,25 +195,41 @@
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
-        padding: 18px 20px !important;
-        border: 1px solid rgba(19, 54, 89, 0.08) !important;
+        padding: 24px 24px 22px !important;
+        border: 1px solid rgba(10, 102, 194, 0.11) !important;
         border-radius: 8px !important;
-        background: rgba(255, 255, 255, 0.5) !important;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(248, 252, 255, 0.56)),
+          rgba(255, 255, 255, 0.5) !important;
         box-sizing: border-box !important;
+        box-shadow: 0 16px 42px rgba(10, 44, 77, 0.06) !important;
+        animation: authorCardIn 540ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease !important;
+      }
+
+      .author-card:nth-child(2) {
+        animation-delay: 90ms !important;
+      }
+
+      .author-card:hover {
+        transform: translateY(-4px) !important;
+        border-color: rgba(19, 191, 213, 0.34) !important;
+        box-shadow: 0 22px 54px rgba(10, 44, 77, 0.1) !important;
       }
 
       .author-photo-wrapper {
-        width: 95px !important;
-        height: 95px !important;
+        width: 104px !important;
+        height: 104px !important;
         border-radius: 50% !important;
         overflow: hidden !important;
         margin-bottom: 14px !important;
-        border: 2px solid rgba(10, 102, 194, 0.2) !important;
+        border: 2px solid rgba(10, 102, 194, 0.16) !important;
         background: #f1f8fc !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         position: relative !important;
+        box-shadow: 0 12px 26px rgba(10, 44, 77, 0.1) !important;
       }
 
       .author-photo {
@@ -227,10 +310,10 @@
 
       .authors-title-gradient {
         font-family: var(--heading-font) !important;
-        font-size: 20px !important;
+        font-size: 26px !important;
         font-weight: 600 !important;
-        color: #0a66c2 !important;
-        letter-spacing: 0.5px !important;
+        color: #101f31 !important;
+        letter-spacing: 0 !important;
         text-align: center !important;
         margin: 0 0 16px 0 !important;
       }
@@ -366,7 +449,11 @@
       <header class="topbar">
         <div class="topbar-row">
           <div>
-            <p class="eyebrow">GEN AI MODEL | LINKEDIN</p>
+            <p class="eyebrow hero-eyebrow">
+              <span>GEN AI MODEL</span>
+              <span class="eyebrow-divider" aria-hidden="true"></span>
+              <span>LINKEDIN</span>
+            </p>
             <h1>
               <span class="gradient-letter">J</span>ob Description Generator
             </h1>

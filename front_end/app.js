@@ -1560,16 +1560,10 @@ navLinks.forEach(link => {
     const target = link.dataset.target;
     navLinks.forEach(l => l.classList.toggle("active", l === link));
     pageViews.forEach(view => view.classList.toggle("hidden", view.id !== target));
+    document.body.classList.toggle("authors-active", target === "authorsView");
 
     requestAnimationFrame(() => {
-      const isMobile = window.matchMedia("(max-width: 720px)").matches;
-      if (target === "homeView") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (target === "authorsView" && !isMobile) {
-        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
 });
