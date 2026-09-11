@@ -1,13 +1,4 @@
 # [Linked In GenAI(Click to see the Website)](https://www.linkedingenai.com)
-## About
-- An end-to-end GenAI web-app to generate LinkedIn-ready Job Description Forms from user's descriptions. 
-- Better than most free-tier AI models, our app guarantees the output with professional LinkedIn Layout, with user-friendly interface, and very detailed output.
-- Different from other apps on the market which just generate, [linked-in-gen-ai](https://www.linkedingenai.com) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
-- The App supports EXPORT Word file or COPY & PASTE straight to LinkedIn
-- Granting 30 free credits to every new user, and could be purchased more with only 1$/30 credits, we aspire to faciliate HR's as much as possible.
-
----
-
 ## Authors
 
 | **Phong Nguyen (Alex)** | **Huy Phan (Hertzy)** |
@@ -16,6 +7,15 @@
 | Built backend, state machine, multi-provider LLM client (OpenAI, Hugging Face, OpenRouter), prompt engineering pipeline, evaluation harness, FastAPI backend, Supabase auth/DB, Stripe credit billing, and AI evaluation. | Built responsive SPA frontend using HTML5, CSS3, and Vanilla JavaScript (ES6+), integrated client-side document export (docx.js), and designed core relational database schemas in Supabase. |
 | GitHub: [@AlexDaPiggie](https://github.com/AlexDaPiggie)<br>LinkedIn: [Hoai Phong Nguyen](https://www.linkedin.com/in/hoai-phong-nguyen-9367a4384/) | GitHub: [@hertzy-da-poet](https://github.com/hertzy-da-poet)<br>Portfolio: [Huy Phan Portfolio](https://hertzy-da-poet.github.io/Hugo-Portfolio/) |
 
+
+---
+
+## About
+- An end-to-end GenAI web-app to generate LinkedIn-ready Job Description Forms from user's descriptions. 
+- Better than most free-tier AI models, our app guarantees the output with professional LinkedIn Layout, with user-friendly interface, and very detailed output.
+- Different from other apps on the market which just generate, [linked-in-gen-ai](https://www.linkedingenai.com) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
+- The App supports EXPORT Word file or COPY & PASTE straight to LinkedIn
+- Granting 30 free credits to every new user, and could be purchased more with only 1$/30 credits, we aspire to faciliate HR's as much as possible.
 
 ---
 
