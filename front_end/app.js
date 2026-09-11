@@ -182,6 +182,7 @@ const elements = {
   usernameMessageBox: document.querySelector("#usernameMessageBox"),
 
   // Core workspace elements
+  railNav: document.querySelector(".question-rail"),
   questionRail: document.querySelector("#questionRail"),
   railToggle: document.querySelector("#railToggle"),
   questionList: document.querySelector("#questionList"),
@@ -460,12 +461,29 @@ function renderQuestions() {
   }
 }
 
+function adjustRailPosition() {
+  const rail = elements.railNav;
+  if (!rail) return;
+  const defaultTop = 300;
+  const padding = 16;
+  const railHeight = rail.offsetHeight;
+  const viewportHeight = window.innerHeight;
+
+  if (defaultTop + railHeight + padding > viewportHeight) {
+    const clampedTop = Math.max(padding, viewportHeight - railHeight - padding);
+    rail.style.top = `${clampedTop}px`;
+  } else {
+    rail.style.top = `${defaultTop}px`;
+  }
+}
+
 function renderRailPin() {
   document.body.classList.toggle("rail-pinned", state.railPinned);
   if (elements.railToggle) {
     elements.railToggle.setAttribute("aria-pressed", String(state.railPinned));
     elements.railToggle.title = state.railPinned ? "Unpin / Auto-hide" : "Pin open";
   }
+  adjustRailPosition();
 }
 
 function questionMetaText(question, value, isMissing) {
@@ -1743,3 +1761,9 @@ renderRailPin();
 loadSession();
 loadQuestions();
 loadAuthors();
+
+window.addEventListener("resize", adjustRailPosition);
+window.addEventListener("orientationchange", adjustRailPosition);
+elements.railNav?.addEventListener("mouseenter", adjustRailPosition);
+elements.railNav?.addEventListener("mouseleave", adjustRailPosition);
+adjustRailPosition();

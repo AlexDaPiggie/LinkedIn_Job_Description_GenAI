@@ -418,10 +418,10 @@ button {
   position: fixed;
   z-index: 20;
   left: 0;
-  top: min(300px, calc(100dvh - 100% - 16px));
+  top: 300px;
   width: 46px;
   height: 132px;
-  max-height: calc(100dvh - 32px);
+  max-height: calc(100vh - 128px);
   padding: 9px 6px;
   border: 1px solid rgba(10, 102, 194, 0.18);
   border-left: 0;
@@ -433,7 +433,7 @@ button {
   backdrop-filter: blur(18px);
   overflow: hidden;
   animation: railFloatIn 620ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
-  transition: width 220ms ease, height 220ms ease, padding 220ms ease, background 220ms ease, box-shadow 220ms ease, border-color 220ms ease, opacity 180ms ease, transform 180ms ease;
+  transition: top 220ms ease, width 220ms ease, height 220ms ease, padding 220ms ease, background 220ms ease, box-shadow 220ms ease, border-color 220ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
 .question-rail::before {
