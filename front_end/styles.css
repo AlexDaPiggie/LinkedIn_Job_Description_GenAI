@@ -418,10 +418,10 @@ button {
   position: fixed;
   z-index: 20;
   left: 0;
-  top: 300px;
+  top: min(300px, calc(100dvh - 100% - 16px));
   width: 46px;
   height: 132px;
-  max-height: calc(100vh - 128px);
+  max-height: calc(100dvh - 32px);
   padding: 9px 6px;
   border: 1px solid rgba(10, 102, 194, 0.18);
   border-left: 0;
