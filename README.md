@@ -52,7 +52,7 @@
 
 ---
 
-## Quickstart (Run Locally)
+## How to Run this on Local?
 
 ### Prerequisites
 - Python 3.11+
