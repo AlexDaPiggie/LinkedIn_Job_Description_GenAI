@@ -2035,6 +2035,19 @@ button:disabled {
   text-align: center;
 }
 
+.modal-hint {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 12.5px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.modal-hint strong {
+  color: var(--blue);
+  font-weight: 700;
+}
+
 .billing-yield-headline {
   font-family: var(--heading-font);
   font-size: 32px;
