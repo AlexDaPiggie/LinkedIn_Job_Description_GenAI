@@ -19,7 +19,7 @@
     />
     <meta
       name="keywords"
-      content="LinkedIn job description generator, AI job description writer, hiring post generator, recruiter tools, job posting template"
+      content="LinkedIn job description generator, AI job description writer, hiring post generator, recruiter tools, job posting template, LinkedIn hiring post"
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="LinkedIn GenAI" />
@@ -55,22 +55,63 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "LinkedIn Job Description Generator",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "url": "https://www.linkedingenai.com/",
-        "description": "AI-powered web app for generating, refining, copying, and exporting LinkedIn-ready job descriptions.",
-        "offers": {
-          "@type": "Offer",
-          "price": "1",
-          "priceCurrency": "USD",
-          "description": "$1 for 30 generation and refinement credits"
-        },
-        "creator": {
-          "@type": "Organization",
-          "name": "LinkedIn GenAI"
-        }
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "name": "LinkedIn Job Description Generator",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "url": "https://www.linkedingenai.com/",
+            "description": "AI-powered web app for generating, refining, copying, and exporting LinkedIn-ready job descriptions.",
+            "offers": {
+              "@type": "Offer",
+              "price": "1",
+              "priceCurrency": "USD",
+              "description": "$1 for 30 generation and refinement credits"
+            },
+            "creator": {
+              "@type": "Organization",
+              "name": "LinkedIn GenAI"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the LinkedIn Job Description Generator?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "It is an AI-powered tool that turns your intake notes into professional, LinkedIn-ready job descriptions in seconds, with real-time streaming preview and customizable tone settings."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I export the generated job description to Word or Google Docs?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, you can copy the plain text with one click or export directly as a styled Microsoft Word (.docx) file that opens seamlessly in Google Docs."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does the AI prevent hallucinating role details?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The generator uses a structured schema and strict grounding prompts evaluated across benchmarks to ensure every responsibility and requirement strictly reflects the user's intake answers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I refine the job description after it is generated?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, you can use the built-in conversational refinement box to adjust tone, add perks, modify qualifications, or expand sections iteratively."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
     <link rel="icon" type="image/png" href="images/favicon.png?v=1" />
@@ -82,7 +123,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=settings-v37" />
+    <link rel="stylesheet" href="styles.css?v=settings-v38" />
     <style>
       /* --- SPA Navigation Bar --- */
       .nav-bar {
@@ -666,6 +707,73 @@
             </section>
           </div>
         </section>
+
+        <!-- SEO Content & FAQ Section -->
+        <section class="seo-guide-section" aria-label="About the LinkedIn Job Description Generator">
+          <div class="seo-guide-container">
+            <div class="seo-header">
+              <p class="eyebrow">AI Writing Guide</p>
+              <h2>How Our LinkedIn Job Description Generator Works</h2>
+              <p class="seo-lead">
+                Writing compelling, high-converting job posts for LinkedIn shouldn't take hours.
+                Our AI recruiter tool combines structured intake questionnaires with verified LLM prompt pipelines
+                to craft clear, professional, and compliant job postings in seconds.
+              </p>
+            </div>
+
+            <div class="seo-steps-grid">
+              <div class="seo-step-card">
+                <div class="seo-step-num">01</div>
+                <h3>Guided Role Intake</h3>
+                <p>Answer focused questions about role objectives, responsibilities, required qualifications, and company perks. No blank-page syndrome.</p>
+              </div>
+
+              <div class="seo-step-card">
+                <div class="seo-step-num">02</div>
+                <h3>Real-Time AI Generation</h3>
+                <p>Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and zero hallucinated facts.</p>
+              </div>
+
+              <div class="seo-step-card">
+                <div class="seo-step-num">03</div>
+                <h3>Refine, Copy & Export</h3>
+                <p>Use conversational refinement to tweak sections, copy plain text directly for LinkedIn, or export a styled Word (.docx) document.</p>
+              </div>
+            </div>
+
+            <div class="seo-faq-block">
+              <p class="eyebrow">Frequently Asked Questions</p>
+              <h2>Everything You Need to Know</h2>
+
+              <div class="seo-faq-list">
+                <details class="seo-faq-item" open>
+                  <summary><strong>What is the LinkedIn Job Description Generator?</strong></summary>
+                  <p>It is an AI-powered web tool built specifically for recruiters, hiring managers, and startup founders. It turns brief intake notes into publication-ready LinkedIn job descriptions formatted with clean sections, bullet points, and equal-opportunity statements.</p>
+                </details>
+
+                <details class="seo-faq-item">
+                  <summary><strong>How does this generator ensure high-quality, hallucination-free drafts?</strong></summary>
+                  <p>Our system uses rigorous prompt engineering with schema-enforced Pydantic models. Output quality is benchmarked using automated deterministic checks (keyword presence, required fields) and LLM-as-a-judge scoring across tone, specificity, and faithfulness.</p>
+                </details>
+
+                <details class="seo-faq-item">
+                  <summary><strong>Can I export my job description to Microsoft Word or Google Docs?</strong></summary>
+                  <p>Yes. With one click on the "Export Word" button, you can download a formatted <code>.docx</code> file that opens perfectly in Microsoft Word, Apple Pages, or Google Docs.</p>
+                </details>
+
+                <details class="seo-faq-item">
+                  <summary><strong>Can I refine the generated draft?</strong></summary>
+                  <p>Yes. Enter instructions like "add 5+ years of experience requirement" or "make the tone more energetic" into the refinement box to update the draft iteratively without starting over.</p>
+                </details>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Site Footer -->
+        <footer class="app-footer">
+          <p>© 2026 LinkedIn GenAI. Built for hiring teams, recruiters, and founders looking to write better LinkedIn job descriptions faster.</p>
+        </footer>
       </div>
 
       <!-- Authors View -->
