@@ -1383,6 +1383,71 @@ button:disabled {
   padding-left: 22px;
 }
 
+.markdown-preview hr {
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin: 24px 0;
+}
+
+.preview-cta-card {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f0f7ff, #e8f4fc);
+  border: 1.5px dashed var(--blue);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(10, 102, 194, 0.08);
+}
+
+.preview-cta-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 4px;
+}
+
+.preview-cta-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #102033;
+}
+
+.preview-cta-text {
+  font-size: 13.5px;
+  color: #4b5d6e;
+  line-height: 1.5;
+  margin: 0 !important;
+}
+
+.preview-cta-btn {
+  align-self: flex-start;
+  margin-top: 4px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(10, 102, 194, 0.25);
+  transition: background-color 0.18s ease, transform 0.1s ease;
+}
+
+.preview-cta-btn:hover {
+  background: #084e96;
+  transform: translateY(-1px);
+}
+
 .draft-actions {
   display: grid;
   grid-template-columns: 1fr auto;

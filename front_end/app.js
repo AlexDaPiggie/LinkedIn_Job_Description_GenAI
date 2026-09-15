@@ -239,6 +239,7 @@ function setAuthState(data) {
     localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, data.access_token);
   }
   renderAuth();
+  renderDraft();
 }
 
 function clearAuthState() {
@@ -247,6 +248,7 @@ function clearAuthState() {
   state.accessToken = "";
   localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
   renderAuth();
+  renderDraft();
 }
 
 function renderAuth() {
@@ -529,8 +531,32 @@ function renderDraft() {
     return;
   }
 
+  const isGuestPreview = state.isPreview || (!state.accessToken && state.currentMarkdown);
+
   elements.markdownPreview.classList.remove("empty");
-  elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
+  let html = markdownToHtml(state.currentMarkdown);
+
+  if (isGuestPreview) {
+    html += `
+      <div class="preview-cta-card">
+        <div class="preview-cta-badge">PREVIEW MODE</div>
+        <div class="preview-cta-title">Sign in to unlock full output</div>
+        <p class="preview-cta-text">You are viewing a free preview. Create a free account or sign in to unlock full responsibilities, requirements, benefits, AI refinement, and Word (.docx) export.</p>
+        <button type="button" class="preview-cta-btn" id="previewSignInBtn">Sign In / Sign Up Free</button>
+      </div>
+    `;
+  }
+
+  elements.markdownPreview.innerHTML = html;
+
+  if (isGuestPreview) {
+    const previewBtn = elements.markdownPreview.querySelector("#previewSignInBtn");
+    if (previewBtn) {
+      previewBtn.addEventListener("click", () => {
+        openModal();
+      });
+    }
+  }
 }
 
 function renderAll() {
@@ -855,11 +881,6 @@ async function loadSession() {
 }
 
 async function generateDraft() {
-  if (!state.accessToken) {
-    setMessage("Please sign in before generating. Each generate costs 1 credit.");
-    return;
-  }
-
   const missing = missingRequiredFields();
   if (missing.length) {
     state.missingRequired = new Set(missing);
@@ -873,11 +894,14 @@ async function generateDraft() {
 
   state.missingRequired.clear();
   renderQuestions();
-  const restore = setLoading(elements.generateButton, "Generating...");
-  setMessage("Generating your draft in real-time...", "info");
+  const loadingLabel = state.accessToken ? "Generating..." : "Generating preview...";
+  const restore = setLoading(elements.generateButton, loadingLabel);
+  setMessage(state.accessToken ? "Generating your draft in real-time..." : "Generating your free preview in real-time...", "info");
 
   elements.markdownPreview.classList.remove("empty");
-  elements.markdownPreview.innerHTML = "<div class='streaming-indicator' style='color: var(--ink-soft); font-style: italic;'>Starting draft generation...</div>";
+  elements.markdownPreview.innerHTML = `<div class='streaming-indicator' style='color: var(--ink-soft); font-style: italic;'>${
+    state.accessToken ? "Starting draft generation..." : "Starting preview generation..."
+  }</div>`;
 
   let streamedRaw = "";
 
@@ -890,13 +914,17 @@ async function generateDraft() {
       },
       (chunk) => {
         streamedRaw += chunk;
-        // Strip markdown code fences if present to show clean stream preview
         const cleaned = streamedRaw.replace(/^```(?:json)?\s*/i, "");
-        elements.markdownPreview.textContent = cleaned;
+        if (!state.accessToken) {
+          elements.markdownPreview.textContent = cleaned.slice(0, 320) + "\n\n... [Generating preview - Sign in to view full output]";
+        } else {
+          elements.markdownPreview.textContent = cleaned;
+        }
       },
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        state.isPreview = Boolean(data.is_preview) || !state.accessToken;
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -909,7 +937,11 @@ async function generateDraft() {
         }
         state.draftOutdated = false;
         renderDraft();
-        setMessage("");
+        if (state.isPreview) {
+          setMessage("Draft preview generated. Sign in to unlock full output, refinement & export!", "info");
+        } else {
+          setMessage("");
+        }
       }
     );
   } catch (error) {
@@ -923,6 +955,7 @@ async function generateDraft() {
 async function refineDraft() {
   if (!state.accessToken) {
     setMessage("Please sign in before refining. Each refine costs 1 credit.");
+    openModal();
     return;
   }
 
@@ -949,7 +982,7 @@ async function refineDraft() {
     await streamApi(
       "/refine",
       {
-        company_name: buildJobInfo().company_name,
+        company_name: state.answers.company_name || "",
         current_draft: state.currentDraft,
         user_request: request,
         skipped_fields: getSkippedFields(),
@@ -962,6 +995,7 @@ async function refineDraft() {
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        state.isPreview = false;
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -999,7 +1033,11 @@ function markdownToHtml(markdown) {
       }
       continue;
     }
-    if (line.startsWith("### ")) {
+    if (line === "---" || line === "***") {
+      if (inList) html.push("</ul>");
+      inList = false;
+      html.push("<hr />");
+    } else if (line.startsWith("### ")) {
       if (inList) html.push("</ul>");
       inList = false;
       html.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
@@ -1682,7 +1720,13 @@ async function handleDocUpload(file) {
 }
 
 if (elements.docUploadBox && elements.docFileInput) {
-  elements.docUploadBox.addEventListener("click", () => {
+  elements.docUploadBox.addEventListener("click", (e) => {
+    if (!state.accessToken) {
+      e.preventDefault();
+      setMessage("Please sign in first to upload documents and auto-fill questions.");
+      openModal();
+      return;
+    }
     elements.docFileInput.click();
   });
 
@@ -1703,6 +1747,11 @@ if (elements.docUploadBox && elements.docFileInput) {
   elements.docUploadBox.addEventListener("drop", (e) => {
     e.preventDefault();
     elements.docUploadBox.classList.remove("dragover");
+    if (!state.accessToken) {
+      setMessage("Please sign in first to upload documents and auto-fill questions.");
+      openModal();
+      return;
+    }
     const file = e.dataTransfer?.files?.[0];
     if (file) handleDocUpload(file);
   });

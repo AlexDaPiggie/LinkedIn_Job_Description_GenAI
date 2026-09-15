@@ -69,6 +69,16 @@ def get_user_id_from_auth(authorization: str = Header(None)):
     except Exception:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+def get_optional_user_id_from_auth(authorization: str = Header(None)) -> str | None:
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    token = authorization.split(" ")[1]
+    try:
+        user_heap = supabase.auth.get_user(token)
+        return user_heap.user.id
+    except Exception:
+        return None
+
 #Intializing credits payment config
 @app.post ("/create-checkout-session")
 def create_checkout_session(user_id: str, amount: int = 1, redirect_url: str = "http://localhost:3000"): 
@@ -257,23 +267,65 @@ def get_questions():
 @app.post ('/generate')
 def generate (
     payload: GenerateRequest,
-    user_id: str = Depends(get_user_id_from_auth),
+    user_id: str | None = Depends(get_optional_user_id_from_auth),
 ): 
-    #deduct user's credits by 1
-    if not deduct_supabase_credits(user_id):
-        raise HTTPException(
-            status_code = 402,
-            detail = "Insufficient credits"
-        )
+    # If signed in, deduct 1 credit
+    if user_id:
+        if not deduct_supabase_credits(user_id):
+            raise HTTPException(
+                status_code = 402,
+                detail = "Insufficient credits"
+            )
     
     def event_stream():
         import json as pyjson
+        from src.schema.job_description import JobDescriptionDraft
+        from src.rendering.markdown import render_job_description_preview
+
         try:
-            credits = get_supabase_credits(user_id)
+            credits = get_supabase_credits(user_id) if user_id else None
+            total_streamed_chars = 0
+
             for item in stream_generate_job_description(payload):
-                if item.get("event") == "done":
-                    item["credits_remaining"] = credits
-                yield f"data: {pyjson.dumps(item)}\n\n"
+                if user_id:
+                    if item.get("event") == "done":
+                        item["credits_remaining"] = credits
+                        item["is_preview"] = False
+                    yield f"data: {pyjson.dumps(item)}\n\n"
+                else:
+                    # Guest / unauthenticated preview mode
+                    if item.get("event") == "chunk":
+                        chunk_text = item.get("data", "")
+                        if total_streamed_chars < 350:
+                            total_streamed_chars += len(chunk_text)
+                            yield f"data: {pyjson.dumps(item)}\n\n"
+                    elif item.get("event") == "done":
+                        raw_draft = item.get("draft", {})
+                        try:
+                            full_draft = JobDescriptionDraft(**raw_draft)
+                            preview_draft_obj, preview_md = render_job_description_preview(
+                                full_draft,
+                                company_name=payload.job_info.company_name,
+                                skipped_fields=payload.skipped_fields,
+                            )
+                            item["draft"] = preview_draft_obj.model_dump()
+                            item["markdown"] = preview_md
+                        except Exception:
+                            preview_resps = raw_draft.get("responsibilities", [])[:2]
+                            raw_draft["responsibilities"] = preview_resps
+                            raw_draft["requirements"] = []
+                            raw_draft["nice_to_haves"] = []
+                            raw_draft["benefits"] = []
+                            item["draft"] = raw_draft
+                            item["markdown"] = (
+                                f"# {raw_draft.get('title', 'Job Description')}\n\n"
+                                f"## About the Role\n\n{raw_draft.get('about_role', '')}\n\n"
+                                "---\n\n### 🔒 Sign in to see the full output\n\n"
+                                "Sign in or create a free account to unlock full responsibilities, requirements, benefits, and Word (.docx) export."
+                            )
+                        item["is_preview"] = True
+                        item["credits_remaining"] = None
+                        yield f"data: {pyjson.dumps(item)}\n\n"
         except Exception as exc:
             yield f"data: {pyjson.dumps({'event': 'error', 'detail': str(exc)})}\n\n"
 

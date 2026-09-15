@@ -71,3 +71,46 @@ def render_job_description (
     )
 
     return "\n \n".join (sections)
+
+def render_job_description_preview(
+    draft: JobDescriptionDraft,
+    company_name: str = "",
+    skipped_fields: list[str] | None = None,
+) -> tuple[JobDescriptionDraft, str]:
+    sections = [f"# {draft.title}"]
+    company_heading = f"About {company_name.strip()}" if company_name.strip() else "About the Company"
+    suppressed_sections = {
+        SKIPPED_FIELD_TO_SECTION[field]
+        for field in skipped_fields or []
+        if field in SKIPPED_FIELD_TO_SECTION
+    }
+    _append_text_section(sections, company_heading, draft.about_company, "about_company", suppressed_sections)
+    _append_text_section(sections, "About the Role", draft.about_role, "about_role", suppressed_sections)
+
+    preview_resps = [item.strip() for item in draft.responsibilities[:2] if item.strip()]
+    if preview_resps:
+        _append_bullet_section(sections, "Key Responsibilities (Preview)", preview_resps, "responsibilities", suppressed_sections)
+
+    sections.append(
+        "---\n \n"
+        "### 🔒 Sign in to see the full output\n \n"
+        "You are viewing a free preview. Sign in or create a free account to unlock:\n"
+        "- Complete responsibilities and daily expectations\n"
+        "- Required qualifications, core skills, and nice-to-haves\n"
+        "- Benefits, perks, and company culture statements\n"
+        "- AI refinement and Word (.docx) export"
+    )
+
+    preview_draft = JobDescriptionDraft(
+        title=draft.title,
+        about_company=draft.about_company if "about_company" not in suppressed_sections else "",
+        about_role=draft.about_role if "about_role" not in suppressed_sections else "",
+        responsibilities=preview_resps,
+        requirements=[],
+        nice_to_haves=[],
+        benefits=[],
+        why_join_us="",
+        equal_opportunity="",
+    )
+
+    return preview_draft, "\n \n".join(sections)
