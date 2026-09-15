@@ -1419,6 +1419,16 @@ button:disabled {
   font-size: 17px;
   font-weight: 700;
   color: #102033;
+  display: flex;
+  align-items: center;
+}
+
+.preview-lock-icon {
+  display: inline-block;
+  vertical-align: -2px;
+  margin-right: 6px;
+  stroke: #2b3b4c;
+  flex-shrink: 0;
 }
 
 .preview-cta-text {

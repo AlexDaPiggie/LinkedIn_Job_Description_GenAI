@@ -540,7 +540,10 @@ function renderDraft() {
     html += `
       <div class="preview-cta-card">
         <div class="preview-cta-badge">PREVIEW MODE</div>
-        <div class="preview-cta-title">Sign in to unlock full output</div>
+        <div class="preview-cta-title">
+          <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#102033" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Sign in to unlock full output
+        </div>
         <p class="preview-cta-text">You are viewing a free preview. Create a free account or sign in to unlock full responsibilities, requirements, benefits, AI refinement, and Word (.docx) export.</p>
         <button type="button" class="preview-cta-btn" id="previewSignInBtn">Sign In / Sign Up Free</button>
       </div>
@@ -1040,7 +1043,13 @@ function markdownToHtml(markdown) {
     } else if (line.startsWith("### ")) {
       if (inList) html.push("</ul>");
       inList = false;
-      html.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
+      const headingText = line.slice(4).trim();
+      if (headingText.includes("🔒")) {
+        const cleanHeading = headingText.replace(/🔒\s*/, "").trim();
+        html.push(`<h3><svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2b3b4c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>${escapeHtml(cleanHeading)}</h3>`);
+      } else {
+        html.push(`<h3>${escapeHtml(headingText)}</h3>`);
+      }
     } else if (line.startsWith("## ")) {
       if (inList) html.push("</ul>");
       inList = false;
