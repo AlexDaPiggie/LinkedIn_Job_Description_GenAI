@@ -121,6 +121,15 @@
         border-radius: 20px;
         font-size: 12.5px;
         font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .pill-icon {
+        display: inline-block;
+        vertical-align: -2px;
+        stroke: #4b5d6e;
+        flex-shrink: 0;
       }
       .hero-cta-group {
         display: flex;
@@ -429,7 +438,10 @@
         <div class="nav-links">
           <a href="/" class="nav-link">AI Generator</a>
           <a href="/templates/" class="nav-link">All Templates</a>
-          <a href="/?role=Data+Analyst#generator" class="btn-primary-lg" style="padding: 8px 16px; font-size: 13.5px;">Generate Custom JD</a>
+          <a href="/?role=Data+Analyst#generator" class="btn-primary-lg" style="padding: 8px 16px; font-size: 13.5px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Generate Custom JD
+          </a>
         </div>
       </nav>
 
@@ -445,18 +457,29 @@
         <p>Use this free, LinkedIn-optimized <strong>Data Analyst</strong> job description template to attract highly qualified candidates. Designed for high applicant click-through rates, clear role clarity, and seamless team alignment.</p>
 
         <div class="meta-pills">
-          <span class="template-pill">📍 Location: Remote / Hybrid / On-site</span>
-          <span class="template-pill">💼 Experience: 2 - 4 years</span>
-          <span class="template-pill">💰 Typical Salary: $80,000 - $120,000 / year</span>
+          <span class="template-pill">
+            <svg class="pill-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4b5d6e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Location: Remote / Hybrid / On-site
+          </span>
+          <span class="template-pill">
+            <svg class="pill-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4b5d6e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            Experience: 2 - 4 years
+          </span>
+          <span class="template-pill">
+            <svg class="pill-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4b5d6e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            Typical Salary: $80,000 - $120,000 / year
+          </span>
           <span class="template-pill">SQL</span><span class="template-pill">Tableau / PowerBI</span><span class="template-pill">Data Storytelling</span><span class="template-pill">Excel / Google Sheets</span><span class="template-pill">Python / R</span>
         </div>
 
         <div class="hero-cta-group">
           <a href="/?role=Data+Analyst#generator" class="btn-primary-lg">
-            ✨ Customize this with AI (Free)
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Customize this with AI (Free)
           </a>
           <button type="button" class="btn-secondary-lg" id="copyTemplateBtn">
-            📋 Copy Template
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4b5d6e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy Template
           </button>
         </div>
       </header>
@@ -466,7 +489,8 @@
         <div class="jd-card-header">
           <h2>Standard Data Analyst Job Description</h2>
           <button type="button" class="btn-secondary-lg" style="padding: 6px 12px; font-size: 13px;" id="copyTemplateBtn2">
-            📋 Copy
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4b5d6e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy
           </button>
         </div>
 
