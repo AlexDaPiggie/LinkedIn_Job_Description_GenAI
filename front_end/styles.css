@@ -2804,6 +2804,28 @@ button:disabled {
   font-size: 12.5px;
 }
 
+.seo-template-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: #fff;
+  border: 1px solid #d0d7de;
+  border-radius: 20px;
+  color: #102033;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.seo-template-pill:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: #f0f7ff;
+  transform: translateY(-1px);
+}
+
 .app-footer {
   text-align: center;
   padding: 28px 16px 12px;

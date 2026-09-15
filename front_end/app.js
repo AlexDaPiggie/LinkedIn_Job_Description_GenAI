@@ -1351,7 +1351,19 @@ async function loadQuestions() {
     console.warn("Could not load from localStorage:", err);
   }
 
-  state.openQuestion = state.questions[0]?.question_name || null;
+  // Handle URL query parameters (e.g. ?role=Software+Engineer)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get("role");
+    if (roleParam) {
+      state.answers["role_title"] = roleParam.trim();
+      state.openQuestion = "company_name";
+    }
+  } catch (err) {
+    console.warn("Could not parse URL query parameters:", err);
+  }
+
+  state.openQuestion = state.openQuestion || state.questions[0]?.question_name || null;
   renderAll();
 }
 
