@@ -2461,6 +2461,8 @@ button:disabled {
 .author-contacts {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .contact-link {
