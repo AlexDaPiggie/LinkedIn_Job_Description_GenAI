@@ -32,6 +32,7 @@ from src.api.schemas import (
     AuthLoginRequest,
     AuthResponse,
     VerifyOtpRequest,
+    ResendOtpRequest,
     SignupStatusResponse,
     ForgotPasswordRequest,
     ResetPasswordConfirmRequest,
@@ -39,6 +40,7 @@ from src.api.schemas import (
 )
 from src.auth.supabase_service import (
     signup_user, 
+    resend_signup_otp,
     login_user, 
     get_current_user_profile, 
     verify_user_otp,
@@ -175,6 +177,13 @@ def auth_signup(request: AuthSignupRequest):
 def auth_verify_otp(request: VerifyOtpRequest):
     try:
         return verify_user_otp(request.email, request.token)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+@app.post("/auth/resend-otp")
+def auth_resend_otp(request: ResendOtpRequest):
+    try:
+        return resend_signup_otp(request.email)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 

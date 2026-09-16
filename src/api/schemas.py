@@ -66,6 +66,9 @@ class VerifyOtpRequest(BaseModel):
     email: str
     token: str
 
+class ResendOtpRequest(BaseModel):
+    email: str
+
 class SignupStatusResponse(BaseModel):
     status: str
     email: str

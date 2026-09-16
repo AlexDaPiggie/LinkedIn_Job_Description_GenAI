@@ -3,37 +3,87 @@ from src.database.supabase_credits import get_supabase_credits
 
 def signup_user(email: str, password: str, username: str):
     "This function is for user to register a new account"
+    clean_email = email.strip()
+    clean_username = username.strip()
+
     # Check if email is already registered
-    email_check = supabase.table("profiles").select("*").eq("email", email).execute()
+    email_check = supabase.table("profiles").select("*").eq("email", clean_email).execute()
     if email_check.data:
         raise ValueError("Email is already registered")
 
     # Check if username is already taken
-    username_check = supabase.table("profiles").select("id").eq("username", username).execute()
+    username_check = supabase.table("profiles").select("id").eq("username", clean_username).execute()
     if username_check.data:
         raise ValueError("Username is already taken")
 
-    response = supabase.auth.sign_up(
-        {
-            "email": email,
-            "password": password,
-            "options": {
-                "data": {
-                    "username": username
+    try:
+        response = supabase.auth.sign_up(
+            {
+                "email": clean_email,
+                "password": password,
+                "options": {
+                    "data": {
+                        "username": clean_username
+                    }
                 }
             }
-        }
-    )
-    #in case there's no response from the system
+        )
+    except Exception as exc:
+        err = str(exc)
+        if "rate" in err.lower() or "security purposes" in err.lower():
+            raise ValueError("Too many attempts. Please wait a minute before trying again.")
+        raise ValueError(err)
+
+    # in case there's no response from the system
     if not response.user: 
-        raise ValueError("Signup Process is failed")
+        raise ValueError("Signup process failed. Please try again.")
     
-    #Return status info. Profile row will be created once OTP has been verified
+    # If user was previously registered but unconfirmed, Supabase returns empty identities
+    # and does not re-send the email on sign_up. Explicitly trigger resend:
+    identities = getattr(response.user, "identities", None)
+    if identities is not None and len(identities) == 0:
+        try:
+            supabase.auth.resend({
+                "type": "signup",
+                "email": clean_email,
+            })
+        except Exception:
+            pass
+
+    # Return status info. Profile row will be created once OTP has been verified
     return {
         "status": "pending_verification",
-        "email": email,
+        "email": clean_email,
         "message": "Verification code has been sent to your email",
     }
+
+def resend_signup_otp(email: str):
+    "This function resends the signup verification OTP to the user's email"
+    clean_email = email.strip() if email else ""
+    if not clean_email:
+        raise ValueError("Email is required")
+
+    # Check if user already completed registration
+    profile_check = supabase.table("profiles").select("id").eq("email", clean_email).execute()
+    if profile_check.data:
+        raise ValueError("This email is already verified. Please sign in instead.")
+
+    try:
+        supabase.auth.resend({
+            "type": "signup",
+            "email": clean_email,
+        })
+        return {
+            "status": "success",
+            "message": "A new verification code has been sent to your email.",
+        }
+    except Exception as exc:
+        err = str(exc)
+        if "security purposes" in err.lower() or "rate" in err.lower():
+            raise ValueError("Please wait a minute before requesting another code.")
+        if "already confirmed" in err.lower():
+            raise ValueError("This email is already verified. Please sign in instead.")
+        raise ValueError(err)
 
 def verify_user_otp(email: str, token: str):
     #Verify if the 6-digit otp token is created

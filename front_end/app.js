@@ -167,6 +167,8 @@ const elements = {
   modalOtpForm: document.querySelector("#modalOtpForm"),
   modalOtp: document.querySelector("#modalOtp"),
   modalOtpSubmitBtn: document.querySelector("#modalOtpSubmitBtn"),
+  modalResendOtpBtn: document.querySelector("#modalResendOtpBtn"),
+  modalCancelOtpBtn: document.querySelector("#modalCancelOtpBtn"),
   modalMessageBox: document.querySelector("#modalMessageBox"),
   modalForgotPasswordBtn: document.querySelector("#modalForgotPasswordBtn"),
   resetPasswordView: document.querySelector("#resetPasswordView"),
@@ -822,12 +824,17 @@ function showAuthView() {
   elements.authView.classList.remove("hidden");
   elements.otpView.classList.add("hidden");
   elements.resetPasswordView.classList.add("hidden");
+  setModalMessage("");
 }
 
 function showOtpView() {
   elements.authView.classList.add("hidden");
   elements.otpView.classList.remove("hidden");
   elements.resetPasswordView.classList.add("hidden");
+  if (elements.modalOtp) {
+    elements.modalOtp.value = "";
+    elements.modalOtp.focus();
+  }
 }
 
 function showResetView() {
@@ -914,6 +921,10 @@ async function submitOtp(event) {
 
   try {
     const data = await callApi("/auth/verify-otp", { email, token });
+    if (otpResendCooldownTimer) {
+      clearInterval(otpResendCooldownTimer);
+      otpResendCooldownTimer = null;
+    }
     const wasPreview = Boolean(
       state.isPreview || 
       (state.currentMarkdown && (
@@ -931,6 +942,51 @@ async function submitOtp(event) {
     setModalMessage(err.message || "Invalid verification code.");
   } finally {
     restore();
+  }
+}
+
+let otpResendCooldownTimer = null;
+
+function startOtpResendCooldown(seconds = 60) {
+  if (!elements.modalResendOtpBtn) return;
+  clearInterval(otpResendCooldownTimer);
+  elements.modalResendOtpBtn.disabled = true;
+  let remaining = seconds;
+  elements.modalResendOtpBtn.textContent = `Resend in ${remaining}s`;
+
+  otpResendCooldownTimer = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      clearInterval(otpResendCooldownTimer);
+      otpResendCooldownTimer = null;
+      elements.modalResendOtpBtn.disabled = false;
+      elements.modalResendOtpBtn.textContent = "Resend code";
+    } else {
+      elements.modalResendOtpBtn.textContent = `Resend in ${remaining}s`;
+    }
+  }, 1000);
+}
+
+async function resendOtp() {
+  const email = elements.modalEmail.value.trim();
+  if (!email) {
+    setModalMessage("Email is required to resend verification code.");
+    return;
+  }
+
+  const originalText = elements.modalResendOtpBtn.textContent;
+  elements.modalResendOtpBtn.disabled = true;
+  elements.modalResendOtpBtn.textContent = "Sending...";
+  setModalMessage("");
+
+  try {
+    const data = await callApi("/auth/resend-otp", { email });
+    setModalMessage(data.message || "A new verification code has been sent to your email.", "info");
+    startOtpResendCooldown(60);
+  } catch (err) {
+    setModalMessage(err.message || "Failed to resend code.");
+    elements.modalResendOtpBtn.disabled = false;
+    elements.modalResendOtpBtn.textContent = originalText;
   }
 }
 
@@ -1542,6 +1598,8 @@ elements.closeModalBtn.addEventListener("click", closeModal);
 elements.modalToggleModeBtn.addEventListener("click", toggleAuthMode);
 elements.modalAuthForm.addEventListener("submit", submitAuth);
 elements.modalOtpForm.addEventListener("submit", submitOtp);
+elements.modalResendOtpBtn?.addEventListener("click", resendOtp);
+elements.modalCancelOtpBtn?.addEventListener("click", showAuthView);
 elements.buyCreditsBtn.addEventListener("click", buyCredits);
 elements.closeBillingModalBtn.addEventListener("click", closeBillingModal);
 elements.billingAmountInput.addEventListener("input", handleAmountChange);
