@@ -1,4 +1,5 @@
 # [Linked In GenAI(Click to see the Website)](https://www.linkedingenai.com)
+# [Youtube Demo (Click to see)](https://www.youtube.com/watch?v=-ngDrYsJpZk)
 ## Authors
 
 | **Phong Nguyen (Alex)** | **Huy Phan (Hertzy)** |
