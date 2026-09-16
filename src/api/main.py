@@ -69,15 +69,19 @@ def get_user_id_from_auth(authorization: str = Header(None)):
     except Exception:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-def get_optional_user_id_from_auth(authorization: str = Header(None)) -> str | None:
+def get_optional_user_id_from_auth(authorization: str | None = Header(default=None)) -> str | None:
     if not authorization or not authorization.startswith("Bearer "):
         return None
     token = authorization.split(" ")[1]
     try:
         user_heap = supabase.auth.get_user(token)
+        if not user_heap or not user_heap.user:
+            raise HTTPException(status_code=401, detail="Session expired. Please sign in again.")
         return user_heap.user.id
+    except HTTPException:
+        raise
     except Exception:
-        return None
+        raise HTTPException(status_code=401, detail="Session expired or invalid token. Please sign in again.")
 
 #Intializing credits payment config
 @app.post ("/create-checkout-session")

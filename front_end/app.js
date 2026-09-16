@@ -531,33 +531,70 @@ function renderDraft() {
     return;
   }
 
-  const isGuestPreview = state.isPreview || (!state.accessToken && state.currentMarkdown);
+  const isPreview = Boolean(
+    state.isPreview || 
+    (state.currentMarkdown && (
+      state.currentMarkdown.includes("Sign in to see the full output") || 
+      state.currentMarkdown.includes("Full Output Ready to Generate")
+    ))
+  );
 
   elements.markdownPreview.classList.remove("empty");
   let html = markdownToHtml(state.currentMarkdown);
 
-  if (isGuestPreview) {
-    html += `
-      <div class="preview-cta-card">
-        <div class="preview-cta-badge">PREVIEW MODE</div>
-        <div class="preview-cta-title">
-          <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#102033" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-          Sign in to unlock full output
+  if (isPreview) {
+    if (!state.accessToken) {
+      html += `
+        <div class="preview-cta-card">
+          <div class="preview-cta-badge">PREVIEW MODE</div>
+          <div class="preview-cta-title">
+            <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#102033" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Sign in to unlock full output
+          </div>
+          <p class="preview-cta-text">You are viewing a free preview. Create a free account or sign in to unlock full responsibilities, requirements, benefits, AI refinement, and Word (.docx) export.</p>
+          <button type="button" class="preview-cta-btn" id="previewSignInBtn">Sign In / Sign Up Free</button>
         </div>
-        <p class="preview-cta-text">You are viewing a free preview. Create a free account or sign in to unlock full responsibilities, requirements, benefits, AI refinement, and Word (.docx) export.</p>
-        <button type="button" class="preview-cta-btn" id="previewSignInBtn">Sign In / Sign Up Free</button>
-      </div>
-    `;
+      `;
+    } else {
+      const hasCredits = (state.credits ?? 0) > 0;
+      html += `
+        <div class="preview-cta-card" style="border-color: var(--blue); background: linear-gradient(135deg, #f0f7ff, #e0f2fe);">
+          <div class="preview-cta-badge" style="background: #0284c7;">PREVIEW DRAFT</div>
+          <div class="preview-cta-title">
+            <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Ready to generate your full job description
+          </div>
+          <p class="preview-cta-text">You are signed in! Click below to generate the complete version with all responsibilities, qualifications, benefits, and Word export.</p>
+          <button type="button" class="preview-cta-btn" id="unlockFullDraftBtn" style="background: #0284c7;">
+            ${hasCredits ? "Generate Full Output (1 Credit)" : "Buy Credits to Unlock"}
+          </button>
+        </div>
+      `;
+    }
   }
 
   elements.markdownPreview.innerHTML = html;
 
-  if (isGuestPreview) {
-    const previewBtn = elements.markdownPreview.querySelector("#previewSignInBtn");
-    if (previewBtn) {
-      previewBtn.addEventListener("click", () => {
-        openModal();
-      });
+  if (isPreview) {
+    if (!state.accessToken) {
+      const previewBtn = elements.markdownPreview.querySelector("#previewSignInBtn");
+      if (previewBtn) {
+        previewBtn.addEventListener("click", () => {
+          openModal();
+        });
+      }
+    } else {
+      const unlockBtn = elements.markdownPreview.querySelector("#unlockFullDraftBtn");
+      if (unlockBtn) {
+        unlockBtn.addEventListener("click", () => {
+          const hasCredits = (state.credits ?? 0) > 0;
+          if (hasCredits) {
+            generateDraft();
+          } else {
+            openBillingModal();
+          }
+        });
+      }
     }
   }
 }
@@ -647,6 +684,11 @@ async function streamApi(path, body, onChunk, onDone) {
   });
 
   if (!response.ok) {
+    if (response.status === 401 && state.accessToken) {
+      clearAuthState();
+      openModal();
+      throw new Error("Your session expired. Please sign in again.");
+    }
     let errData;
     try {
       errData = await response.json();
@@ -841,8 +883,19 @@ async function submitAuth(event) {
       showOtpView();
     } else {
       const data = await callApi("/auth/login", { email, password });
+      const wasPreview = Boolean(
+        state.isPreview || 
+        (state.currentMarkdown && (
+          state.currentMarkdown.includes("Sign in to see the full output") ||
+          state.currentMarkdown.includes("Full Output Ready to Generate")
+        ))
+      );
       setAuthState(data);
       closeModal();
+      if (wasPreview && state.currentDraft) {
+        setMessage("Signed in! Unlocking your full job description...", "info");
+        await generateDraft();
+      }
     }
   } catch (err) {
     setModalMessage(err.message || "Authentication failed.");
@@ -861,8 +914,19 @@ async function submitOtp(event) {
 
   try {
     const data = await callApi("/auth/verify-otp", { email, token });
+    const wasPreview = Boolean(
+      state.isPreview || 
+      (state.currentMarkdown && (
+        state.currentMarkdown.includes("Sign in to see the full output") ||
+        state.currentMarkdown.includes("Full Output Ready to Generate")
+      ))
+    );
     setAuthState(data);
     closeModal();
+    if (wasPreview && state.currentDraft) {
+      setMessage("Account verified! Unlocking your full job description...", "info");
+      await generateDraft();
+    }
   } catch (err) {
     setModalMessage(err.message || "Invalid verification code.");
   } finally {
@@ -967,6 +1031,18 @@ async function refineDraft() {
     setMessage("Generate a draft before refining.");
     return;
   }
+
+  const isPreview = Boolean(
+    state.isPreview || 
+    (state.currentMarkdown && (
+      state.currentMarkdown.includes("Sign in to see the full output") ||
+      state.currentMarkdown.includes("Full Output Ready to Generate")
+    ))
+  );
+  if (isPreview) {
+    setMessage("Please generate your full draft before refining.", "info");
+    return;
+  }
   if (state.draftOutdated) {
     setMessage("Regenerate before refining because the answers have changed.");
     return;
@@ -1045,7 +1121,10 @@ function markdownToHtml(markdown) {
       inList = false;
       const headingText = line.slice(4).trim();
       if (headingText.includes("🔒")) {
-        const cleanHeading = headingText.replace(/🔒\s*/, "").trim();
+        let cleanHeading = headingText.replace(/🔒\s*/, "").trim();
+        if (state.accessToken && cleanHeading.toLowerCase().includes("sign in")) {
+          cleanHeading = "Full Output Ready to Generate";
+        }
         html.push(`<h3><svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2b3b4c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>${escapeHtml(cleanHeading)}</h3>`);
       } else {
         html.push(`<h3>${escapeHtml(headingText)}</h3>`);
@@ -1069,7 +1148,11 @@ function markdownToHtml(markdown) {
         html.push("</ul>");
         inList = false;
       }
-      html.push(`<p>${escapeHtml(line)}</p>`);
+      let paraText = line;
+      if (state.accessToken && paraText.includes("Sign in or create a free account to unlock")) {
+        paraText = "Click 'Generate Full Output' below to unlock all responsibilities, requirements, and benefits:";
+      }
+      html.push(`<p>${escapeHtml(paraText)}</p>`);
     }
   }
 
@@ -1351,6 +1434,11 @@ async function loadQuestions() {
     if (savedDraft && savedMarkdown) {
       state.currentDraft = JSON.parse(savedDraft);
       state.currentMarkdown = savedMarkdown;
+      state.isPreview = Boolean(
+        savedMarkdown.includes("🔒") || 
+        savedMarkdown.includes("Sign in to see the full output") ||
+        savedMarkdown.includes("Full Output Ready to Generate")
+      );
     }
     const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
     if (savedSettings) {
