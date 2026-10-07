@@ -54,6 +54,15 @@ app = FastAPI(
     title='LinkedIn Job Description Generator',
     version='0.1.0',
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initializing stripe api key
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 

@@ -1,3 +1,13 @@
+---
+title: LinkedIn Job Description Generator
+emoji: 💼
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # [Linked In GenAI(Click to see the Website)](https://www.linkedingenai.com)
 # [Youtube Demo (Click to see)](https://www.youtube.com/watch?v=-ngDrYsJpZk)
 ## Authors
