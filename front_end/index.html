@@ -602,6 +602,8 @@
                   <h2>Generate the job description</h2>
                 </div>
                 <div class="draft-button-group">
+                  <button id="copyButton" class="secondary-button" type="button">Copy</button>
+                  <button id="exportDocxButton" class="secondary-button" type="button">Word</button>
                   <!--
                   <button
                     id="sampleOutputButton"
@@ -679,32 +681,7 @@
                 <div id="screeningList" class="screening-list hidden"></div>
               </div>
 
-              <div class="draft-actions">
-                <div>
-                  <h3>Use the finished draft</h3>
-                  <p>
-                    Copy to keep the clean generated text ready for LinkedIn,
-                    email, or Google Docs. Export to download a Word file you
-                    can open in Google Docs.
-                  </p>
-                </div>
-                <div class="action-buttons">
-                  <button
-                    id="copyButton"
-                    class="secondary-button"
-                    type="button"
-                  >
-                    Copy text
-                  </button>
-                  <button
-                    id="exportDocxButton"
-                    class="secondary-button"
-                    type="button"
-                  >
-                    Export Word
-                  </button>
-                </div>
-              </div>
+              
             </section>
           </div>
         </section>
@@ -746,9 +723,8 @@
             <div class="seo-header">
               <h2>How Our LinkedIn Job Description Generator & JD Writer Works</h2>
               <p class="seo-lead">
-                Writing compelling, high-converting job posts for LinkedIn shouldn't take hours.
-                Our AI LinkedIn JD writer combines structured intake questionnaires with verified LLM prompt pipelines
-                to craft clear, professional, and compliant job postings in seconds.
+                A good LinkedIn job post needs specific duties, a real pay range, and wording that does not put people off.
+                This tool asks for those facts, writes the draft, then checks it against a fixed list of rules.
               </p>
             </div>
 
@@ -762,7 +738,7 @@
               <div class="seo-step-card">
                 <div class="seo-step-num">02</div>
                 <h3>Real-Time AI Generation</h3>
-                <p>Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and zero hallucinated facts.</p>
+                <p>Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and requirements that are not in your answers are marked so you can check them.</p>
               </div>
 
               <div class="seo-step-card">
@@ -782,8 +758,8 @@
                 </details>
 
                 <details class="seo-faq-item">
-                  <summary><strong>How does this generator ensure high-quality, hallucination-free drafts?</strong></summary>
-                  <p>Our system uses rigorous prompt engineering with schema-enforced Pydantic models. Output quality is benchmarked using automated deterministic checks (keyword presence, required fields) and LLM-as-a-judge scoring across tone, specificity, and faithfulness.</p>
+                  <summary><strong>How do you keep the draft accurate?</strong></summary>
+                  <p>The AI is told to use only what you provide, and its output must match a fixed structure. Requirements that do not match your answers get a verify mark. No AI is perfect, so read the draft before you post it.</p>
                 </details>
 
                 <details class="seo-faq-item">
