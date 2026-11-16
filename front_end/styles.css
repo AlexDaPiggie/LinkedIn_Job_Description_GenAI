@@ -3571,3 +3571,17 @@ button:disabled {
 .seo-template-pill, .contact-link { padding: 4px 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
 .seo-template-pill:hover, .contact-link:hover { background: transparent; color: var(--blue-deep); transform: none; }
 @media (max-width: 720px) { .seo-templates-chips { grid-template-columns: 1fr; } }
+
+/* ===== Gradient fills for the blue buttons and green answered badges ===== */
+.primary-button {
+  background: linear-gradient(180deg, #1a7be0 0%, #0a66c2 52%, #08529f 100%);
+}
+.primary-button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #1470d2 0%, #0857ab 52%, #064587 100%);
+}
+.primary-button:disabled {
+  background: linear-gradient(180deg, #7fb2e6 0%, #6aa2dc 100%);
+}
+.question-card.answered:not(.missing):not(.open) .question-number {
+  background: linear-gradient(145deg, #19b07c 0%, #0b8f61 55%, #087852 100%);
+}
