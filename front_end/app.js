@@ -596,8 +596,10 @@ function renderQuestions() {
 function adjustRailPosition() {
   const rail = elements.railNav;
   if (!rail) return;
-  const defaultTop = 300;
+  // Start level with the page title, then stay put 16px from the top once the title scrolls away.
+  const title = document.querySelector(".topbar h1");
   const padding = 16;
+  const defaultTop = title ? Math.max(padding, Math.round(title.getBoundingClientRect().top)) : 300;
   const railHeight = rail.offsetHeight;
   const viewportHeight = window.innerHeight;
 
@@ -2063,6 +2065,7 @@ loadQuestions();
 loadAuthors();
 
 window.addEventListener("resize", adjustRailPosition);
+window.addEventListener("scroll", adjustRailPosition, { passive: true });
 window.addEventListener("orientationchange", adjustRailPosition);
 elements.railNav?.addEventListener("mouseenter", adjustRailPosition);
 elements.railNav?.addEventListener("mouseleave", adjustRailPosition);

@@ -3709,3 +3709,6 @@ body::before, body::after { display: none; }
 .question-rail { transition: opacity 200ms ease, transform 200ms ease; }
 body.rail-away .question-rail { opacity: 0; pointer-events: none; transform: translateX(-18px); }
 .app-shell { padding-bottom: 96px; }
+
+/* Rail position follows the title, so no CSS transition on top */
+.question-rail { transition: opacity 200ms ease, transform 200ms ease; }
