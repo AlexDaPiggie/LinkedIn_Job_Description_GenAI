@@ -416,3 +416,33 @@ def test_webhook_returns_500_not_double_credit_when_ledger_missing(client, monke
 
     monkeypatch.setattr(ledger.supabase, "rpc", lambda name, params: Boom())
     assert client.post("/webhook", content=b"{}", headers={"stripe-signature": "x"}).status_code == 500
+
+
+def test_disconnect_after_receiving_text_is_not_refunded(monkeypatch):
+    refunds = []
+    monkeypatch.setattr(ledger, "refund", lambda *a: refunds.append(a) or 0)
+
+    def chunks(request):
+        yield {"event": "chunk", "data": "paid draft text"}
+        yield {"event": "chunk", "data": "more"}
+
+    monkeypatch.setattr(jobs, "stream_refine_job_description", chunks)
+    stream = jobs._refine_event_stream(None, "user-1", "key", 3)
+    next(stream)
+    stream.close()
+    assert refunds == []
+
+
+def test_disconnect_before_any_text_is_refunded(monkeypatch):
+    refunds = []
+    monkeypatch.setattr(ledger, "refund", lambda *a: refunds.append(a) or 0)
+
+    def slow(request):
+        yield {"event": "status"}
+        yield {"event": "chunk", "data": "x"}
+
+    monkeypatch.setattr(jobs, "stream_refine_job_description", slow)
+    stream = jobs._refine_event_stream(None, "user-1", "key", 3)
+    next(stream)
+    stream.close()
+    assert len(refunds) == 1

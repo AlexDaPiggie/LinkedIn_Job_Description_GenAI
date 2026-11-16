@@ -173,6 +173,37 @@ def _public_error(exc: Exception) -> str:
     return "Something went wrong while generating. Please try again."
 
 
+def _refine_event_stream(
+    payload: RefineRequest, user_id: str, request_key: str, balance: int
+) -> Iterator[str]:
+    """Streams a paid refine and refunds the credit only for real failures.
+
+    A refund is given when the AI call fails or returns an unreadable draft.
+    If the client disconnects, the credit is refunded only when no text was
+    sent yet. Once chunks went out the user already received the paid output,
+    so a disconnect must not be a way to get free refines.
+    """
+    succeeded = False
+    sent_any = False
+    try:
+        for event in stream_refine_job_description(payload):
+            if event.get("event") == "done":
+                succeeded = True
+                event["credits_remaining"] = balance
+            if event.get("event") == "chunk":
+                sent_any = True  # set before yielding: the client may leave right after receiving it
+            yield to_sse(event)
+    except GeneratorExit:
+        if not succeeded and not sent_any:
+            _refund_quietly(user_id, request_key)
+        raise
+    except Exception as exc:
+        yield to_sse({"event": "error", "detail": f"{_public_error(exc)} Your credit was refunded."})
+    if not succeeded:
+        remaining = _refund_quietly(user_id, request_key)
+        yield to_sse({"event": "refunded", "credits_remaining": remaining if remaining is not None else balance})
+
+
 @router.post("/refine")
 def refine(
     payload: RefineRequest,
@@ -204,25 +235,7 @@ def refine(
     if balance == ledger.INSUFFICIENT:
         raise HTTPException(status_code=402, detail="Insufficient credits.")
 
-    def event_stream() -> Iterator[str]:
-        succeeded = False
-        try:
-            for event in stream_refine_job_description(payload):
-                if event.get("event") == "done":
-                    succeeded = True
-                    event["credits_remaining"] = balance
-                yield to_sse(event)
-        except GeneratorExit:
-            # Client left before the draft arrived: give the credit back.
-            _refund_quietly(user_id, request_key)
-            raise
-        except Exception as exc:
-            yield to_sse({"event": "error", "detail": f"{_public_error(exc)} Your credit was refunded."})
-        if not succeeded:
-            remaining = _refund_quietly(user_id, request_key)
-            yield to_sse({"event": "refunded", "credits_remaining": remaining if remaining is not None else balance})
-
-    return _sse_response(event_stream())
+    return _sse_response(_refine_event_stream(payload, user_id, request_key, balance))
 
 
 @router.post("/quick-edit")

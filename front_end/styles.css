@@ -3661,3 +3661,223 @@ button:disabled {
   .chip, .pack-card, .section-rewrite-btn { transition: none; }
   .chip:hover:not(:disabled), .pack-card:hover { transform: none; }
 }
+
+/* ===== Landing page and transition pass ===== */
+
+/* Hero sample + steps */
+.hero-sample {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 22px;
+}
+
+.sample-card {
+  position: relative;
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: var(--shadow-panel);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.sample-card figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.sample-tag {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cyan-soft);
+  color: var(--blue-deep);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sample-score {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--success);
+  color: #fff;
+}
+
+.sample-score b { font-size: 1rem; font-variant-numeric: tabular-nums; }
+.sample-score small { opacity: 0.8; font-size: 0.7rem; }
+
+.sample-card h3 { margin: 4px 0 4px; font-size: 1.1rem; }
+.sample-line { margin: 0 0 6px; color: var(--ink-soft); }
+.sample-card ul { margin: 0 0 8px; padding-left: 18px; color: var(--ink-soft); }
+
+.sample-check {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.sample-check span {
+  margin-right: 6px;
+  padding: 1px 8px;
+  border-radius: 6px;
+  background: #effaf5;
+  color: var(--success);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
+.sample-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sample-steps li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.sample-steps li:hover {
+  transform: translateX(4px);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-small);
+}
+
+.sample-steps strong { font-size: 0.95rem; }
+.sample-steps span { color: var(--muted); font-size: 0.82rem; }
+
+/* Page view switch: replays each time a view is shown (display none to block) */
+.page-view {
+  animation: viewIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Scroll reveal. Hidden only when motion.js marked the page as ready. */
+.js-motion .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 560ms ease, transform 640ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js-motion .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Draft arrives block by block */
+.markdown-preview:not(.empty) > * {
+  animation: blockIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.markdown-preview:not(.empty) > *:nth-child(2) { animation-delay: 40ms; }
+.markdown-preview:not(.empty) > *:nth-child(3) { animation-delay: 80ms; }
+.markdown-preview:not(.empty) > *:nth-child(4) { animation-delay: 120ms; }
+.markdown-preview:not(.empty) > *:nth-child(5) { animation-delay: 160ms; }
+.markdown-preview:not(.empty) > *:nth-child(6) { animation-delay: 200ms; }
+.markdown-preview:not(.empty) > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+@keyframes blockIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.quality-panel, .diff-panel, .version-bar, .change-note {
+  animation: blockIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Streaming: blinking caret on raw text while the model writes */
+.markdown-preview.streaming::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: var(--blue);
+  animation: caretBlink 900ms steps(2, start) infinite;
+}
+
+@keyframes caretBlink { to { visibility: hidden; } }
+
+/* Busy buttons shimmer instead of just greying out */
+.primary-button:disabled.is-busy,
+.generate-button:disabled {
+  background-image: linear-gradient(110deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 70%);
+  background-size: 220% 100%;
+  animation: shimmer 1.3s linear infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 180% 0; }
+  to { background-position: -40% 0; }
+}
+
+/* Press feedback */
+.primary-button:active:not(:disabled),
+.secondary-button:active:not(:disabled),
+.chip:active:not(:disabled),
+.pack-card:active {
+  transform: scale(0.97);
+}
+
+/* Section Rewrite button pops when the draft changes */
+.changed-line {
+  animation: changedFlash 1400ms ease-out both;
+}
+
+@keyframes changedFlash {
+  from { background-color: rgba(19, 191, 213, 0.38); }
+}
+
+/* Modal backdrop fade */
+.modal-overlay:not(.hidden) {
+  animation: backdropIn 220ms ease both;
+}
+
+@keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 860px) {
+  .hero-sample { grid-template-columns: 1fr; }
+  .sample-steps li:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-view,
+  .markdown-preview:not(.empty) > *,
+  .quality-panel, .diff-panel, .version-bar, .change-note,
+  .changed-line,
+  .modal-overlay:not(.hidden),
+  .generate-button:disabled,
+  .primary-button:disabled.is-busy,
+  .markdown-preview.streaming::after {
+    animation: none !important;
+  }
+  .js-motion .reveal { opacity: 1; transform: none; transition: none; }
+  .sample-steps li, .sample-steps li:hover { transition: none; transform: none; }
+}
