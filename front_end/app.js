@@ -2070,14 +2070,3 @@ adjustRailPosition();
 
 ["payMin", "payMax"].forEach((id) => document.getElementById(id)?.addEventListener("input", onPayChanged));
 ["payCurrency", "payPeriod"].forEach((id) => document.getElementById(id)?.addEventListener("change", onPayChanged));
-
-
-// The number rail only means something next to the intake form.
-(function () {
-  const builder = document.querySelector(".builder");
-  if (!builder || !("IntersectionObserver" in window)) return;
-  new IntersectionObserver(
-    (entries) => document.body.classList.toggle("rail-away", !entries[0].isIntersecting),
-    { threshold: 0.05 }
-  ).observe(builder);
-})();

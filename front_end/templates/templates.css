@@ -6,7 +6,7 @@
   color: #102033;
 }
 .breadcrumbs {
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #6c7c8c;
   margin-bottom: 20px;
 }
@@ -23,21 +23,21 @@
   background: #eef5fc;
   color: #0a66c2;
   border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
 .template-hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 1.75rem;
+  font-size: 34px;
   line-height: 1.2;
   color: #102033;
   margin: 0 0 14px;
 }
 .template-hero p {
-  font-size: 0.9375rem;
+  font-size: 16px;
   color: #4b5d6e;
   line-height: 1.6;
   margin: 0 0 20px;
@@ -54,7 +54,7 @@
   border: 1px solid #dce2e8;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 12.5px;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -79,7 +79,7 @@
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 15px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -97,7 +97,7 @@
   padding: 11px 20px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 15px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -126,18 +126,18 @@
   margin-bottom: 24px;
 }
 .jd-card-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   margin: 0;
   color: #102033;
 }
 .jd-content h2 {
-  font-size: 1.0625rem;
+  font-size: 18px;
   color: #0a66c2;
   margin: 24px 0 10px;
 }
 .jd-content p, .jd-content ul {
-  font-size: 0.9375rem;
+  font-size: 15px;
   line-height: 1.65;
   color: #2b3b4c;
   margin: 0 0 14px;
@@ -163,12 +163,12 @@
 }
 .ai-callout-text h3 {
   font-family: 'Fraunces', serif;
-  font-size: 1.25rem;
+  font-size: 24px;
   margin: 0 0 8px;
   color: #fff;
 }
 .ai-callout-text p {
-  font-size: 0.9375rem;
+  font-size: 14.5px;
   margin: 0;
   color: #e1f0ff;
   max-width: 540px;
@@ -178,9 +178,9 @@
   color: #0a66c2;
   padding: 12px 22px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  font-size: 0.9375rem;
+  font-size: 14.5px;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
@@ -190,7 +190,7 @@
 /* FAQs */
 .section-title {
   font-family: 'Fraunces', serif;
-  font-size: 1.75rem;
+  font-size: 26px;
   margin: 40px 0 20px;
   color: #102033;
 }
@@ -205,13 +205,13 @@
   padding: 18px 22px;
 }
 .faq-question {
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #102033;
   margin: 0 0 8px;
 }
 .faq-answer {
-  font-size: 0.9375rem;
+  font-size: 14.5px;
   line-height: 1.6;
   color: #4b5d6e;
   margin: 0;
@@ -239,27 +239,27 @@
   border-color: #0a66c2;
 }
 .related-badge {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
   color: #0a66c2;
   margin-bottom: 8px;
 }
 .related-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   margin: 0 0 8px;
   color: #102033;
 }
 .related-desc {
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #64748b;
   line-height: 1.5;
   margin: 0 0 12px;
   flex-grow: 1;
 }
 .related-link {
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 600;
   color: #0a66c2;
 }
@@ -271,7 +271,7 @@
   color: #fff;
   padding: 12px 20px;
   border-radius: 8px;
-  font-size: 0.8125rem;
+  font-size: 14px;
   font-weight: 500;
   opacity: 0;
   pointer-events: none;
@@ -291,7 +291,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #6c7c8c;
 }
 .footer-links a {
@@ -318,21 +318,21 @@
   background: #eef5fc;
   color: #0a66c2;
   border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 14px;
 }
 .hub-hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2.5rem;
+  font-size: 38px;
   line-height: 1.18;
   color: #102033;
   margin: 0 0 14px;
 }
 .hub-hero p {
-  font-size: 0.9375rem;
+  font-size: 16px;
   color: #4b5d6e;
   line-height: 1.6;
   margin: 0;
@@ -358,21 +358,21 @@
   border-color: #0a66c2;
 }
 .hub-category {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
   color: #0a66c2;
   letter-spacing: 0.4px;
   margin-bottom: 8px;
 }
 .hub-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
   margin: 0 0 10px;
   color: #102033;
 }
 .hub-desc {
-  font-size: 0.8125rem;
+  font-size: 13.5px;
   line-height: 1.55;
   color: #526374;
   margin: 0 0 16px;
@@ -382,7 +382,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 0.75rem;
+  font-size: 12.5px;
   color: #64748b;
   background: #f8fafc;
   padding: 10px 12px;
@@ -401,7 +401,7 @@
   text-decoration: none;
   padding: 9px 12px;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: 13.5px;
   font-weight: 600;
 }
 .btn-view:hover {
@@ -415,7 +415,7 @@
   text-decoration: none;
   padding: 9px 12px;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: 13.5px;
   font-weight: 600;
 }
 .btn-ai:hover {
@@ -430,7 +430,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: #6c7c8c;
 }
 .footer-links a {
@@ -491,7 +491,7 @@
   background: transparent;
   box-shadow: none;
 }
-.hub-category, .badge-category, .related-badge { color: var(--blue); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.hub-category, .badge-category, .related-badge { color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 .meta-pills { gap: 6px 22px; }
 .template-pill { color: var(--ink-soft); font-size: 0.9375rem; font-weight: 500; }
 
@@ -502,41 +502,3 @@
 .hub-category, .badge-category, .related-badge { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; letter-spacing: 0.06em; }
 .hub-meta, .faq-item { border-radius: 6px; box-shadow: none; }
 .hub-page, .template-page { padding-top: 24px; }
-
-
-/* Template library as a ruled list */
-.hub-grid { display: block; max-width: 1040px; margin: 0 auto; }
-.template-hub-card {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) 210px auto;
-  grid-template-areas: "cat title meta actions" ". desc meta actions";
-  column-gap: 28px;
-  row-gap: 4px;
-  align-items: start;
-  padding: 22px 0;
-  border: 0;
-  border-top: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  animation: none;
-}
-.template-hub-card:last-child { border-bottom: 1px solid var(--line); }
-.template-hub-card:hover { border-color: var(--line); background: transparent; }
-.template-hub-card .hub-category { grid-area: cat; padding-top: 5px; }
-.template-hub-card .hub-title { grid-area: title; margin: 0; font-size: 1.25rem; }
-.template-hub-card .hub-desc { grid-area: desc; margin: 0; color: var(--ink-soft); font-size: 0.9375rem; line-height: 1.5; }
-.template-hub-card .hub-meta { grid-area: meta; padding: 4px 0 0; background: transparent; border: 0; font-size: 0.8125rem; color: var(--muted); }
-.template-hub-card .hub-meta svg, .btn-ai svg { display: none; }
-.template-hub-card .hub-actions { grid-area: actions; display: flex; align-items: center; gap: 16px; margin: 0; }
-.btn-view { padding: 0; border: 0; background: none; color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-.btn-ai { padding: 8px 16px; white-space: nowrap; }
-.hub-hero { text-align: left; max-width: 1040px; margin: 0 auto; }
-@media (max-width: 860px) {
-  .template-hub-card { grid-template-columns: 1fr; grid-template-areas: "cat" "title" "desc" "meta" "actions"; row-gap: 6px; }
-  .template-hub-card .hub-category { padding-top: 0; }
-}
-.hub-hero, .hub-hero h1, .hub-hero p { text-align: left; margin-left: 0; margin-right: 0; }
-.hub-hero { padding-left: 0; }
-.btn-view { white-space: nowrap; }
-.btn-ai { background: linear-gradient(105deg, #0a66c2 0%, #0b86cf 55%, #13b4cf 100%); border: 1px solid rgba(7, 63, 122, 0.85); color: #fff; box-shadow: 0 10px 20px rgba(10, 102, 194, 0.26); }
