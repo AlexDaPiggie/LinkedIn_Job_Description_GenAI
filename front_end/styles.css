@@ -3486,3 +3486,65 @@ button:disabled {
   text-transform: uppercase;
 }
 
+
+
+/* ===== Adjust controls, slim quality row, hover Rewrite, undo toast ===== */
+.adjust { margin-top: 18px; }
+.adjust-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.adjust-head h3 { margin: 0; font-size: 1rem; }
+.adjust-free { color: #087852; font-size: 0.8125rem; font-weight: 600; }
+.adjust-info { display: inline-grid; place-items: center; width: 18px; height: 18px; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--muted); font-size: 0.75rem; cursor: help; }
+.adjust-rows { display: grid; gap: 8px; }
+.adjust-row { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; gap: 10px; }
+.adjust-label { color: var(--muted); font-size: 0.8125rem; font-weight: 600; }
+.seg { display: inline-flex; flex-wrap: wrap; width: fit-content; max-width: 100%; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; background: #fff; }
+.seg-btn { padding: 7px 14px; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: background 140ms ease, color 140ms ease; }
+.seg-btn:last-child { border-right: 0; }
+.seg-btn:hover:not(:disabled) { background: var(--cyan-soft); color: var(--blue-deep); }
+.seg-btn:active:not(:disabled) { background: #d7f3f8; }
+.seg-btn:disabled { color: var(--muted); cursor: not-allowed; }
+.adjust-link { justify-self: start; padding: 2px 0 0 86px; border: 0; background: none; color: var(--blue); font: inherit; font-size: 0.8125rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.adjust-link:disabled { color: var(--muted); cursor: not-allowed; }
+
+/* Undo and redo as small text links */
+.version-bar { margin: 8px 0; gap: 4px 14px; }
+.vbtn { padding: 2px 0; border: 0; background: none; color: var(--blue); font: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; }
+.vbtn:disabled { color: var(--muted); cursor: default; }
+.vbtn:hover:not(:disabled) { text-decoration: underline; }
+
+/* Slim quality row */
+.quality-panel { padding: 0; border-radius: 10px; }
+.quality-panel details > summary { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; list-style: none; }
+.quality-panel .q-score { width: auto; height: auto; min-width: 34px; padding: 2px 8px; border-radius: 6px; font-size: 0.8125rem; }
+.quality-panel .q-count { color: var(--muted); font-size: 0.8125rem; }
+.q-chevron { margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform 160ms ease; }
+.quality-panel details[open] .q-chevron { transform: rotate(-135deg); }
+.quality-panel .q-list { margin: 0; padding: 4px 14px 4px; border-top: 1px solid var(--line); }
+.quality-panel .q-stats { margin: 0; padding: 8px 14px 12px; }
+.q-item { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.q-item:last-child { border-bottom: 0; }
+.q-dot { width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: var(--muted); }
+.q-error .q-dot { background: var(--danger); }
+.q-warning .q-dot { background: #c27c00; }
+.q-info .q-dot { background: #5aa7d8; }
+.q-body { display: grid; gap: 2px; font-size: 0.875rem; line-height: 1.4; }
+.fix-btn { align-self: center; padding: 4px 10px; border: 1px solid var(--line-strong); border-radius: 6px; background: #fff; color: var(--blue); font: inherit; font-size: 0.75rem; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.fix-btn:hover:not(:disabled) { background: var(--cyan-soft); }
+.fix-btn:disabled { color: var(--muted); cursor: not-allowed; }
+
+/* Rewrite appears on hover or keyboard focus (always visible on touch) */
+.section-rewrite-btn { padding: 2px 0; margin-left: 12px; border: 0; background: none; color: var(--blue); font-size: 0.8125rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; vertical-align: middle; }
+@media (hover: hover) {
+  .section-rewrite-btn { opacity: 0; transition: opacity 140ms ease; }
+  .markdown-preview h2:hover .section-rewrite-btn, .section-rewrite-btn:focus-visible { opacity: 1; }
+}
+.section-rewrite-btn:disabled { color: var(--muted); }
+
+/* Refine: one calm card, cost only on the button */
+.refine-panel .btn-cost { margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.22); font-size: 0.75rem; font-weight: 600; }
+.refine-panel .refine-cost { display: none; }
+
+/* Undo toast */
+.toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-radius: 10px; background: #102033; color: #fff; font-size: 0.875rem; transform: translateX(-50%); box-shadow: 0 12px 32px rgba(16, 32, 51, 0.3); }
+.toast.hidden { display: none; }
+.toast-undo { padding: 0; border: 0; background: none; color: #7fe4ee; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }

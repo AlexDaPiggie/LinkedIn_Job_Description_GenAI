@@ -634,8 +634,8 @@
               </div>
               <div id="messageBox" class="message-box hidden"></div>
               <div id="versionBar" class="version-bar hidden">
-                <button id="undoBtn" class="secondary-button" type="button" aria-label="Undo last change">Undo</button>
-                <button id="redoBtn" class="secondary-button" type="button" aria-label="Redo change">Redo</button>
+                <button id="undoBtn" class="vbtn" type="button" aria-label="Undo last change">&lsaquo; Undo</button>
+                <button id="redoBtn" class="vbtn" type="button" aria-label="Redo change">Redo &rsaquo;</button>
                 <span id="versionLabel" class="version-label"></span>
               </div>
               <div id="changeNote" class="change-note hidden">
@@ -649,31 +649,35 @@
               </article>
 
               <div id="diffPanel" class="diff-panel hidden"></div>
+              <div id="toast" class="toast hidden" role="status"></div>
               <div id="qualityPanel" class="quality-panel hidden"></div>
 
-              <div class="free-edits">
-                <p class="eyebrow">Quick edits - free</p>
-                <div id="chipRow" class="chip-row">
-                  <button type="button" class="chip" data-action="shorter" disabled>Shorter</button>
-                  <button type="button" class="chip" data-action="more_inclusive" disabled>More inclusive</button>
-                  <button type="button" class="chip" data-action="simplify" disabled>Simplify wording</button>
-                  <button type="button" class="chip" data-action="more_casual" disabled>More casual</button>
-                  <button type="button" class="chip" data-action="more_formal" disabled>More formal</button>
-                  <button type="button" class="chip" data-action="cut_bullets" disabled>Cut to 6 bullets</button>
-                  <button type="button" class="chip" data-action="nice_to_have" disabled>Move extras to nice-to-have</button>
+              <div id="adjustBlock" class="adjust hidden">
+                <div class="adjust-head">
+                  <h3>Adjust</h3>
+                  <span class="adjust-free">free</span>
+                  <span class="adjust-info" tabindex="0" title="One-click edits on the whole draft, no account needed. Hover a section title to rewrite just that part. Tone, length and EEO above also stay free.">?</span>
                 </div>
-                <p class="free-note">Use the Rewrite button on any section heading to redo just that part. Tone, length and EEO above are free too.</p>
+                <div id="chipRow" class="adjust-rows">
+                  <div class="adjust-row"><span class="adjust-label">Length</span>
+                    <div class="seg"><button type="button" class="seg-btn" data-action="shorter">Shorter</button><button type="button" class="seg-btn" data-action="cut_bullets">Fewer bullets</button></div></div>
+                  <div class="adjust-row"><span class="adjust-label">Tone</span>
+                    <div class="seg"><button type="button" class="seg-btn" data-action="more_casual">More casual</button><button type="button" class="seg-btn" data-action="more_formal">More formal</button></div></div>
+                  <div class="adjust-row"><span class="adjust-label">Wording</span>
+                    <div class="seg"><button type="button" class="seg-btn" data-action="more_inclusive">More inclusive</button><button type="button" class="seg-btn" data-action="simplify">Simpler words</button></div></div>
+                  <button type="button" class="adjust-link seg-link" data-action="nice_to_have">Move extras to nice-to-have</button>
+                </div>
               </div>
 
               <div class="refine-panel">
-                <label for="refineInput">Refine with your own words <span class="refine-cost">1 credit</span></label>
+                <label for="refineInput">Refine with your own words</label>
                 <textarea
                   id="refineInput"
                   rows="4"
                   placeholder="Example: Mention that the team is fully remote and add a line about mentoring."
                 ></textarea>
                 <button id="refineButton" class="primary-button" type="button">
-                  Refine
+                  Refine <span class="btn-cost">1 credit</span>
                 </button>
               </div>
 

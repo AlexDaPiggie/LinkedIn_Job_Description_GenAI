@@ -160,6 +160,21 @@
     saveDraftToStorage();
     pushVersion(label);
     renderDraft();
+    showToast(label);
+  }
+
+  let toastTimer = null;
+  function showToast(label) {
+    const toast = $("toast");
+    if (!toast || versionIndex < 1) return;
+    toast.innerHTML = `<span>${escapeHtml(label)}</span> <button type="button" class="toast-undo">Undo</button>`;
+    toast.classList.remove("hidden");
+    toast.querySelector(".toast-undo").addEventListener("click", () => {
+      toast.classList.add("hidden");
+      goToVersion(versionIndex - 1);
+    });
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.add("hidden"), 6000);
   }
 
   // ---------- rendering after each draft render ----------
@@ -170,6 +185,7 @@
     renderChangeNote();
     decoratePreview();
     updateEditControls();
+    $("adjustBlock")?.classList.toggle("hidden", !state.currentDraft);
     const screeningBtn = $("screeningBtn");
     if (screeningBtn) screeningBtn.disabled = !state.currentDraft || busy;
   };
@@ -273,33 +289,33 @@
     panel.classList.remove("hidden");
     const findings = report.findings || [];
     const stats = report.stats || {};
-    const fixes = new Set();
     const items = findings
       .map((finding) => {
         const fixAction = FIX_BY_FINDING[finding.code];
-        if (fixAction) fixes.add(fixAction);
+        const fix = fixAction
+          ? `<button type="button" class="fix-btn" data-action="${fixAction}">Fix: ${escapeHtml(ACTION_LABELS[fixAction])}</button>`
+          : "";
         const matches = (finding.matches || []).slice(0, 6).map((m) => `<code>${escapeHtml(m)}</code>`).join(" ");
         return `<li class="q-item q-${finding.severity}">
-          <span class="q-badge">${escapeHtml(finding.severity)}</span>
-          <span><span class="q-msg">${escapeHtml(finding.message)}</span>
+          <span class="q-dot" aria-hidden="true"></span>
+          <span class="q-body"><span class="q-msg">${escapeHtml(finding.message)}</span>
           ${finding.suggestion ? `<span class="q-tip">${escapeHtml(finding.suggestion)}</span>` : ""}
           ${matches ? `<span class="q-matches">${matches}</span>` : ""}</span>
+          ${fix}
         </li>`;
       })
       .join("");
-    const fixButtons = [...fixes]
-      .map((action) => `<button type="button" class="chip chip-small" data-action="${action}">Fix: ${escapeHtml(ACTION_LABELS[action])}</button>`)
-      .join("");
+    const count = findings.length;
     panel.innerHTML = `
-      <details ${findings.length ? "open" : ""}>
+      <details>
         <summary>
           <span class="q-score ${scoreClass(report.score)}">${report.score}</span>
-          <span class="q-title"><strong>Quality check</strong>
-            <small>${findings.length ? `${findings.length} thing${findings.length === 1 ? "" : "s"} to look at` : "Looks good"} - free, rule-based, no AI used</small></span>
+          <strong>Quality</strong>
+          <span class="q-count">${count ? `${count} to look at` : "looks good"}</span>
+          <span class="q-chevron" aria-hidden="true"></span>
         </summary>
         ${items ? `<ul class="q-list">${items}</ul>` : ""}
-        ${fixButtons ? `<div class="q-fixes">One-click fixes (free): ${fixButtons}</div>` : ""}
-        <p class="q-stats">${stats.word_count || 0} words - reading grade ${stats.reading_grade || 0} - ${stats.responsibilities || 0} responsibilities - ${stats.requirements || 0} requirements</p>
+        <p class="q-stats">${stats.word_count || 0} words - reading grade ${stats.reading_grade || 0}. Free, rule-based, no AI used.</p>
       </details>`;
   }
 
@@ -307,7 +323,7 @@
 
   function updateEditControls() {
     const disabled = busy || !state.currentDraft || state.draftOutdated;
-    document.querySelectorAll("#chipRow .chip, .q-fixes .chip, .section-rewrite-btn").forEach((button) => {
+    document.querySelectorAll("#adjustBlock [data-action], .fix-btn, .section-rewrite-btn").forEach((button) => {
       button.disabled = disabled;
     });
   }
@@ -342,7 +358,7 @@
   }
 
   function onChipClick(event) {
-    const chip = event.target.closest(".chip[data-action]");
+    const chip = event.target.closest("[data-action]");
     if (!chip || chip.disabled) return;
     const action = chip.dataset.action;
     runFreeEdit("/quick-edit", { action }, ACTION_LABELS[action] || action);
@@ -454,7 +470,7 @@
   // ---------- init ----------
 
   function bind() {
-    $("chipRow")?.addEventListener("click", onChipClick);
+    $("adjustBlock")?.addEventListener("click", onChipClick);
     $("qualityPanel")?.addEventListener("click", onChipClick);
     $("markdownPreview")?.addEventListener("click", onPreviewClick);
     $("undoBtn")?.addEventListener("click", () => goToVersion(versionIndex - 1));
