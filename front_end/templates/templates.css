@@ -494,3 +494,11 @@
 .hub-category, .badge-category, .related-badge { color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 .meta-pills { gap: 6px 22px; }
 .template-pill { color: var(--ink-soft); font-size: 0.9375rem; font-weight: 500; }
+
+/* ===== Designer pass: flat, hairline, lighter headline ===== */
+.hub-hero h1, .template-hero h1 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
+.template-hub-card, .related-card, .jd-card { border: 1px solid var(--line); border-radius: 6px; box-shadow: none; backdrop-filter: none; background: #ffffff; }
+.template-hub-card:hover, .related-card:hover { box-shadow: none; transform: none; border-color: var(--blue); }
+.hub-category, .badge-category, .related-badge { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; letter-spacing: 0.06em; }
+.hub-meta, .faq-item { border-radius: 6px; box-shadow: none; }
+.hub-page, .template-page { padding-top: 24px; }

@@ -3605,3 +3605,98 @@ button:disabled {
   background: linear-gradient(145deg, #0b8f61 0%, #2fcf95 100%);
   box-shadow: 0 8px 16px rgba(8, 120, 82, 0.2);
 }
+
+/* ==========================================================================
+   Designer pass: flat surfaces, hairlines, tinted ink, lighter headline,
+   mono for small labels. The glowing J and the gradient buttons are the two
+   deliberate exceptions; everything else is flat.
+   ========================================================================== */
+:root {
+  --canvas: #f4f7fc;
+  --ink: #0e1d36;
+  --ink-soft: #3b4d6b;
+  --muted: #5c6b8c;
+  --line: #d3dcee;
+  --line-strong: #8696b8;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+body { background: var(--canvas); }
+body::before, body::after { display: none; }
+
+/* ---- Headline: lighter, tighter, two-tone. The J keeps its original weight. ---- */
+.topbar h1 {
+  font-weight: 500;
+  font-size: clamp(2.75rem, 5.2vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.topbar h1 .gradient-letter { font-weight: 600; letter-spacing: 0; }
+.topbar h1 .h1-soft { color: #6b86b3; }
+.hero-subtitle { max-width: 46ch; margin-top: 18px; color: var(--ink-soft); font-size: 1.125rem; line-height: 1.55; }
+.topbar { margin-bottom: 44px; }
+
+/* ---- Flat surfaces: 1px borders, small radii, no shadows or glass ---- */
+.builder, .result-section, .pay-card, .refine-panel, .draft-actions, .markdown-preview,
+.quality-panel, .diff-panel, .screening-list, .simple-page-card, .author-card, .credit-card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.builder::before, .result-section::before { display: none; }
+.modal-content { border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 16px 48px rgba(14, 29, 54, 0.18); backdrop-filter: none; background: #ffffff; }
+.refine-panel, .draft-actions { background: transparent; border-left: 0; border-right: 0; border-bottom: 0; border-radius: 0; padding-left: 0; padding-right: 0; }
+.markdown-preview { padding: 28px 32px; }
+.quality-panel { background: #fbfcfe; }
+
+/* Intake: a ruled list, not a stack of cards */
+.question-card {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.question-card.open, .question-card.answered:not(.missing) { background: transparent; box-shadow: none; }
+.question-card.open { border-bottom-color: var(--blue); }
+.question-card.answered:not(.missing)::before, .question-card.missing::before { display: none; }
+.question-card.missing { background: transparent; border-bottom-color: var(--danger); }
+.question-number { border-radius: 6px; }
+.question-summary:hover { background: transparent; }
+
+.pack-card, .pricing-card, .seo-step-card, .faq-item, .seo-faq-item, .template-hub-card, .related-card, .jd-card { border-radius: 6px; box-shadow: none; }
+.credit-badge, .secondary-button, .segmented-control, .pref-select, .doc-upload-inline { box-shadow: none; }
+.question-rail { border-radius: 8px; box-shadow: none; backdrop-filter: none; background: #ffffff; border: 1px solid var(--line); }
+.rail-button { border-radius: 6px; box-shadow: none; }
+
+/* Pricing and guide: ruled columns instead of cards */
+.pricing-card, .seo-step-card {
+  padding: 20px 0 8px;
+  border: 0;
+  border-top: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+}
+.pricing-card-featured { border-top: 3px solid var(--blue); background: transparent; }
+.pricing-strip, .seo-guide-section { margin-top: 96px; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; }
+.pricing-price { font-weight: 500; letter-spacing: -0.02em; }
+
+/* ---- Small labels in mono; far fewer eyebrows ---- */
+.pricing-label, .seo-step-num, .adjust-label, .version-label, .q-stats, .assumption-badge,
+.screening-list .tag, .hub-category, .badge-category, .related-badge, .field-tag, .pay-tag {
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+.pricing-label, .seo-step-num { color: var(--blue); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.workspace-prebar { margin-bottom: 20px; }
+.workspace-grid { gap: 32px; }
+.section-head h2, .draft-title h2 { font-weight: 500; letter-spacing: -0.01em; }
+
+/* Designer pass, round 2 */
+.markdown-preview.empty { min-height: 320px; display: block; text-align: left; background: #ffffff; color: var(--muted); padding: 28px 32px; }
+.expand-label, .question-card.open .expand-label { min-height: 0; padding: 4px 0; border: 0; border-radius: 0; background: none; color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.expand-label:hover { background: none; }
+.hint-row { color: var(--muted); }
