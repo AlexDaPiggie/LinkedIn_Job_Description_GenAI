@@ -7,6 +7,18 @@ const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
 const SETTINGS_STORAGE_KEY = "linkedinJobGeneratorSettings";
 const PAY_STORAGE_KEY = "linkedinJobGeneratorPay";
 
+// Draft tools live in features.js and register themselves here. Calling one before it
+// loads (or if it fails) must never break generate and refine.
+function feature(name, ...args) {
+  try {
+    const fn = window.__features && window.__features[name];
+    return fn ? fn(...args) : undefined;
+  } catch (err) {
+    console.warn(`Feature ${name} failed:`, err);
+    return undefined;
+  }
+}
+
 // Built-in copy of the intake questions (mirrors src/agent/questions.py).
 // The form is drawn from this immediately so it never waits for the backend.
 const fallbackQuestions = [
@@ -646,11 +658,11 @@ function renderDraft() {
   if (!state.currentMarkdown) {
     elements.markdownPreview.classList.add("empty");
     elements.markdownPreview.textContent = "Generate a draft to preview the job description.";
-    return;
+  } else {
+    elements.markdownPreview.classList.remove("empty");
+    elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
   }
-
-  elements.markdownPreview.classList.remove("empty");
-  elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
+  feature("afterRenderDraft");
 }
 
 function renderAll() {
@@ -1093,6 +1105,8 @@ async function generateDraft() {
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        state.quality = data.quality || null;
+        feature("onDraftReady", "Generated draft");
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -1105,6 +1119,7 @@ async function generateDraft() {
         }
         state.draftOutdated = false;
         renderDraft();
+        feature("showUploadDiff");
         setMessage("");
       },
       extraHeaders
@@ -1157,6 +1172,7 @@ async function refineDraft() {
         current_draft: state.currentDraft,
         user_request: request,
         skipped_fields: getSkippedFields(),
+        job_info: buildJobInfo(),
       },
       (chunk) => {
         streamedRaw += chunk;
@@ -1165,6 +1181,8 @@ async function refineDraft() {
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
+        state.quality = data.quality || null;
+        feature("onDraftReady", "Refined: " + request.slice(0, 40));
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -1565,6 +1583,7 @@ function initialiseWorkspace() {
 }
 
 function clearAnswers() {
+  feature("onWorkspaceCleared");
   state.pay = { min: "", max: "", currency: state.pay.currency, period: state.pay.period };
   try {
     localStorage.removeItem(PAY_STORAGE_KEY);
@@ -1939,6 +1958,7 @@ async function handleDocUpload(file) {
       console.warn("Could not save answers to localStorage:", err);
     }
 
+    feature("setOriginalDoc", result.original_text || "", file.name);
     try {
       localStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(state.pay));
     } catch (err) {
