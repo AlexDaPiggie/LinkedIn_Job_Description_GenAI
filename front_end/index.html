@@ -135,12 +135,10 @@
     <link rel="apple-touch-icon" href="images/favicon.png?v=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,500,0,0&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
     <script src="config.js"></script>
-    <link rel="stylesheet" href="styles.css?v=roadmap-v3" />
+    <link rel="stylesheet" href="styles.css?v=roadmap-v4" />
+    <link rel="stylesheet" href="design-v2.css?v=7" />
     <style>
       body.authors-active .question-rail {
         opacity: 0 !important;
@@ -418,6 +416,13 @@
       <button class="nav-link active" data-target="homeView">Home</button>
       <a href="/templates/" class="nav-link nav-link-anchor">Templates</a>
       <button class="nav-link" data-target="authorsView">Authors</button>
+      <div class="header-auth" id="headerAuth">
+        <button id="signInBtn" class="text-link" type="button">Sign in</button>
+        <div id="userProfile" class="user-profile hidden">
+          <span id="userUsername" class="user-username"></span>
+          <button id="signOutBtn" class="text-link" type="button">Sign out</button>
+        </div>
+      </div>
     </nav>
 
     <nav class="question-rail" aria-label="Question navigation">
@@ -449,29 +454,19 @@
       <header class="topbar">
         <div class="topbar-row">
           <div>
-            <p class="eyebrow hero-eyebrow">
-              <span>GEN AI MODEL</span>
-              <span class="eyebrow-divider" aria-hidden="true"></span>
-              <span>LINKEDIN</span>
-            </p>
-            <h1>
-              <span class="gradient-letter">J</span>ob Description Generator
-            </h1>
+            <h1>Job description generator</h1>
             <p class="hero-subtitle">
-              Answer a few questions and get a LinkedIn-ready job description in minutes.
-              No signup needed. Copy it straight into LinkedIn or export to Word.
+              Answer a few questions, or upload your old job description. You get a LinkedIn-ready post
+              with a built-in check for biased wording and missing pay range.
             </p>
-          </div>
-          <div class="header-auth" id="headerAuth">
-            <button id="signInBtn" class="primary-button" type="button">
-              Sign In
-            </button>
-            <div id="userProfile" class="user-profile hidden">
-              <span id="userUsername" class="user-username"></span>
-              <button id="signOutBtn" class="secondary-button" type="button">
-                Sign Out
-              </button>
+            <div class="hero-actions">
+              <a href="#questionList" class="primary-button" id="startBtn">Start writing</a>
+              <button type="button" class="text-link" id="heroUploadBtn">Upload an old JD</button>
             </div>
+            <p class="hero-facts">
+              Free to generate, no account. Copy to LinkedIn or export to Word.
+              An account is only needed to refine a draft with your own words.
+            </p>
           </div>
         </div>
         <section class="proof" id="proof" aria-label="Example of the free quality check">
@@ -586,7 +581,6 @@
           <section class="builder">
             <div class="section-head">
               <div>
-                <p class="eyebrow">Intake</p>
                 <h2>Answer the questions</h2>
               </div>
               <!--
@@ -674,7 +668,6 @@
             <section class="result-section">
               <div class="section-head result-heading">
                 <div>
-                  <p class="eyebrow">Draft</p>
                   <h2>Generate the job description</h2>
                 </div>
                 <div class="draft-button-group">
@@ -756,7 +749,6 @@
 
               <div class="draft-actions">
                 <div>
-                  <p class="eyebrow">Delivery</p>
                   <h3>Use the finished draft</h3>
                   <p>
                     Copy to keep the clean generated text ready for LinkedIn,
@@ -823,12 +815,11 @@
         <section class="seo-guide-section" aria-label="About the LinkedIn Job Description Generator">
           <div class="seo-guide-container">
             <div class="seo-header">
-              <p class="eyebrow">AI Writing Guide</p>
               <h2>How Our LinkedIn Job Description Generator & JD Writer Works</h2>
               <p class="seo-lead">
-                Writing compelling, high-converting job posts for LinkedIn shouldn't take hours.
-                Our AI LinkedIn JD writer combines structured intake questionnaires with verified LLM prompt pipelines
-                to craft clear, professional, and compliant job postings in seconds.
+                A good LinkedIn job post needs specific duties, a real pay range, and wording that does not put
+                people off. This tool asks for those facts, writes the draft, then checks it against a fixed list of
+                rules so you can see what to fix before you post.
               </p>
             </div>
 
@@ -842,18 +833,17 @@
               <div class="seo-step-card">
                 <div class="seo-step-num">02</div>
                 <h3>Real-Time AI Generation</h3>
-                <p>Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and zero hallucinated facts.</p>
+                <p>Watch the draft stream in live. Pick a tone and length. The AI is told not to invent facts, and requirements that are not in your answers are marked so you can check them.</p>
               </div>
 
               <div class="seo-step-card">
                 <div class="seo-step-num">03</div>
-                <h3>Refine, Copy & Export</h3>
-                <p>Use conversational refinement to tweak sections, copy plain text directly for LinkedIn, or export a styled Word (.docx) document.</p>
+                <h3>Check, edit and publish</h3>
+                <p>Use one-click edits or rewrite a single section for free. Type your own change request if you need it. Copy plain text for LinkedIn or export a Word (.docx) file.</p>
               </div>
             </div>
 
             <div class="seo-faq-block">
-              <p class="eyebrow">Frequently Asked Questions</p>
               <h2>Everything You Need to Know</h2>
 
               <div class="seo-faq-list">
@@ -863,8 +853,8 @@
                 </details>
 
                 <details class="seo-faq-item">
-                  <summary><strong>How does this generator ensure high-quality, hallucination-free drafts?</strong></summary>
-                  <p>Our system uses rigorous prompt engineering with schema-enforced Pydantic models. Output quality is benchmarked using automated deterministic checks (keyword presence, required fields) and LLM-as-a-judge scoring across tone, specificity, and faithfulness.</p>
+                  <summary><strong>How do you keep the draft accurate?</strong></summary>
+                  <p>The AI is told to use only what you provided, and its output must match a fixed structure. Pay numbers are added by code, never by the AI. Requirements that do not match your answers get a "verify" mark. Models are compared on the <a href="/eval.html">evaluation page</a>. No AI is perfect, so read the draft before you post it.</p>
                 </details>
 
                 <details class="seo-faq-item">
@@ -874,17 +864,16 @@
 
                 <details class="seo-faq-item">
                   <summary><strong>Can I refine the generated draft?</strong></summary>
-                  <p>Yes. Enter instructions like "add 5+ years of experience requirement" or "make the tone more energetic" into the refinement box to update the draft iteratively without starting over.</p>
+                  <p>Yes. One-click edits (shorter, more inclusive, simpler) and section rewrites are free. Typing your own instruction, such as "add a mentoring line", costs 1 credit and needs a free account.</p>
                 </details>
               </div>
             </div>
 
             <!-- Free Templates Library Block -->
             <div class="seo-templates-block">
-              <p class="eyebrow">Free Hiring Resources</p>
               <h2 class="seo-templates-title">Free LinkedIn Job Description Templates</h2>
               <p class="seo-templates-intro">
-                Looking for pre-written job templates? Browse our library of copy-ready job descriptions optimized for LinkedIn hiring posts. Copy directly or customize with our AI generator in seconds:
+                Looking for a starting point? Browse nine copy-ready job descriptions for common roles. Copy one as is, or open it in the generator with the role filled in:
               </p>
               <div class="seo-templates-chips">
                 <a href="/templates/software-engineer/" class="seo-template-pill">Software Engineer JD</a>
@@ -1214,10 +1203,11 @@
       </div>
     </div>
 
+    <div class="mobile-bar" id="mobileBar"><button type="button" class="primary-button" id="mobileGenerate">Generate (free)</button></div>
     <div id="turnstileBox" class="turnstile-box" aria-live="polite"></div>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="app.js?v=roadmap-v1"></script>
     <script src="features.js?v=roadmap-v1"></script>
-    <script src="motion.js?v=roadmap-v2"></script>
+    <script src="motion.js?v=roadmap-v3"></script>
   </body>
 </html>

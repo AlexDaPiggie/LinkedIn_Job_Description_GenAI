@@ -167,7 +167,43 @@
     observer.observe(root);
   }
 
+  // Hero actions, rail visibility and the mobile Generate bar.
+  function setupWorkspaceChrome() {
+    document.getElementById("startBtn")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = document.querySelector(".builder") || document.getElementById("questionList");
+      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      window.setTimeout(() => document.querySelector("#questionList :is(input, textarea)")?.focus({ preventScroll: true }), 450);
+    });
+
+    document.getElementById("heroUploadBtn")?.addEventListener("click", () => {
+      document.getElementById("docFileInput")?.click();
+    });
+
+    // The number rail only means something next to the intake form.
+    const builder = document.querySelector(".builder");
+    if (builder && "IntersectionObserver" in window) {
+      new IntersectionObserver(
+        (entries) => document.body.classList.toggle("rail-away", !entries[0].isIntersecting),
+        { threshold: 0.05 }
+      ).observe(builder);
+      document.body.classList.add("rail-away");
+    }
+
+    const mobileButton = document.getElementById("mobileGenerate");
+    const generate = document.getElementById("generateButton");
+    if (mobileButton && generate) {
+      mobileButton.addEventListener("click", () => generate.click());
+      const mirror = () => {
+        mobileButton.disabled = generate.disabled;
+        mobileButton.textContent = generate.disabled ? generate.textContent : "Generate (free)";
+      };
+      new MutationObserver(mirror).observe(generate, { attributes: true, childList: true, characterData: true, subtree: true });
+    }
+  }
+
   try {
+    setupWorkspaceChrome();
     setupProof();
     setupReveal();
     setupScores();

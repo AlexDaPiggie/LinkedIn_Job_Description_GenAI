@@ -112,6 +112,9 @@ This is a chance to shape a product that helps lean recruiting teams write bette
 ## Equal Opportunity
 Northstar Labs is an equal opportunity employer and welcomes applicants from all backgrounds.`;
 
+const SINGLE_LINE_FIELDS = new Set(["company_name", "role_title"]);
+const SINGLE_LINE_PLACEHOLDERS = { company_name: "For example: Marlow Pay", role_title: "For example: Senior Backend Engineer" };
+
 const fieldsAcceptedByApi = new Set([
   "company_name",
   "role_title",
@@ -393,7 +396,7 @@ function renderQuestions() {
       renderQuestions();
       const target = document.querySelector(`[data-field="${question.question_name}"]`);
       target?.scrollIntoView({ behavior: "smooth", block: "center" });
-      const nextInput = document.querySelector(`[data-field="${question.question_name}"] textarea`);
+      const nextInput = document.querySelector(`[data-field="${question.question_name}"] :is(textarea, input)`);
       if (nextInput) setTimeout(() => nextInput.focus(), 260);
     });
     elements.questionRail.append(railButton);
@@ -409,7 +412,7 @@ function renderQuestions() {
     summary.addEventListener("click", () => {
       state.openQuestion = isOpen ? null : question.question_name;
       renderQuestions();
-      const nextInput = document.querySelector(`[data-field="${question.question_name}"] textarea`);
+      const nextInput = document.querySelector(`[data-field="${question.question_name}"] :is(textarea, input)`);
       if (!isOpen && nextInput) setTimeout(() => nextInput.focus(), 210);
     });
 
@@ -438,7 +441,7 @@ function renderQuestions() {
       clearBtn.addEventListener("click", (event) => {
         event.stopPropagation();
         updateAnswer(question.question_name, "");
-        const textarea = card.querySelector("textarea");
+        const textarea = card.querySelector("textarea, input");
         if (textarea) {
           textarea.value = "";
           textarea.focus();
@@ -460,10 +463,12 @@ function renderQuestions() {
     bodyInner.className = "question-body-inner";
     const prompt = document.createElement("p");
     prompt.textContent = question.question_text;
-    const input = document.createElement("textarea");
+    const singleLine = SINGLE_LINE_FIELDS.has(question.question_name);
+    const input = document.createElement(singleLine ? "input" : "textarea");
+    if (singleLine) input.type = "text";
+    else input.rows = question.answer_type === "list" ? 5 : 4;
     input.value = value;
-    input.rows = question.answer_type === "list" ? 5 : 4;
-    input.placeholder = question.answer_type === "list" ? "Add one item per line." : "Type your answer.";
+    input.placeholder = question.answer_type === "list" ? "Add one item per line." : singleLine ? SINGLE_LINE_PLACEHOLDERS[question.question_name] : "Type your answer.";
     input.addEventListener("input", (event) => updateAnswer(question.question_name, event.target.value));
 
     const hint = document.createElement("div");
@@ -538,6 +543,18 @@ function renderProgress() {
   if (elements.progressText) elements.progressText.textContent = `${answeredCount} answered`;
 }
 
+const GHOST_DRAFT_HTML = `
+  <div class="ghost" aria-hidden="true">
+    <p class="ghost-title">Your job title</p>
+    <p>A short paragraph about the role: what the person will own and who they will work with.</p>
+    <ul>
+      <li>Responsibilities appear here as clear bullet points.</li>
+      <li>Requirements follow, kept to what you asked for.</li>
+      <li>Pay range, benefits and why join us come next.</li>
+    </ul>
+  </div>
+  <p class="ghost-note">Your draft appears here. Click Generate. It is free and needs no account.</p>`;
+
 function renderDraft() {
   elements.draftWarning.classList.toggle("hidden", !state.draftOutdated);
   elements.refineButton.disabled = !state.currentDraft || state.draftOutdated;
@@ -546,7 +563,7 @@ function renderDraft() {
 
   if (!state.currentMarkdown) {
     elements.markdownPreview.classList.add("empty");
-    elements.markdownPreview.textContent = "Generate a draft to preview the job description.";
+    elements.markdownPreview.innerHTML = GHOST_DRAFT_HTML;
   } else {
     elements.markdownPreview.classList.remove("empty");
     elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
@@ -1094,7 +1111,7 @@ function markdownToHtml(markdown) {
     } else if (line.startsWith("# ")) {
       if (inList) html.push("</ul>");
       inList = false;
-      html.push(`<h1>${escapeHtml(line.slice(2))}</h1>`);
+      html.push(`<p class="doc-title">${escapeHtml(line.slice(2))}</p>`);
     } else if (line.startsWith("- ") || line.startsWith("* ")) {
       if (!inList) {
         html.push("<ul>");

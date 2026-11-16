@@ -6,7 +6,7 @@
   color: #102033;
 }
 .breadcrumbs {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6c7c8c;
   margin-bottom: 20px;
 }
@@ -23,21 +23,21 @@
   background: #eef5fc;
   color: #0a66c2;
   border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
 .template-hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 34px;
+  font-size: 1.75rem;
   line-height: 1.2;
   color: #102033;
   margin: 0 0 14px;
 }
 .template-hero p {
-  font-size: 16px;
+  font-size: 0.9375rem;
   color: #4b5d6e;
   line-height: 1.6;
   margin: 0 0 20px;
@@ -53,8 +53,8 @@
   color: #2b3b4c;
   border: 1px solid #dce2e8;
   padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12.5px;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -77,9 +77,9 @@
   color: #fff;
   text-decoration: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -95,9 +95,9 @@
   color: #102033;
   border: 1px solid #cfd8dc;
   padding: 11px 20px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -126,18 +126,18 @@
   margin-bottom: 24px;
 }
 .jd-card-header h2 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin: 0;
   color: #102033;
 }
 .jd-content h2 {
-  font-size: 18px;
+  font-size: 1.0625rem;
   color: #0a66c2;
   margin: 24px 0 10px;
 }
 .jd-content p, .jd-content ul {
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.65;
   color: #2b3b4c;
   margin: 0 0 14px;
@@ -163,12 +163,12 @@
 }
 .ai-callout-text h3 {
   font-family: 'Fraunces', serif;
-  font-size: 24px;
+  font-size: 1.25rem;
   margin: 0 0 8px;
   color: #fff;
 }
 .ai-callout-text p {
-  font-size: 14.5px;
+  font-size: 0.9375rem;
   margin: 0;
   color: #e1f0ff;
   max-width: 540px;
@@ -177,10 +177,10 @@
   background: #fff;
   color: #0a66c2;
   padding: 12px 22px;
-  border-radius: 8px;
-  font-weight: 700;
+  border-radius: 6px;
+  font-weight: 600;
   text-decoration: none;
-  font-size: 14.5px;
+  font-size: 0.9375rem;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
@@ -190,7 +190,7 @@
 /* FAQs */
 .section-title {
   font-family: 'Fraunces', serif;
-  font-size: 26px;
+  font-size: 1.75rem;
   margin: 40px 0 20px;
   color: #102033;
 }
@@ -201,17 +201,17 @@
 .faq-item {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 18px 22px;
 }
 .faq-question {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: #102033;
   margin: 0 0 8px;
 }
 .faq-answer {
-  font-size: 14.5px;
+  font-size: 0.9375rem;
   line-height: 1.6;
   color: #4b5d6e;
   margin: 0;
@@ -226,7 +226,7 @@
 .related-card {
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   text-decoration: none;
   color: inherit;
@@ -239,27 +239,27 @@
   border-color: #0a66c2;
 }
 .related-badge {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
   color: #0a66c2;
   margin-bottom: 8px;
 }
 .related-title {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
   margin: 0 0 8px;
   color: #102033;
 }
 .related-desc {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #64748b;
   line-height: 1.5;
   margin: 0 0 12px;
   flex-grow: 1;
 }
 .related-link {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #0a66c2;
 }
@@ -270,8 +270,8 @@
   background: #102033;
   color: #fff;
   padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   font-weight: 500;
   opacity: 0;
   pointer-events: none;
@@ -291,7 +291,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6c7c8c;
 }
 .footer-links a {
@@ -317,22 +317,22 @@
   padding: 4px 12px;
   background: #eef5fc;
   color: #0a66c2;
-  border-radius: 20px;
-  font-size: 12.5px;
-  font-weight: 700;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 14px;
 }
 .hub-hero h1 {
   font-family: 'Fraunces', serif;
-  font-size: 38px;
+  font-size: 2.5rem;
   line-height: 1.18;
   color: #102033;
   margin: 0 0 14px;
 }
 .hub-hero p {
-  font-size: 16px;
+  font-size: 0.9375rem;
   color: #4b5d6e;
   line-height: 1.6;
   margin: 0;
@@ -358,21 +358,21 @@
   border-color: #0a66c2;
 }
 .hub-category {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
   color: #0a66c2;
   letter-spacing: 0.4px;
   margin-bottom: 8px;
 }
 .hub-title {
-  font-size: 19px;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin: 0 0 10px;
   color: #102033;
 }
 .hub-desc {
-  font-size: 13.5px;
+  font-size: 0.8125rem;
   line-height: 1.55;
   color: #526374;
   margin: 0 0 16px;
@@ -382,7 +382,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 12.5px;
+  font-size: 0.75rem;
   color: #64748b;
   background: #f8fafc;
   padding: 10px 12px;
@@ -401,7 +401,7 @@
   text-decoration: none;
   padding: 9px 12px;
   border-radius: 6px;
-  font-size: 13.5px;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 .btn-view:hover {
@@ -415,7 +415,7 @@
   text-decoration: none;
   padding: 9px 12px;
   border-radius: 6px;
-  font-size: 13.5px;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 .btn-ai:hover {
@@ -430,7 +430,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #6c7c8c;
 }
 .footer-links a {
