@@ -3144,3 +3144,16 @@ button:disabled {
 .pack-unit, .pack-each { color: var(--muted); font-size: 0.8rem; }
 .pack-price { margin-top: 8px; font-size: 1.15rem; font-weight: 700; color: var(--blue-deep); }
 @media (max-width: 720px) { .pack-list { grid-template-columns: 1fr; } .pack-card { flex-direction: row; justify-content: space-between; padding: 16px; } .pack-flag { top: -9px; left: 12px; } }
+
+
+/* Optional pay range */
+.pay-card { padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+.pay-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.pay-head h3 { margin: 0; font-size: 1.05rem; }
+.pay-tag { padding: 3px 10px; border-radius: 999px; background: var(--cyan-soft); color: var(--blue-deep); font-size: 0.75rem; font-weight: 600; }
+.pay-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pay-field { display: flex; flex-direction: column; gap: 4px; color: var(--ink-soft); font-size: 0.8125rem; font-weight: 600; }
+.pay-field input, .pay-field select { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; font-weight: 500; }
+.pay-field input:focus, .pay-field select:focus { outline: 2px solid var(--line-strong); outline-offset: 1px; }
+.pay-notice { margin: 12px 0 0; color: var(--muted); font-size: 0.8125rem; line-height: 1.5; }
+.pay-notice.pay-error { color: var(--danger); }

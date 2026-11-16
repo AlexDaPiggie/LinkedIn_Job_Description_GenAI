@@ -564,6 +564,41 @@
               class="question-list"
               aria-live="polite"
             ></div>
+
+            <section class="pay-card" aria-labelledby="payHeading">
+              <div class="pay-head">
+                <h3 id="payHeading">Pay range</h3>
+                <span class="pay-tag">Optional</span>
+              </div>
+              <div class="pay-grid">
+                <label class="pay-field">
+                  <span>Minimum</span>
+                  <input id="payMin" type="number" min="0" step="any" inputmode="decimal" placeholder="90000" />
+                </label>
+                <label class="pay-field">
+                  <span>Maximum</span>
+                  <input id="payMax" type="number" min="0" step="any" inputmode="decimal" placeholder="120000" />
+                </label>
+                <label class="pay-field">
+                  <span>Currency</span>
+                  <select id="payCurrency">
+                    <option value="USD">USD</option>
+                    <option value="CAD">CAD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </label>
+                <label class="pay-field">
+                  <span>Per</span>
+                  <select id="payPeriod">
+                    <option value="year">Year</option>
+                    <option value="month">Month</option>
+                    <option value="hour">Hour</option>
+                  </select>
+                </label>
+              </div>
+              <p id="payNotice" class="pay-notice">Leave it empty to skip. If you add it, it appears exactly as you type it. The AI never writes pay numbers.</p>
+            </section>
           </section>
 
           <div class="result-column">

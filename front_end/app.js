@@ -5,6 +5,7 @@ const ANSWERS_STORAGE_KEY = "linkedinJobGeneratorAnswers";
 const DRAFT_STORAGE_KEY = "linkedinJobGeneratorDraft";
 const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
 const SETTINGS_STORAGE_KEY = "linkedinJobGeneratorSettings";
+const PAY_STORAGE_KEY = "linkedinJobGeneratorPay";
 
 // Built-in copy of the intake questions (mirrors src/agent/questions.py).
 // The form is drawn from this immediately so it never waits for the backend.
@@ -128,6 +129,7 @@ const state = {
   accessToken: localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || "",
   user: null,
   credits: null,
+  pay: { min: "", max: "", currency: "USD", period: "year" },
   config: null,
   settings: {
     tone: "Professional & Authoritative",
@@ -376,6 +378,70 @@ function renderSettings() {
   }
 }
 
+// Optional pay range. Sent as numbers; the server prints it exactly as typed.
+function payNumbers() {
+  const min = parseFloat(state.pay.min);
+  const max = parseFloat(state.pay.max);
+  return {
+    min: Number.isFinite(min) && min > 0 ? min : null,
+    max: Number.isFinite(max) && max > 0 ? max : null,
+  };
+}
+
+function payJobInfo() {
+  const { min, max } = payNumbers();
+  const valid = min !== null && max !== null && min <= max;
+  return {
+    pay_min: valid ? min : null,
+    pay_max: valid ? max : null,
+    pay_currency: state.pay.currency,
+    pay_period: state.pay.period,
+  };
+}
+
+function renderPay() {
+  const fields = { payMin: state.pay.min, payMax: state.pay.max, payCurrency: state.pay.currency, payPeriod: state.pay.period };
+  for (const [id, value] of Object.entries(fields)) {
+    const node = document.getElementById(id);
+    if (node) node.value = value;
+  }
+  const notice = document.getElementById("payNotice");
+  if (!notice) return;
+  const { min, max } = payNumbers();
+  const bad = min !== null && max !== null && min > max;
+  const partial = (min === null) !== (max === null);
+  notice.classList.toggle("pay-error", bad);
+  if (bad) notice.textContent = "Minimum is higher than maximum. The pay range will be left out until you fix it.";
+  else if (partial) notice.textContent = "Add both a minimum and a maximum to include a pay range.";
+  else notice.textContent = "Leave it empty to skip. If you add it, it appears exactly as you type it. The AI never writes pay numbers.";
+}
+
+function loadPay() {
+  try {
+    const saved = localStorage.getItem(PAY_STORAGE_KEY);
+    if (saved) state.pay = { ...state.pay, ...JSON.parse(saved) };
+  } catch (err) {
+    console.warn("Could not load pay range:", err);
+  }
+}
+
+function onPayChanged() {
+  state.pay = {
+    min: document.getElementById("payMin").value,
+    max: document.getElementById("payMax").value,
+    currency: document.getElementById("payCurrency").value,
+    period: document.getElementById("payPeriod").value,
+  };
+  try {
+    localStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(state.pay));
+  } catch (err) {
+    console.warn("Could not save pay range:", err);
+  }
+  renderPay();
+  if (state.currentDraft) state.draftOutdated = true;
+  renderDraft();
+}
+
 function buildJobInfo() {
   const jobInfo = {
     company_name: "",
@@ -402,6 +468,7 @@ function buildJobInfo() {
   jobInfo.tone = state.settings.tone;
   jobInfo.target_length = state.settings.target_length;
   jobInfo.equal_opportunity = state.settings.equal_opportunity;
+  Object.assign(jobInfo, payJobInfo());
 
   return jobInfo;
 }
@@ -1471,6 +1538,7 @@ function initialiseWorkspace() {
         state.currentMarkdown = savedMarkdown;
       }
     }
+    loadPay();
     const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
     if (savedSettings) {
       state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
@@ -1493,9 +1561,17 @@ function initialiseWorkspace() {
 
   state.openQuestion = state.openQuestion || state.questions[0]?.question_name || null;
   renderAll();
+  renderPay();
 }
 
 function clearAnswers() {
+  state.pay = { min: "", max: "", currency: state.pay.currency, period: state.pay.period };
+  try {
+    localStorage.removeItem(PAY_STORAGE_KEY);
+  } catch (err) {
+    console.warn("Could not clear pay range:", err);
+  }
+  renderPay();
   state.answers = {};
   state.missingRequired.clear();
   state.currentDraft = null;
@@ -1832,7 +1908,14 @@ async function handleDocUpload(file) {
 
     for (const [key, val] of Object.entries(extracted)) {
       if (!val) continue;
-      if (key === "pay_min" || key === "pay_max") continue;
+      if (key === "pay_min" || key === "pay_max") {
+        const number = Number(val);
+        if (Number.isFinite(number) && number > 0) {
+          state.pay[key === "pay_min" ? "min" : "max"] = String(number);
+          filledCount++;
+        }
+        continue;
+      }
 
       if (key === "equal_opportunity") {
         const lower = String(val).trim().toLowerCase();
@@ -1856,6 +1939,12 @@ async function handleDocUpload(file) {
       console.warn("Could not save answers to localStorage:", err);
     }
 
+    try {
+      localStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(state.pay));
+    } catch (err) {
+      console.warn("Could not save pay range:", err);
+    }
+    renderPay();
     if (state.currentDraft) state.draftOutdated = true;
     renderAll();
     setMessage(`Successfully auto-filled ${filledCount} field(s) from "${file.name}"!`, "info");
@@ -1958,3 +2047,6 @@ window.addEventListener("orientationchange", adjustRailPosition);
 elements.railNav?.addEventListener("mouseenter", adjustRailPosition);
 elements.railNav?.addEventListener("mouseleave", adjustRailPosition);
 adjustRailPosition();
+
+["payMin", "payMax"].forEach((id) => document.getElementById(id)?.addEventListener("input", onPayChanged));
+["payCurrency", "payPeriod"].forEach((id) => document.getElementById(id)?.addEventListener("change", onPayChanged));
