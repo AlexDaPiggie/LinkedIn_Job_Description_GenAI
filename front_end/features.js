@@ -579,7 +579,7 @@
     const list = (items) => items.slice(0, MAX_DIFF_ITEMS).map((line) => `<li>${escapeHtml(line.slice(0, 160))}</li>`).join("");
     panel.classList.remove("hidden");
     panel.innerHTML = `
-      <details>
+      <details open>
         <summary><strong>What changed from ${escapeHtml(originalDoc.name || "your file")}</strong>
           <small>${kept} kept - ${reworded} reworded - ${fresh.length} new - ${dropped.length} dropped</small></summary>
         <div class="diff-cols">

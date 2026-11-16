@@ -135,10 +135,12 @@
     <link rel="apple-touch-icon" href="images/favicon.png?v=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="config.js"></script>
-    <link rel="stylesheet" href="styles.css?v=roadmap-v4" />
-    <link rel="stylesheet" href="design-v2.css?v=12" />
+    <link rel="stylesheet" href="styles.css?v=roadmap-v3" />
     <style>
       body.authors-active .question-rail {
         opacity: 0 !important;
@@ -416,121 +418,123 @@
       <button class="nav-link active" data-target="homeView">Home</button>
       <a href="/templates/" class="nav-link nav-link-anchor">Templates</a>
       <button class="nav-link" data-target="authorsView">Authors</button>
-      <div class="header-auth" id="headerAuth">
-        <div id="creditsContainer" class="credits-container hidden"><span id="workspaceCredits" class="credit-badge">20 refine credits</span><button id="buyCreditsBtn" class="text-link" type="button">Buy credits</button></div>
-        <button id="signInBtn" class="text-link" type="button">Sign in</button>
-        <div id="userProfile" class="user-profile hidden">
-          <span id="userUsername" class="user-username"></span>
-          <button id="signOutBtn" class="text-link" type="button">Sign out</button>
-        </div>
-      </div>
     </nav>
 
-    
+    <nav class="question-rail" aria-label="Question navigation">
+      <div class="rail-hint" aria-hidden="true">
+        <span class="rail-hint-hover">Hover</span>
+        <span>Question</span>
+      </div>
+      <button
+        id="railToggle"
+        class="rail-icon-toggle"
+        type="button"
+        aria-label="Toggle navigation pin"
+        title="Unpin / Auto-hide"
+      >
+        <svg class="icon-pin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <path d="M5 17h14v-2l-2-2V5a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8l-2 2v2z"></path>
+        </svg>
+        <svg class="icon-pin-off" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="2" y1="2" x2="22" y2="22"></line>
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <path d="M9 9v3l-2 2v2h8m2-2l-2-2V5a1 1 0 0 0-1-1H9"></path>
+        </svg>
+      </button>
+      <div id="questionRail" class="rail-list"></div>
+    </nav>
 
     <main class="app-shell">
       <header class="topbar">
         <div class="topbar-row">
           <div>
-            <h1><span class="gradient-letter">J</span>ob Description <span class="hl">Generator</span></h1>
-            <p class="hero-subtitle">
-              Describe the role, or upload your old job description. Get a LinkedIn-ready post, checked for biased wording and missing pay.
+            <p class="eyebrow hero-eyebrow">
+              <span>GEN AI MODEL</span>
+              <span class="eyebrow-divider" aria-hidden="true"></span>
+              <span>LINKEDIN</span>
             </p>
-            <p class="hero-facts">Free to generate, no account. <a href="/templates/">Or start from a template.</a></p>
+            <h1>
+              <span class="gradient-letter">J</span>ob Description Generator
+            </h1>
+            <p class="hero-subtitle">
+              Answer a few questions and get a LinkedIn-ready job description in minutes.
+              No signup needed. Copy it straight into LinkedIn or export to Word.
+            </p>
+          </div>
+          <div class="header-auth" id="headerAuth">
+            <button id="signInBtn" class="primary-button" type="button">
+              Sign In
+            </button>
+            <div id="userProfile" class="user-profile hidden">
+              <span id="userUsername" class="user-username"></span>
+              <button id="signOutBtn" class="secondary-button" type="button">
+                Sign Out
+              </button>
+            </div>
           </div>
         </div>
+        <section class="proof" id="proof" aria-label="Example of the free quality check">
+          <div class="proof-doc">
+            <div class="proof-doc-head">
+              <span class="proof-kicker">Example job post, excerpt</span>
+              <span class="proof-where">Marlow Pay - New York</span>
+            </div>
+            <h3>Senior Backend Engineer, Payments</h3>
+            <p>
+              Join our
+              <mark class="fx" data-row="age"><span class="old">young, high energy team</span><span class="new">team of five engineers and a product manager</span></mark>
+              as a
+              <mark class="fx" data-row="filler"><span class="old">rockstar engineer</span><span class="new">backend engineer</span></mark>.
+              You will own the services that move money for 40,000 merchants. We reward people who
+              <mark class="fx" data-row="filler"><span class="old">hit the ground running</span><span class="new">learn the system quickly</span></mark>.
+            </p>
+            <ul>
+              <li>Design and run the ledger service behind merchant payouts.</li>
+              <li>5+ years building backend services, strong SQL.</li>
+              <li>Bachelor degree in computer science<mark class="fx" data-row="degree"><span class="old"></span><span class="new"> or equivalent experience</span></mark>.</li>
+            </ul>
+            <p class="proof-pay">
+              <span class="proof-pay-label">Pay range</span>
+              <mark class="fx fx-pay" data-row="pay"><span class="old">not given</span><span class="new">$150,000 - $175,000 per year</span></mark>
+            </p>
+          </div>
 
+          <aside class="proof-panel" aria-label="Quality check result">
+            <div class="proof-score-row">
+              <span class="proof-score" id="proofScore" aria-live="off">72</span>
+              <span class="proof-score-of">/ 100</span>
+              <button type="button" class="proof-replay" id="proofReplay">Replay</button>
+            </div>
+            <p class="proof-state" id="proofState">Before the check</p>
+            <ul class="proof-rows">
+              <li data-row="pay"><span class="proof-tag proof-tag-error">Required in NY</span><span class="proof-text">No pay range in the post</span></li>
+              <li data-row="age"><span class="proof-tag proof-tag-warn">Age-coded</span><span class="proof-text">"high energy" can put off older applicants</span></li>
+              <li data-row="filler"><span class="proof-tag proof-tag-info">Filler</span><span class="proof-text">"rockstar", "hit the ground running"</span></li>
+              <li data-row="degree"><span class="proof-tag proof-tag-info">Narrow</span><span class="proof-text">Degree required, no "or equivalent"</span></li>
+            </ul>
+          </aside>
+
+          <p class="proof-note">
+            Scores come from the same free, rule-based checker the app runs on every draft.
+            <a href="#questionList" class="proof-link">Try it on your own role</a>
+          </p>
+        </section>
       </header>
 
       <!-- Home View -->
       <div id="homeView" class="page-view">
-        <section class="workbench" id="workbench" aria-label="Job description workbench">
-          <div class="notices">
-            <div id="draftWarning" class="notice hidden">Your answers changed after the draft was made. Click Generate (free) to update it.</div>
-            <div id="messageBox" class="message-box hidden"></div>
-          </div>
-
-          <div class="answers-bar" id="answersBar">
-            <p class="answers-title"><span class="answers-label">Draft for</span> <strong id="answersTitle">your role</strong></p>
-            <div class="answers-actions">
-              <button type="button" class="text-link" id="editAnswersBtn">Edit answers</button>
-              <button type="button" class="text-link" id="clearButton">Start over</button>
+        <div class="workspace-prebar">
+          <div class="workspace-prebar-left">
+            <div id="creditsContainer" class="credits-container hidden">
+              <span id="workspaceCredits" class="credit-badge" title="Credits are used only when you type a refine request. Everything else is free.">20 refine credits</span>
+              <button id="buyCreditsBtn" class="primary-button" type="button">
+                Buy more credits
+              </button>
             </div>
           </div>
 
-          <div class="pane-form" id="paneForm">
-            <div class="pane-head">
-              <h2>Describe the role</h2>
-              <div class="doc-upload-row">
-              <span class="doc-upload-prompt">Have an old job description?</span>
-              <div class="doc-upload-inline" id="docUploadBox" role="button" tabindex="0">
-                <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" class="hidden-input" />
-                <div class="doc-upload-content" id="docUploadContent">
-                  <svg class="doc-upload-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="12" y1="18" x2="12" y2="12"></line>
-                    <line x1="9" y1="15" x2="15" y2="15"></line>
-                  </svg>
-                  <span class="doc-upload-text-link">Upload file & Auto-fill</span>
-                </div>
-                <div class="doc-upload-status hidden" id="docUploadStatus">
-                  <span class="doc-spinner"></span>
-                  <span id="docUploadStatusText">Extracting with Gemini...</span>
-                </div>
-                <div class="doc-upload-tooltip" role="tooltip">
-                  AI model reads your Job Description file and answers the questions below automatically
-                </div>
-              </div>
-            </div>
-            </div>
-            <div id="questionList" class="field-list" aria-live="polite"></div>
-            <details class="more-detail" id="moreDetails">
-              <summary>Add more detail <span>optional</span></summary>
-              <div id="optionalList" class="field-list"></div>
-              <section class="pay-card" aria-labelledby="payHeading">
-              <div class="pay-head">
-                <h3 id="payHeading">Pay range</h3>
-                <span class="pay-tag">Recommended</span>
-              </div>
-              <div class="pay-grid">
-                <label class="pay-field pay-field-wide">
-                  <span>Where is the job?</span>
-                  <select id="payJurisdiction" class="pref-select">
-                    <option value="none">Other / not listed</option>
-                  </select>
-                </label>
-                <label class="pay-field">
-                  <span>Minimum</span>
-                  <input id="payMin" type="number" min="0" step="any" inputmode="decimal" placeholder="90000" />
-                </label>
-                <label class="pay-field">
-                  <span>Maximum</span>
-                  <input id="payMax" type="number" min="0" step="any" inputmode="decimal" placeholder="120000" />
-                </label>
-                <label class="pay-field">
-                  <span>Currency</span>
-                  <select id="payCurrency" class="pref-select">
-                    <option value="USD">USD</option>
-                    <option value="CAD">CAD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                  </select>
-                </label>
-                <label class="pay-field">
-                  <span>Per</span>
-                  <select id="payPeriod" class="pref-select">
-                    <option value="year">Year</option>
-                    <option value="month">Month</option>
-                    <option value="hour">Hour</option>
-                  </select>
-                </label>
-              </div>
-              <p id="payNotice" class="pay-notice pay-info"></p>
-            </section>
-              <div class="style-block">
-                <h3>Style</h3>
-                <div class="preferences-bar">
+          <div class="preferences-bar">
             <div class="pref-item">
               <label for="settingTone" class="pref-label">Tone</label>
               <select id="settingTone" class="pref-select">
@@ -576,57 +580,163 @@
               </div>
             </div>
           </div>
-              </div>
-            </details>
-            <div class="form-actions">
-              <button id="generateButton" class="primary-button generate-button" type="button">Generate</button>
-              <span class="form-note">Free. No account needed.</span>
-            </div>
-          </div>
+        </div>
 
-          <div class="pane-result" id="paneResult">
-            <div class="sheet-toolbar" id="sheetToolbar">
+        <section class="workspace-grid">
+          <section class="builder">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Intake</p>
+                <h2>Answer the questions</h2>
+              </div>
+              <!--
+              <button id="sampleButton" class="secondary-button" type="button">
+                Fill sample
+              </button>
+              -->
+              <button id="clearButton" class="secondary-button" type="button">
+                Clear answers & draft
+              </button>
+            </div>
+
+            <div class="doc-upload-row">
+              <span class="doc-upload-prompt">Have an existing Job Description?</span>
+              <div class="doc-upload-inline" id="docUploadBox" role="button" tabindex="0">
+                <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" class="hidden-input" />
+                <div class="doc-upload-content" id="docUploadContent">
+                  <svg class="doc-upload-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                  </svg>
+                  <span class="doc-upload-text-link">Upload file & Auto-fill</span>
+                </div>
+                <div class="doc-upload-status hidden" id="docUploadStatus">
+                  <span class="doc-spinner"></span>
+                  <span id="docUploadStatusText">Extracting with Gemini...</span>
+                </div>
+                <div class="doc-upload-tooltip" role="tooltip">
+                  AI model reads your Job Description file and answers the questions below automatically
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="questionList"
+              class="question-list"
+              aria-live="polite"
+            ></div>
+
+            <section class="pay-card" aria-labelledby="payHeading">
+              <div class="pay-head">
+                <h3 id="payHeading">Pay range</h3>
+                <span class="pay-tag">Recommended</span>
+              </div>
+              <div class="pay-grid">
+                <label class="pay-field pay-field-wide">
+                  <span>Where is the job?</span>
+                  <select id="payJurisdiction" class="pref-select">
+                    <option value="none">Other / not listed</option>
+                  </select>
+                </label>
+                <label class="pay-field">
+                  <span>Minimum</span>
+                  <input id="payMin" type="number" min="0" step="any" inputmode="decimal" placeholder="90000" />
+                </label>
+                <label class="pay-field">
+                  <span>Maximum</span>
+                  <input id="payMax" type="number" min="0" step="any" inputmode="decimal" placeholder="120000" />
+                </label>
+                <label class="pay-field">
+                  <span>Currency</span>
+                  <select id="payCurrency" class="pref-select">
+                    <option value="USD">USD</option>
+                    <option value="CAD">CAD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </label>
+                <label class="pay-field">
+                  <span>Per</span>
+                  <select id="payPeriod" class="pref-select">
+                    <option value="year">Year</option>
+                    <option value="month">Month</option>
+                    <option value="hour">Hour</option>
+                  </select>
+                </label>
+              </div>
+              <p id="payNotice" class="pay-notice pay-info"></p>
+            </section>
+          </section>
+
+          <div class="result-column">
+            <section class="result-section">
+              <div class="section-head result-heading">
+                <div>
+                  <p class="eyebrow">Draft</p>
+                  <h2>Generate the job description</h2>
+                </div>
+                <div class="draft-button-group">
+                  <!--
+                  <button
+                    id="sampleOutputButton"
+                    class="secondary-button sample-output-button"
+                    type="button"
+                  >
+                    Sample output
+                  </button>
+                  -->
+                  <button
+                    id="generateButton"
+                    class="primary-button generate-button"
+                    type="button"
+                  >
+                    Generate
+                  </button>
+                </div>
+              </div>
+
+              <div id="draftWarning" class="notice hidden">
+                Answers or pay changed after generation. Click Generate (free)
+                to update the draft.
+              </div>
+              <div id="messageBox" class="message-box hidden"></div>
+
               <div id="versionBar" class="version-bar hidden">
                 <button id="undoBtn" class="secondary-button" type="button" aria-label="Undo last change">Undo</button>
                 <button id="redoBtn" class="secondary-button" type="button" aria-label="Redo change">Redo</button>
                 <span id="versionLabel" class="version-label"></span>
               </div>
-              <div class="toolbar-actions">
-                <button id="copyButton" class="secondary-button" type="button">Copy</button>
-                <button id="exportDocxButton" class="secondary-button" type="button">Word</button>
-              </div>
-            </div>
-            <div id="changeNote" class="change-note hidden">
+              <div id="changeNote" class="change-note hidden">
                 <span id="changeNoteText"></span>
                 <label class="highlight-toggle">
                   <input id="highlightToggle" type="checkbox" checked /> Highlight changes
                 </label>
               </div>
-            <article id="markdownPreview" class="markdown-preview empty">
-              Generate a draft to preview the job description.
-            </article>
-            <div id="diffPanel" class="diff-panel hidden"></div>
-          </div>
 
-          <aside class="pane-tools" id="paneTools" aria-label="Polish the draft">
-            <div id="qualityPanel" class="quality-panel hidden"></div>
-            <div class="free-edits tool-group">
-              <h3>Quick edits <span class="tool-free">free</span></h3>
-              <div id="chipRow" class="chip-row">
-                <button type="button" class="chip" data-action="shorter" disabled>Shorter</button>
-                <button type="button" class="chip" data-action="more_inclusive" disabled>More inclusive</button>
-                <button type="button" class="chip" data-action="simplify" disabled>Simpler words</button>
-                <button type="button" class="chip" data-action="cut_bullets" disabled>Fewer bullets</button>
-                <details class="more-chips">
-                  <summary>More edits</summary>
+              <article id="markdownPreview" class="markdown-preview empty">
+                Generate a draft to preview the job description.
+              </article>
+
+              <div id="diffPanel" class="diff-panel hidden"></div>
+              <div id="qualityPanel" class="quality-panel hidden"></div>
+
+              <div class="free-edits">
+                <p class="eyebrow">Quick edits - free</p>
+                <div id="chipRow" class="chip-row">
+                  <button type="button" class="chip" data-action="shorter" disabled>Shorter</button>
+                  <button type="button" class="chip" data-action="more_inclusive" disabled>More inclusive</button>
+                  <button type="button" class="chip" data-action="simplify" disabled>Simplify wording</button>
                   <button type="button" class="chip" data-action="more_casual" disabled>More casual</button>
                   <button type="button" class="chip" data-action="more_formal" disabled>More formal</button>
+                  <button type="button" class="chip" data-action="cut_bullets" disabled>Cut to 6 bullets</button>
                   <button type="button" class="chip" data-action="nice_to_have" disabled>Move extras to nice-to-have</button>
-                </details>
+                </div>
+                <p class="free-note">Use the Rewrite button on any section heading to redo just that part. Tone, length and EEO above are free too.</p>
               </div>
-              <p class="free-note">Use Rewrite next to any section title to redo just that part.</p>
-            </div>
-            <div class="tool-group"><div class="refine-panel">
+
+              <div class="refine-panel">
                 <label for="refineInput">Refine with your own words <span class="refine-cost">1 credit</span></label>
                 <textarea
                   id="refineInput"
@@ -637,36 +747,124 @@
                   Refine - 1 credit
                 </button>
                 <p class="free-note">New accounts get <strong data-free-credits>20</strong> free refine credits. If a refine fails, the credit is returned automatically.</p>
-              </div></div>
-            <div class="tool-group"><div class="screening-block">
+              </div>
+
+              <div class="screening-block">
                 <button id="screeningBtn" class="secondary-button" type="button" disabled>Suggest screening questions</button>
                 <div id="screeningList" class="screening-list hidden"></div>
-              </div></div>
-          </aside>
-        </section>
+              </div>
 
-        <section class="pricing-line" aria-label="Pricing">
-          <div class="pricing-inner">
-            <p class="pricing-statement">Writing is free.<br />Refining in your own words costs 1 credit.</p>
-            <dl class="pricing-rows">
-              <div><dt>No account</dt><dd>Generate, upload, quick edits, copy, Word export</dd></div>
-              <div><dt>Free account</dt><dd><span data-free-credits>20</span> refine credits when you sign up</dd></div>
-              <div><dt>More credits</dt><dd>$5 for 20 &middot; $10 for 40 &middot; $20 for 80</dd></div>
-            </dl>
+              <div class="draft-actions">
+                <div>
+                  <p class="eyebrow">Delivery</p>
+                  <h3>Use the finished draft</h3>
+                  <p>
+                    Copy to keep the clean generated text ready for LinkedIn,
+                    email, or Google Docs. Export to download a Word file you
+                    can open in Google Docs.
+                  </p>
+                </div>
+                <div class="action-buttons">
+                  <button
+                    id="copyButton"
+                    class="secondary-button"
+                    type="button"
+                  >
+                    Copy text
+                  </button>
+                  <button
+                    id="exportDocxButton"
+                    class="secondary-button"
+                    type="button"
+                  >
+                    Export Word
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
         </section>
 
-        <section class="faq-section" aria-label="Frequently asked questions">
-          <h2>Questions</h2>
-          <div class="seo-faq-list">
-                <details class="seo-faq-item">
+        <!-- SEO Content & FAQ Section -->
+        <section class="pricing-strip" aria-label="Pricing">
+          <h2 class="pricing-title">Free to write. Pay only to refine with your own words.</h2>
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <p class="pricing-label">No account</p>
+              <p class="pricing-price">Free</p>
+              <ul class="pricing-features">
+                <li>Full job description, not a preview</li>
+                <li>Upload your old JD to auto-fill</li>
+                <li>Quality, bias and pay-range check</li>
+                <li>Quick edits, section rewrites, copy and Word export</li>
+              </ul>
+            </div>
+            <div class="pricing-card pricing-card-featured">
+              <p class="pricing-label">Free account</p>
+              <p class="pricing-price"><span data-free-credits>20</span> <span class="pricing-unit">free refine credits</span></p>
+              <ul class="pricing-features">
+                <li>Type your own change request, 1 credit each</li>
+                <li>Failed refine? The credit comes back</li>
+                <li>Draft is kept while you sign in</li>
+              </ul>
+            </div>
+            <div class="pricing-card">
+              <p class="pricing-label">Need more?</p>
+              <p class="pricing-price">$5 <span class="pricing-unit">= 20 refines</span></p>
+              <ul class="pricing-features">
+                <li>$10 = 40 refines, $20 = 80 refines</li>
+                <li>One-time payment, no subscription</li>
+                <li>Secure checkout by Stripe</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="seo-guide-section" aria-label="About the LinkedIn Job Description Generator">
+          <div class="seo-guide-container">
+            <div class="seo-header">
+              <p class="eyebrow">AI Writing Guide</p>
+              <h2>How Our LinkedIn Job Description Generator & JD Writer Works</h2>
+              <p class="seo-lead">
+                Writing compelling, high-converting job posts for LinkedIn shouldn't take hours.
+                Our AI LinkedIn JD writer combines structured intake questionnaires with verified LLM prompt pipelines
+                to craft clear, professional, and compliant job postings in seconds.
+              </p>
+            </div>
+
+            <div class="seo-steps-grid">
+              <div class="seo-step-card">
+                <div class="seo-step-num">01</div>
+                <h3>Guided Role Intake</h3>
+                <p>Answer focused questions about role objectives, responsibilities, required qualifications, and company perks. No blank-page syndrome.</p>
+              </div>
+
+              <div class="seo-step-card">
+                <div class="seo-step-num">02</div>
+                <h3>Real-Time AI Generation</h3>
+                <p>Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and zero hallucinated facts.</p>
+              </div>
+
+              <div class="seo-step-card">
+                <div class="seo-step-num">03</div>
+                <h3>Refine, Copy & Export</h3>
+                <p>Use conversational refinement to tweak sections, copy plain text directly for LinkedIn, or export a styled Word (.docx) document.</p>
+              </div>
+            </div>
+
+            <div class="seo-faq-block">
+              <p class="eyebrow">Frequently Asked Questions</p>
+              <h2>Everything You Need to Know</h2>
+
+              <div class="seo-faq-list">
+                <details class="seo-faq-item" open>
                   <summary><strong>What is the LinkedIn Job Description Generator & JD Writer?</strong></summary>
                   <p>It is an AI LinkedIn JD writer and generator built specifically for recruiters, hiring managers, and startup founders. It turns brief intake notes into publication-ready LinkedIn job descriptions formatted with clean sections, bullet points, and equal-opportunity statements.</p>
                 </details>
 
                 <details class="seo-faq-item">
-                  <summary><strong>How do you keep the draft accurate?</strong></summary>
-                  <p>The AI is told to use only what you provided, and its output must match a fixed structure. Pay numbers are added by code, never by the AI. Requirements that do not match your answers get a "verify" mark. Models are compared on the <a href="/eval.html">evaluation page</a>. No AI is perfect, so read the draft before you post it.</p>
+                  <summary><strong>How does this generator ensure high-quality, hallucination-free drafts?</strong></summary>
+                  <p>Our system uses rigorous prompt engineering with schema-enforced Pydantic models. Output quality is benchmarked using automated deterministic checks (keyword presence, required fields) and LLM-as-a-judge scoring across tone, specificity, and faithfulness.</p>
                 </details>
 
                 <details class="seo-faq-item">
@@ -676,27 +874,61 @@
 
                 <details class="seo-faq-item">
                   <summary><strong>Can I refine the generated draft?</strong></summary>
-                  <p>Yes. One-click edits (shorter, more inclusive, simpler) and section rewrites are free. Typing your own instruction, such as "add a mentoring line", costs 1 credit and needs a free account.</p>
+                  <p>Yes. Enter instructions like "add 5+ years of experience requirement" or "make the tone more energetic" into the refinement box to update the draft iteratively without starting over.</p>
                 </details>
               </div>
-          <p class="faq-more">Starting from a role? <a href="/templates/">Browse nine ready-made templates</a>.</p>
+            </div>
+
+            <!-- Free Templates Library Block -->
+            <div class="seo-templates-block">
+              <p class="eyebrow">Free Hiring Resources</p>
+              <h2 class="seo-templates-title">Free LinkedIn Job Description Templates</h2>
+              <p class="seo-templates-intro">
+                Looking for pre-written job templates? Browse our library of copy-ready job descriptions optimized for LinkedIn hiring posts. Copy directly or customize with our AI generator in seconds:
+              </p>
+              <div class="seo-templates-chips">
+                <a href="/templates/software-engineer/" class="seo-template-pill">Software Engineer JD</a>
+                <a href="/templates/product-manager/" class="seo-template-pill">Product Manager JD</a>
+                <a href="/templates/data-scientist/" class="seo-template-pill">Data Scientist JD</a>
+                <a href="/templates/data-analyst/" class="seo-template-pill">Data Analyst JD</a>
+                <a href="/templates/devops-engineer/" class="seo-template-pill">DevOps Engineer JD</a>
+                <a href="/templates/marketing-manager/" class="seo-template-pill">Marketing Manager JD</a>
+                <a href="/templates/sales-development-representative/" class="seo-template-pill">SDR Job Description</a>
+                <a href="/templates/ui-ux-designer/" class="seo-template-pill">UI/UX Designer JD</a>
+                <a href="/templates/customer-success-manager/" class="seo-template-pill">Customer Success Manager JD</a>
+              </div>
+              <div>
+                <a href="/templates/" class="seo-templates-all-link">&rarr; Browse All Job Description Templates Directory</a>
+              </div>
+            </div>
+          </div>
         </section>
 
+        <!-- Site Footer -->
         <footer class="app-footer">
-          <div class="footer-row">
-            <a class="footer-brand-name" href="/">LinkedInGenAI</a>
-            <nav class="footer-links-row" aria-label="Footer">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <p class="footer-brand-name">LinkedInGenAI</p>
+              <p class="footer-blurb">Built for hiring teams, recruiters, and founders who want better LinkedIn job descriptions, faster.</p>
+            </div>
+            <nav class="footer-column" aria-label="Product">
+              <p class="footer-heading">Product</p>
+              <a href="/" class="footer-link">Generator</a>
               <a href="/templates/" class="footer-link">Templates</a>
               <a href="/architecture.html" class="footer-link">How it works</a>
               <a href="/eval.html" class="footer-link">Model evaluation</a>
               <button type="button" class="footer-link footer-link-button" data-footer-target="authorsView">Authors</button>
+            </nav>
+            <nav class="footer-column" aria-label="Resources">
+              <p class="footer-heading">Resources</p>
               <a href="https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator_Documentation" class="footer-link" target="_blank" rel="noopener">Documentation</a>
             </nav>
-            <p class="footer-copy">&copy; 2026 LinkedIn GenAI</p>
           </div>
+          <p class="footer-copy">&copy; 2026 LinkedIn GenAI</p>
         </footer>
       </div>
 
+      <!-- Authors View -->
       <div id="authorsView" class="page-view hidden">
         <section class="simple-page-card simple-page-card-wide">
           <h2 class="authors-title-gradient">Authors</h2>
@@ -982,11 +1214,10 @@
       </div>
     </div>
 
-    <div class="mobile-bar" id="mobileBar"><button type="button" class="primary-button" id="mobileGenerate">Generate (free)</button><button type="button" class="primary-button" id="mobileCopy">Copy</button><button type="button" class="secondary-button" id="mobileWord">Word</button></div>
     <div id="turnstileBox" class="turnstile-box" aria-live="polite"></div>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="app.js?v=roadmap-v1"></script>
     <script src="features.js?v=roadmap-v1"></script>
-    <script src="motion.js?v=flow-v1"></script>
+    <script src="motion.js?v=roadmap-v2"></script>
   </body>
 </html>
