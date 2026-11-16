@@ -3712,3 +3712,9 @@ body.rail-away .question-rail { opacity: 0; pointer-events: none; transform: tra
 
 /* Rail position follows the title, so no CSS transition on top */
 .question-rail { transition: opacity 200ms ease, transform 200ms ease; }
+
+/* Number rail: fixed in the vertical middle of the screen */
+.question-rail { top: 50%; transform: translateY(-50%); }
+body.rail-away .question-rail { transform: translate(-18px, -50%); }
+.question-rail { animation: none; }
+.question-rail:hover { transform: translateY(-50%); }
