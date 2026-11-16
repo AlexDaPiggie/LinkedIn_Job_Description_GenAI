@@ -1,0 +1,116 @@
+/* Shared styles for the standalone Architecture and Evaluation pages. */
+:root {
+  --ink: #0e1d36;
+  --ink-soft: #3b4d6b;
+  --muted: #5c6b8c;
+  --line: rgba(19, 54, 89, 0.13);
+  --blue: #0a66c2;
+  --blue-deep: #073f7a;
+  --cyan-soft: #e8fbff;
+  --paper: #fff;
+  --canvas: #f4f7fc;
+  --heading-font: "Fraunces", Georgia, serif;
+  --body-font: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: var(--body-font);
+  line-height: 1.6;
+}
+
+.info-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 18px 16px;
+}
+
+.info-nav a { color: var(--blue); font-weight: 700; text-decoration: none; }
+.info-nav a:hover { text-decoration: underline; }
+.info-nav .links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 8px 16px 64px;
+}
+
+h1 { font-family: var(--heading-font); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 12px 0; }
+h2 { font-family: var(--heading-font); font-size: 1.5rem; margin: 40px 0 8px; }
+.lead { color: var(--ink-soft); font-size: 1.1rem; max-width: 70ch; }
+
+.card {
+  margin: 16px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 10px 26px rgba(12, 39, 68, 0.06);
+}
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.flow li {
+  position: relative;
+  padding: 14px 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  font-size: 0.9rem;
+  counter-increment: step;
+}
+
+.flow li::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.flow strong { display: block; }
+.flow span { color: var(--muted); font-size: 0.82rem; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+th { color: var(--muted); font-size: 0.76rem; letter-spacing: 0.04em; text-transform: uppercase; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-wrap { overflow-x: auto; }
+
+.bar { height: 8px; border-radius: 99px; background: var(--cyan-soft); overflow: hidden; min-width: 80px; }
+.bar > span { display: block; height: 100%; background: var(--blue); }
+
+ul.plain { padding-left: 20px; }
+code { padding: 1px 6px; border-radius: 4px; background: #eef4fa; font-size: 0.85em; }
+.note { color: var(--muted); font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+  .card { padding: 14px; }
+}
+
+tr.in-use td { background: #eaf3ff; font-weight: 600; }
+code, .note { font-family: inherit; }
+th { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
