@@ -6,18 +6,6 @@ const DRAFT_STORAGE_KEY = "linkedinJobGeneratorDraft";
 const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
 const SETTINGS_STORAGE_KEY = "linkedinJobGeneratorSettings";
 
-// Optional features live in features.js and register themselves here.
-// Calling one before it loads (or if it fails) must never break the core flow.
-function feature(name, ...args) {
-  try {
-    const fn = window.__features && window.__features[name];
-    return fn ? fn(...args) : undefined;
-  } catch (err) {
-    console.warn(`Feature ${name} failed:`, err);
-    return undefined;
-  }
-}
-
 // Built-in copy of the intake questions (mirrors src/agent/questions.py).
 // The form is drawn from this immediately so it never waits for the backend.
 const fallbackQuestions = [
@@ -28,8 +16,7 @@ const fallbackQuestions = [
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
   { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
-  { question_name: "team_context", question_text: "Who will this person work with? (team size, manager, partner teams)", required: false, answer_type: "text", recommended: true },
-  { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?\n(mission, culture, growth, impact, or interesting work.)", required: false, answer_type: "text", recommended: true },
+  { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?\n(mission, culture, growth, impact, or interesting work.)", required: false, answer_type: "text" },
   { question_name: "benefits", question_text: "Are there any benefit, perk, or compensation details you would like to include?", required: false, answer_type: "list" },
 ];
 
@@ -142,7 +129,6 @@ const state = {
   user: null,
   credits: null,
   config: null,
-  originalDoc: "",
   settings: {
     tone: "Professional & Authoritative",
     target_length: "medium",
@@ -226,6 +212,57 @@ const elements = {
   triggerUploadBtn: document.querySelector("#triggerUploadBtn"),
 };
 
+// Public settings (credit packs, free credits, Turnstile key) from the server.
+let configPromise = null;
+function loadConfig() {
+  configPromise = fetch(apiUrl("/config"))
+    .then((response) => (response.ok ? response.json() : null))
+    .catch(() => null)
+    .then((config) => {
+      if (config) state.config = config;
+      return config;
+    });
+  return configPromise;
+}
+
+// Optional bot check (Cloudflare Turnstile) for guests, used only when the server enables it.
+let turnstileScript = null;
+let turnstileWidgetId = null;
+async function turnstileToken() {
+  await configPromise;
+  const siteKey = state.config && state.config.turnstile_site_key;
+  if (!siteKey) return null;
+  if (!turnstileScript) {
+    turnstileScript = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.head.append(script);
+    });
+  }
+  if (!(await turnstileScript) || !window.turnstile) return null;
+  return new Promise((resolve) => {
+    const box = document.getElementById("turnstileBox");
+    if (!box) return resolve(null);
+    if (turnstileWidgetId !== null) window.turnstile.remove(turnstileWidgetId);
+    const timer = setTimeout(() => resolve(null), 20000);
+    turnstileWidgetId = window.turnstile.render(box, {
+      sitekey: siteKey,
+      appearance: "interaction-only",
+      callback: (token) => { clearTimeout(timer); resolve(token); },
+      "error-callback": () => { clearTimeout(timer); resolve(null); },
+    });
+  });
+}
+
+async function guestHeaders() {
+  if (state.accessToken) return {};
+  const token = await turnstileToken();
+  return token ? { "X-Turnstile-Token": token } : {};
+}
+
 function apiUrl(path) {
   return `${API_BASE_URL}${path}`;
 }
@@ -254,7 +291,6 @@ function setAuthState(data) {
   }
   renderAuth();
   renderDraft();
-  feature("onAuthChanged");
 }
 
 function clearAuthState() {
@@ -264,7 +300,6 @@ function clearAuthState() {
   localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
   renderAuth();
   renderDraft();
-  feature("onAuthChanged");
 }
 
 function renderAuth() {
@@ -353,7 +388,6 @@ function buildJobInfo() {
     benefits: [],
     why_join_us: "",
     equal_opportunity: "",
-    team_context: "",
     tone: "Professional & Authoritative",
     target_length: "medium",
   };
@@ -368,7 +402,6 @@ function buildJobInfo() {
   jobInfo.tone = state.settings.tone;
   jobInfo.target_length = state.settings.target_length;
   jobInfo.equal_opportunity = state.settings.equal_opportunity;
-  Object.assign(jobInfo, feature("payJobInfo") || {});
 
   return jobInfo;
 }
@@ -471,7 +504,7 @@ function renderQuestions() {
     const leftHint = document.createElement("span");
     leftHint.textContent = question.answer_type === "list" ? "Use separate lines for multiple items." : "Answer before generating.";
     const rightHint = document.createElement("span");
-    rightHint.textContent = question.required ? "Required" : question.recommended ? "Recommended - makes the draft specific" : "Optional";
+    rightHint.textContent = question.required ? "Required" : "Optional";
     hint.append(leftHint, rightHint);
 
     bodyInner.append(prompt, input, hint);
@@ -509,7 +542,6 @@ function renderRailPin() {
 function questionMetaText(question, value, isMissing) {
   if (isMissing) return "Required answer missing";
   if (value.trim()) return "Answered";
-  if (question.recommended) return "Recommended";
   return question.required ? "Required" : "Optional";
 }
 
@@ -547,11 +579,11 @@ function renderDraft() {
   if (!state.currentMarkdown) {
     elements.markdownPreview.classList.add("empty");
     elements.markdownPreview.textContent = "Generate a draft to preview the job description.";
-  } else {
-    elements.markdownPreview.classList.remove("empty");
-    elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
+    return;
   }
-  feature("afterRenderDraft");
+
+  elements.markdownPreview.classList.remove("empty");
+  elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
 }
 
 function renderAll() {
@@ -718,7 +750,6 @@ async function streamApi(path, body, onChunk, onDone, extraHeaders = {}) {
             state.credits = payload.credits_remaining;
             renderAuth();
           }
-          setMessage("That refine did not work, so your credit was refunded. Please try again.", "info");
         } else if (payload.event === "error") {
           throw new Error(payload.detail || "Streaming error occurred");
         }
@@ -752,10 +783,36 @@ function closeModal() {
   elements.authModal.classList.add("hidden");
 }
 
+const FALLBACK_PACKS = [
+  { pack_id: "starter", price_cents: 500, credits: 20 },
+  { pack_id: "standard", price_cents: 1000, credits: 40 },
+  { pack_id: "pro", price_cents: 2000, credits: 80 },
+];
+
+function renderPacks() {
+  const list = document.getElementById("packList");
+  if (!list) return;
+  const packs = (state.config && state.config.packs) || FALLBACK_PACKS;
+  list.innerHTML = "";
+  for (const pack of packs) {
+    const dollars = pack.price_cents / 100;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `pack-card${pack.pack_id === "standard" ? " pack-popular" : ""}`;
+    button.dataset.pack = pack.pack_id;
+    button.innerHTML = `${pack.pack_id === "standard" ? '<span class="pack-flag">Most popular</span>' : ""}
+      <span class="pack-credits">${pack.credits}</span>
+      <span class="pack-unit">refines</span>
+      <span class="pack-price">$${dollars}</span>
+      <span class="pack-each">$${(dollars / pack.credits).toFixed(2)} each</span>`;
+    button.addEventListener("click", () => payCredits(pack.pack_id, button));
+    list.append(button);
+  }
+}
+
 function openBillingModal() {
   setBillingMessage("");
-  feature("renderPacks");
-  logEvent("pack_view");
+  renderPacks();
   elements.billingModal.classList.remove("hidden");
 }
 
@@ -842,7 +899,6 @@ async function submitAuth(event) {
       const data = await callApi("/auth/login", { email, password });
       setAuthState(data);
       closeModal();
-      feature("resumePendingRefine");
     }
   } catch (err) {
     setModalMessage(err.message || "Authentication failed.");
@@ -868,7 +924,6 @@ async function submitOtp(event) {
     setAuthState(data);
     closeModal();
     setMessage(`Account verified. ${data.credits ?? 0} free refine credits added.`, "info");
-    feature("resumePendingRefine");
   } catch (err) {
     setModalMessage(err.message || "Invalid verification code.");
   } finally {
@@ -934,13 +989,6 @@ async function loadSession() {
   }
 }
 
-// Headers for requests that guests may send: Turnstile token when enabled.
-async function guestHeaders() {
-  if (state.accessToken) return {};
-  const token = await feature("turnstileToken");
-  return token ? { "X-Turnstile-Token": token } : {};
-}
-
 async function generateDraft() {
   const missing = missingRequiredFields();
   if (missing.length) {
@@ -976,14 +1024,21 @@ async function generateDraft() {
         elements.markdownPreview.textContent = streamedRaw.replace(/^```(?:json)?\s*/i, "");
       },
       (data) => {
-        state.draftOutdated = false;
-        feature("applyDraftResult", data, "Generated draft", true);
+        state.currentDraft = data.draft;
+        state.currentMarkdown = data.markdown;
+        try {
+          localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
+          localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
+        } catch (err) {
+          console.warn("Could not save draft to localStorage:", err);
+        }
         if (typeof data.credits_remaining === "number") {
           state.credits = data.credits_remaining;
           renderAuth();
         }
-        feature("showUploadDiff");
-        setMessage(data.cached ? "Loaded your earlier result instantly (same answers)." : "", "info");
+        state.draftOutdated = false;
+        renderDraft();
+        setMessage("");
       },
       extraHeaders
     );
@@ -995,33 +1050,28 @@ async function generateDraft() {
   }
 }
 
-// Typed feedback costs 1 credit. Click-based edits (chips, section rewrite,
-// tone/length/EEO) are free and live in features.js.
+// Refining with your own words costs 1 credit. Everything else is free.
 async function refineDraft() {
+  if (!state.accessToken) {
+    setMessage("Sign in free to refine. Each refine costs 1 credit, and new accounts get free credits.", "info");
+    openModal();
+    return;
+  }
+
   const request = elements.refineInput.value.trim();
   if (!state.currentDraft) {
     setMessage("Generate a draft before refining.");
     return;
   }
   if (state.draftOutdated) {
-    setMessage("Your answers changed. Click Generate (free) first, then refine.");
+    setMessage("Regenerate before refining because the answers have changed.");
     return;
   }
   if (!request) {
-    setMessage("Type what you want changed first. Tip: the buttons above are free.", "info");
-    return;
-  }
-  logEvent("refine_click");
-
-  // Gate at the moment of intent: keep the work, ask to sign in or buy.
-  if (!state.accessToken) {
-    feature("savePendingRefine", request);
-    setMessage("Sign in free to refine. Your draft and request are saved.", "info");
-    openModal();
+    setMessage("Add a refinement request first.");
     return;
   }
   if ((state.credits ?? 0) < 1) {
-    feature("savePendingRefine", request);
     setMessage("You are out of refine credits. Your draft is safe. Pick a pack to continue.", "info");
     openBillingModal();
     return;
@@ -1040,20 +1090,26 @@ async function refineDraft() {
         current_draft: state.currentDraft,
         user_request: request,
         skipped_fields: getSkippedFields(),
-        job_info: buildJobInfo(),
       },
       (chunk) => {
         streamedRaw += chunk;
         elements.markdownPreview.textContent = streamedRaw.replace(/^```(?:json)?\s*/i, "");
       },
       (data) => {
-        feature("applyDraftResult", data, "Refined: " + request.slice(0, 40), true);
+        state.currentDraft = data.draft;
+        state.currentMarkdown = data.markdown;
+        try {
+          localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
+          localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
+        } catch (err) {
+          console.warn("Could not save draft to localStorage:", err);
+        }
         if (typeof data.credits_remaining === "number") {
           state.credits = data.credits_remaining;
           renderAuth();
         }
         elements.refineInput.value = "";
-        feature("clearPendingRefine");
+        renderDraft();
         setMessage("");
       }
     );
@@ -1086,7 +1142,16 @@ function markdownToHtml(markdown) {
     } else if (line.startsWith("### ")) {
       if (inList) html.push("</ul>");
       inList = false;
-      html.push(`<h3>${escapeHtml(line.slice(4).trim())}</h3>`);
+      const headingText = line.slice(4).trim();
+      if (headingText.includes("🔒")) {
+        let cleanHeading = headingText.replace(/🔒\s*/, "").trim();
+        if (state.accessToken && cleanHeading.toLowerCase().includes("sign in")) {
+          cleanHeading = "Full Output Ready to Generate";
+        }
+        html.push(`<h3><svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2b3b4c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>${escapeHtml(cleanHeading)}</h3>`);
+      } else {
+        html.push(`<h3>${escapeHtml(headingText)}</h3>`);
+      }
     } else if (line.startsWith("## ")) {
       if (inList) html.push("</ul>");
       inList = false;
@@ -1106,7 +1171,11 @@ function markdownToHtml(markdown) {
         html.push("</ul>");
         inList = false;
       }
-      html.push(`<p>${escapeHtml(line)}</p>`);
+      let paraText = line;
+      if (state.accessToken && paraText.includes("Sign in or create a free account to unlock")) {
+        paraText = "Click 'Generate Full Output' below to unlock all responsibilities, requirements, and benefits:";
+      }
+      html.push(`<p>${escapeHtml(paraText)}</p>`);
     }
   }
 
@@ -1211,7 +1280,6 @@ function markdownToClipboardHtml(markdown) {
 }
 
 async function copyDraft() {
-  if (feature("confirmExport") === false) return;
   const textToCopy = formatMarkdownForCopy(state.currentMarkdown);
   if (!state.currentMarkdown || !textToCopy) return;
 
@@ -1317,8 +1385,6 @@ function docxParagraphsFromMarkdown(markdown) {
 
 async function exportDocx() {
   if (!state.currentMarkdown) return;
-  if (feature("confirmExport") === false) return;
-  logEvent("export", "docx");
   if (!window.docx) {
     setMessage("Word export library did not load. Check your internet connection and try again.");
     return;
@@ -1400,7 +1466,6 @@ function initialiseWorkspace() {
     const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
     const savedMarkdown = localStorage.getItem(MARKDOWN_STORAGE_KEY);
     if (savedDraft && savedMarkdown) {
-      // Older versions saved a truncated guest preview; do not restore it.
       if (!savedMarkdown.includes("Sign in to see the full output")) {
         state.currentDraft = JSON.parse(savedDraft);
         state.currentMarkdown = savedMarkdown;
@@ -1443,7 +1508,6 @@ function clearAnswers() {
   } catch (err) {
     console.warn("Could not clear workspace from localStorage:", err);
   }
-  feature("onWorkspaceCleared");
   renderAll();
   setMessage("Answers and draft cleared.", "info");
 }
@@ -1475,7 +1539,7 @@ async function buyCredits(event) {
   openBillingModal();
 }
 
-// Starts Stripe Checkout for a pack. The server decides price and credits.
+// Starts Stripe Checkout for a pack. The server decides the price and the credits.
 async function payCredits(packId, button) {
   if (!state.accessToken) {
     openModal();
@@ -1483,7 +1547,6 @@ async function payCredits(packId, button) {
   }
   const restore = setLoading(button, "Loading...");
   setBillingMessage("");
-  logEvent("pack_click", packId);
   try {
     const session = await callApi("/create-checkout-session", {
       pack_id: packId,
@@ -1499,17 +1562,23 @@ async function payCredits(packId, button) {
   }
 }
 
-// Fire-and-forget usage event (button name only, no personal data).
-function logEvent(event, detail = "") {
+// After Stripe sends the user back, credit the purchase right away (safe to repeat).
+async function handleCheckoutReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get("session_id");
+  if (!sessionId) return;
+  params.delete("session_id");
+  const query = params.toString();
+  window.history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : "") + window.location.hash);
+  if (!state.accessToken) return;
   try {
-    fetch(apiUrl("/events"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ event, detail }),
-      keepalive: true,
-    }).catch(() => {});
+    const result = await callApi(`/confirm-checkout?session_id=${encodeURIComponent(sessionId)}`, {});
+    state.credits = result.credits;
+    renderAuth();
+    closeBillingModal();
+    setMessage(`Payment received. You now have ${result.credits} refine credits.`, "info");
   } catch {
-    // Ignore: analytics must never break the app.
+    setMessage("Payment is still processing. Your credits will appear in a moment. Refresh to check.", "info");
   }
 }
 
@@ -1730,8 +1799,6 @@ window.addEventListener("scroll", () => {
 });
 
 // --- Document Upload & Auto-fill Handling (free, no account needed) ---
-const PAY_FIELD_KEYS = new Set(["pay_min", "pay_max"]);
-
 async function handleDocUpload(file) {
   if (!file) return;
 
@@ -1739,7 +1806,6 @@ async function handleDocUpload(file) {
   elements.docUploadStatus.classList.remove("hidden");
   elements.docUploadStatusText.textContent = `Analyzing ${file.name}...`;
   setMessage("");
-  logEvent("upload");
 
   try {
     const formData = new FormData();
@@ -1766,12 +1832,7 @@ async function handleDocUpload(file) {
 
     for (const [key, val] of Object.entries(extracted)) {
       if (!val) continue;
-
-      if (PAY_FIELD_KEYS.has(key)) {
-        feature("setPayFromUpload", key, val);
-        filledCount++;
-        continue;
-      }
+      if (key === "pay_min" || key === "pay_max") continue;
 
       if (key === "equal_opportunity") {
         const lower = String(val).trim().toLowerCase();
@@ -1789,8 +1850,6 @@ async function handleDocUpload(file) {
       }
     }
 
-    feature("setOriginalDoc", result.original_text || "", file.name);
-
     try {
       localStorage.setItem(ANSWERS_STORAGE_KEY, JSON.stringify(state.answers));
     } catch (err) {
@@ -1799,7 +1858,7 @@ async function handleDocUpload(file) {
 
     if (state.currentDraft) state.draftOutdated = true;
     renderAll();
-    setMessage(`Auto-filled ${filledCount} field(s) from "${file.name}". Click Generate to see an improved version with a change summary.`, "info");
+    setMessage(`Successfully auto-filled ${filledCount} field(s) from "${file.name}"!`, "info");
   } catch (err) {
     console.error("Document extraction error:", err);
     setMessage(err.message || "Failed to parse document.");
@@ -1889,7 +1948,8 @@ async function loadAuthors() {
 
 checkApi();
 renderRailPin();
-loadSession();
+loadConfig();
+loadSession().then(() => configPromise).then(handleCheckoutReturn);
 loadQuestions();
 loadAuthors();
 

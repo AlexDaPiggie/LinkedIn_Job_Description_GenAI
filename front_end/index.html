@@ -67,7 +67,7 @@
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD",
-              "description": "Free to generate, no account needed. Refine with your own words costs credits: 20 free on signup, then $5 for 20."
+              "description": "Free to generate, no account needed. Refining with your own words costs credits: 20 free on signup, then $5 for 20."
             },
             "creator": {
               "@type": "Organization",
@@ -103,26 +103,10 @@
               },
               {
                 "@type": "Question",
-                "name": "Do I need an account to generate a job description?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No. Generating a full job description, uploading an old one to improve it, the quality check, copy and Word export are free with no account."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Does it check for biased or illegal wording?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Every draft gets a free rule-based check for gender-coded and age-coded words, missing pay range, long bullet lists and reading level. You can also pick your location to see whether a pay range is usually required. It is a screening aid, not legal advice."
-                }
-              },
-              {
-                "@type": "Question",
                 "name": "Can I refine the job description after it is generated?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. One-click quick edits, tone, length and section rewrites are free. Typing your own change request needs a free account and costs 1 credit; new accounts get 20 free credits."
+                  "text": "Yes, you can use the built-in conversational refinement box to adjust tone, add perks, modify qualifications, or expand sections iteratively."
                 }
               }
             ]
@@ -140,7 +124,7 @@
       rel="stylesheet"
     />
     <script src="config.js"></script>
-    <link rel="stylesheet" href="styles.css?v=roadmap-v3" />
+    <link rel="stylesheet" href="styles.css?v=pro-v14" />
     <style>
       body.authors-active .question-rail {
         opacity: 0 !important;
@@ -458,8 +442,7 @@
               <span class="gradient-letter">J</span>ob Description Generator
             </h1>
             <p class="hero-subtitle">
-              Answer a few questions and get a LinkedIn-ready job description in minutes.
-              No signup needed. Copy it straight into LinkedIn or export to Word.
+              Answer a few questions and get a LinkedIn-ready job description in minutes. Generating is free with no account. Refine it with AI and export to Word.
             </p>
           </div>
           <div class="header-auth" id="headerAuth">
@@ -474,52 +457,6 @@
             </div>
           </div>
         </div>
-        <section class="proof" id="proof" aria-label="Example of the free quality check">
-          <div class="proof-doc">
-            <div class="proof-doc-head">
-              <span class="proof-kicker">Example job post, excerpt</span>
-              <span class="proof-where">Marlow Pay - New York</span>
-            </div>
-            <h3>Senior Backend Engineer, Payments</h3>
-            <p>
-              Join our
-              <mark class="fx" data-row="age"><span class="old">young, high energy team</span><span class="new">team of five engineers and a product manager</span></mark>
-              as a
-              <mark class="fx" data-row="filler"><span class="old">rockstar engineer</span><span class="new">backend engineer</span></mark>.
-              You will own the services that move money for 40,000 merchants. We reward people who
-              <mark class="fx" data-row="filler"><span class="old">hit the ground running</span><span class="new">learn the system quickly</span></mark>.
-            </p>
-            <ul>
-              <li>Design and run the ledger service behind merchant payouts.</li>
-              <li>5+ years building backend services, strong SQL.</li>
-              <li>Bachelor degree in computer science<mark class="fx" data-row="degree"><span class="old"></span><span class="new"> or equivalent experience</span></mark>.</li>
-            </ul>
-            <p class="proof-pay">
-              <span class="proof-pay-label">Pay range</span>
-              <mark class="fx fx-pay" data-row="pay"><span class="old">not given</span><span class="new">$150,000 - $175,000 per year</span></mark>
-            </p>
-          </div>
-
-          <aside class="proof-panel" aria-label="Quality check result">
-            <div class="proof-score-row">
-              <span class="proof-score" id="proofScore" aria-live="off">72</span>
-              <span class="proof-score-of">/ 100</span>
-              <button type="button" class="proof-replay" id="proofReplay">Replay</button>
-            </div>
-            <p class="proof-state" id="proofState">Before the check</p>
-            <ul class="proof-rows">
-              <li data-row="pay"><span class="proof-tag proof-tag-error">Required in NY</span><span class="proof-text">No pay range in the post</span></li>
-              <li data-row="age"><span class="proof-tag proof-tag-warn">Age-coded</span><span class="proof-text">"high energy" can put off older applicants</span></li>
-              <li data-row="filler"><span class="proof-tag proof-tag-info">Filler</span><span class="proof-text">"rockstar", "hit the ground running"</span></li>
-              <li data-row="degree"><span class="proof-tag proof-tag-info">Narrow</span><span class="proof-text">Degree required, no "or equivalent"</span></li>
-            </ul>
-          </aside>
-
-          <p class="proof-note">
-            Scores come from the same free, rule-based checker the app runs on every draft.
-            <a href="#questionList" class="proof-link">Try it on your own role</a>
-          </p>
-        </section>
       </header>
 
       <!-- Home View -->
@@ -527,7 +464,7 @@
         <div class="workspace-prebar">
           <div class="workspace-prebar-left">
             <div id="creditsContainer" class="credits-container hidden">
-              <span id="workspaceCredits" class="credit-badge" title="Credits are used only when you type a refine request. Everything else is free.">20 refine credits</span>
+              <span id="workspaceCredits" class="credit-badge" title="Credits are used only for refine requests you type. Generating is free.">20 refine credits</span>
               <button id="buyCreditsBtn" class="primary-button" type="button">
                 Buy more credits
               </button>
@@ -627,47 +564,6 @@
               class="question-list"
               aria-live="polite"
             ></div>
-
-            <section class="pay-card" aria-labelledby="payHeading">
-              <div class="pay-head">
-                <h3 id="payHeading">Pay range</h3>
-                <span class="pay-tag">Recommended</span>
-              </div>
-              <div class="pay-grid">
-                <label class="pay-field pay-field-wide">
-                  <span>Where is the job?</span>
-                  <select id="payJurisdiction" class="pref-select">
-                    <option value="none">Other / not listed</option>
-                  </select>
-                </label>
-                <label class="pay-field">
-                  <span>Minimum</span>
-                  <input id="payMin" type="number" min="0" step="any" inputmode="decimal" placeholder="90000" />
-                </label>
-                <label class="pay-field">
-                  <span>Maximum</span>
-                  <input id="payMax" type="number" min="0" step="any" inputmode="decimal" placeholder="120000" />
-                </label>
-                <label class="pay-field">
-                  <span>Currency</span>
-                  <select id="payCurrency" class="pref-select">
-                    <option value="USD">USD</option>
-                    <option value="CAD">CAD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                  </select>
-                </label>
-                <label class="pay-field">
-                  <span>Per</span>
-                  <select id="payPeriod" class="pref-select">
-                    <option value="year">Year</option>
-                    <option value="month">Month</option>
-                    <option value="hour">Hour</option>
-                  </select>
-                </label>
-              </div>
-              <p id="payNotice" class="pay-notice pay-info"></p>
-            </section>
           </section>
 
           <div class="result-column">
@@ -698,60 +594,24 @@
               </div>
 
               <div id="draftWarning" class="notice hidden">
-                Answers or pay changed after generation. Click Generate (free)
-                to update the draft.
+                Answers changed after generation. Regenerate before refining
+                again.
               </div>
               <div id="messageBox" class="message-box hidden"></div>
-
-              <div id="versionBar" class="version-bar hidden">
-                <button id="undoBtn" class="secondary-button" type="button" aria-label="Undo last change">Undo</button>
-                <button id="redoBtn" class="secondary-button" type="button" aria-label="Redo change">Redo</button>
-                <span id="versionLabel" class="version-label"></span>
-              </div>
-              <div id="changeNote" class="change-note hidden">
-                <span id="changeNoteText"></span>
-                <label class="highlight-toggle">
-                  <input id="highlightToggle" type="checkbox" checked /> Highlight changes
-                </label>
-              </div>
-
               <article id="markdownPreview" class="markdown-preview empty">
                 Generate a draft to preview the job description.
               </article>
 
-              <div id="diffPanel" class="diff-panel hidden"></div>
-              <div id="qualityPanel" class="quality-panel hidden"></div>
-
-              <div class="free-edits">
-                <p class="eyebrow">Quick edits - free</p>
-                <div id="chipRow" class="chip-row">
-                  <button type="button" class="chip" data-action="shorter" disabled>Shorter</button>
-                  <button type="button" class="chip" data-action="more_inclusive" disabled>More inclusive</button>
-                  <button type="button" class="chip" data-action="simplify" disabled>Simplify wording</button>
-                  <button type="button" class="chip" data-action="more_casual" disabled>More casual</button>
-                  <button type="button" class="chip" data-action="more_formal" disabled>More formal</button>
-                  <button type="button" class="chip" data-action="cut_bullets" disabled>Cut to 6 bullets</button>
-                  <button type="button" class="chip" data-action="nice_to_have" disabled>Move extras to nice-to-have</button>
-                </div>
-                <p class="free-note">Use the Rewrite button on any section heading to redo just that part. Tone, length and EEO above are free too.</p>
-              </div>
-
               <div class="refine-panel">
-                <label for="refineInput">Refine with your own words <span class="refine-cost">1 credit</span></label>
+                <label for="refineInput">Refine the draft</label>
                 <textarea
                   id="refineInput"
                   rows="4"
-                  placeholder="Example: Mention that the team is fully remote and add a line about mentoring."
+                  placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"
                 ></textarea>
                 <button id="refineButton" class="primary-button" type="button">
-                  Refine - 1 credit
+                  Refine
                 </button>
-                <p class="free-note">New accounts get <strong data-free-credits>20</strong> free refine credits. If a refine fails, the credit is returned automatically.</p>
-              </div>
-
-              <div class="screening-block">
-                <button id="screeningBtn" class="secondary-button" type="button" disabled>Suggest screening questions</button>
-                <div id="screeningList" class="screening-list hidden"></div>
               </div>
 
               <div class="draft-actions">
@@ -787,7 +647,7 @@
 
         <!-- SEO Content & FAQ Section -->
         <section class="pricing-strip" aria-label="Pricing">
-          <h2 class="pricing-title">Free to write. Pay only to refine with your own words.</h2>
+          <h2 class="pricing-title">Free to write. Pay only to refine.</h2>
           <div class="pricing-grid">
             <div class="pricing-card">
               <p class="pricing-label">No account</p>
@@ -795,8 +655,7 @@
               <ul class="pricing-features">
                 <li>Full job description, not a preview</li>
                 <li>Upload your old JD to auto-fill</li>
-                <li>Quality, bias and pay-range check</li>
-                <li>Quick edits, section rewrites, copy and Word export</li>
+                <li>Copy to LinkedIn and Word export</li>
               </ul>
             </div>
             <div class="pricing-card pricing-card-featured">
@@ -804,8 +663,7 @@
               <p class="pricing-price"><span data-free-credits>20</span> <span class="pricing-unit">free refine credits</span></p>
               <ul class="pricing-features">
                 <li>Type your own change request, 1 credit each</li>
-                <li>Failed refine? The credit comes back</li>
-                <li>Draft is kept while you sign in</li>
+                <li>A failed refine returns the credit</li>
               </ul>
             </div>
             <div class="pricing-card">
@@ -814,7 +672,6 @@
               <ul class="pricing-features">
                 <li>$10 = 40 refines, $20 = 80 refines</li>
                 <li>One-time payment, no subscription</li>
-                <li>Secure checkout by Stripe</li>
               </ul>
             </div>
           </div>
@@ -915,8 +772,6 @@
               <p class="footer-heading">Product</p>
               <a href="/" class="footer-link">Generator</a>
               <a href="/templates/" class="footer-link">Templates</a>
-              <a href="/architecture.html" class="footer-link">How it works</a>
-              <a href="/eval.html" class="footer-link">Model evaluation</a>
               <button type="button" class="footer-link footer-link-button" data-footer-target="authorsView">Authors</button>
             </nav>
             <nav class="footer-column" aria-label="Resources">
@@ -1214,10 +1069,8 @@
       </div>
     </div>
 
-    <div id="turnstileBox" class="turnstile-box" aria-live="polite"></div>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js?v=roadmap-v1"></script>
-    <script src="features.js?v=roadmap-v1"></script>
-    <script src="motion.js?v=roadmap-v2"></script>
+    <div id="turnstileBox" style="position:fixed;right:16px;bottom:16px;z-index:60"></div>
+    <script src="app.js?v=wake-v1"></script>
   </body>
 </html>
