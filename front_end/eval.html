@@ -10,24 +10,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="info-pages.css" />
+    <link rel="stylesheet" href="info-pages.css?v=2" />
     <script src="config.js"></script>
   </head>
   <body>
-    <nav class="site-nav" aria-label="Site">
-      <div class="wrap">
-        <a href="/" class="nav-brand">LinkedInGenAI</a>
-        <a href="/" class="nav-link">Home</a>
-        <a href="/templates/" class="nav-link">Templates</a>
-        <a href="/architecture.html" class="nav-link">How it works</a>
-        <a href="/eval.html" class="nav-link active" aria-current="page">Evaluation</a>
-        <a href="/#authors" class="nav-link">Authors</a>
-      </div>
+    <nav class="nav-bar" aria-label="Site">
+      <a href="/" class="nav-brand">LinkedInGenAI</a>
+      <a href="/" class="nav-link nav-link-anchor">Home</a>
+      <a href="/templates/" class="nav-link nav-link-anchor">Templates</a>
+      <a href="/architecture.html" class="nav-link nav-link-anchor">How it works</a>
+      <a href="/eval.html" class="nav-link nav-link-anchor active" aria-current="page">Evaluation</a>
+      <a href="/#authors" class="nav-link nav-link-anchor">Authors</a>
     </nav>
 
     <main class="wrap">
       <header class="page-head">
-        <h1>How we <span class="soft">test the AI</span></h1>
+        <h1><span class="gradient-letter">H</span>ow we <span class="soft">test the AI</span></h1>
         <p class="lead">
           Every model is run on the same four hiring scenarios. We check that the output is valid, then score how
           specific and faithful the writing is, and measure speed and cost on every call.

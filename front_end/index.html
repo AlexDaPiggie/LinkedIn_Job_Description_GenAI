@@ -467,53 +467,6 @@
               </button>
             </div>
           </div>
-
-          <div class="preferences-bar">
-            <div class="pref-item">
-              <label for="settingTone" class="pref-label">Tone</label>
-              <select id="settingTone" class="pref-select">
-                <option value="Professional & Authoritative" selected>Professional & Authoritative</option>
-                <option value="Conversational & Warm">Conversational & Warm</option>
-                <option value="Fast-Paced & Startup-like">Fast-Paced & Startup-like</option>
-                <option value="Bold, Modern & Visionary">Bold, Modern & Visionary</option>
-              </select>
-            </div>
-
-            <div class="pref-item">
-              <span class="pref-label">Length</span>
-              <div class="segmented-control" id="lengthControl">
-                <button type="button" class="segment-btn" data-value="short">Short</button>
-                <button type="button" class="segment-btn active" data-value="medium">Medium</button>
-                <button type="button" class="segment-btn" data-value="long">Long</button>
-              </div>
-            </div>
-
-            <div class="pref-item">
-              <span class="pref-label">EEO</span>
-              <div class="eeo-tooltip-wrapper">
-                <button
-                  type="button"
-                  class="eeo-info-badge"
-                  id="eeoInfoBtn"
-                  aria-label="What is EEO?"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                  </svg>
-                </button>
-                <div class="eeo-tooltip-card" id="eeoTooltip" role="tooltip">
-                  <strong>Equal Employment Opportunity (EEO)</strong>
-                  <p>A statement declaring that hiring is free from discrimination based on race, gender, age, disability, or background.</p>
-                </div>
-              </div>
-              <div class="segmented-control" id="eeoControl">
-                <button type="button" class="segment-btn active" data-value="yes">Yes</button>
-                <button type="button" class="segment-btn" data-value="no">No</button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <section class="workspace-grid">
@@ -625,6 +578,54 @@
                 </div>
               </div>
 
+              <div class="preferences-bar" title="Starting settings for the first draft. After it is written, use 'Change this draft' below it.">
+                <span class="pref-group-label">Start with</span>
+                <div class="pref-item">
+                  <label for="settingTone" class="pref-label">Tone</label>
+                  <select id="settingTone" class="pref-select">
+                    <option value="Professional & Authoritative" selected>Professional & Authoritative</option>
+                    <option value="Conversational & Warm">Conversational & Warm</option>
+                    <option value="Fast-Paced & Startup-like">Fast-Paced & Startup-like</option>
+                    <option value="Bold, Modern & Visionary">Bold, Modern & Visionary</option>
+                  </select>
+                </div>
+
+                <div class="pref-item">
+                  <span class="pref-label">Length</span>
+                  <div class="segmented-control" id="lengthControl">
+                    <button type="button" class="segment-btn" data-value="short">Short</button>
+                    <button type="button" class="segment-btn active" data-value="medium">Medium</button>
+                    <button type="button" class="segment-btn" data-value="long">Long</button>
+                  </div>
+                </div>
+
+                <div class="pref-item">
+                  <span class="pref-label">EEO</span>
+                  <div class="eeo-tooltip-wrapper">
+                    <button
+                      type="button"
+                      class="eeo-info-badge"
+                      id="eeoInfoBtn"
+                      aria-label="What is EEO?"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                      </svg>
+                    </button>
+                    <div class="eeo-tooltip-card" id="eeoTooltip" role="tooltip">
+                      <strong>Equal Employment Opportunity (EEO)</strong>
+                      <p>A statement declaring that hiring is free from discrimination based on race, gender, age, disability, or background.</p>
+                    </div>
+                  </div>
+                  <div class="segmented-control" id="eeoControl">
+                    <button type="button" class="segment-btn active" data-value="yes">Yes</button>
+                    <button type="button" class="segment-btn" data-value="no">No</button>
+                  </div>
+                </div>
+              </div>
+
               <div id="draftWarning" class="notice hidden">
                 Answers changed after generation. Regenerate before refining
                 again.
@@ -651,9 +652,9 @@
 
               <div id="adjustBlock" class="adjust hidden">
                 <div class="adjust-head">
-                  <h3>Adjust</h3>
+                  <h3>Change this draft</h3>
                   <span class="adjust-free">free</span>
-                  <span class="adjust-info" tabindex="0" title="One-click edits on the whole draft, no account needed. Hover a section title to rewrite just that part. Tone, length and EEO above also stay free.">?</span>
+                  <span class="adjust-info" tabindex="0" title="One-click edits on the draft you already have, no account needed. Hover a section title to rewrite just that part. The Tone, Length and EEO settings at the top are for the first draft.">?</span>
                 </div>
                 <div id="chipRow" class="adjust-rows">
                   <div class="adjust-row"><span class="adjust-label">Length</span>

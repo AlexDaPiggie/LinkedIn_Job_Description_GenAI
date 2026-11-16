@@ -540,3 +540,18 @@
 .hub-hero { padding-left: 0; }
 .btn-view { white-space: nowrap; }
 .btn-ai { background: linear-gradient(105deg, #0a66c2 0%, #0b86cf 55%, #13b4cf 100%); border: 1px solid rgba(7, 63, 122, 0.85); color: #fff; box-shadow: 0 10px 20px rgba(10, 102, 194, 0.26); }
+
+/* Match Home: same left edge and hero position; title sizes stay as they are */
+.hub-page, .template-page { max-width: none; margin: 0 30px 0 80px; padding: 8px 0 80px; }
+.hub-page .hub-hero { text-align: left; margin: 0 0 44px; max-width: 760px; }
+.hub-page .hub-grid, .template-page > *:not(.template-hero) { max-width: 960px; }
+@media (min-width: 1710px) { .hub-page, .template-page { margin-left: calc((100vw - min(1580px, 100vw - 190px)) / 2); margin-right: auto; } }
+@media (max-width: 1500px) { .hub-page, .template-page { margin-left: 126px; margin-right: 24px; } }
+@media (max-width: 1320px) { .hub-page, .template-page { margin-left: 116px; margin-right: 20px; } }
+@media (max-width: 1180px) { .hub-page, .template-page { margin-left: 98px; margin-right: 18px; } }
+@media (max-width: 1080px) { .hub-page, .template-page { margin: 0 auto; width: min(100vw - 32px, 920px); } }
+
+/* Hub title: same J and two-tone colouring as the Home title */
+.hub-hero h1 .gradient-letter { font-weight: 600; letter-spacing: 0; }
+.hub-hero h1 .h1-soft { color: #6b86b3; }
+.hub-page .hub-grid { margin-left: 0; margin-right: 0; }

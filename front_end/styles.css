@@ -398,7 +398,7 @@ button {
   left: 0;
   top: 300px;
   width: 46px;
-  height: 132px;
+  height: 176px;
   max-height: calc(100vh - 128px);
   padding: 9px 6px;
   border: 1px solid rgba(10, 102, 194, 0.18);
@@ -428,15 +428,15 @@ button {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 84px;
+  width: 150px;
   display: flex;
   align-items: baseline;
-  gap: 3px;
+  gap: 6px;
   justify-content: center;
   color: var(--blue-deep);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
   transform: translate(-50%, -50%) rotate(-90deg);
@@ -711,6 +711,15 @@ body.authors-active .question-rail {
 
 .pref-item:nth-child(3) {
   animation-delay: 100ms;
+}
+
+.pref-group-label {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .pref-label {
@@ -3718,3 +3727,24 @@ body.rail-away .question-rail { opacity: 0; pointer-events: none; transform: tra
 body.rail-away .question-rail { transform: translate(-18px, -50%); }
 .question-rail { animation: none; }
 .question-rail:hover { transform: translateY(-50%); }
+
+/* Draft settings live in the Generate card, left-aligned under the heading */
+.result-section .preferences-bar {
+  grid-column: auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  white-space: normal;
+  gap: 10px 16px;
+  margin: 0 0 16px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--line);
+}
+.result-section .pref-group-label { flex-basis: 100%; }
+
+/* No credits row when signed out: drop the empty bar and its gap */
+.workspace-prebar:not(:has(#creditsContainer:not(.hidden))) { display: none; }
+
+/* Soft cross-page fade; the nav stays put */
+@view-transition { navigation: auto; }
+.nav-bar { view-transition-name: site-nav; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 160ms; }
