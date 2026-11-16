@@ -1,28 +1,60 @@
+"""Rendering of job description drafts as Markdown."""
+
 from src.schema.job_description import JobDescriptionDraft
 
+# Maps a skipped intake question to the draft section it suppresses.
 SKIPPED_FIELD_TO_SECTION = {
-    "company_description": "about_company", 
-    "nice_to_haves": "nice_to_haves", 
+    "company_description": "about_company",
+    "nice_to_haves": "nice_to_haves",
     "benefits": "benefits",
     "why_join_us": "why_join_us",
     "equal_opportunity": "equal_opportunity",
 }
 
-def _append_text_section (
+def _company_heading(company_name: str) -> str:
+    """Returns the "About ..." heading for the company section."""
+    name = company_name.strip()
+    return f"About {name}" if name else "About the Company"
+
+
+def _suppressed_sections(skipped_fields: list[str] | None) -> set[str]:
+    """Maps skipped intake fields to the draft sections to hide.
+
+    Args:
+        skipped_fields: Names of intake questions the user skipped.
+
+    Returns:
+        The draft section keys that must not be rendered.
+    """
+    return {
+        SKIPPED_FIELD_TO_SECTION[field]
+        for field in skipped_fields or []
+        if field in SKIPPED_FIELD_TO_SECTION
+    }
+
+
+def _append_text_section(
     sections: list[str],
     heading: str,
     value: str,
-    section_key: str, 
+    section_key: str,
     suppressed_sections: set[str],
-):
-    '''
-    This helper function is for appending the text into the .md file
-    '''
+) -> None:
+    """Appends a paragraph section unless it is suppressed or empty.
+
+    Args:
+        sections: Markdown sections collected so far (modified in place).
+        heading: Section heading.
+        value: Section body text.
+        section_key: Draft section key, checked against `suppressed_sections`.
+        suppressed_sections: Section keys that must not be rendered.
+    """
     if section_key in suppressed_sections:
-        return 
-    stripped = value.strip()
-    if stripped: 
-        sections.append (f"## {heading} \n \n {stripped}")
+        return
+    body = value.strip()
+    if body:
+        sections.append(f"## {heading} \n \n {body}")
+
 
 def _append_bullet_section(
     sections: list[str],
@@ -30,87 +62,62 @@ def _append_bullet_section(
     items: list[str],
     section_key: str,
     suppressed_sections: set[str],
-): 
-    '''
-    THis helper function is to append in the sections with bulletpoints. 
-    '''
+) -> None:
+    """Appends a bullet-list section unless it is suppressed or empty.
+
+    A single item is rendered as a paragraph instead of a one-item list.
+
+    Args:
+        sections: Markdown sections collected so far (modified in place).
+        heading: Section heading.
+        items: Bullet texts.
+        section_key: Draft section key, checked against `suppressed_sections`.
+        suppressed_sections: Section keys that must not be rendered.
+    """
     if section_key in suppressed_sections:
-        return 
-    cleaned = [item.strip() for item in items if item.strip()]
-    if cleaned: 
-        if len(cleaned) == 1:
-            _append_text_section(sections, heading, cleaned[0], section_key, suppressed_sections)
-        else:
-            sections.append (f"## {heading} \n \n" + "\n".join(f"- {item}" for item in cleaned))
-    
-def render_job_description (
-    draft: JobDescriptionDraft, 
-    company_name: str = "",
-    skipped_fields: list[str] | None = None
-): 
-    sections = [f"# {draft.title}"]
-    company_heading = f"About {company_name.strip()}" if company_name.strip() else "About the Company"
-    suppressed_sections = {
-        SKIPPED_FIELD_TO_SECTION[field]
-        for field in skipped_fields or []
-        if field in SKIPPED_FIELD_TO_SECTION
-    }
-    _append_text_section (sections, company_heading, draft.about_company, "about_company", suppressed_sections)
-    _append_text_section (sections, "About the Role", draft.about_role, "about_role", suppressed_sections)
-    _append_bullet_section (sections, "Responsibilities", draft.responsibilities, "responsibilities", suppressed_sections)
-    _append_bullet_section (sections, "Requirements", draft.requirements, "requirements", suppressed_sections)
-    _append_bullet_section (sections, "Nice to Have", draft.nice_to_haves, "nice_to_haves", suppressed_sections)
-    _append_bullet_section(sections, "Benefits", draft.benefits, "benefits", suppressed_sections)
-    _append_text_section (sections, "Why Join Us", draft.why_join_us, "why_join_us", suppressed_sections)
-    _append_text_section(
-        sections, 
-        "Equal Opportunity Statement", 
-        draft.equal_opportunity,
-        "equal_opportunity", 
-        suppressed_sections,
-    )
+        return
+    cleaned_items = [item.strip() for item in items if item.strip()]
+    if not cleaned_items:
+        return
+    if len(cleaned_items) == 1:
+        _append_text_section(sections, heading, cleaned_items[0], section_key, suppressed_sections)
+    else:
+        bullets = "\n".join(f"- {item}" for item in cleaned_items)
+        sections.append(f"## {heading} \n \n" + bullets)
 
-    return "\n \n".join (sections)
 
-def render_job_description_preview(
+def render_job_description(
     draft: JobDescriptionDraft,
     company_name: str = "",
     skipped_fields: list[str] | None = None,
-) -> tuple[JobDescriptionDraft, str]:
+) -> str:
+    """Renders a full job description as Markdown.
+
+    Args:
+        draft: Draft to render.
+        company_name: Company name used in the "About ..." heading.
+        skipped_fields: Intake fields whose sections should be omitted.
+
+    Returns:
+        The Markdown document.
+    """
     sections = [f"# {draft.title}"]
-    company_heading = f"About {company_name.strip()}" if company_name.strip() else "About the Company"
-    suppressed_sections = {
-        SKIPPED_FIELD_TO_SECTION[field]
-        for field in skipped_fields or []
-        if field in SKIPPED_FIELD_TO_SECTION
-    }
-    _append_text_section(sections, company_heading, draft.about_company, "about_company", suppressed_sections)
-    _append_text_section(sections, "About the Role", draft.about_role, "about_role", suppressed_sections)
+    suppressed = _suppressed_sections(skipped_fields)
 
-    preview_resps = [item.strip() for item in draft.responsibilities[:2] if item.strip()]
-    if preview_resps:
-        _append_bullet_section(sections, "Key Responsibilities (Preview)", preview_resps, "responsibilities", suppressed_sections)
-
-    sections.append(
-        "---\n \n"
-        "### 🔒 Sign in to see the full output\n \n"
-        "You are viewing a free preview. Sign in or create a free account to unlock:\n"
-        "- Complete responsibilities and daily expectations\n"
-        "- Required qualifications, core skills, and nice-to-haves\n"
-        "- Benefits, perks, and company culture statements\n"
-        "- AI refinement and Word (.docx) export"
+    _append_text_section(sections, _company_heading(company_name), draft.about_company, "about_company", suppressed)
+    _append_text_section(sections, "About the Role", draft.about_role, "about_role", suppressed)
+    _append_bullet_section(sections, "Responsibilities", draft.responsibilities, "responsibilities", suppressed)
+    _append_bullet_section(sections, "Requirements", draft.requirements, "requirements", suppressed)
+    _append_bullet_section(sections, "Nice to Have", draft.nice_to_haves, "nice_to_haves", suppressed)
+    _append_text_section(sections, "Pay Range", draft.pay_range, "pay_range", suppressed)
+    _append_bullet_section(sections, "Benefits", draft.benefits, "benefits", suppressed)
+    _append_text_section(sections, "Why Join Us", draft.why_join_us, "why_join_us", suppressed)
+    _append_text_section(
+        sections,
+        "Equal Opportunity Statement",
+        draft.equal_opportunity,
+        "equal_opportunity",
+        suppressed,
     )
 
-    preview_draft = JobDescriptionDraft(
-        title=draft.title,
-        about_company=draft.about_company if "about_company" not in suppressed_sections else "",
-        about_role=draft.about_role if "about_role" not in suppressed_sections else "",
-        responsibilities=preview_resps,
-        requirements=[],
-        nice_to_haves=[],
-        benefits=[],
-        why_join_us="",
-        equal_opportunity="",
-    )
-
-    return preview_draft, "\n \n".join(sections)
+    return "\n \n".join(sections)

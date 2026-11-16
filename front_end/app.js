@@ -1,22 +1,36 @@
-const API_BASE_URL = "https://linkedingenai.onrender.com";
-// const API_BASE_URL = "http://127.0.0.1:8000";
+// API_BASE_URL is defined in config.js, which loads before this file.
 const RAIL_PIN_STORAGE_KEY = "linkedinJobGeneratorRailPinned";
 const AUTH_TOKEN_STORAGE_KEY = "linkedinJobGeneratorAccessToken";
 const ANSWERS_STORAGE_KEY = "linkedinJobGeneratorAnswers";
 const DRAFT_STORAGE_KEY = "linkedinJobGeneratorDraft";
 const MARKDOWN_STORAGE_KEY = "linkedinJobGeneratorMarkdown";
 const SETTINGS_STORAGE_KEY = "linkedinJobGeneratorSettings";
+const PAY_STORAGE_KEY = "linkedinJobGeneratorPay";
 
+// Draft tools live in features.js and register themselves here. Calling one before it
+// loads (or if it fails) must never break generate and refine.
+function feature(name, ...args) {
+  try {
+    const fn = window.__features && window.__features[name];
+    return fn ? fn(...args) : undefined;
+  } catch (err) {
+    console.warn(`Feature ${name} failed:`, err);
+    return undefined;
+  }
+}
+
+// Built-in copy of the intake questions (mirrors src/agent/questions.py).
+// The form is drawn from this immediately so it never waits for the backend.
 const fallbackQuestions = [
   { question_name: "company_name", question_text: "What is your company name?", required: true, answer_type: "text" },
   { question_name: "role_title", question_text: "What role are you hiring for?", required: true, answer_type: "text" },
   { question_name: "role_summary", question_text: "Why is the company hiring this role, and what should this person help accomplish?", required: true, answer_type: "text" },
-  { question_name: "responsibilities", question_text: "What will this person be responsible for?", required: true, answer_type: "list" },
+  { question_name: "responsibilities", question_text: "What are the primary responsibilities for this role?", required: true, answer_type: "list" },
   { question_name: "requirements", question_text: "What skills, experience, or qualifications are required?", required: true, answer_type: "list" },
   { question_name: "nice_to_haves", question_text: "What skills or experience would be nice to have, but not required?", required: false, answer_type: "list" },
   { question_name: "company_description", question_text: "How would you describe the company in a few sentences?", required: false, answer_type: "text" },
-  { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?", required: false, answer_type: "text" },
-  { question_name: "benefits", question_text: "Are there any benefits, perks, or compensation details to include?", required: false, answer_type: "list" },
+  { question_name: "why_join_us", question_text: "Why should candidates be excited to join this company or team?\n(mission, culture, growth, impact, or interesting work.)", required: false, answer_type: "text" },
+  { question_name: "benefits", question_text: "Are there any benefit, perk, or compensation details you would like to include?", required: false, answer_type: "list" },
 ];
 
 const sampleAnswers = {
@@ -108,6 +122,7 @@ const fieldsAcceptedByApi = new Set([
   "nice_to_haves",
   "benefits",
   "why_join_us",
+  "team_context",
   "equal_opportunity",
   "tone",
   "target_length",
@@ -126,6 +141,8 @@ const state = {
   accessToken: localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) || "",
   user: null,
   credits: null,
+  pay: { min: "", max: "", currency: "USD", period: "year" },
+  config: null,
   settings: {
     tone: "Professional & Authoritative",
     target_length: "medium",
@@ -146,11 +163,6 @@ const elements = {
   
   billingModal: document.querySelector("#billingModal"),
   closeBillingModalBtn: document.querySelector("#closeBillingModalBtn"),
-  billingAmountInput: document.querySelector("#billingAmountInput"),
-  billingDecBtn: document.querySelector("#billingDecBtn"),
-  billingIncBtn: document.querySelector("#billingIncBtn"),
-  billingCreditCount: document.querySelector("#billingCreditCount"),
-  payCreditsBtn: document.querySelector("#payCreditsBtn"),
   billingMessageBox: document.querySelector("#billingMessageBox"),
   
   authView: document.querySelector("#authView"),
@@ -214,6 +226,57 @@ const elements = {
   triggerUploadBtn: document.querySelector("#triggerUploadBtn"),
 };
 
+// Public settings (credit packs, free credits, Turnstile key) from the server.
+let configPromise = null;
+function loadConfig() {
+  configPromise = fetch(apiUrl("/config"))
+    .then((response) => (response.ok ? response.json() : null))
+    .catch(() => null)
+    .then((config) => {
+      if (config) state.config = config;
+      return config;
+    });
+  return configPromise;
+}
+
+// Optional bot check (Cloudflare Turnstile) for guests, used only when the server enables it.
+let turnstileScript = null;
+let turnstileWidgetId = null;
+async function turnstileToken() {
+  await configPromise;
+  const siteKey = state.config && state.config.turnstile_site_key;
+  if (!siteKey) return null;
+  if (!turnstileScript) {
+    turnstileScript = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.head.append(script);
+    });
+  }
+  if (!(await turnstileScript) || !window.turnstile) return null;
+  return new Promise((resolve) => {
+    const box = document.getElementById("turnstileBox");
+    if (!box) return resolve(null);
+    if (turnstileWidgetId !== null) window.turnstile.remove(turnstileWidgetId);
+    const timer = setTimeout(() => resolve(null), 20000);
+    turnstileWidgetId = window.turnstile.render(box, {
+      sitekey: siteKey,
+      appearance: "interaction-only",
+      callback: (token) => { clearTimeout(timer); resolve(token); },
+      "error-callback": () => { clearTimeout(timer); resolve(null); },
+    });
+  });
+}
+
+async function guestHeaders() {
+  if (state.accessToken) return {};
+  const token = await turnstileToken();
+  return token ? { "X-Turnstile-Token": token } : {};
+}
+
 function apiUrl(path) {
   return `${API_BASE_URL}${path}`;
 }
@@ -263,7 +326,7 @@ function renderAuth() {
   if (loggedIn && state.user) {
     const displayName = state.user.username || state.user.email.split("@")[0];
     elements.userUsername.textContent = `Hi, ${displayName}`;
-    elements.workspaceCredits.textContent = `${state.credits ?? 0} Credits`;
+    elements.workspaceCredits.textContent = `${state.credits ?? 0} refine credits`;
   }
 }
 
@@ -327,6 +390,70 @@ function renderSettings() {
   }
 }
 
+// Optional pay range. Sent as numbers; the server prints it exactly as typed.
+function payNumbers() {
+  const min = parseFloat(state.pay.min);
+  const max = parseFloat(state.pay.max);
+  return {
+    min: Number.isFinite(min) && min > 0 ? min : null,
+    max: Number.isFinite(max) && max > 0 ? max : null,
+  };
+}
+
+function payJobInfo() {
+  const { min, max } = payNumbers();
+  const valid = min !== null && max !== null && min <= max;
+  return {
+    pay_min: valid ? min : null,
+    pay_max: valid ? max : null,
+    pay_currency: state.pay.currency,
+    pay_period: state.pay.period,
+  };
+}
+
+function renderPay() {
+  const fields = { payMin: state.pay.min, payMax: state.pay.max, payCurrency: state.pay.currency, payPeriod: state.pay.period };
+  for (const [id, value] of Object.entries(fields)) {
+    const node = document.getElementById(id);
+    if (node) node.value = value;
+  }
+  const notice = document.getElementById("payNotice");
+  if (!notice) return;
+  const { min, max } = payNumbers();
+  const bad = min !== null && max !== null && min > max;
+  const partial = (min === null) !== (max === null);
+  notice.classList.toggle("pay-error", bad);
+  if (bad) notice.textContent = "Minimum is higher than maximum. The pay range will be left out until you fix it.";
+  else if (partial) notice.textContent = "Add both a minimum and a maximum to include a pay range.";
+  else notice.textContent = "Leave it empty to skip. If you add it, it appears exactly as you type it. The AI never writes pay numbers.";
+}
+
+function loadPay() {
+  try {
+    const saved = localStorage.getItem(PAY_STORAGE_KEY);
+    if (saved) state.pay = { ...state.pay, ...JSON.parse(saved) };
+  } catch (err) {
+    console.warn("Could not load pay range:", err);
+  }
+}
+
+function onPayChanged() {
+  state.pay = {
+    min: document.getElementById("payMin").value,
+    max: document.getElementById("payMax").value,
+    currency: document.getElementById("payCurrency").value,
+    period: document.getElementById("payPeriod").value,
+  };
+  try {
+    localStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(state.pay));
+  } catch (err) {
+    console.warn("Could not save pay range:", err);
+  }
+  renderPay();
+  if (state.currentDraft) state.draftOutdated = true;
+  renderDraft();
+}
+
 function buildJobInfo() {
   const jobInfo = {
     company_name: "",
@@ -353,6 +480,7 @@ function buildJobInfo() {
   jobInfo.tone = state.settings.tone;
   jobInfo.target_length = state.settings.target_length;
   jobInfo.equal_opportunity = state.settings.equal_opportunity;
+  Object.assign(jobInfo, payJobInfo());
 
   return jobInfo;
 }
@@ -468,17 +596,8 @@ function renderQuestions() {
 function adjustRailPosition() {
   const rail = elements.railNav;
   if (!rail) return;
-  const defaultTop = 300;
-  const padding = 16;
-  const railHeight = rail.offsetHeight;
-  const viewportHeight = window.innerHeight;
-
-  if (defaultTop + railHeight + padding > viewportHeight) {
-    const clampedTop = Math.max(padding, viewportHeight - railHeight - padding);
-    rail.style.top = `${clampedTop}px`;
-  } else {
-    rail.style.top = `${defaultTop}px`;
-  }
+  // Fixed in the vertical middle of the screen. CSS centres it with translateY(-50%).
+  rail.style.top = "50%";
 }
 
 function renderRailPin() {
@@ -530,75 +649,11 @@ function renderDraft() {
   if (!state.currentMarkdown) {
     elements.markdownPreview.classList.add("empty");
     elements.markdownPreview.textContent = "Generate a draft to preview the job description.";
-    return;
+  } else {
+    elements.markdownPreview.classList.remove("empty");
+    elements.markdownPreview.innerHTML = markdownToHtml(state.currentMarkdown);
   }
-
-  const isPreview = Boolean(
-    state.isPreview || 
-    (state.currentMarkdown && (
-      state.currentMarkdown.includes("Sign in to see the full output") || 
-      state.currentMarkdown.includes("Full Output Ready to Generate")
-    ))
-  );
-
-  elements.markdownPreview.classList.remove("empty");
-  let html = markdownToHtml(state.currentMarkdown);
-
-  if (isPreview) {
-    if (!state.accessToken) {
-      html += `
-        <div class="preview-cta-card">
-          <div class="preview-cta-badge">PREVIEW MODE</div>
-          <div class="preview-cta-title">
-            <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#102033" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            Sign in to unlock full output
-          </div>
-          <p class="preview-cta-text">You are viewing a free preview. Create a free account or sign in to unlock full responsibilities, requirements, benefits, AI refinement, and Word (.docx) export.</p>
-          <button type="button" class="preview-cta-btn" id="previewSignInBtn">Sign In / Sign Up Free</button>
-        </div>
-      `;
-    } else {
-      const hasCredits = (state.credits ?? 0) > 0;
-      html += `
-        <div class="preview-cta-card" style="border-color: var(--blue); background: linear-gradient(135deg, #f0f7ff, #e0f2fe);">
-          <div class="preview-cta-badge" style="background: #0284c7;">PREVIEW DRAFT</div>
-          <div class="preview-cta-title">
-            <svg class="preview-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 6px; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            Ready to generate your full job description
-          </div>
-          <p class="preview-cta-text">You are signed in! Click below to generate the complete version with all responsibilities, qualifications, benefits, and Word export.</p>
-          <button type="button" class="preview-cta-btn" id="unlockFullDraftBtn" style="background: #0284c7;">
-            ${hasCredits ? "Generate Full Output (1 Credit)" : "Buy Credits to Unlock"}
-          </button>
-        </div>
-      `;
-    }
-  }
-
-  elements.markdownPreview.innerHTML = html;
-
-  if (isPreview) {
-    if (!state.accessToken) {
-      const previewBtn = elements.markdownPreview.querySelector("#previewSignInBtn");
-      if (previewBtn) {
-        previewBtn.addEventListener("click", () => {
-          openModal();
-        });
-      }
-    } else {
-      const unlockBtn = elements.markdownPreview.querySelector("#unlockFullDraftBtn");
-      if (unlockBtn) {
-        unlockBtn.addEventListener("click", () => {
-          const hasCredits = (state.credits ?? 0) > 0;
-          if (hasCredits) {
-            generateDraft();
-          } else {
-            openBillingModal();
-          }
-        });
-      }
-    }
-  }
+  feature("afterRenderDraft");
 }
 
 function renderAll() {
@@ -650,9 +705,34 @@ function formatErrorDetail(detail) {
   return String(detail);
 }
 
-async function callApi(path, body = null) {
+const WAKE_HINT_DELAY_MS = 3000;
+const WAKE_HINT_TEXT = "Waking up the server, this can take up to 15 seconds...";
+
+// Shows a hint if a request is slow (likely a sleeping host).
+// Returns a function that clears the timer and restores the previous message.
+function startWakeHint() {
+  const previousText = elements.messageBox.textContent;
+  const previousType = elements.messageBox.classList.contains("info") ? "info" : "error";
+  const modalOpen = elements.modalMessageBox && !elements.modalMessageBox.closest(".hidden");
+  let shown = false;
+  const timer = setTimeout(() => {
+    shown = true;
+    setMessage(WAKE_HINT_TEXT, "info");
+    if (modalOpen) setModalMessage(WAKE_HINT_TEXT, "info");
+  }, WAKE_HINT_DELAY_MS);
+  return () => {
+    clearTimeout(timer);
+    if (shown) {
+      setMessage(previousText, previousType);
+      if (modalOpen) setModalMessage("");
+    }
+  };
+}
+
+async function callApi(path, body = null, extraHeaders = {}) {
   const headers = {
     "Content-Type": "application/json",
+    ...extraHeaders,
   };
   if (state.accessToken) {
     headers["Authorization"] = `Bearer ${state.accessToken}`;
@@ -664,7 +744,13 @@ async function callApi(path, body = null) {
   if (body) {
     options.body = JSON.stringify(body);
   }
-  const response = await fetch(apiUrl(path), options);
+  const stopWakeHint = startWakeHint();
+  let response;
+  try {
+    response = await fetch(apiUrl(path), options);
+  } finally {
+    stopWakeHint();
+  }
   const data = await response.json();
   if (!response.ok) {
     throw new Error(formatErrorDetail(data.detail || data));
@@ -672,18 +758,25 @@ async function callApi(path, body = null) {
   return data;
 }
 
-async function streamApi(path, body, onChunk, onDone) {
+async function streamApi(path, body, onChunk, onDone, extraHeaders = {}) {
   const headers = {
     "Content-Type": "application/json",
+    ...extraHeaders,
   };
   if (state.accessToken) {
     headers["Authorization"] = `Bearer ${state.accessToken}`;
   }
-  const response = await fetch(apiUrl(path), {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-  });
+  const stopWakeHint = startWakeHint();
+  let response;
+  try {
+    response = await fetch(apiUrl(path), {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+  } finally {
+    stopWakeHint();
+  }
 
   if (!response.ok) {
     if (response.status === 401 && state.accessToken) {
@@ -722,6 +815,11 @@ async function streamApi(path, body, onChunk, onDone) {
           onChunk(payload.data);
         } else if (payload.event === "done") {
           onDone(payload);
+        } else if (payload.event === "refunded") {
+          if (typeof payload.credits_remaining === "number") {
+            state.credits = payload.credits_remaining;
+            renderAuth();
+          }
         } else if (payload.event === "error") {
           throw new Error(payload.detail || "Streaming error occurred");
         }
@@ -755,10 +853,36 @@ function closeModal() {
   elements.authModal.classList.add("hidden");
 }
 
+const FALLBACK_PACKS = [
+  { pack_id: "starter", price_cents: 500, credits: 20 },
+  { pack_id: "standard", price_cents: 1000, credits: 40 },
+  { pack_id: "pro", price_cents: 2000, credits: 80 },
+];
+
+function renderPacks() {
+  const list = document.getElementById("packList");
+  if (!list) return;
+  const packs = (state.config && state.config.packs) || FALLBACK_PACKS;
+  list.innerHTML = "";
+  for (const pack of packs) {
+    const dollars = pack.price_cents / 100;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `pack-card${pack.pack_id === "standard" ? " pack-popular" : ""}`;
+    button.dataset.pack = pack.pack_id;
+    button.innerHTML = `${pack.pack_id === "standard" ? '<span class="pack-flag">Most popular</span>' : ""}
+      <span class="pack-credits">${pack.credits}</span>
+      <span class="pack-unit">refines</span>
+      <span class="pack-price">$${dollars}</span>
+      <span class="pack-each">$${(dollars / pack.credits).toFixed(2)} each</span>`;
+    button.addEventListener("click", () => payCredits(pack.pack_id, button));
+    list.append(button);
+  }
+}
+
 function openBillingModal() {
-  elements.billingAmountInput.value = 1;
-  updateBillingCalculations();
   setBillingMessage("");
+  renderPacks();
   elements.billingModal.classList.remove("hidden");
 }
 
@@ -770,54 +894,6 @@ function setBillingMessage(text = "", type = "error") {
   elements.billingMessageBox.textContent = text;
   elements.billingMessageBox.classList.toggle("hidden", !text);
   elements.billingMessageBox.classList.toggle("info", type === "info");
-}
-
-function updateBillingCalculations() {
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  const dollars = (isNaN(val) || val < 1) ? 0 : val;
-  const credits = dollars * 30;
-  elements.billingCreditCount.textContent = credits;
-  elements.payCreditsBtn.textContent = `Pay $${dollars.toFixed(2)}`;
-  elements.payCreditsBtn.disabled = (dollars === 0);
-}
-
-function handleAmountChange() {
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  if (!isNaN(val)) {
-    if (val < 1) val = 1;
-    elements.billingAmountInput.value = val;
-  }
-  updateBillingCalculations();
-}
-
-function handleAmountBlur() {
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  if (isNaN(val) || val < 1) {
-    elements.billingAmountInput.value = 1;
-  }
-  updateBillingCalculations();
-}
-
-function incrementBillingAmount() {
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  if (isNaN(val) || val < 1) {
-    val = 1;
-  } else {
-    val += 1;
-  }
-  elements.billingAmountInput.value = val;
-  updateBillingCalculations();
-}
-
-function decrementBillingAmount() {
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  if (isNaN(val) || val <= 1) {
-    val = 1;
-  } else {
-    val -= 1;
-  }
-  elements.billingAmountInput.value = val;
-  updateBillingCalculations();
 }
 
 function showAuthView() {
@@ -886,23 +962,13 @@ async function submitAuth(event) {
 
   try {
     if (state.authMode === "signup") {
-      const data = await callApi("/auth/signup", { username, email, password });
+      const signupHeaders = await guestHeaders();
+      await callApi("/auth/signup", { username, email, password }, signupHeaders);
       showOtpView();
     } else {
       const data = await callApi("/auth/login", { email, password });
-      const wasPreview = Boolean(
-        state.isPreview || 
-        (state.currentMarkdown && (
-          state.currentMarkdown.includes("Sign in to see the full output") ||
-          state.currentMarkdown.includes("Full Output Ready to Generate")
-        ))
-      );
       setAuthState(data);
       closeModal();
-      if (wasPreview && state.currentDraft) {
-        setMessage("Signed in! Unlocking your full job description...", "info");
-        await generateDraft();
-      }
     }
   } catch (err) {
     setModalMessage(err.message || "Authentication failed.");
@@ -925,19 +991,9 @@ async function submitOtp(event) {
       clearInterval(otpResendCooldownTimer);
       otpResendCooldownTimer = null;
     }
-    const wasPreview = Boolean(
-      state.isPreview || 
-      (state.currentMarkdown && (
-        state.currentMarkdown.includes("Sign in to see the full output") ||
-        state.currentMarkdown.includes("Full Output Ready to Generate")
-      ))
-    );
     setAuthState(data);
     closeModal();
-    if (wasPreview && state.currentDraft) {
-      setMessage("Account verified! Unlocking your full job description...", "info");
-      await generateDraft();
-    }
+    setMessage(`Account verified. ${data.credits ?? 0} free refine credits added.`, "info");
   } catch (err) {
     setModalMessage(err.message || "Invalid verification code.");
   } finally {
@@ -1017,18 +1073,16 @@ async function generateDraft() {
 
   state.missingRequired.clear();
   renderQuestions();
-  const loadingLabel = state.accessToken ? "Generating..." : "Generating preview...";
-  const restore = setLoading(elements.generateButton, loadingLabel);
-  setMessage(state.accessToken ? "Generating your draft in real-time..." : "Generating your free preview in real-time...", "info");
+  const restore = setLoading(elements.generateButton, "Generating...");
+  setMessage("Generating your draft in real-time...", "info");
 
   elements.markdownPreview.classList.remove("empty");
-  elements.markdownPreview.innerHTML = `<div class='streaming-indicator' style='color: var(--ink-soft); font-style: italic;'>${
-    state.accessToken ? "Starting draft generation..." : "Starting preview generation..."
-  }</div>`;
+  elements.markdownPreview.innerHTML = "<div class='streaming-indicator' style='color: var(--ink-soft); font-style: italic;'>Starting draft generation...</div>";
 
   let streamedRaw = "";
 
   try {
+    const extraHeaders = await guestHeaders();
     await streamApi(
       "/generate",
       {
@@ -1037,17 +1091,13 @@ async function generateDraft() {
       },
       (chunk) => {
         streamedRaw += chunk;
-        const cleaned = streamedRaw.replace(/^```(?:json)?\s*/i, "");
-        if (!state.accessToken) {
-          elements.markdownPreview.textContent = cleaned.slice(0, 320) + "\n\n... [Generating preview - Sign in to view full output]";
-        } else {
-          elements.markdownPreview.textContent = cleaned;
-        }
+        elements.markdownPreview.textContent = streamedRaw.replace(/^```(?:json)?\s*/i, "");
       },
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
-        state.isPreview = Boolean(data.is_preview) || !state.accessToken;
+        state.quality = data.quality || null;
+        feature("onDraftReady", "Generated draft");
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -1060,12 +1110,10 @@ async function generateDraft() {
         }
         state.draftOutdated = false;
         renderDraft();
-        if (state.isPreview) {
-          setMessage("Draft preview generated. Sign in to unlock full output, refinement & export!", "info");
-        } else {
-          setMessage("");
-        }
-      }
+        feature("showUploadDiff");
+        setMessage("");
+      },
+      extraHeaders
     );
   } catch (error) {
     setMessage(error.message);
@@ -1075,9 +1123,10 @@ async function generateDraft() {
   }
 }
 
+// Refining with your own words costs 1 credit. Everything else is free.
 async function refineDraft() {
   if (!state.accessToken) {
-    setMessage("Please sign in before refining. Each refine costs 1 credit.");
+    setMessage("Sign in free to refine. Each refine costs 1 credit, and new accounts get free credits.", "info");
     openModal();
     return;
   }
@@ -1087,24 +1136,17 @@ async function refineDraft() {
     setMessage("Generate a draft before refining.");
     return;
   }
-
-  const isPreview = Boolean(
-    state.isPreview || 
-    (state.currentMarkdown && (
-      state.currentMarkdown.includes("Sign in to see the full output") ||
-      state.currentMarkdown.includes("Full Output Ready to Generate")
-    ))
-  );
-  if (isPreview) {
-    setMessage("Please generate your full draft before refining.", "info");
-    return;
-  }
   if (state.draftOutdated) {
     setMessage("Regenerate before refining because the answers have changed.");
     return;
   }
   if (!request) {
     setMessage("Add a refinement request first.");
+    return;
+  }
+  if ((state.credits ?? 0) < 1) {
+    setMessage("You are out of refine credits. Your draft is safe. Pick a pack to continue.", "info");
+    openBillingModal();
     return;
   }
 
@@ -1121,16 +1163,17 @@ async function refineDraft() {
         current_draft: state.currentDraft,
         user_request: request,
         skipped_fields: getSkippedFields(),
+        job_info: buildJobInfo(),
       },
       (chunk) => {
         streamedRaw += chunk;
-        const cleaned = streamedRaw.replace(/^```(?:json)?\s*/i, "");
-        elements.markdownPreview.textContent = cleaned;
+        elements.markdownPreview.textContent = streamedRaw.replace(/^```(?:json)?\s*/i, "");
       },
       (data) => {
         state.currentDraft = data.draft;
         state.currentMarkdown = data.markdown;
-        state.isPreview = false;
+        state.quality = data.quality || null;
+        feature("onDraftReady", "Refined: " + request.slice(0, 40));
         try {
           localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(data.draft));
           localStorage.setItem(MARKDOWN_STORAGE_KEY, data.markdown);
@@ -1458,6 +1501,7 @@ function escapeHtml(value) {
 }
 
 async function checkApi() {
+  if (!elements.apiStatus) return;
   try {
     const health = await fetch(apiUrl("/health")).then((response) => response.json());
     elements.apiStatus.textContent = health.status === "ok" ? "Service online" : "Service check failed";
@@ -1469,16 +1513,26 @@ async function checkApi() {
   }
 }
 
+// Draws the form immediately from the built-in questions, then checks the
+// backend in the background and redraws only if its list differs.
 async function loadQuestions() {
+  state.questions = fallbackQuestions;
+  initialiseWorkspace();
+
   try {
     const response = await fetch(apiUrl("/questions"));
-    if (!response.ok) throw new Error("Could not load questions");
-    state.questions = await response.json();
+    if (!response.ok) return;
+    const serverQuestions = await response.json();
+    if (JSON.stringify(serverQuestions) !== JSON.stringify(state.questions)) {
+      state.questions = serverQuestions;
+      renderAll();
+    }
   } catch {
-    state.questions = fallbackQuestions;
-    setMessage("");
+    // Keep the built-in questions if the backend is unreachable.
   }
+}
 
+function initialiseWorkspace() {
   // Restore saved answers from localStorage
   try {
     const savedAnswers = localStorage.getItem(ANSWERS_STORAGE_KEY);
@@ -1488,14 +1542,12 @@ async function loadQuestions() {
     const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
     const savedMarkdown = localStorage.getItem(MARKDOWN_STORAGE_KEY);
     if (savedDraft && savedMarkdown) {
-      state.currentDraft = JSON.parse(savedDraft);
-      state.currentMarkdown = savedMarkdown;
-      state.isPreview = Boolean(
-        savedMarkdown.includes("🔒") || 
-        savedMarkdown.includes("Sign in to see the full output") ||
-        savedMarkdown.includes("Full Output Ready to Generate")
-      );
+      if (!savedMarkdown.includes("Sign in to see the full output")) {
+        state.currentDraft = JSON.parse(savedDraft);
+        state.currentMarkdown = savedMarkdown;
+      }
     }
+    loadPay();
     const savedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
     if (savedSettings) {
       state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
@@ -1518,9 +1570,18 @@ async function loadQuestions() {
 
   state.openQuestion = state.openQuestion || state.questions[0]?.question_name || null;
   renderAll();
+  renderPay();
 }
 
 function clearAnswers() {
+  feature("onWorkspaceCleared");
+  state.pay = { min: "", max: "", currency: state.pay.currency, period: state.pay.period };
+  try {
+    localStorage.removeItem(PAY_STORAGE_KEY);
+  } catch (err) {
+    console.warn("Could not clear pay range:", err);
+  }
+  renderPay();
   state.answers = {};
   state.missingRequired.clear();
   state.currentDraft = null;
@@ -1564,22 +1625,19 @@ async function buyCredits(event) {
   openBillingModal();
 }
 
-async function payCredits(event) {
-  event.preventDefault();
-  let val = parseInt(elements.billingAmountInput.value, 10);
-  if (isNaN(val) || val < 1) {
-    setBillingMessage("Please enter a valid positive dollar amount.");
+// Starts Stripe Checkout for a pack. The server decides the price and the credits.
+async function payCredits(packId, button) {
+  if (!state.accessToken) {
+    openModal();
     return;
   }
-
-  const restore = setLoading(elements.payCreditsBtn, "Loading...");
+  const restore = setLoading(button, "Loading...");
   setBillingMessage("");
   try {
-    const redirectUrl = window.location.href;
-    const session = await callApi(
-      `/create-checkout-session?user_id=${state.user.id}&amount=${val}&redirect_url=${encodeURIComponent(redirectUrl)}`,
-      {}
-    );
+    const session = await callApi("/create-checkout-session", {
+      pack_id: packId,
+      redirect_url: window.location.origin + window.location.pathname,
+    });
     if (session && session.checkout_url) {
       window.location.href = session.checkout_url;
     }
@@ -1587,6 +1645,26 @@ async function payCredits(event) {
     setBillingMessage(err.message || "Failed to create checkout session.");
   } finally {
     restore();
+  }
+}
+
+// After Stripe sends the user back, credit the purchase right away (safe to repeat).
+async function handleCheckoutReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get("session_id");
+  if (!sessionId) return;
+  params.delete("session_id");
+  const query = params.toString();
+  window.history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : "") + window.location.hash);
+  if (!state.accessToken) return;
+  try {
+    const result = await callApi(`/confirm-checkout?session_id=${encodeURIComponent(sessionId)}`, {});
+    state.credits = result.credits;
+    renderAuth();
+    closeBillingModal();
+    setMessage(`Payment received. You now have ${result.credits} refine credits.`, "info");
+  } catch {
+    setMessage("Payment is still processing. Your credits will appear in a moment. Refresh to check.", "info");
   }
 }
 
@@ -1602,11 +1680,6 @@ elements.modalResendOtpBtn?.addEventListener("click", resendOtp);
 elements.modalCancelOtpBtn?.addEventListener("click", showAuthView);
 elements.buyCreditsBtn.addEventListener("click", buyCredits);
 elements.closeBillingModalBtn.addEventListener("click", closeBillingModal);
-elements.billingAmountInput.addEventListener("input", handleAmountChange);
-elements.billingAmountInput.addEventListener("blur", handleAmountBlur);
-elements.billingDecBtn.addEventListener("click", decrementBillingAmount);
-elements.billingIncBtn.addEventListener("click", incrementBillingAmount);
-elements.payCreditsBtn.addEventListener("click", payCredits);
 elements.signOutBtn.addEventListener("click", () => {
   clearAuthState();
   setMessage("Signed out.", "info");
@@ -1791,6 +1864,18 @@ navLinks.forEach(link => {
   });
 });
 
+// Footer links that switch views reuse the header navigation buttons
+document.querySelectorAll("[data-footer-target]").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelector(`.nav-link[data-target="${button.dataset.footerTarget}"]`)?.click();
+  });
+});
+
+// Deep link from other pages: /#authors opens the Authors view
+if (window.location.hash === "#authors") {
+  document.querySelector('.nav-link[data-target="authorsView"]')?.click();
+}
+
 // Scroll event for glassmorphism nav bar
 window.addEventListener("scroll", () => {
   const navBar = document.querySelector(".nav-bar");
@@ -1799,27 +1884,20 @@ window.addEventListener("scroll", () => {
   }
 });
 
-// --- Document Upload & Auto-fill Handling ---
+// --- Document Upload & Auto-fill Handling (free, no account needed) ---
 async function handleDocUpload(file) {
   if (!file) return;
 
-  if (!state.accessToken) {
-    setMessage("Please sign in first to use the auto-fill document feature.");
-    openModal();
-    return;
-  }
-
-  // Show status
   elements.docUploadContent.classList.add("hidden");
   elements.docUploadStatus.classList.remove("hidden");
-  elements.docUploadStatusText.textContent = `Analyzing ${file.name} with Gemini 2.5 Flash Lite...`;
+  elements.docUploadStatusText.textContent = `Analyzing ${file.name}...`;
   setMessage("");
 
   try {
     const formData = new FormData();
     formData.append("file", file);
 
-    const headers = {};
+    const headers = { ...(await guestHeaders()) };
     if (state.accessToken) {
       headers["Authorization"] = `Bearer ${state.accessToken}`;
     }
@@ -1832,7 +1910,7 @@ async function handleDocUpload(file) {
 
     const result = await response.json();
     if (!response.ok) {
-      throw new Error(result.detail || "Failed to extract info from document.");
+      throw new Error(formatErrorDetail(result.detail) || "Failed to extract info from document.");
     }
 
     const extracted = result.data || {};
@@ -1840,26 +1918,24 @@ async function handleDocUpload(file) {
 
     for (const [key, val] of Object.entries(extracted)) {
       if (!val) continue;
+      if (key === "pay_min" || key === "pay_max") {
+        const number = Number(val);
+        if (Number.isFinite(number) && number > 0) {
+          state.pay[key === "pay_min" ? "min" : "max"] = String(number);
+          filledCount++;
+        }
+        continue;
+      }
 
       if (key === "equal_opportunity") {
         const lower = String(val).trim().toLowerCase();
-        if (lower === "no") {
-          state.settings.equal_opportunity = "no";
-        } else {
-          state.settings.equal_opportunity = "yes";
-        }
+        state.settings.equal_opportunity = lower === "no" ? "no" : "yes";
         saveSettings();
         renderSettings();
         continue;
       }
 
-      let textValue = "";
-      if (Array.isArray(val)) {
-        textValue = val.join("\n");
-      } else {
-        textValue = String(val).trim();
-      }
-
+      const textValue = Array.isArray(val) ? val.join("\n") : String(val).trim();
       if (textValue) {
         state.answers[key] = textValue;
         state.missingRequired.delete(key);
@@ -1873,6 +1949,13 @@ async function handleDocUpload(file) {
       console.warn("Could not save answers to localStorage:", err);
     }
 
+    feature("setOriginalDoc", result.original_text || "", file.name);
+    try {
+      localStorage.setItem(PAY_STORAGE_KEY, JSON.stringify(state.pay));
+    } catch (err) {
+      console.warn("Could not save pay range:", err);
+    }
+    renderPay();
     if (state.currentDraft) state.draftOutdated = true;
     renderAll();
     setMessage(`Successfully auto-filled ${filledCount} field(s) from "${file.name}"!`, "info");
@@ -1887,15 +1970,11 @@ async function handleDocUpload(file) {
 }
 
 if (elements.docUploadBox && elements.docFileInput) {
-  elements.docUploadBox.addEventListener("click", (e) => {
-    if (!state.accessToken) {
-      e.preventDefault();
-      setMessage("Please sign in first to upload documents and auto-fill questions.");
-      openModal();
-      return;
-    }
+  elements.docUploadBox.addEventListener("click", () => {
     elements.docFileInput.click();
   });
+
+  elements.docFileInput.addEventListener("click", (e) => e.stopPropagation());
 
   elements.docFileInput.addEventListener("change", (e) => {
     const file = e.target.files?.[0];
@@ -1914,11 +1993,6 @@ if (elements.docUploadBox && elements.docFileInput) {
   elements.docUploadBox.addEventListener("drop", (e) => {
     e.preventDefault();
     elements.docUploadBox.classList.remove("dragover");
-    if (!state.accessToken) {
-      setMessage("Please sign in first to upload documents and auto-fill questions.");
-      openModal();
-      return;
-    }
     const file = e.dataTransfer?.files?.[0];
     if (file) handleDocUpload(file);
   });
@@ -1974,12 +2048,28 @@ async function loadAuthors() {
 
 checkApi();
 renderRailPin();
-loadSession();
+loadConfig();
+loadSession().then(() => configPromise).then(handleCheckoutReturn);
 loadQuestions();
 loadAuthors();
 
 window.addEventListener("resize", adjustRailPosition);
+window.addEventListener("scroll", adjustRailPosition, { passive: true });
 window.addEventListener("orientationchange", adjustRailPosition);
 elements.railNav?.addEventListener("mouseenter", adjustRailPosition);
 elements.railNav?.addEventListener("mouseleave", adjustRailPosition);
 adjustRailPosition();
+
+["payMin", "payMax"].forEach((id) => document.getElementById(id)?.addEventListener("input", onPayChanged));
+["payCurrency", "payPeriod"].forEach((id) => document.getElementById(id)?.addEventListener("change", onPayChanged));
+
+
+// The number rail only means something next to the intake form.
+(function () {
+  const builder = document.querySelector(".builder");
+  if (!builder || !("IntersectionObserver" in window)) return;
+  new IntersectionObserver(
+    (entries) => document.body.classList.toggle("rail-away", !entries[0].isIntersecting),
+    { threshold: 0.05 }
+  ).observe(builder);
+})();

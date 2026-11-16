@@ -1,19 +1,98 @@
-from src.database.supabase_client import supabase
-from src.database.supabase_credits import get_supabase_credits
+"""Account operations backed by Supabase Auth and the `profiles` table."""
 
-def signup_user(email: str, password: str, username: str):
-    "This function is for user to register a new account"
+import os
+
+from supabase import create_client
+
+from src.database.supabase_client import supabase
+from src.credits.ledger import claim_free_grant
+from src.credits.packs import FREE_SIGNUP_CREDITS
+from src.database.supabase_credits import get_supabase_credits
+from src.security.emails import normalize_email
+
+RATE_LIMIT_MARKERS = ("rate", "security purposes")
+
+
+def _is_rate_limited(error_message: str) -> bool:
+    """Whether a Supabase error message indicates rate limiting."""
+    lowered = error_message.lower()
+    return any(marker in lowered for marker in RATE_LIMIT_MARKERS)
+
+
+def _build_auth_payload(
+    access_token: str,
+    user_id: str,
+    email: str,
+    username: str | None,
+) -> dict:
+    """Builds the session payload returned by authentication endpoints.
+
+    Args:
+        access_token: Supabase access token.
+        user_id: ID of the user.
+        email: Email address of the user.
+        username: Display name, or None if not set.
+
+    Returns:
+        A dict matching the `AuthResponse` schema, with the current credits.
+    """
+    return {
+        "access_token": access_token,
+        "user": {
+            "id": user_id,
+            "email": email,
+            "username": username,
+        },
+        "credits": get_supabase_credits(user_id),
+    }
+
+
+def _metadata_username(user) -> str | None:
+    """Returns the username stored in a Supabase user's metadata, if any."""
+    return user.user_metadata.get("username") if user.user_metadata else None
+
+
+def _lookup_username(user) -> str | None:
+    """Finds a user's username, preferring the profile row over metadata.
+
+    Args:
+        user: Supabase user object.
+
+    Returns:
+        The username, or None if neither source has one.
+    """
+    profile_rows = supabase.table("profiles").select("username").eq("id", user.id).execute()
+    if profile_rows.data and profile_rows.data[0].get("username"):
+        return profile_rows.data[0]["username"]
+    return _metadata_username(user)
+
+
+def signup_user(email: str, password: str, username: str) -> dict:
+    """Registers a new account and sends a verification code by email.
+
+    The profile row is created later, once the code is verified.
+
+    Args:
+        email: Email address for the account.
+        password: Chosen password.
+        username: Chosen display name.
+
+    Returns:
+        A `SignupStatusResponse`-shaped dict with status "pending_verification".
+
+    Raises:
+        ValueError: If the email or username is taken, the request is rate
+            limited, or Supabase rejects the signup.
+    """
     clean_email = email.strip()
     clean_username = username.strip()
 
-    # Check if email is already registered
-    email_check = supabase.table("profiles").select("*").eq("email", clean_email).execute()
-    if email_check.data:
+    existing_email = supabase.table("profiles").select("*").eq("email", clean_email).execute()
+    if existing_email.data:
         raise ValueError("Email is already registered")
 
-    # Check if username is already taken
-    username_check = supabase.table("profiles").select("id").eq("username", clean_username).execute()
-    if username_check.data:
+    existing_username = supabase.table("profiles").select("id").eq("username", clean_username).execute()
+    if existing_username.data:
         raise ValueError("Username is already taken")
 
     try:
@@ -21,191 +100,211 @@ def signup_user(email: str, password: str, username: str):
             {
                 "email": clean_email,
                 "password": password,
-                "options": {
-                    "data": {
-                        "username": clean_username
-                    }
-                }
+                "options": {"data": {"username": clean_username}},
             }
         )
     except Exception as exc:
-        err = str(exc)
-        if "rate" in err.lower() or "security purposes" in err.lower():
+        error_message = str(exc)
+        if _is_rate_limited(error_message):
             raise ValueError("Too many attempts. Please wait a minute before trying again.")
-        raise ValueError(err)
+        raise ValueError(error_message)
 
-    # in case there's no response from the system
-    if not response.user: 
+    if not response.user:
         raise ValueError("Signup process failed. Please try again.")
-    
-    # If user was previously registered but unconfirmed, Supabase returns empty identities
-    # and does not re-send the email on sign_up. Explicitly trigger resend:
+
+    # A previously registered but unconfirmed user comes back with empty
+    # identities and Supabase does not re-send the email, so resend it here.
     identities = getattr(response.user, "identities", None)
     if identities is not None and len(identities) == 0:
         try:
-            supabase.auth.resend({
-                "type": "signup",
-                "email": clean_email,
-            })
+            supabase.auth.resend({"type": "signup", "email": clean_email})
         except Exception:
             pass
 
-    # Return status info. Profile row will be created once OTP has been verified
     return {
         "status": "pending_verification",
         "email": clean_email,
         "message": "Verification code has been sent to your email",
     }
 
-def resend_signup_otp(email: str):
-    "This function resends the signup verification OTP to the user's email"
+
+def resend_signup_otp(email: str) -> dict:
+    """Re-sends the signup verification code.
+
+    Args:
+        email: Email address awaiting verification.
+
+    Returns:
+        A dict with status "success" and a message.
+
+    Raises:
+        ValueError: If the email is blank, already verified, or the request
+            is rate limited.
+    """
     clean_email = email.strip() if email else ""
     if not clean_email:
         raise ValueError("Email is required")
 
-    # Check if user already completed registration
-    profile_check = supabase.table("profiles").select("id").eq("email", clean_email).execute()
-    if profile_check.data:
+    existing_profile = supabase.table("profiles").select("id").eq("email", clean_email).execute()
+    if existing_profile.data:
         raise ValueError("This email is already verified. Please sign in instead.")
 
     try:
-        supabase.auth.resend({
-            "type": "signup",
-            "email": clean_email,
-        })
+        supabase.auth.resend({"type": "signup", "email": clean_email})
         return {
             "status": "success",
             "message": "A new verification code has been sent to your email.",
         }
     except Exception as exc:
-        err = str(exc)
-        if "security purposes" in err.lower() or "rate" in err.lower():
+        error_message = str(exc)
+        if _is_rate_limited(error_message):
             raise ValueError("Please wait a minute before requesting another code.")
-        if "already confirmed" in err.lower():
+        if "already confirmed" in error_message.lower():
             raise ValueError("This email is already verified. Please sign in instead.")
-        raise ValueError(err)
+        raise ValueError(error_message)
 
-def verify_user_otp(email: str, token: str):
-    #Verify if the 6-digit otp token is created
+
+def verify_user_otp(email: str, token: str) -> dict:
+    """Confirms a signup with the emailed 6-digit code.
+
+    Creates the profile row on first verification.
+
+    Args:
+        email: Email address that received the code.
+        token: One-time code from the email.
+
+    Returns:
+        A session payload matching the `AuthResponse` schema.
+
+    Raises:
+        ValueError: If the code is invalid or expired.
+    """
     response = supabase.auth.verify_otp({
         "email": email,
         "token": token,
         "type": "signup",
     })
-    #Check if the system doesn't response with the session or user's account
     if not response.user or not response.session:
         raise ValueError("Invalid or expired verification code")
-    user_id = response.user.id
-    metadata_username = response.user.user_metadata.get("username") if response.user.user_metadata else None
-    profile_check = supabase.table("profiles").select("*").eq("id", user_id).execute()
 
-    # if that user's account doesn't exist
-    if not profile_check.data:
+    user_id = response.user.id
+    metadata_username = _metadata_username(response.user)
+    existing_profile = supabase.table("profiles").select("*").eq("id", user_id).execute()
+
+    if not existing_profile.data:
         supabase.table("profiles").insert({
             "id": user_id,
             "email": email,
             "username": metadata_username,
+            "credits": 0,
         }).execute()
-        current_username = metadata_username
+        # Free refine credits are given once per real mailbox, only after
+        # the email was confirmed.
+        try:
+            claim_free_grant(user_id, normalize_email(email), FREE_SIGNUP_CREDITS)
+        except Exception as error:
+            # Never block signup on the grant. Fails closed, so no credits are given
+            # until the migration is installed; fix it and grant manually.
+            print(f"Warning: free credit grant failed for {user_id}: {error}")
+        username = metadata_username
     else:
-        current_username = profile_check.data[0].get("username") or metadata_username
+        username = existing_profile.data[0].get("username") or metadata_username
 
-    credits = get_supabase_credits(user_id)
-    return {
-        "access_token": response.session.access_token,
-        "user": {
-            "id": user_id,
-            "email": response.user.email,
-            "username": current_username
-        },
-        "credits": credits,
-    }
-    
+    return _build_auth_payload(response.session.access_token, user_id, response.user.email, username)
 
-# This function is to return the acconut of the user's profile
-def get_current_user_profile (token: str):
+
+def get_current_user_profile(token: str) -> dict:
+    """Returns the session payload for an existing access token.
+
+    Args:
+        token: Supabase access token.
+
+    Returns:
+        A session payload matching the `AuthResponse` schema.
+
+    Raises:
+        ValueError: If the token is invalid or expired.
+    """
     response = supabase.auth.get_user(token)
     if not response.user:
         raise ValueError("Invalid or expired session")
-    user_id = response.user.id
-    profile_check = supabase.table("profiles").select("username").eq("id", user_id).execute()
-    username = None
-    if profile_check.data and profile_check.data[0].get("username"):
-        username = profile_check.data[0]["username"]
-    elif response.user.user_metadata:
-        username = response.user.user_metadata.get("username")
+    return _build_auth_payload(token, response.user.id, response.user.email, _lookup_username(response.user))
 
-    credits = get_supabase_credits(user_id)
 
-    return {
-        "access_token": token,
-        "user": {
-            "id": user_id,
-            "email": response.user.email,
-            "username": username
-        },
-        "credits": credits
-    }
+def login_user(email: str, password: str) -> dict:
+    """Signs in with email and password.
 
-#This function is for users to login into their account
-def login_user (email: str, password: str):
-    #Login into a user's existiing account
+    Args:
+        email: Account email.
+        password: Account password.
+
+    Returns:
+        A session payload matching the `AuthResponse` schema.
+
+    Raises:
+        ValueError: If Supabase returns no user or session.
+    """
     response = supabase.auth.sign_in_with_password({
         "email": email,
         "password": password,
     })
-
-    # In case the system doesn't response with the request to login
     if not response.user or not response.session:
         raise ValueError("The login process fails")
 
-    user_id = response.user.id
-    profile_check = supabase.table("profiles").select("username").eq("id", user_id).execute()
-    username = None
-    if profile_check.data and profile_check.data[0].get("username"):
-        username = profile_check.data[0]["username"]
-    elif response.user.user_metadata:
-        username = response.user.user_metadata.get("username")
+    return _build_auth_payload(
+        response.session.access_token,
+        response.user.id,
+        response.user.email,
+        _lookup_username(response.user),
+    )
 
-    credits = get_supabase_credits(user_id)
 
-    return {
-        "access_token": response.session.access_token,
-        "user": {
-            "id": user_id,
-            "email": response.user.email,
-            "username": username
-        },
-        "credits": credits
-    }
+def request_password_reset(email: str) -> dict:
+    """Emails a password-reset code.
 
-# THis functino is to send the OTP to email in order to reset password
-def request_password_reset(email: str):
-    response = supabase.auth.reset_password_email(email)
+    Args:
+        email: Email address of the account.
+
+    Returns:
+        A dict with status "success" and a message.
+    """
+    supabase.auth.reset_password_email(email)
     return {
         "status": "success",
-        "message": "Password reset code sent."
+        "message": "Password reset code sent.",
     }
 
-#This function is to confirm that the password has been reseted
-def confirm_password_reset (email: str, token: str, new_password: str):
+
+def confirm_password_reset(email: str, token: str, new_password: str) -> dict:
+    """Sets a new password using an emailed recovery code.
+
+    If the new password already works (for example the request was retried
+    after succeeding), the user is simply signed in.
+
+    Args:
+        email: Email address of the account.
+        token: One-time recovery code from the email.
+        new_password: Password to set.
+
+    Returns:
+        A session payload matching the `AuthResponse` schema.
+
+    Raises:
+        ValueError: If the code is invalid or expired, or the password
+            update fails.
+    """
     try:
-        # Check if the password is already correct
-        signin_response = supabase.auth.sign_in_with_password({
+        sign_in_response = supabase.auth.sign_in_with_password({
             "email": email,
-            "password": new_password
+            "password": new_password,
         })
-        if signin_response.user and signin_response.session:
-            credits = get_supabase_credits(signin_response.user.id)
-            return {
-                "access_token": signin_response.session.access_token,
-                "user": {
-                    "id": signin_response.user.id,
-                    "email": signin_response.user.email,
-                    "username": signin_response.user.user_metadata.get("username") if signin_response.user.user_metadata else None
-                },
-                "credits": credits,
-            }
+        if sign_in_response.user and sign_in_response.session:
+            return _build_auth_payload(
+                sign_in_response.session.access_token,
+                sign_in_response.user.id,
+                sign_in_response.user.email,
+                _metadata_username(sign_in_response.user),
+            )
     except Exception:
         pass
 
@@ -214,64 +313,43 @@ def confirm_password_reset (email: str, token: str, new_password: str):
         "token": token,
         "type": "recovery",
     })
-
-    #This is to check if the system rejects the sessin or the token
     if not verify_response.user or not verify_response.session:
         raise ValueError("Invalid or expired reset code")
 
-    #update the new password if the token is valid
-    update_response = supabase.auth.update_user({
-        "password": new_password
-    })
-
-    #if update fails
+    update_response = supabase.auth.update_user({"password": new_password})
     if not update_response.user:
         raise ValueError("Failed to update password!")
 
-    credits = get_supabase_credits(verify_response.user.id)
-    return {
-      "access_token": verify_response.session.access_token,
-      "user": {
-        "id": verify_response.user.id,
-        "email": verify_response.user.email,
-        "username": verify_response.user.user_metadata.get("username") if verify_response.user.user_metadata else None
-      },
-      "credits": credits,
-    }
+    return _build_auth_payload(
+        verify_response.session.access_token,
+        verify_response.user.id,
+        verify_response.user.email,
+        _metadata_username(verify_response.user),
+    )
 
-def change_supabase_username(token: str, new_username: str):
-    from supabase import create_client
-    import os
-    
-    # 1. Initialize temporary client
-    url = os.getenv("SUPABASE_URL")
-    key = os.getenv("SUPABASE_ANON_KEY")
-    client = create_client(url, key)
-    
-    # 2. Populate the active session on the client
-    client.auth.set_session(access_token=token, refresh_token=token)
-    
-    # 3. Update Auth user metadata
-    client.auth.update_user({
-        "data": {
-            "username": new_username
-        }
-    })
-    
-    # 4. Update profiles table
-    client.postgrest.auth(token)
-    client.table("profiles").update({
-        "username": new_username
-    }).eq("id", client.auth.get_user(token).user.id).execute()
-    
-    user = client.auth.get_user(token).user
-    credits = get_supabase_credits(user.id)
-    return {
-        "access_token": token,
-        "user": {
-            "id": user.id,
-            "email": user.email,
-            "username": new_username
-        },
-        "credits": credits
-    }
+
+def change_supabase_username(token: str, new_username: str) -> dict:
+    """Changes a user's username in Auth metadata and the profile row.
+
+    Uses a temporary client authenticated as the user so row-level security
+    applies.
+
+    Args:
+        token: The user's access token.
+        new_username: New display name.
+
+    Returns:
+        A session payload matching the `AuthResponse` schema.
+    """
+    user_client = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_ANON_KEY"))
+    user_client.auth.set_session(access_token=token, refresh_token=token)
+
+    user_client.auth.update_user({"data": {"username": new_username}})
+
+    user_client.postgrest.auth(token)
+    user = user_client.auth.get_user(token).user
+    user_client.table("profiles").update({
+        "username": new_username,
+    }).eq("id", user.id).execute()
+
+    return _build_auth_payload(token, user.id, user.email, new_username)

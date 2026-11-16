@@ -1,3 +1,10 @@
+"""Fixed test scenarios used by the model benchmark.
+
+Each scenario has an `id`, `category`, `job_info` (input to generation),
+a `refinement_request`, and `expected_checks` listing terms that must or
+must not appear in the output.
+"""
+
 EVALUATION_SCENARIOS = [
     {
         "id": "scenario_only_required_fields",

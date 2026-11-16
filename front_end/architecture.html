@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How It Works | LinkedIn Job Description Generator</title>
+    <meta name="description" content="How the LinkedIn Job Description Generator works: structured intake, schema-checked AI output, a rule-based quality check, an atomic credit ledger and abuse protection." />
+    <link rel="canonical" href="https://www.linkedingenai.com/architecture.html" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="info-pages.css" />
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Site">
+      <div class="wrap">
+        <a href="/" class="nav-brand">LinkedInGenAI</a>
+        <a href="/" class="nav-link">Home</a>
+        <a href="/templates/" class="nav-link">Templates</a>
+        <a href="/architecture.html" class="nav-link active" aria-current="page">How it works</a>
+        <a href="/eval.html" class="nav-link">Evaluation</a>
+        <a href="/#authors" class="nav-link">Authors</a>
+      </div>
+    </nav>
+
+    <main class="wrap">
+      <header class="page-head">
+        <h1>How it <span class="soft">works</span></h1>
+        <p class="lead">
+          A short pipeline: collect facts, ask the AI for structured output, validate it, check it with plain rules,
+          then show it. The AI never writes pay numbers, and every edit is saved so you can undo it.
+        </p>
+        <p class="meta">5 steps - 1 model call per draft - 0 extra AI calls for the quality check</p>
+      </header>
+
+      <section aria-labelledby="pipelineHeading">
+        <h2 id="pipelineHeading">From notes to a checked post</h2>
+        <ol class="rows" style="padding:0">
+          <li>
+            <span class="label">01 Intake</span>
+            <div><h3>Collect the facts</h3><p>Guided questions, or upload an old job description and let it fill them in. Pay range is optional and typed by you.</p></div>
+            <p class="io"><b>in</b> role notes or a file<br /><b>out</b> structured answers</p>
+          </li>
+          <li>
+            <span class="label">02 Generate</span>
+            <div><h3>Ask the AI for structured output</h3><p>Fixed instructions come first and your data last, wrapped as data rather than commands. The model returns JSON, not free text.</p></div>
+            <p class="io"><b>in</b> answers + instructions<br /><b>out</b> JSON draft</p>
+          </li>
+          <li>
+            <span class="label">03 Validate</span>
+            <div><h3>Check the structure</h3><p>The JSON is checked against a schema. If it is cut off or malformed, it is retried once, then reported as an error.</p></div>
+            <p class="io"><b>in</b> JSON draft<br /><b>out</b> valid draft or retry</p>
+          </li>
+          <li>
+            <span class="label">04 Check</span>
+            <div><h3>Run the free quality rules</h3><p>Gender-coded and age-coded wording, filler words, missing pay, long bullet lists, reading level, and requirements that are not in your answers.</p></div>
+            <p class="io"><b>in</b> valid draft<br /><b>out</b> score + findings</p>
+          </li>
+          <li>
+            <span class="label">05 Deliver</span>
+            <div><h3>Show it, then edit it</h3><p>LinkedIn-ready text with copy and Word export. One-click edits, section rewrites and undo are free.</p></div>
+            <p class="io"><b>in</b> checked draft<br /><b>out</b> post, Word file</p>
+          </li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="pricingHeading">
+        <h2 id="pricingHeading">What is free, what costs a credit</h2>
+        <div class="cols">
+          <div>
+            <h3>Free, no account</h3>
+            <ul>
+              <li>Generate a full draft</li>
+              <li>Upload and auto-fill from an old job description</li>
+              <li>Quality check, quick edits, section rewrite, undo</li>
+              <li>Copy to LinkedIn, Word export, screening questions</li>
+            </ul>
+          </div>
+          <div>
+            <h3>1 credit</h3>
+            <ul>
+              <li>A refine request you type yourself</li>
+              <li>New accounts get 20 free credits</li>
+              <li>If the AI call fails, the credit is returned automatically</li>
+              <li>More credits: $5 for 20, $10 for 40, $20 for 80</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="designHeading">
+        <h2 id="designHeading">Design choices</h2>
+        <ul class="rows two" style="padding:0">
+          <li><span class="label">Pay numbers</span><div><h3>Never written by the AI</h3><p>Your range is formatted by code and attached after generation, so the model cannot invent or change it.</p></div></li>
+          <li><span class="label">Quality rules</span><div><h3>Plain rules, no extra AI cost</h3><p>Word lists from published research on gendered and age-coded job ads. A screening aid, not proof of bias.</p></div></li>
+          <li><span class="label">Verify marks</span><div><h3>Added requirements are flagged</h3><p>Requirements that share no words with your answers are marked, so you can check or remove them.</p></div></li>
+          <li><span class="label">Uploads</span><div><h3>Treated as untrusted text</h3><p>File text is cleaned, capped and wrapped in delimiters, and extracted fields are filtered to known names and types.</p></div></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="safetyHeading">
+        <h2 id="safetyHeading">Money and safety</h2>
+        <ul class="rows two" style="padding:0">
+          <li><span class="label">Credit ledger</span><div><h3>One step, never twice</h3><p>One database function checks and subtracts credits in a single step. Each charge has a unique key, so a repeated request never charges twice.</p></div></li>
+          <li><span class="label">Payments</span><div><h3>Prices set on the server</h3><p>Stripe Checkout with a fixed pack list. Webhooks are verified and credit once per checkout session, and failed attempts are retried by Stripe.</p></div></li>
+          <li><span class="label">Free endpoint</span><div><h3>Bot check and limits</h3><p>Cloudflare Turnstile, a per-IP daily limit that reads the address only from trusted proxies, and a global daily cap as a kill switch.</p></div></li>
+          <li><span class="label">Signup</span><div><h3>One free grant per mailbox</h3><p>Email must be confirmed first. Gmail dots and plus tags are collapsed, and throwaway email domains are blocked.</p></div></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="stackHeading">
+        <h2 id="stackHeading">Stack</h2>
+        <p class="lead">
+          Vanilla JavaScript front end, FastAPI back end, Supabase for sign-in and data, Stripe Checkout for payments,
+          OpenRouter for model access, hosted on Hugging Face Spaces. The quality rules live in <code>src/quality</code>
+          and run without the rest of the app. See <a href="/eval.html">how the model was chosen</a>.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-foot"><div class="wrap">LinkedInGenAI. The quality check is a screening aid for wording and structure, not legal advice.</div></footer>
+  </body>
+</html>

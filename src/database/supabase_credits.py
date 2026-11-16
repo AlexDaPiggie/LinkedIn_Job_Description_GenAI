@@ -1,42 +1,59 @@
+"""Credit balance operations on the Supabase `profiles` table."""
+
 from src.database.supabase_client import supabase
 
-# This function is to deduct 1 credit from users any time they 'generate' or 'refine'
-def deduct_supabase_credits (user_id: str):
-    result= supabase.table ("profiles").select("credits").eq ("id", user_id).execute()
-    # incase the database is empty
+
+def get_supabase_credits(user_id: str) -> int:
+    """Fetches a user's credit balance.
+
+    Args:
+        user_id: ID of the user.
+
+    Returns:
+        The balance, or 0 if the profile does not exist.
+    """
+    result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
+    if not result.data:
+        return 0
+    return result.data[0]["credits"] or 0
+
+
+def deduct_supabase_credits(user_id: str) -> bool:
+    """Spends one credit (called for each generate or refine).
+
+    Args:
+        user_id: ID of the user.
+
+    Returns:
+        True if a credit was deducted, False if the profile is missing or
+        the balance is already zero.
+    """
+    result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
     if not result.data:
         return False
-    current_credits = result.data[0]["credits"] or 0
 
-    # if the user doesn't have any credits, there's no point deducting
+    current_credits = result.data[0]["credits"] or 0
     if current_credits <= 0:
         return False
 
-    # minus one credit and update the database
-    supabase.table ("profiles").update ({
-        "credits": current_credits - 1
+    supabase.table("profiles").update({
+        "credits": current_credits - 1,
     }).eq("id", user_id).execute()
-
     return True
 
-#This function is to fetch a user's credits from the database
-def get_supabase_credits(user_id: str):
-    result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
 
-    # In case the user's profile doesn't exist
-    if not result.data:
-        return 0
+def add_supabase_credits(user_id: str, amount: int) -> None:
+    """Adds credits to a user's balance.
 
-    return result.data[0]["credits"] or 0
+    Does nothing if the profile does not exist.
 
-#This function is to add more credits to the user's account
-def add_supabase_credits(user_id: str, amount: int):
+    Args:
+        user_id: ID of the user.
+        amount: Number of credits to add.
+    """
     result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
     if result.data:
         current_credits = result.data[0]["credits"] or 0
-        supabase.table ("profiles").update ({
-            "credits": current_credits + amount
+        supabase.table("profiles").update({
+            "credits": current_credits + amount,
         }).eq("id", user_id).execute()
-
-    
-    
