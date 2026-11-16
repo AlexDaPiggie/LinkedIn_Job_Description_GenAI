@@ -3585,3 +3585,23 @@ button:disabled {
 .question-card.answered:not(.missing):not(.open) .question-number {
   background: linear-gradient(145deg, #19b07c 0%, #0b8f61 55%, #087852 100%);
 }
+
+/* ===== Light gradients: blue to cyan buttons, green to mint badges ===== */
+.primary-button {
+  border: 1px solid rgba(7, 63, 122, 0.85);
+  background: linear-gradient(105deg, #0a66c2 0%, #0b86cf 55%, #13b4cf 100%);
+  box-shadow: 0 10px 20px rgba(10, 102, 194, 0.26);
+}
+.primary-button:hover:not(:disabled) {
+  background: linear-gradient(105deg, #0857ab 0%, #0a76c0 55%, #10a3bf 100%);
+  box-shadow: 0 12px 24px rgba(10, 102, 194, 0.32);
+}
+.primary-button:disabled {
+  background: linear-gradient(105deg, #7fb2e6 0%, #8cc6e3 100%);
+  box-shadow: none;
+}
+.question-card.answered:not(.missing):not(.open) .question-number {
+  border-color: rgba(8, 120, 82, 0.45);
+  background: linear-gradient(145deg, #0b8f61 0%, #2fcf95 100%);
+  box-shadow: 0 8px 16px rgba(8, 120, 82, 0.2);
+}
