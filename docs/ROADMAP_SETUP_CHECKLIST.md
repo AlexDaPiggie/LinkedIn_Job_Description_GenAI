@@ -16,6 +16,10 @@ and abuse protection only turn on once you finish them.
    return 500 (Stripe retries them, so no payment is lost) and new signups get 0 credits.
    Do not deploy without it.
 
+6. Add `SUPABASE_SERVICE_ROLE_KEY` (Supabase > Project settings > API > service_role) to the server env.
+   The credit functions are locked away from the public anon key on purpose, so only the server can call them.
+   Never put this key in the front end. Without it, credit operations fail closed.
+
 ## 2. Stripe
 
 - Prices now come from code (`src/credits/packs.py`): $5 = 20, $10 = 40, $20 = 80 credits.

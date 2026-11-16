@@ -336,9 +336,9 @@ def test_ledger_spend_returns_rpc_balance(monkeypatch):
         def execute(self):
             return self
 
-    monkeypatch.setattr(ledger.supabase, "rpc", lambda name, params: Rpc(12))
+    monkeypatch.setattr(ledger, "get_service_client", lambda: type("C", (), {"rpc": staticmethod(lambda name, params: Rpc(12))})())
     assert ledger.spend("u", 1, "k") == 12
-    monkeypatch.setattr(ledger.supabase, "rpc", lambda name, params: Rpc(-1))
+    monkeypatch.setattr(ledger, "get_service_client", lambda: type("C", (), {"rpc": staticmethod(lambda name, params: Rpc(-1))})())
     assert ledger.spend("u", 1, "k") == ledger.INSUFFICIENT
 
 
@@ -395,7 +395,7 @@ def test_ledger_fails_closed_when_sql_functions_missing(monkeypatch):
         def execute(self):
             raise RuntimeError("PGRST202 Could not find the function public.grant_credits")
 
-    monkeypatch.setattr(ledger.supabase, "rpc", lambda name, params: Boom())
+    monkeypatch.setattr(ledger, "get_service_client", lambda: type("C", (), {"rpc": staticmethod(lambda name, params: Boom())})())
     with pytest.raises(ledger.LedgerNotInstalled):
         ledger.grant("u", 5, "k", "purchase")
     with pytest.raises(ledger.LedgerNotInstalled):
@@ -414,7 +414,7 @@ def test_webhook_returns_500_not_double_credit_when_ledger_missing(client, monke
         def execute(self):
             raise RuntimeError("PGRST202 Could not find the function")
 
-    monkeypatch.setattr(ledger.supabase, "rpc", lambda name, params: Boom())
+    monkeypatch.setattr(ledger, "get_service_client", lambda: type("C", (), {"rpc": staticmethod(lambda name, params: Boom())})())
     assert client.post("/webhook", content=b"{}", headers={"stripe-signature": "x"}).status_code == 500
 
 
@@ -446,3 +446,10 @@ def test_disconnect_before_any_text_is_refunded(monkeypatch):
     next(stream)
     stream.close()
     assert len(refunds) == 1
+
+
+def test_ledger_fails_closed_without_service_key(monkeypatch):
+    monkeypatch.delenv("SUPABASE_SERVICE_ROLE_KEY", raising=False)
+    monkeypatch.setattr("src.database.supabase_client._service_client", None)
+    with pytest.raises(RuntimeError):
+        ledger.grant("u", 5, "k", "purchase")

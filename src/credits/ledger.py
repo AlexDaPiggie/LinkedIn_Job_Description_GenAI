@@ -8,7 +8,7 @@ retried webhook or charge unevenly under concurrent requests.
 
 import uuid
 
-from src.database.supabase_client import supabase
+from src.database.supabase_client import get_service_client
 
 INSUFFICIENT = -1
 
@@ -24,7 +24,7 @@ def _rpc(name: str, params: dict):
         LedgerNotInstalled: If the function does not exist in the database.
     """
     try:
-        return supabase.rpc(name, params).execute().data
+        return get_service_client().rpc(name, params).execute().data
     except Exception as error:
         text = str(error).lower()
         if "pgrst202" in text or "could not find the function" in text or "does not exist" in text:

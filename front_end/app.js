@@ -138,6 +138,7 @@ const state = {
   missingRequired: new Set(),
   currentDraft: null,
   currentMarkdown: "",
+  editingAnswers: false,
   draftOutdated: false,
   railPinned: localStorage.getItem(RAIL_PIN_STORAGE_KEY) !== "false",
   authMode: "login",
@@ -199,6 +200,10 @@ const elements = {
   usernameMessageBox: document.querySelector("#usernameMessageBox"),
 
   // Core workspace elements
+  optionalList: document.querySelector("#optionalList"),
+  moreDetails: document.querySelector("#moreDetails"),
+  editAnswersBtn: document.querySelector("#editAnswersBtn"),
+  answersTitle: document.querySelector("#answersTitle"),
   railNav: document.querySelector(".question-rail"),
   questionRail: document.querySelector("#questionRail"),
   railToggle: document.querySelector("#railToggle"),
@@ -376,172 +381,82 @@ function buildJobInfo() {
   return jobInfo;
 }
 
+function fieldTagText(question, isMissing) {
+  if (isMissing) return "Required - please answer";
+  if (question.required) return "Required";
+  if (question.recommended) return "Recommended";
+  return "Optional";
+}
+
+// One plain field per question: label above, short hint, no accordion.
+function buildField(question) {
+  const name = question.question_name;
+  const value = state.answers[name] || "";
+  const isMissing = state.missingRequired.has(name);
+
+  const field = document.createElement("div");
+  field.className = `field${isMissing ? " missing" : ""}`;
+  field.dataset.field = name;
+
+  const labelRow = document.createElement("div");
+  labelRow.className = "field-label-row";
+  const label = document.createElement("label");
+  label.htmlFor = `field-${name}`;
+  label.textContent = formatFieldName(name);
+  const tag = document.createElement("span");
+  tag.className = "field-tag";
+  tag.textContent = fieldTagText(question, isMissing);
+  labelRow.append(label, tag);
+
+  const hint = document.createElement("p");
+  hint.className = "field-hint";
+  hint.textContent = question.question_text.replace(/\n/g, " ");
+
+  const singleLine = SINGLE_LINE_FIELDS.has(name);
+  const input = document.createElement(singleLine ? "input" : "textarea");
+  input.id = `field-${name}`;
+  if (singleLine) input.type = "text";
+  else input.rows = question.answer_type === "list" ? 4 : 3;
+  input.value = value;
+  input.placeholder = question.answer_type === "list" ? "One item per line" : singleLine ? SINGLE_LINE_PLACEHOLDERS[name] : "";
+  input.addEventListener("input", (event) => updateAnswer(name, event.target.value));
+
+  field.append(labelRow, hint, input);
+  return field;
+}
+
 function renderQuestions() {
   elements.questionList.innerHTML = "";
-  elements.questionRail.innerHTML = "";
+  elements.optionalList.innerHTML = "";
+  let optionalAnswered = false;
 
-  for (const [index, question] of state.questions.entries()) {
-    const isOpen = state.openQuestion === question.question_name;
-    const value = state.answers[question.question_name] || "";
-    const isMissing = state.missingRequired.has(question.question_name);
-    const isAnswered = Boolean(value.trim());
-
-    const railButton = document.createElement("button");
-    railButton.className = `rail-button${isOpen ? " active" : ""}${isMissing ? " missing" : ""}${isAnswered ? " answered" : ""}`;
-    railButton.type = "button";
-    railButton.textContent = String(index + 1).padStart(2, "0");
-    railButton.setAttribute("aria-label", `Go to question ${index + 1}: ${formatFieldName(question.question_name)}`);
-    railButton.addEventListener("click", () => {
-      state.openQuestion = question.question_name;
-      renderQuestions();
-      const target = document.querySelector(`[data-field="${question.question_name}"]`);
-      target?.scrollIntoView({ behavior: "smooth", block: "center" });
-      const nextInput = document.querySelector(`[data-field="${question.question_name}"] :is(textarea, input)`);
-      if (nextInput) setTimeout(() => nextInput.focus(), 260);
-    });
-    elements.questionRail.append(railButton);
-
-    const card = document.createElement("section");
-    card.className = `question-card${isOpen ? " open" : ""}${isMissing ? " missing" : ""}${isAnswered ? " answered" : ""}`;
-    card.dataset.field = question.question_name;
-
-    const summary = document.createElement("button");
-    summary.className = "question-summary";
-    summary.type = "button";
-    summary.setAttribute("aria-expanded", String(isOpen));
-    summary.addEventListener("click", () => {
-      state.openQuestion = isOpen ? null : question.question_name;
-      renderQuestions();
-      const nextInput = document.querySelector(`[data-field="${question.question_name}"] :is(textarea, input)`);
-      if (!isOpen && nextInput) setTimeout(() => nextInput.focus(), 210);
-    });
-
-    const number = document.createElement("span");
-    number.className = "question-number";
-    number.textContent = String(index + 1).padStart(2, "0");
-
-    const title = document.createElement("span");
-    title.className = "question-title";
-    const titleStrong = document.createElement("strong");
-    titleStrong.textContent = formatFieldName(question.question_name);
-    const titleMeta = document.createElement("span");
-    titleMeta.className = "question-meta";
-    titleMeta.textContent = questionMetaText(question, value, isMissing);
-    title.append(titleStrong, titleMeta);
-
-    const actions = document.createElement("div");
-    actions.className = "question-actions";
-
-    if (isOpen) {
-      const clearBtn = document.createElement("span");
-      clearBtn.className = `clear-question-btn${value.trim() ? "" : " hidden"}`;
-      clearBtn.textContent = "Clear";
-      clearBtn.setAttribute("role", "button");
-      clearBtn.setAttribute("tabindex", "0");
-      clearBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        updateAnswer(question.question_name, "");
-        const textarea = card.querySelector("textarea, input");
-        if (textarea) {
-          textarea.value = "";
-          textarea.focus();
-        }
-      });
-      actions.append(clearBtn);
+  for (const question of state.questions) {
+    const field = buildField(question);
+    if (question.required) {
+      elements.questionList.append(field);
+    } else {
+      elements.optionalList.append(field);
+      if ((state.answers[question.question_name] || "").trim()) optionalAnswered = true;
     }
-
-    const expand = document.createElement("span");
-    expand.className = "expand-label";
-    expand.textContent = isOpen ? "Close" : "Expand";
-    actions.append(expand);
-
-    summary.append(number, title, actions);
-
-    const body = document.createElement("div");
-    body.className = "question-body";
-    const bodyInner = document.createElement("div");
-    bodyInner.className = "question-body-inner";
-    const prompt = document.createElement("p");
-    prompt.textContent = question.question_text;
-    const singleLine = SINGLE_LINE_FIELDS.has(question.question_name);
-    const input = document.createElement(singleLine ? "input" : "textarea");
-    if (singleLine) input.type = "text";
-    else input.rows = question.answer_type === "list" ? 5 : 4;
-    input.value = value;
-    input.placeholder = question.answer_type === "list" ? "Add one item per line." : singleLine ? SINGLE_LINE_PLACEHOLDERS[question.question_name] : "Type your answer.";
-    input.addEventListener("input", (event) => updateAnswer(question.question_name, event.target.value));
-
-    const hint = document.createElement("div");
-    hint.className = "hint-row";
-    const leftHint = document.createElement("span");
-    leftHint.textContent = question.answer_type === "list" ? "Use separate lines for multiple items." : "Answer before generating.";
-    const rightHint = document.createElement("span");
-    rightHint.textContent = question.required ? "Required" : question.recommended ? "Recommended - makes the draft specific" : "Optional";
-    hint.append(leftHint, rightHint);
-
-    bodyInner.append(prompt, input, hint);
-    body.append(bodyInner);
-    card.append(summary, body);
-    elements.questionList.append(card);
   }
+  // Optional detail stays closed unless something in it is already filled in.
+  if (optionalAnswered && elements.moreDetails) elements.moreDetails.open = true;
 }
 
-function adjustRailPosition() {
-  const rail = elements.railNav;
-  if (!rail) return;
-  const defaultTop = 300;
-  const padding = 16;
-  const railHeight = rail.offsetHeight;
-  const viewportHeight = window.innerHeight;
-
-  if (defaultTop + railHeight + padding > viewportHeight) {
-    const clampedTop = Math.max(padding, viewportHeight - railHeight - padding);
-    rail.style.top = `${clampedTop}px`;
-  } else {
-    rail.style.top = `${defaultTop}px`;
-  }
-}
-
-function renderRailPin() {
-  document.body.classList.toggle("rail-pinned", state.railPinned);
-  if (elements.railToggle) {
-    elements.railToggle.setAttribute("aria-pressed", String(state.railPinned));
-    elements.railToggle.title = state.railPinned ? "Unpin / Auto-hide" : "Pin open";
-  }
-  adjustRailPosition();
-}
-
-function questionMetaText(question, value, isMissing) {
-  if (isMissing) return "Required answer missing";
-  if (value.trim()) return "Answered";
-  if (question.recommended) return "Recommended";
-  return question.required ? "Required" : "Optional";
-}
+function renderRailPin() {}
+function adjustRailPosition() {}
 
 function renderQuestionStatus(field) {
   const question = state.questions.find((item) => item.question_name === field);
-  const card = document.querySelector(`[data-field="${field}"]`);
+  const card = document.querySelector(`.field[data-field="${field}"]`);
   if (!question || !card) return;
-  const value = state.answers[field] || "";
   const isMissing = state.missingRequired.has(field);
   card.classList.toggle("missing", isMissing);
-  card.classList.toggle("answered", Boolean(value.trim()));
-  const meta = card.querySelector(".question-meta");
-  if (meta) meta.textContent = questionMetaText(question, value, isMissing);
-  const clearBtn = card.querySelector(".clear-question-btn");
-  if (clearBtn) clearBtn.classList.toggle("hidden", !value.trim());
-  const questionIndex = state.questions.findIndex((item) => item.question_name === field);
-  const railButton = elements.questionRail.children[questionIndex];
-  if (railButton) {
-    railButton.classList.toggle("missing", isMissing);
-    railButton.classList.toggle("answered", Boolean(value.trim()));
-  }
+  const tag = card.querySelector(".field-tag");
+  if (tag) tag.textContent = fieldTagText(question, isMissing);
 }
 
-function renderProgress() {
-  const answeredCount = state.questions.filter((question) => state.answers[question.question_name]?.trim()).length;
-  if (elements.progressText) elements.progressText.textContent = `${answeredCount} answered`;
-}
+function renderProgress() {}
 
 const GHOST_DRAFT_HTML = `
   <div class="ghost" aria-hidden="true">
@@ -555,7 +470,20 @@ const GHOST_DRAFT_HTML = `
   </div>
   <p class="ghost-note">Your draft appears here. Click Generate. It is free and needs no account.</p>`;
 
+// The page has two states: compose (the form) and result (the draft and its tools).
+function renderPageState() {
+  const hasDraft = Boolean(state.currentDraft);
+  document.body.dataset.state = hasDraft ? "result" : "compose";
+  document.body.classList.toggle("editing", hasDraft && state.editingAnswers);
+  if (elements.answersTitle) {
+    const role = (state.answers.role_title || "").trim() || "your role";
+    const company = (state.answers.company_name || "").trim();
+    elements.answersTitle.textContent = company ? `${role} at ${company}` : role;
+  }
+}
+
 function renderDraft() {
+  renderPageState();
   elements.draftWarning.classList.toggle("hidden", !state.draftOutdated);
   elements.refineButton.disabled = !state.currentDraft || state.draftOutdated;
   elements.copyButton.disabled = !state.currentMarkdown;
@@ -962,16 +890,19 @@ async function generateDraft() {
   const missing = missingRequiredFields();
   if (missing.length) {
     state.missingRequired = new Set(missing);
-    state.openQuestion = missing[0];
-    renderAll();
+        renderAll();
     setMessage(`Please answer the required questions before generating: ${missing.map(formatFieldName).join(", ")}`);
-    const firstMissing = document.querySelector(`[data-field="${missing[0]}"]`);
+    const firstMissing = document.querySelector(`.field[data-field="${missing[0]}"]`);
     firstMissing?.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstMissing?.querySelector("input, textarea")?.focus({ preventScroll: true });
     return;
   }
 
   state.missingRequired.clear();
   renderQuestions();
+  state.editingAnswers = false;
+  document.body.dataset.state = "result";
+  document.body.classList.remove("editing");
   const restore = setLoading(elements.generateButton, "Generating...");
   setMessage("Generating your draft in real-time...", "info");
 
@@ -1448,6 +1379,7 @@ function initialiseWorkspace() {
 }
 
 function clearAnswers() {
+  state.editingAnswers = false;
   state.answers = {};
   state.missingRequired.clear();
   state.currentDraft = null;
@@ -1533,6 +1465,12 @@ function logEvent(event, detail = "") {
 // elements.sampleButton?.addEventListener("click", loadSample);
 // elements.sampleOutputButton?.addEventListener("click", loadSampleOutput);
 elements.clearButton?.addEventListener("click", clearAnswers);
+elements.editAnswersBtn?.addEventListener("click", () => {
+  state.editingAnswers = !state.editingAnswers;
+  elements.editAnswersBtn.textContent = state.editingAnswers ? "Hide answers" : "Edit answers";
+  renderPageState();
+  if (state.editingAnswers) document.getElementById("paneForm")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 elements.signInBtn.addEventListener("click", openModal);
 elements.closeModalBtn.addEventListener("click", closeModal);
 elements.modalToggleModeBtn.addEventListener("click", toggleAuthMode);
@@ -1636,11 +1574,6 @@ async function submitUsernameChange(event) {
   }
 }
 
-elements.railToggle.addEventListener("click", () => {
-  state.railPinned = !state.railPinned;
-  localStorage.setItem(RAIL_PIN_STORAGE_KEY, String(state.railPinned));
-  renderRailPin();
-});
 elements.clearButton?.addEventListener("click", clearAnswers);
 elements.generateButton.addEventListener("click", generateDraft);
 elements.refineButton.addEventListener("click", refineDraft);

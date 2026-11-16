@@ -38,7 +38,7 @@ from src.api.services import (
 )
 from src.credits import ledger
 from src.credits.packs import CREDIT_PACKS, FREE_SIGNUP_CREDITS, REFINE_COST
-from src.database.supabase_client import supabase
+from src.database.supabase_client import get_service_client, supabase
 from src.database.supabase_credits import get_supabase_credits
 from src.quality.jurisdictions import JURISDICTIONS
 from src.security.limits import (
@@ -307,7 +307,7 @@ def log_event(payload: EventRequest):
     if payload.event not in ALLOWED_EVENTS:
         return
     try:
-        supabase.table("usage_events").insert(
+        get_service_client().table("usage_events").insert(
             {"event": payload.event, "detail": payload.detail[:60]}
         ).execute()
     except Exception:
