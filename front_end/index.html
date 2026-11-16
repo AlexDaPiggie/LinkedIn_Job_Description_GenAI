@@ -140,7 +140,7 @@
       rel="stylesheet"
     />
     <script src="config.js"></script>
-    <link rel="stylesheet" href="styles.css?v=roadmap-v2" />
+    <link rel="stylesheet" href="styles.css?v=roadmap-v3" />
     <style>
       body.authors-active .question-rail {
         opacity: 0 !important;
@@ -461,11 +461,6 @@
               Answer a few questions and get a LinkedIn-ready job description in minutes.
               No signup needed. Copy it straight into LinkedIn or export to Word.
             </p>
-            <ul class="hero-points" aria-label="What you get for free">
-              <li>Free to generate</li>
-              <li>Upload your old JD to improve it</li>
-              <li>Built-in bias and pay-range check</li>
-            </ul>
           </div>
           <div class="header-auth" id="headerAuth">
             <button id="signInBtn" class="primary-button" type="button">
@@ -479,26 +474,51 @@
             </div>
           </div>
         </div>
-        <section class="hero-sample" aria-label="Sample output and how it works">
-          <figure class="sample-card">
-            <figcaption>
-              <span class="sample-tag">Sample output</span>
-              <span class="sample-score" aria-label="Quality score 92 out of 100"><b data-count-to="92">92</b><small>/100</small></span>
-            </figcaption>
-            <h3>Data Analyst</h3>
-            <p class="sample-line">You will turn weekly sales data into clear answers for a team of six.</p>
+        <section class="proof" id="proof" aria-label="Example of the free quality check">
+          <div class="proof-doc">
+            <div class="proof-doc-head">
+              <span class="proof-kicker">Example job post, excerpt</span>
+              <span class="proof-where">Marlow Pay - New York</span>
+            </div>
+            <h3>Senior Backend Engineer, Payments</h3>
+            <p>
+              Join our
+              <mark class="fx" data-row="age"><span class="old">young, high energy team</span><span class="new">team of five engineers and a product manager</span></mark>
+              as a
+              <mark class="fx" data-row="filler"><span class="old">rockstar engineer</span><span class="new">backend engineer</span></mark>.
+              You will own the services that move money for 40,000 merchants. We reward people who
+              <mark class="fx" data-row="filler"><span class="old">hit the ground running</span><span class="new">learn the system quickly</span></mark>.
+            </p>
             <ul>
-              <li>Build reports that managers read and act on.</li>
-              <li>Clean data from three sources and flag gaps.</li>
-              <li>Pay range: <strong>$80,000 - $100,000 per year</strong></li>
+              <li>Design and run the ledger service behind merchant payouts.</li>
+              <li>5+ years building backend services, strong SQL.</li>
+              <li>Bachelor degree in computer science<mark class="fx" data-row="degree"><span class="old"></span><span class="new"> or equivalent experience</span></mark>.</li>
             </ul>
-            <p class="sample-check"><span>Checked</span> no gender-coded words, pay range present, reading grade 9</p>
-          </figure>
-          <ol class="sample-steps">
-            <li><strong>1. Answer a few questions</strong><span>Or upload your old JD and let it fill them in.</span></li>
-            <li><strong>2. Get a full draft, free</strong><span>No signup. Streams in seconds, with a quality check.</span></li>
-            <li><strong>3. Polish and publish</strong><span>One-click edits, then copy into LinkedIn or export to Word.</span></li>
-          </ol>
+            <p class="proof-pay">
+              <span class="proof-pay-label">Pay range</span>
+              <mark class="fx fx-pay" data-row="pay"><span class="old">not given</span><span class="new">$150,000 - $175,000 per year</span></mark>
+            </p>
+          </div>
+
+          <aside class="proof-panel" aria-label="Quality check result">
+            <div class="proof-score-row">
+              <span class="proof-score" id="proofScore" aria-live="off">72</span>
+              <span class="proof-score-of">/ 100</span>
+              <button type="button" class="proof-replay" id="proofReplay">Replay</button>
+            </div>
+            <p class="proof-state" id="proofState">Before the check</p>
+            <ul class="proof-rows">
+              <li data-row="pay"><span class="proof-tag proof-tag-error">Required in NY</span><span class="proof-text">No pay range in the post</span></li>
+              <li data-row="age"><span class="proof-tag proof-tag-warn">Age-coded</span><span class="proof-text">"high energy" can put off older applicants</span></li>
+              <li data-row="filler"><span class="proof-tag proof-tag-info">Filler</span><span class="proof-text">"rockstar", "hit the ground running"</span></li>
+              <li data-row="degree"><span class="proof-tag proof-tag-info">Narrow</span><span class="proof-text">Degree required, no "or equivalent"</span></li>
+            </ul>
+          </aside>
+
+          <p class="proof-note">
+            Scores come from the same free, rule-based checker the app runs on every draft.
+            <a href="#questionList" class="proof-link">Try it on your own role</a>
+          </p>
         </section>
       </header>
 
@@ -1198,6 +1218,6 @@
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="app.js?v=roadmap-v1"></script>
     <script src="features.js?v=roadmap-v1"></script>
-    <script src="motion.js?v=roadmap-v1"></script>
+    <script src="motion.js?v=roadmap-v2"></script>
   </body>
 </html>
