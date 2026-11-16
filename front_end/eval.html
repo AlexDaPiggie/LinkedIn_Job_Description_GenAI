@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Model Evaluation | LinkedIn Job Description Generator</title>
-    <meta name="description" content="Public results of the evaluation harness behind the LinkedIn Job Description Generator: quality, JSON reliability, speed and cost per call for each model tested." />
+    <meta name="description" content="How the AI model behind the LinkedIn Job Description Generator was chosen: 22 models tested on the same hiring scenarios for quality, speed, reliability and cost." />
     <link rel="canonical" href="https://www.linkedingenai.com/eval.html" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
@@ -13,117 +14,177 @@
     <script src="config.js"></script>
   </head>
   <body>
-    <nav class="info-nav" aria-label="Site">
-      <a href="/">LinkedInGenAI</a>
-      <div class="links">
-        <a href="/">Generator</a>
-        <a href="/templates/">Templates</a>
-        <a href="/architecture.html">Architecture</a>
-        <a href="/eval.html" aria-current="page">Evaluation</a>
+    <nav class="site-nav" aria-label="Site">
+      <div class="wrap">
+        <a href="/" class="nav-brand">LinkedInGenAI</a>
+        <a href="/" class="nav-link">Home</a>
+        <a href="/templates/" class="nav-link">Templates</a>
+        <a href="/architecture.html" class="nav-link">How it works</a>
+        <a href="/eval.html" class="nav-link active" aria-current="page">Evaluation</a>
+        <a href="/#authors" class="nav-link">Authors</a>
       </div>
     </nav>
-    <main>
-      <h1>How we test the AI</h1>
-      <p class="lead">
-        Every model is run on the same hiring scenarios. We check that the JSON is valid, that required fields
-        are present, how specific and faithful the writing is, and what each call costs. Numbers below come
-        straight from the evaluation harness in the repository.
-      </p>
 
-      <div class="card" id="summaryCard"><p>Loading results...</p></div>
+    <main class="wrap">
+      <header class="page-head">
+        <h1>How we <span class="soft">test the AI</span></h1>
+        <p class="lead">
+          Every model is run on the same four hiring scenarios. We check that the output is valid, then score how
+          specific and faithful the writing is, and measure speed and cost on every call.
+        </p>
+        <p class="meta" id="metaLine">Loading results...</p>
+      </header>
 
+      <section aria-labelledby="inUseHeading">
+        <p class="kicker">In use today</p>
+        <h2 id="inUseHeading"><span id="modelName">The chosen model</span></h2>
+        <dl class="stats" id="stats"></dl>
+        <p class="note" id="whyNote"></p>
+      </section>
 
-      <h2>How the model was chosen</h2>
-      <div class="card" id="chosenCard"><p>Loading...</p></div>
+      <section aria-labelledby="chartHeading">
+        <h2 id="chartHeading">Quality against speed</h2>
+        <figure class="chart" style="margin:0">
+          <div id="chartHost"></div>
+          <figcaption>Each dot is one model. Higher is better quality, further left is faster. The model in use is blue. Hover a dot for its name.</figcaption>
+        </figure>
+      </section>
 
-      <h2>How the test works</h2>
-      <ul class="plain">
-        <li><strong>Four fixed hiring scenarios:</strong> only the required fields, every field filled, a mix of fields, and a tricky edge case. Each has a refinement request too.</li>
-        <li><strong>Rule checks:</strong> the output must be valid JSON that matches the required structure, include the facts it was given, and leave out facts it was not given.</li>
-        <li><strong>Quality scores:</strong> a second AI model (the judge) rates specificity, tone, faithfulness to the input, LinkedIn-readiness and how well the refinement was applied, from 1 to 5.</li>
-        <li><strong>Cost and speed:</strong> measured on every call from the real token counts and timings.</li>
-      </ul>
+      <section aria-labelledby="methodHeading">
+        <h2 id="methodHeading">How the test works</h2>
+        <ul class="rows two">
+          <li><span class="label">Scenarios</span><div><h3>Four fixed hiring cases</h3><p>Only the required fields, every field filled, a mix of fields, and a tricky edge case. Each also has a refinement request.</p></div></li>
+          <li><span class="label">Rule checks</span><div><h3>Is the output usable?</h3><p>It must be valid JSON that matches the required structure, include the facts it was given, and leave out facts it was not given.</p></div></li>
+          <li><span class="label">Quality score</span><div><h3>A second AI model judges</h3><p>It rates specificity, tone, faithfulness to the input, LinkedIn-readiness and how well the refinement was applied, from 1 to 5.</p></div></li>
+          <li><span class="label">Speed and cost</span><div><h3>Measured on every call</h3><p>Timings and token counts come from the real calls, and cost is estimated from the token prices.</p></div></li>
+        </ul>
+      </section>
 
-      <h2>Models compared</h2>
-      <div class="card table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th class="num">Overall (1-5)</th>
-              <th>Quality</th>
-              <th class="num">Faithful</th>
-              <th class="num">Schema pass</th>
-              <th class="num">Latency</th>
-              <th class="num">Cost / call</th>
-              <th class="num">Runs</th>
-            </tr>
-          </thead>
-          <tbody id="modelRows"></tbody>
-        </table>
-      </div>
-
-      <h2>How to read this</h2>
-      <ul class="plain">
-        <li><strong>Overall</strong> is an average of specificity, tone, faithfulness and LinkedIn-readiness scores from an LLM judge, scale 1 to 5.</li>
-        <li><strong>Faithful</strong> means the draft does not add facts the user never gave.</li>
-        <li><strong>Schema pass</strong> is the share of runs whose JSON matched the required structure.</li>
-        <li><strong>Cost / call</strong> is the estimated token cost of one generate or refine call.</li>
-      </ul>
-      <p class="note">
-        Limits: a small scenario set, and an LLM judge can be biased. Treat gaps under about 0.1 as ties. Results
-        reflect the models and prompts at the time they were run.
-      </p>
+      <section aria-labelledby="tableHeading">
+        <h2 id="tableHeading">All models</h2>
+        <details class="full-table">
+          <summary>Show the full table</summary>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th class="num">Quality (1-5)</th>
+                  <th class="num">Faithful</th>
+                  <th class="num">Valid structure</th>
+                  <th class="num">Latency</th>
+                  <th class="num">Cost / call</th>
+                  <th class="num">Runs</th>
+                </tr>
+              </thead>
+              <tbody id="modelRows"></tbody>
+            </table>
+          </div>
+        </details>
+        <p class="note">
+          Limits: a small test (a handful of runs per model over four scenarios), and an AI judge can be biased.
+          Treat quality gaps under about 0.1 as ties. Results reflect the models and prompts at the time they were run.
+        </p>
+      </section>
     </main>
+
+    <footer class="site-foot"><div class="wrap">LinkedInGenAI. Numbers come straight from the evaluation harness in the repository.</div></footer>
+
     <script>
       const fmt = (value, digits = 2) => (typeof value === "number" ? value.toFixed(digits) : "-");
       const esc = (text) => String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const SVG_NS = "http://www.w3.org/2000/svg";
+
+      function drawChart(models, chosenId) {
+        const W = 760, H = 410, pad = { l: 56, r: 24, t: 36, b: 52 };
+        const xMin = 2, xMax = 140;
+        const yMin = 4.0, yMax = 5.0;
+        const x = (seconds) => pad.l + ((Math.log(seconds) - Math.log(xMin)) / (Math.log(xMax) - Math.log(xMin))) * (W - pad.l - pad.r);
+        const y = (score) => H - pad.b - ((score - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+        const el = (name, attrs = {}, text) => {
+          const node = document.createElementNS(SVG_NS, name);
+          Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+          if (text !== undefined) node.textContent = text;
+          return node;
+        };
+        const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Quality against speed for each model" });
+        [2, 5, 10, 20, 50, 100].forEach((s) => {
+          svg.append(el("line", { x1: x(s), x2: x(s), y1: pad.t, y2: H - pad.b, stroke: "#d3dcee", "stroke-width": 1 }));
+          svg.append(el("text", { x: x(s), y: H - pad.b + 20, "text-anchor": "middle" }, `${s}s`));
+        });
+        [4.0, 4.25, 4.5, 4.75, 5.0].forEach((v) => {
+          svg.append(el("line", { x1: pad.l, x2: W - pad.r, y1: y(v), y2: y(v), stroke: "#d3dcee", "stroke-width": 1 }));
+          svg.append(el("text", { x: pad.l - 10, y: y(v) + 4, "text-anchor": "end" }, v.toFixed(2)));
+        });
+        svg.append(el("text", { x: (pad.l + W - pad.r) / 2, y: H - 8, "text-anchor": "middle", class: "axis-title" }, "Time per call (log scale), faster to the left"));
+        svg.append(el("text", { x: pad.l, y: 16, class: "axis-title" }, "Quality score (1-5)"));
+
+        const best = models[0];
+        models.forEach((m) => {
+          if (typeof m.mean_latency_seconds !== "number" || typeof m.overall_quality_score !== "number") return;
+          const inUse = m.model_id === chosenId;
+          const dot = el("circle", { cx: x(Math.min(m.mean_latency_seconds, xMax)), cy: y(Math.max(m.overall_quality_score, yMin)), r: inUse ? 9 : 5.5, class: inUse ? "dot-in-use" : "dot" });
+          dot.append(el("title", {}, `${m.model_id}: quality ${fmt(m.overall_quality_score)}, ${fmt(m.mean_latency_seconds, 1)} s, $${fmt(m.mean_cost_usd, 4)} per call`));
+          svg.append(dot);
+        });
+        const chosen = models.find((m) => m.model_id === chosenId);
+        if (chosen) {
+          svg.append(el("text", { x: x(chosen.mean_latency_seconds) + 16, y: y(chosen.overall_quality_score) - 10, class: "label label-blue" }, "In use"));
+        }
+        if (best && best !== chosen) {
+          svg.append(el("text", { x: x(Math.min(best.mean_latency_seconds, xMax)) - 10, y: y(best.overall_quality_score) - 12, "text-anchor": "end", class: "label" }, "Highest quality"));
+        }
+        const host = document.getElementById("chartHost");
+        host.innerHTML = "";
+        host.append(svg);
+      }
+
+      function drawStats(chosen, models) {
+        const rank = models.indexOf(chosen) + 1;
+        const best = models[0];
+        const byLatency = [...models].sort((a, b) => a.mean_latency_seconds - b.mean_latency_seconds);
+        const fastRank = byLatency.indexOf(chosen) + 1;
+        const cell = (label, num, unit, text, blue) => `
+          <div class="stat${blue ? " is-blue" : ""}"><dt>${label}</dt>
+            <dd class="num">${num}<small>${unit}</small></dd>
+            <dd>${text}</dd></div>`;
+        document.getElementById("stats").innerHTML =
+          cell("Quality", fmt(chosen.overall_quality_score), "/ 5", `Rank ${rank} of ${models.length}. The best model scores ${fmt(best.overall_quality_score)}, a gap of ${fmt(best.overall_quality_score - chosen.overall_quality_score)}.`, true) +
+          cell("Speed", fmt(chosen.mean_latency_seconds, 1), "s per call", `Rank ${fastRank} of ${models.length}. The best-scoring model takes ${fmt(best.mean_latency_seconds, 1)} seconds.`, true) +
+          cell("Valid structure", Math.round((chosen.schema_pass_rate || 0) * 100), "% of runs", "Output matched the required JSON structure.", false) +
+          cell("Cost", "$" + fmt(chosen.mean_cost_usd, 4), "per call", "Estimated from real token counts.", false);
+        document.getElementById("whyNote").textContent =
+          "What the numbers say: a draft a recruiter waits for should arrive in seconds, so speed and a reliable structure matter as much as the last 0.1 of quality. " +
+          `Small test: ${chosen.runs} runs for this model over four scenarios, scored by an AI judge.`;
+      }
 
       async function load() {
-        const card = document.getElementById("summaryCard");
+        const meta = document.getElementById("metaLine");
         try {
           const base = typeof API_BASE_URL === "string" ? API_BASE_URL : "";
           const response = await fetch(`${base}/api/eval-summary`);
           const data = await response.json();
-          card.innerHTML = `<strong>${data.models.length}</strong> models, <strong>${data.scenarios}</strong> scenarios, <strong>${data.runs}</strong> runs.`;
-
+          meta.textContent = `${data.models.length} models - ${data.scenarios} scenarios - ${data.runs} runs`;
           const chosen = data.models.find((m) => m.model_id === data.chosen_model);
-          const chosenBox = document.getElementById("chosenCard");
-          if (chosen) {
-            const rank = data.models.indexOf(chosen) + 1;
-            const best = data.models[0];
-            const byLatency = [...data.models].sort((a, b) => a.mean_latency_seconds - b.mean_latency_seconds);
-            const fastRank = byLatency.indexOf(chosen) + 1;
-            const gap = (best.overall_quality_score - chosen.overall_quality_score).toFixed(2);
-            chosenBox.innerHTML = `
-              <p><strong>${esc(chosen.model_id)}</strong> is the model in use today.</p>
-              <ul class="plain">
-                <li>Quality: ${fmt(chosen.overall_quality_score)} out of 5, ranked <strong>${rank} of ${data.models.length}</strong>. The top model scores ${fmt(best.overall_quality_score)} (${esc(best.model_id)}), a gap of ${gap}.</li>
-                <li>Speed: ${fmt(chosen.mean_latency_seconds, 1)} seconds per call, ranked <strong>${fastRank} of ${data.models.length}</strong> for speed. The top-scoring model takes ${fmt(best.mean_latency_seconds, 1)} seconds.</li>
-                <li>Reliability: ${Math.round((chosen.schema_pass_rate || 0) * 100)}% of runs returned the required structure.</li>
-                <li>Cost: about $${fmt(chosen.mean_cost_usd, 4)} per call.</li>
-              </ul>
-              <p class="note">What the numbers say: a draft that a recruiter waits for should arrive in seconds, so speed and reliable structure matter as much as the last 0.1 of quality. Small test: ${chosen.runs} runs per model over four scenarios, scored by an AI judge. Treat gaps under about 0.1 as ties.</p>`;
-          } else {
-            chosenBox.textContent = "The model in use is not in the test results yet.";
-          }
+          document.getElementById("modelName").textContent = chosen ? chosen.model_id : "Model in use";
+          if (chosen) drawStats(chosen, data.models);
+          drawChart(data.models, data.chosen_model);
           document.getElementById("modelRows").innerHTML = data.models
             .map(
-              (model) => `<tr${model.model_id === data.chosen_model ? ' class="in-use"' : ""}>
-                <td>${esc(model.model_id)}${model.model_id === data.chosen_model ? " (in use)" : ""}</td>
-                <td class="num"><strong>${fmt(model.overall_quality_score)}</strong></td>
-                <td><div class="bar" aria-hidden="true"><span style="width:${Math.round(((model.overall_quality_score || 0) / 5) * 100)}%"></span></div></td>
-                <td class="num">${fmt(model.faithfullness_score)}</td>
-                <td class="num">${Math.round((model.schema_pass_rate || 0) * 100)}%</td>
-                <td class="num">${fmt(model.mean_latency_seconds, 1)}s</td>
-                <td class="num">$${fmt(model.mean_cost_usd, 4)}</td>
-                <td class="num">${model.runs}</td>
+              (m) => `<tr${m.model_id === data.chosen_model ? ' class="in-use"' : ""}>
+                <td>${esc(m.model_id)}${m.model_id === data.chosen_model ? " (in use)" : ""}</td>
+                <td class="num">${fmt(m.overall_quality_score)}</td>
+                <td class="num">${fmt(m.faithfullness_score)}</td>
+                <td class="num">${Math.round((m.schema_pass_rate || 0) * 100)}%</td>
+                <td class="num">${fmt(m.mean_latency_seconds, 1)}s</td>
+                <td class="num">$${fmt(m.mean_cost_usd, 4)}</td>
+                <td class="num">${m.runs}</td>
               </tr>`
             )
             .join("");
         } catch (error) {
           console.error("Eval summary failed:", error);
-          card.textContent = "Results could not be loaded right now. Please try again later.";
+          meta.textContent = "Results could not be loaded right now. Please try again later.";
         }
       }
       load();
