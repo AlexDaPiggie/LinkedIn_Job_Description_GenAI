@@ -1,50 +1,99 @@
+"""Low-level OpenRouter API calls (single-model, no fallback logic)."""
+
 import os
 import time
-from dotenv import load_dotenv
-from openai import OpenAI, APIError
+from collections.abc import Iterator
 
-'''
-Cache and helper to get OpenRouter client
-'''
-def _get_openrouter_client() -> OpenAI:
+from dotenv import load_dotenv
+
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_HEADERS = {
+    "HTTP-Referer": "https://github.com/alexdapiggie/LinkedIn_Job_Description_Generator",
+    "X-Title": "LinkedIn Job Description Generator",
+}
+RETRYABLE_STATUS_CODES = (429, 502, 503, 504)
+MAX_RETRIES = 3
+BACKOFF_FACTOR = 2
+INITIAL_RETRY_DELAY_SECONDS = 1
+
+
+def _get_openrouter_client():
+    """Creates an OpenAI-compatible client pointed at OpenRouter.
+
+    Returns:
+        A configured `openai.OpenAI` client.
+
+    Raises:
+        ValueError: If `OPENROUTER_API_KEY` is not set.
+    """
+    # Imported here: the openai package is slow to load (about 1s), and
+    # deferring it shortens backend startup.
+    from openai import OpenAI
+
     load_dotenv(override=True)
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise ValueError("The API Key for OpenRouter is not available in environment or .env")
-    return OpenAI(
-        api_key=api_key,
-        base_url="https://openrouter.ai/api/v1",
-    )
+    return OpenAI(api_key=api_key, base_url=OPENROUTER_BASE_URL)
+
 
 def count_tokens(text: str, model: str | None = None) -> int:
+    """Roughly estimates the token count of a text.
+
+    Uses a heuristic of about 1.33 tokens per word.
+
+    Args:
+        text: Text to measure.
+        model: Unused; kept for interface compatibility.
+
+    Returns:
+        The estimated number of tokens (at least 1).
+    """
     return max(1, int(len(text.split()) * 1.33))
 
-def generate_with_openrouter(prompt: str, model: str):
-    from src.llm.client import LLMResult
-    client = _get_openrouter_client()
-    max_retries = 3
-    backoff_factor = 2
-    delay = 1
 
-    for attempt in range(max_retries):
+def generate_with_openrouter(prompt: str, model: str):
+    """Sends a prompt to one OpenRouter model and returns the full reply.
+
+    Retries with exponential backoff on rate-limit and gateway errors.
+
+    Args:
+        prompt: User prompt text.
+        model: OpenRouter model identifier, for example "openai/gpt-4o-mini".
+
+    Returns:
+        An `LLMResult` with the text, latency and token usage.
+
+    Raises:
+        openai.APIError: If the call fails after retries or with a
+            non-retryable error.
+    """
+    # Imported here to avoid a circular import with src.llm.client, and to
+    # keep the slow openai import out of backend startup.
+    from openai import APIError
+
+    from src.llm.client import LLMResult
+
+    client = _get_openrouter_client()
+    retry_delay = INITIAL_RETRY_DELAY_SECONDS
+
+    for attempt in range(MAX_RETRIES):
         try:
-            start = time.perf_counter()
+            start_time = time.perf_counter()
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
-                extra_headers={
-                    "HTTP-Referer": "https://github.com/alexdapiggie/LinkedIn_Job_Description_Generator",
-                    "X-Title": "LinkedIn Job Description Generator",
-                },
+                extra_headers=OPENROUTER_HEADERS,
             )
-            latency = time.perf_counter() - start
+            latency_seconds = time.perf_counter() - start_time
             break
-        except APIError as e:
-            if attempt < max_retries - 1 and (e.status_code in [429, 502, 503, 504]):
-                time.sleep(delay)
-                delay *= backoff_factor
+        except APIError as error:
+            is_last_attempt = attempt == MAX_RETRIES - 1
+            if not is_last_attempt and error.status_code in RETRYABLE_STATUS_CODES:
+                time.sleep(retry_delay)
+                retry_delay *= BACKOFF_FACTOR
                 continue
-            raise e
+            raise
 
     text = response.choices[0].message.content or ""
     usage = getattr(response, "usage", None)
@@ -55,24 +104,31 @@ def generate_with_openrouter(prompt: str, model: str):
         text=text,
         provider="openrouter",
         model=model,
-        latency_seconds=latency,
+        latency_seconds=latency_seconds,
         input_tokens=input_tokens,
         output_tokens=output_tokens,
         estimated_cost=None,
     )
 
-def stream_with_openrouter(prompt: str, model: str):
+
+def stream_with_openrouter(prompt: str, model: str) -> Iterator[str]:
+    """Streams a reply from one OpenRouter model.
+
+    Args:
+        prompt: User prompt text.
+        model: OpenRouter model identifier.
+
+    Yields:
+        Non-empty text chunks as they arrive.
+    """
     client = _get_openrouter_client()
-    stream = client.chat.completions.create(
+    response_stream = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
-        extra_headers={
-            "HTTP-Referer": "https://github.com/alexdapiggie/LinkedIn_Job_Description_Generator",
-            "X-Title": "LinkedIn Job Description Generator",
-        },
+        extra_headers=OPENROUTER_HEADERS,
         stream=True,
     )
-    for chunk in stream:
-        delta = chunk.choices[0].delta.content if chunk.choices else ""
-        if delta:
-            yield delta
+    for chunk in response_stream:
+        delta_text = chunk.choices[0].delta.content if chunk.choices else ""
+        if delta_text:
+            yield delta_text

@@ -1,17 +1,21 @@
-import os 
-from supabase import create_client, Client
-from dotenv import load_dotenv
+"""Shared Supabase client, configured from environment variables."""
 
-load_dotenv(override=True) #override the local .env var with the global env 
+import os
+
+from dotenv import load_dotenv
+from supabase import Client, create_client
+
+# Override the local .env values with the global environment.
+load_dotenv(override=True)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
 
-#Check if the key exists 
+# Fail fast when credentials are missing.
 if not SUPABASE_ANON_KEY or not SUPABASE_URL:
-    raise RuntimeError ("The URL and KEY of supabase are empty")
+    raise RuntimeError("The URL and KEY of supabase are empty")
 
-#Intialize a client in supabase
+# Client used across the app (anon key; row-level security applies).
 supabase: Client = create_client(
     supabase_url=SUPABASE_URL,
     supabase_key=SUPABASE_ANON_KEY,

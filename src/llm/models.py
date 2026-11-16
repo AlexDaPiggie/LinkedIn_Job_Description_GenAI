@@ -1,3 +1,6 @@
+"""Model fallback chains and the list of models used in benchmarks."""
+
+# Maps a primary model to the ordered fallback models tried if it fails.
 MODEL_FALLBACKS = {
     "google/gemini-2.5-flash-lite": [
         "openai/gpt-4o-mini",
@@ -6,6 +9,8 @@ MODEL_FALLBACKS = {
     ]
 }
 
+# Models compared by src.evaluation.runner. Each entry has a unique display
+# `name`, a `provider`, an OpenRouter `model_id`, and a short `purpose`.
 MODELS_TO_EVALUATE = [
     {
         "name": "openrouter_gpt_4o_mini",
@@ -85,12 +90,6 @@ MODELS_TO_EVALUATE = [
         "model_id": "qwen/qwen-2.5-coder-32b-instruct",
         "purpose": "Fine-tuned coder version of the 32b version for fomratting complexed structures",
     },
-    {
-        "name": "openrouter_qwen_2_5_7b",
-        "provider": "openrouter",
-        "model_id": "qwen/qwen-2.5-7b-instruct",
-        "purpose": "Fast and cheap model with great structural data support",
-    },    
     {
         "name": "openrouter_qwen_2_5_7b",
         "provider": "openrouter",

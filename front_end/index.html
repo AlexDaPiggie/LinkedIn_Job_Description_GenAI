@@ -65,9 +65,9 @@
             "description": "AI-powered web app for generating, refining, copying, and exporting LinkedIn-ready job descriptions.",
             "offers": {
               "@type": "Offer",
-              "price": "1",
+              "price": "0",
               "priceCurrency": "USD",
-              "description": "$1 for 30 generation and refinement credits"
+              "description": "Free to generate, no account needed. Refine with your own words costs credits: 20 free on signup, then $5 for 20."
             },
             "creator": {
               "@type": "Organization",
@@ -103,10 +103,26 @@
               },
               {
                 "@type": "Question",
+                "name": "Do I need an account to generate a job description?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Generating a full job description, uploading an old one to improve it, the quality check, copy and Word export are free with no account."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it check for biased or illegal wording?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Every draft gets a free rule-based check for gender-coded and age-coded words, missing pay range, long bullet lists and reading level. You can also pick your location to see whether a pay range is usually required. It is a screening aid, not legal advice."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Can I refine the job description after it is generated?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, you can use the built-in conversational refinement box to adjust tone, add perks, modify qualifications, or expand sections iteratively."
+                  "text": "Yes. One-click quick edits, tone, length and section rewrites are free. Typing your own change request needs a free account and costs 1 credit; new accounts get 20 free credits."
                 }
               }
             ]
@@ -123,79 +139,9 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;450;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=preview-v2" />
+    <script src="config.js"></script>
+    <link rel="stylesheet" href="styles.css?v=roadmap-v1" />
     <style>
-      /* --- SPA Navigation Bar --- */
-      .nav-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        display: flex;
-        justify-content: center;
-        gap: 28px;
-        padding: 14px 24px;
-        background: transparent;
-        border-bottom: 1px solid transparent;
-        box-shadow: none;
-        transition: all 250ms ease;
-        box-sizing: border-box;
-        opacity: 1;
-      }
-
-      .nav-bar.scrolled {
-        background: transparent !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        padding: 10px 24px !important;
-        border-bottom: 1px solid transparent !important;
-        box-shadow: none !important;
-        opacity: 0.4;
-      }
-
-      .nav-bar.scrolled:hover {
-        opacity: 1;
-      }
-
-      .nav-link {
-        background: none !important;
-        border: none !important;
-        font-family: "Manrope", sans-serif !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        color: #4a5d6e !important;
-        padding: 6px 0 !important;
-        cursor: pointer !important;
-        position: relative !important;
-        transition: color 150ms ease !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-      }
-
-      .nav-link:hover {
-        color: #0a66c2 !important;
-      }
-
-      .nav-link.active {
-        color: #0a66c2 !important;
-      }
-
-      .nav-link.active::after {
-        content: "" !important;
-        position: absolute !important;
-        bottom: -4px !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 2px !important;
-        background: #0a66c2 !important;
-        border-radius: 1px !important;
-      }
-
-      .app-shell {
-        padding-top: 64px !important;
-      }
-
       body.authors-active .question-rail {
         opacity: 0 !important;
         pointer-events: none !important;
@@ -468,8 +414,9 @@
   </head>
   <body>
     <nav class="nav-bar">
+      <a href="/" class="nav-brand">LinkedInGenAI</a>
       <button class="nav-link active" data-target="homeView">Home</button>
-      <a href="/templates/" class="nav-link" style="text-decoration: none; display: inline-flex; align-items: center;">Templates</a>
+      <a href="/templates/" class="nav-link nav-link-anchor">Templates</a>
       <button class="nav-link" data-target="authorsView">Authors</button>
     </nav>
 
@@ -510,6 +457,15 @@
             <h1>
               <span class="gradient-letter">J</span>ob Description Generator
             </h1>
+            <p class="hero-subtitle">
+              Answer a few questions and get a LinkedIn-ready job description in minutes.
+              No signup needed. Copy it straight into LinkedIn or export to Word.
+            </p>
+            <ul class="hero-points" aria-label="What you get for free">
+              <li>Free to generate</li>
+              <li>Upload your old JD to improve it</li>
+              <li>Built-in bias and pay-range check</li>
+            </ul>
           </div>
           <div class="header-auth" id="headerAuth">
             <button id="signInBtn" class="primary-button" type="button">
@@ -530,7 +486,7 @@
         <div class="workspace-prebar">
           <div class="workspace-prebar-left">
             <div id="creditsContainer" class="credits-container hidden">
-              <span id="workspaceCredits" class="credit-badge">30 Credits</span>
+              <span id="workspaceCredits" class="credit-badge" title="Credits are used only when you type a refine request. Everything else is free.">20 refine credits</span>
               <button id="buyCreditsBtn" class="primary-button" type="button">
                 Buy more credits
               </button>
@@ -605,7 +561,7 @@
             <div class="doc-upload-row">
               <span class="doc-upload-prompt">Have an existing Job Description?</span>
               <div class="doc-upload-inline" id="docUploadBox" role="button" tabindex="0">
-                <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" style="display: none;" />
+                <input type="file" id="docFileInput" accept=".pdf,.docx,.doc,.txt,.md" class="hidden-input" />
                 <div class="doc-upload-content" id="docUploadContent">
                   <svg class="doc-upload-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -630,6 +586,47 @@
               class="question-list"
               aria-live="polite"
             ></div>
+
+            <section class="pay-card" aria-labelledby="payHeading">
+              <div class="pay-head">
+                <h3 id="payHeading">Pay range</h3>
+                <span class="pay-tag">Recommended</span>
+              </div>
+              <div class="pay-grid">
+                <label class="pay-field pay-field-wide">
+                  <span>Where is the job?</span>
+                  <select id="payJurisdiction" class="pref-select">
+                    <option value="none">Other / not listed</option>
+                  </select>
+                </label>
+                <label class="pay-field">
+                  <span>Minimum</span>
+                  <input id="payMin" type="number" min="0" step="any" inputmode="decimal" placeholder="90000" />
+                </label>
+                <label class="pay-field">
+                  <span>Maximum</span>
+                  <input id="payMax" type="number" min="0" step="any" inputmode="decimal" placeholder="120000" />
+                </label>
+                <label class="pay-field">
+                  <span>Currency</span>
+                  <select id="payCurrency" class="pref-select">
+                    <option value="USD">USD</option>
+                    <option value="CAD">CAD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </label>
+                <label class="pay-field">
+                  <span>Per</span>
+                  <select id="payPeriod" class="pref-select">
+                    <option value="year">Year</option>
+                    <option value="month">Month</option>
+                    <option value="hour">Hour</option>
+                  </select>
+                </label>
+              </div>
+              <p id="payNotice" class="pay-notice pay-info"></p>
+            </section>
           </section>
 
           <div class="result-column">
@@ -660,24 +657,60 @@
               </div>
 
               <div id="draftWarning" class="notice hidden">
-                Answers changed after generation. Regenerate before refining
-                again.
+                Answers or pay changed after generation. Click Generate (free)
+                to update the draft.
               </div>
               <div id="messageBox" class="message-box hidden"></div>
+
+              <div id="versionBar" class="version-bar hidden">
+                <button id="undoBtn" class="secondary-button" type="button" aria-label="Undo last change">Undo</button>
+                <button id="redoBtn" class="secondary-button" type="button" aria-label="Redo change">Redo</button>
+                <span id="versionLabel" class="version-label"></span>
+              </div>
+              <div id="changeNote" class="change-note hidden">
+                <span id="changeNoteText"></span>
+                <label class="highlight-toggle">
+                  <input id="highlightToggle" type="checkbox" checked /> Highlight changes
+                </label>
+              </div>
+
               <article id="markdownPreview" class="markdown-preview empty">
                 Generate a draft to preview the job description.
               </article>
 
+              <div id="diffPanel" class="diff-panel hidden"></div>
+              <div id="qualityPanel" class="quality-panel hidden"></div>
+
+              <div class="free-edits">
+                <p class="eyebrow">Quick edits - free</p>
+                <div id="chipRow" class="chip-row">
+                  <button type="button" class="chip" data-action="shorter" disabled>Shorter</button>
+                  <button type="button" class="chip" data-action="more_inclusive" disabled>More inclusive</button>
+                  <button type="button" class="chip" data-action="simplify" disabled>Simplify wording</button>
+                  <button type="button" class="chip" data-action="more_casual" disabled>More casual</button>
+                  <button type="button" class="chip" data-action="more_formal" disabled>More formal</button>
+                  <button type="button" class="chip" data-action="cut_bullets" disabled>Cut to 6 bullets</button>
+                  <button type="button" class="chip" data-action="nice_to_have" disabled>Move extras to nice-to-have</button>
+                </div>
+                <p class="free-note">Use the Rewrite button on any section heading to redo just that part. Tone, length and EEO above are free too.</p>
+              </div>
+
               <div class="refine-panel">
-                <label for="refineInput">Refine the draft</label>
+                <label for="refineInput">Refine with your own words <span class="refine-cost">1 credit</span></label>
                 <textarea
                   id="refineInput"
                   rows="4"
-                  placeholder="Example: Make it more professional, remove the last bullet point in 'requirement'"
+                  placeholder="Example: Mention that the team is fully remote and add a line about mentoring."
                 ></textarea>
                 <button id="refineButton" class="primary-button" type="button">
-                  Refine
+                  Refine - 1 credit
                 </button>
+                <p class="free-note">New accounts get <strong data-free-credits>20</strong> free refine credits. If a refine fails, the credit is returned automatically.</p>
+              </div>
+
+              <div class="screening-block">
+                <button id="screeningBtn" class="secondary-button" type="button" disabled>Suggest screening questions</button>
+                <div id="screeningList" class="screening-list hidden"></div>
               </div>
 
               <div class="draft-actions">
@@ -712,6 +745,40 @@
         </section>
 
         <!-- SEO Content & FAQ Section -->
+        <section class="pricing-strip" aria-label="Pricing">
+          <h2 class="pricing-title">Free to write. Pay only to refine with your own words.</h2>
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <p class="pricing-label">No account</p>
+              <p class="pricing-price">Free</p>
+              <ul class="pricing-features">
+                <li>Full job description, not a preview</li>
+                <li>Upload your old JD to auto-fill</li>
+                <li>Quality, bias and pay-range check</li>
+                <li>Quick edits, section rewrites, copy and Word export</li>
+              </ul>
+            </div>
+            <div class="pricing-card pricing-card-featured">
+              <p class="pricing-label">Free account</p>
+              <p class="pricing-price"><span data-free-credits>20</span> <span class="pricing-unit">free refine credits</span></p>
+              <ul class="pricing-features">
+                <li>Type your own change request, 1 credit each</li>
+                <li>Failed refine? The credit comes back</li>
+                <li>Draft is kept while you sign in</li>
+              </ul>
+            </div>
+            <div class="pricing-card">
+              <p class="pricing-label">Need more?</p>
+              <p class="pricing-price">$5 <span class="pricing-unit">= 20 refines</span></p>
+              <ul class="pricing-features">
+                <li>$10 = 40 refines, $20 = 80 refines</li>
+                <li>One-time payment, no subscription</li>
+                <li>Secure checkout by Stripe</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         <section class="seo-guide-section" aria-label="About the LinkedIn Job Description Generator">
           <div class="seo-guide-container">
             <div class="seo-header">
@@ -772,13 +839,13 @@
             </div>
 
             <!-- Free Templates Library Block -->
-            <div class="seo-templates-block" style="margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(10, 102, 194, 0.12);">
+            <div class="seo-templates-block">
               <p class="eyebrow">Free Hiring Resources</p>
-              <h2 style="font-family: var(--heading-font); font-size: 22px; font-weight: 600; color: var(--ink); margin: 6px 0 12px;">Free LinkedIn Job Description Templates</h2>
-              <p style="color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; margin-bottom: 20px;">
+              <h2 class="seo-templates-title">Free LinkedIn Job Description Templates</h2>
+              <p class="seo-templates-intro">
                 Looking for pre-written job templates? Browse our library of copy-ready job descriptions optimized for LinkedIn hiring posts. Copy directly or customize with our AI generator in seconds:
               </p>
-              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;">
+              <div class="seo-templates-chips">
                 <a href="/templates/software-engineer/" class="seo-template-pill">Software Engineer JD</a>
                 <a href="/templates/product-manager/" class="seo-template-pill">Product Manager JD</a>
                 <a href="/templates/data-scientist/" class="seo-template-pill">Data Scientist JD</a>
@@ -788,10 +855,9 @@
                 <a href="/templates/sales-development-representative/" class="seo-template-pill">SDR Job Description</a>
                 <a href="/templates/ui-ux-designer/" class="seo-template-pill">UI/UX Designer JD</a>
                 <a href="/templates/customer-success-manager/" class="seo-template-pill">Customer Success Manager JD</a>
-                <a href="/templates/hr-manager/" class="seo-template-pill">HR Manager JD</a>
               </div>
               <div>
-                <a href="/templates/" style="color: var(--blue); font-weight: 700; font-size: 14.5px; text-decoration: none;">&rarr; Browse All Job Description Templates Directory</a>
+                <a href="/templates/" class="seo-templates-all-link">&rarr; Browse All Job Description Templates Directory</a>
               </div>
             </div>
           </div>
@@ -799,13 +865,31 @@
 
         <!-- Site Footer -->
         <footer class="app-footer">
-          <p>© 2026 LinkedIn GenAI. Built for hiring teams, recruiters, and founders looking to write better LinkedIn job descriptions faster.</p>
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <p class="footer-brand-name">LinkedInGenAI</p>
+              <p class="footer-blurb">Built for hiring teams, recruiters, and founders who want better LinkedIn job descriptions, faster.</p>
+            </div>
+            <nav class="footer-column" aria-label="Product">
+              <p class="footer-heading">Product</p>
+              <a href="/" class="footer-link">Generator</a>
+              <a href="/templates/" class="footer-link">Templates</a>
+              <a href="/architecture.html" class="footer-link">How it works</a>
+              <a href="/eval.html" class="footer-link">Model evaluation</a>
+              <button type="button" class="footer-link footer-link-button" data-footer-target="authorsView">Authors</button>
+            </nav>
+            <nav class="footer-column" aria-label="Resources">
+              <p class="footer-heading">Resources</p>
+              <a href="https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator_Documentation" class="footer-link" target="_blank" rel="noopener">Documentation</a>
+            </nav>
+          </div>
+          <p class="footer-copy">&copy; 2026 LinkedIn GenAI</p>
         </footer>
       </div>
 
       <!-- Authors View -->
       <div id="authorsView" class="page-view hidden">
-        <section class="simple-page-card" style="max-width: 900px">
+        <section class="simple-page-card simple-page-card-wide">
           <h2 class="authors-title-gradient">Authors</h2>
           <div id="authorsGrid" class="authors-grid">
             <!-- Dynamically populated from data/authors.json -->
@@ -914,14 +998,8 @@
             </div>
             <button
               id="modalForgotPasswordBtn"
-              class="link-button"
+              class="link-button forgot-password-link"
               type="button"
-              style="
-                text-align: right;
-                margin-top: -6px;
-                margin-bottom: 6px;
-                font-size: 13px;
-              "
             >
               Forgot password?
             </button>
@@ -949,11 +1027,11 @@
             <button id="modalOtpSubmitBtn" class="primary-button" type="submit">
               Verify Code
             </button>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-              <button id="modalResendOtpBtn" class="link-button" type="button" style="font-size: 13px;">
+            <div class="otp-actions-row">
+              <button id="modalResendOtpBtn" class="link-button link-button-small" type="button">
                 Resend code
               </button>
-              <button id="modalCancelOtpBtn" class="link-button" type="button" style="font-size: 13px;">
+              <button id="modalCancelOtpBtn" class="link-button link-button-small" type="button">
                 Back to Sign Up
               </button>
             </div>
@@ -1051,52 +1129,12 @@
         </button>
 
         <div id="billingView">
-          <h2>Buy Credits</h2>
+          <h2>Buy refine credits</h2>
           <p class="modal-sub">
-            Add credits to generate and refine job descriptions.
+            Generating is always free. Credits pay for refine requests you type yourself. One-time payment, no subscription.
           </p>
-
-          <div class="billing-yield-headline">
-            <span id="billingCreditCount">30</span> Credits
-          </div>
-
-          <div class="billing-selector-row">
-            <button
-              id="billingDecBtn"
-              class="secondary-button selector-btn"
-              type="button"
-            >
-              -
-            </button>
-            <div class="billing-input-wrapper">
-              <span class="currency-symbol">$</span>
-              <input
-                id="billingAmountInput"
-                class="billing-amount-input"
-                type="number"
-                min="1"
-                value="1"
-                step="1"
-              />
-            </div>
-            <button
-              id="billingIncBtn"
-              class="secondary-button selector-btn"
-              type="button"
-            >
-              +
-            </button>
-          </div>
-
-          <p class="billing-rate-info">Rate: $1 = 30 credits</p>
-
-          <button
-            id="payCreditsBtn"
-            class="primary-button pay-credits-button"
-            type="button"
-          >
-            Pay $1.00
-          </button>
+          <div id="packList" class="pack-list"></div>
+          <p class="billing-rate-info">1 credit = 1 refine. A failed refine is refunded automatically.</p>
         </div>
 
         <div id="billingMessageBox" class="message-box hidden"></div>
@@ -1135,7 +1173,9 @@
       </div>
     </div>
 
+    <div id="turnstileBox" class="turnstile-box" aria-live="polite"></div>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="app.js?v=otp-resend-v1"></script>
+    <script src="app.js?v=roadmap-v1"></script>
+    <script src="features.js?v=roadmap-v1"></script>
   </body>
 </html>

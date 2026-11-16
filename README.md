@@ -26,7 +26,7 @@ pinned: false
 - Better than most free-tier AI models, our app guarantees the output with professional LinkedIn Layout, with user-friendly interface, and very detailed output.
 - Different from other apps on the market which just generate, [linked-in-gen-ai](https://www.linkedingenai.com) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
 - The App supports EXPORT Word file or COPY & PASTE straight to LinkedIn
-- Granting 30 free credits to every new user, and could be purchased more with only 1$/30 credits, we aspire to faciliate HR's as much as possible.
+- Generating a full job description is free with no account. Only typed **Refine** requests cost 1 credit: 20 free credits on signup, then $5 = 20, $10 = 40, $20 = 80 credits. A failed refine is refunded automatically.
 
 ---
 
@@ -44,7 +44,15 @@ pinned: false
 
 - **Prevent mismatch between different versions**: In case users change their answers after having generated a draft, the web app will blocks `refine` feature until user clicks `generate` to generate a new draft again. 
 
-- **User Login/Signup & Payment**: Create FastAPI endpoints for Supabase login, and Stripe credits payment plan to purchase new credits (1$/30 credits).
+- **User Login/Signup & Payment**: Supabase login with email confirmation, and Stripe Checkout credit packs ($5/$10/$20) with an atomic credit ledger and idempotent webhooks.
+- **Free quality check**: rule-based linter for gender-coded and age-coded words, pay range, bullet caps and reading level (`src/quality`). No extra AI cost.
+- **Pay range by location**: optional pay fields; pick a location to see whether a range is usually required. The AI never writes pay numbers.
+- **Free quick edits**: one-click Shorter, More inclusive, Simplify, and per-section Rewrite, with undo and highlighted changes.
+- **Upload and improve**: upload an old JD (no account), then see what changed.
+- **Abuse protection**: Cloudflare Turnstile, per-IP and global daily limits, disposable-email blocking.
+- **Public proof**: `/architecture.html` and `/eval.html` (model comparison from the evaluation harness).
+
+Setup steps for the new features are in [docs/ROADMAP_SETUP_CHECKLIST.md](docs/ROADMAP_SETUP_CHECKLIST.md).
 
 ---
 
@@ -180,7 +188,12 @@ LinkedIn_Job_Description_GenAI/
 │   │   ├── questions.py        # Intake questions definition & skip logic
 │   │   └── state.py            # SessionState & QuestionAnswer data classes
 │   ├── api/
-│   │   ├── main.py             # FastAPI entrypoint, auth, stripe & endpoints
+│   │   ├── main.py             # FastAPI app setup (CORS, routers, static frontend)
+│   │   ├── dependencies.py     # Bearer-token / signed-in user dependencies
+│   │   ├── routers/
+│   │   │   ├── auth.py         # Signup, login, OTP, password reset, profile
+│   │   │   ├── jobs.py         # Questions, generate, refine, document upload
+│   │   │   └── payments.py     # Stripe checkout, webhook, credit balance
 │   │   ├── schemas.py          # Request / Response Pydantic models
 │   │   └── services.py         # Business logic connectors
 │   ├── auth/                   # Supabase authentication & OTP service
@@ -192,9 +205,9 @@ LinkedIn_Job_Description_GenAI/
 │   ├── llm/
 │   │   ├── client.py           # Unified client interface
 │   │   ├── models.py           # Supported models configuration
-│   │   └── providers.py        # Provider adapters (OpenAI, HF, OpenRouter)
+│   │   └── providers.py        # OpenRouter adapter (generate & stream)
 │   ├── rendering/
-│   │   └── markdown_renderer.py # JSON-to-Markdown renderer
+│   │   └── markdown.py         # JSON-to-Markdown renderer
 │   └── schema/
 │       ├── job_description.py  # JobDescriptionDraft Pydantic model
 │       └── job_info.py         # JobInfo input schema
