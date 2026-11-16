@@ -481,3 +481,16 @@
   .template-hub-card:nth-child(8) { animation-delay: 560ms; }
   .template-hub-card:nth-child(n + 9) { animation-delay: 620ms; }
 }
+
+/* ===== No pill tags on template pages ===== */
+.hub-badge { display: none; }
+.hub-category, .badge-category, .related-badge, .template-pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hub-category, .badge-category, .related-badge { color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.meta-pills { gap: 6px 22px; }
+.template-pill { color: var(--ink-soft); font-size: 0.9375rem; font-weight: 500; }

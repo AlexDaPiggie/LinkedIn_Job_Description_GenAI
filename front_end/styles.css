@@ -3548,3 +3548,26 @@ button:disabled {
 .toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-radius: 10px; background: #102033; color: #fff; font-size: 0.875rem; transform: translateX(-50%); box-shadow: 0 12px 32px rgba(16, 32, 51, 0.3); }
 .toast.hidden { display: none; }
 .toast-undo { padding: 0; border: 0; background: none; color: #7fe4ee; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+/* ===== No pill tags: labels are plain text ===== */
+.pay-tag, .credit-badge, .assumption-badge, .screening-list .tag, .refine-panel .btn-cost, .pack-flag, .refine-cost {
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.pay-tag { color: var(--muted); font-size: 0.875rem; font-weight: 500; }
+.credit-badge { color: var(--ink); font-size: 0.9375rem; font-weight: 600; text-align: left; }
+.assumption-badge { margin-left: 8px; color: #8a4b00; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.refine-panel .btn-cost { margin-left: 4px; font-weight: 500; opacity: 0.85; }
+.refine-panel .btn-cost::before { content: "\00b7\00a0"; }
+.screening-list .tag { margin-right: 8px; color: var(--muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.pack-flag { position: static; margin-bottom: 6px; color: var(--blue); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.pack-card { padding-top: 16px; }
+.seo-templates-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 28px; }
+.seo-template-pill, .contact-link { padding: 4px 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.seo-template-pill:hover, .contact-link:hover { background: transparent; color: var(--blue-deep); transform: none; }
+@media (max-width: 720px) { .seo-templates-chips { grid-template-columns: 1fr; } }
