@@ -1051,7 +1051,7 @@
     </div>
     <!-- Billing Modal Overlay -->
     <div id="billingModal" class="modal-overlay hidden">
-      <div class="modal-content">
+      <div class="modal-content billing-modal" role="dialog" aria-modal="true" aria-labelledby="billingTitle">
         <button
           id="closeBillingModalBtn"
           class="close-modal"
@@ -1062,12 +1062,15 @@
         </button>
 
         <div id="billingView">
-          <h2>Buy refine credits</h2>
+          <h2 id="billingTitle">Buy refine credits</h2>
           <p class="modal-sub">
-            Generating is always free. Credits pay for refine requests you type yourself. One-time payment, no subscription.
+            Generating is always free. Credits only pay for the refine requests you type yourself.
           </p>
           <div id="packList" class="pack-list"></div>
-          <p class="billing-rate-info">1 credit = 1 refine. A failed refine is refunded automatically.</p>
+          <ul class="billing-facts">
+            <li>1 credit = 1 refine. A failed refine is refunded automatically.</li>
+            <li>One-time payment, no subscription. Checkout is handled by Stripe.</li>
+          </ul>
         </div>
 
         <div id="billingMessageBox" class="message-box hidden"></div>

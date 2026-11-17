@@ -859,6 +859,8 @@ const FALLBACK_PACKS = [
   { pack_id: "pro", price_cents: 2000, credits: 80 },
 ];
 
+const PACK_LABELS = { starter: "Starter", standard: "Most popular", pro: "Pro" };
+
 function renderPacks() {
   const list = document.getElementById("packList");
   if (!list) return;
@@ -870,10 +872,10 @@ function renderPacks() {
     button.type = "button";
     button.className = `pack-card${pack.pack_id === "standard" ? " pack-popular" : ""}`;
     button.dataset.pack = pack.pack_id;
-    button.innerHTML = `${pack.pack_id === "standard" ? '<span class="pack-flag">Most popular</span>' : ""}
-      <span class="pack-credits">${pack.credits}</span>
-      <span class="pack-unit">refines</span>
+    const label = PACK_LABELS[pack.pack_id] || "";
+    button.innerHTML = `<span class="pack-main"><span class="pack-credits">${pack.credits}</span><span class="pack-unit">refines</span></span>
       <span class="pack-price">$${dollars}</span>
+      <span class="pack-name">${label}</span>
       <span class="pack-each">$${(dollars / pack.credits).toFixed(2)} each</span>`;
     button.addEventListener("click", () => payCredits(pack.pack_id, button));
     list.append(button);
@@ -1631,7 +1633,15 @@ async function payCredits(packId, button) {
     openModal();
     return;
   }
-  const restore = setLoading(button, "Loading...");
+  const originalHtml = button.innerHTML;
+  button.disabled = true;
+  button.classList.add("is-loading");
+  button.querySelector(".pack-name").textContent = "Opening checkout...";
+  const restore = () => {
+    button.innerHTML = originalHtml;
+    button.classList.remove("is-loading");
+    button.disabled = false;
+  };
   setBillingMessage("");
   try {
     const session = await callApi("/create-checkout-session", {
