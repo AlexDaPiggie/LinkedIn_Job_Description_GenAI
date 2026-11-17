@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="info-pages.css?v=2" />
+    <link rel="stylesheet" href="info-pages.css?v=4" />
   </head>
   <body>
     <nav class="nav-bar" aria-label="Site">
@@ -26,14 +26,100 @@
       <header class="page-head">
         <h1><span class="gradient-letter">H</span>ow it <span class="soft">works</span></h1>
         <p class="lead">
-          A short pipeline: collect facts, ask the AI for structured output, validate it, check it with plain rules,
-          then show it. The AI never writes pay numbers, and every edit is saved so you can undo it.
+          You answer a few questions. The AI writes a draft. Plain rules check it. You edit it and take it.
         </p>
-        <p class="meta">5 steps - 1 model call per draft - 0 extra AI calls for the quality check</p>
+        <p class="meta">1 AI call per draft - 0 extra AI calls for the quality check</p>
       </header>
 
+      <section aria-labelledby="promiseHeading">
+        <h2 id="promiseHeading" class="sr-only">What you can count on</h2>
+        <div class="three">
+          <div><h3>You stay in control</h3><p>Every edit can be undone. Nothing changes unless you click.</p></div>
+          <div><h3>No invented numbers</h3><p>The AI never writes pay. Your range is added exactly as you typed it.</p></div>
+          <div><h3>Free to generate</h3><p>No account needed. Only the typed "Refine" box uses a credit.</p></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="flowHeading">
+        <h2 id="flowHeading">There is AI inside, but the steps are simple</h2>
+        <p class="lead flow-lead">Here they are, using one job as the example: a Data Analyst at Acme.</p>
+        <ol class="flow" aria-label="The five steps">
+          <li><span class="flow-num">1</span><strong>Your answers</strong><em>you</em></li>
+          <li><span class="flow-num">2</span><strong>AI draft</strong><em>the only AI step</em></li>
+          <li><span class="flow-num">3</span><strong>Complete check</strong><em>code</em></li>
+          <li><span class="flow-num">4</span><strong>Wording check</strong><em>plain rules</em></li>
+          <li><span class="flow-num">5</span><strong>Edit and export</strong><em>you</em></li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="stepsHeading">
+        <h2 id="stepsHeading">The five steps</h2>
+        <ol class="rows steps" style="padding:0">
+          <li>
+            <span class="label">01 You</span>
+            <div><h3>You describe the job</h3><p>Answer a few questions, or upload an old posting and let it fill them in.</p></div>
+            <p class="eg"><b>Example</b> Acme, Data Analyst, $80,000 - $100,000</p>
+          </li>
+          <li>
+            <span class="label">02 AI</span>
+            <div><h3>The AI writes a draft</h3><p>It fills labelled sections from your answers: summary, duties, requirements.</p></div>
+            <p class="eg"><b>Example</b> "Acme is hiring a Data Analyst to turn sales data into clear reports..."</p>
+          </li>
+          <li>
+            <span class="label">03 Code</span>
+            <div><h3>We check it is complete</h3><p>A missing or broken section is caught before you see it. We retry once, then show a clear error.</p></div>
+            <p class="eg"><b>Example</b> A draft with no "Requirements" section is retried.</p>
+          </li>
+          <li>
+            <span class="label">04 Rules</span>
+            <div><h3>We check the wording</h3><p>Simple word lists, not another AI, flag hype words, age-coded and gender-coded wording, and missing pay.</p></div>
+            <p class="eg"><b>Example</b> "Rockstar" and "ninja" are flagged as hype. "Digital native" is flagged as age-coded.</p>
+          </li>
+          <li>
+            <span class="label">05 You</span>
+            <div><h3>You edit and take it</h3><p>One-click tweaks, rewrite one section, undo anytime. Then copy for LinkedIn or download Word.</p></div>
+            <p class="eg"><b>Example</b> Click "More casual" and the tone changes in one click.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="notHeading">
+        <h2 id="notHeading">What it does not do</h2>
+        <ul class="nots">
+          <li>It does not let the AI write your pay numbers.</li>
+          <li>It does not use extra AI for the quality check, so the same draft gets the same result every time.</li>
+          <li>It does not charge for generating, quality checks or quick edits.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="pricingHeading">
+        <h2 id="pricingHeading">Does it cost anything?</h2>
+        <div class="cols">
+          <div>
+            <h3>Free, no account</h3>
+            <ul>
+              <li>Generate a full draft</li>
+              <li>Upload and auto-fill from an old job description</li>
+              <li>Quality check, quick edits, section rewrite, undo</li>
+              <li>Copy to LinkedIn, Word export, screening questions</li>
+            </ul>
+          </div>
+          <div>
+            <h3>1 credit</h3>
+            <ul>
+              <li>A refine request you type yourself</li>
+              <li>New accounts get 20 free credits</li>
+              <li>If the AI call fails, the credit is returned automatically</li>
+              <li>More credits: $5 for 20, $10 for 40, $20 for 80</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <details class="tech">
+        <summary>See how it works technically</summary>
       <section aria-labelledby="pipelineHeading">
-        <h2 id="pipelineHeading">From notes to a checked post</h2>
+        <h2 id="pipelineHeading">The same steps, in technical terms</h2>
         <ol class="rows" style="padding:0">
           <li>
             <span class="label">01 Intake</span>
@@ -62,31 +148,6 @@
           </li>
         </ol>
       </section>
-
-      <section aria-labelledby="pricingHeading">
-        <h2 id="pricingHeading">What is free, what costs a credit</h2>
-        <div class="cols">
-          <div>
-            <h3>Free, no account</h3>
-            <ul>
-              <li>Generate a full draft</li>
-              <li>Upload and auto-fill from an old job description</li>
-              <li>Quality check, quick edits, section rewrite, undo</li>
-              <li>Copy to LinkedIn, Word export, screening questions</li>
-            </ul>
-          </div>
-          <div>
-            <h3>1 credit</h3>
-            <ul>
-              <li>A refine request you type yourself</li>
-              <li>New accounts get 20 free credits</li>
-              <li>If the AI call fails, the credit is returned automatically</li>
-              <li>More credits: $5 for 20, $10 for 40, $20 for 80</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
       <section aria-labelledby="designHeading">
         <h2 id="designHeading">Design choices</h2>
         <ul class="rows two" style="padding:0">
@@ -96,7 +157,6 @@
           <li><span class="label">Uploads</span><div><h3>Treated as untrusted text</h3><p>File text is cleaned, capped and wrapped in delimiters, and extracted fields are filtered to known names and types.</p></div></li>
         </ul>
       </section>
-
       <section aria-labelledby="safetyHeading">
         <h2 id="safetyHeading">Money and safety</h2>
         <ul class="rows two" style="padding:0">
@@ -106,7 +166,6 @@
           <li><span class="label">Signup</span><div><h3>One free grant per mailbox</h3><p>Email must be confirmed first. Gmail dots and plus tags are collapsed, and throwaway email domains are blocked.</p></div></li>
         </ul>
       </section>
-
       <section aria-labelledby="stackHeading">
         <h2 id="stackHeading">Stack</h2>
         <p class="lead">
@@ -115,6 +174,7 @@
           and run without the rest of the app. See <a href="/eval.html">how the model was chosen</a>.
         </p>
       </section>
+      </details>
     </main>
 
     <footer class="site-foot"><div class="wrap">LinkedInGenAI. The quality check is a screening aid for wording and structure, not legal advice.</div></footer>

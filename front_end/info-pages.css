@@ -212,3 +212,32 @@ footer.site-foot { border-top: 1px solid var(--line); padding: 28px 0 48px; colo
     -1px 0 0 rgba(41, 59, 255, 0.18);
 }
 .page-head h1 .gradient-letter { font-weight: 600; letter-spacing: 0; }
+
+/* How it works: plain-language layer */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 32px; }
+.three > div { padding-top: 16px; border-top: 1px solid var(--ink); }
+.three h3 { margin: 0 0 6px; font-size: 1.0625rem; }
+.three p { margin: 0; color: var(--ink-soft); }
+.flow-lead { margin: -8px 0 28px; }
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
+.flow > li { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 16px 20px 16px 0; border-top: 1px solid var(--ink); }
+.flow > li:not(:last-child)::after { content: "\2192"; position: absolute; top: 38px; right: 8px; color: var(--soft-blue); font-size: 1.125rem; }
+.flow-num { color: var(--blue); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; }
+.flow strong { font-size: 1.0625rem; font-weight: 600; line-height: 1.25; }
+.flow em { color: var(--muted); font-family: var(--mono); font-size: 0.75rem; font-style: normal; letter-spacing: 0.02em; }
+.rows.steps > li { grid-template-columns: 120px minmax(0, 1fr) 300px; }
+.rows .eg { color: var(--ink-soft); font-size: 0.875rem; line-height: 1.5; }
+.rows .eg b { display: block; margin-bottom: 2px; color: var(--muted); font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.nots { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+.nots li { padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
+details.tech { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); margin-bottom: 72px; }
+details.tech > summary { padding: 16px 0; color: var(--blue); font-weight: 600; cursor: pointer; }
+details.tech[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 40px; }
+@media (max-width: 860px) {
+  .three { grid-template-columns: 1fr; gap: 24px; }
+  .flow { grid-template-columns: 1fr; }
+  .flow > li { padding-right: 0; }
+  .flow > li:not(:last-child)::after { content: "\2193"; top: auto; bottom: -2px; right: auto; left: 0; display: none; }
+  .rows.steps > li { grid-template-columns: 1fr; }
+}
