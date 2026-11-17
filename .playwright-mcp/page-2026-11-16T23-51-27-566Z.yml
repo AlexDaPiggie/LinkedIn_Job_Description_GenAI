@@ -1,0 +1,305 @@
+- generic [ref=f32e1]:
+  - banner [ref=f32e2]:
+    - generic [ref=f32e4]:
+      - link "mymind" [ref=f32e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=f32e19]:
+        - list [ref=f32e20]:
+          - listitem [ref=f32e21]:
+            - link "What" [ref=f32e22] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f32e23]:
+            - link "Why" [ref=f32e24] [cursor=pointer]:
+              - /url: /why
+          - listitem [ref=f32e25]:
+            - link "How" [ref=f32e26] [cursor=pointer]:
+              - /url: /how
+          - listitem [ref=f32e27]:
+            - link "Log in" [ref=f32e28] [cursor=pointer]:
+              - /url: https://access.mymind.com/signin
+          - listitem [ref=f32e29]:
+            - link "Sign up" [ref=f32e30] [cursor=pointer]:
+              - /url: https://access.mymind.com/
+  - generic [ref=f32e33]:
+    - main [ref=f32e34]:
+      - generic [ref=f32e39]:
+        - heading [level=1] [ref=f32e41]:
+          - img "How mymind works?" [ref=f32e42]
+        - paragraph [ref=f32e45]:
+          - generic [ref=f32e46]: There’s a lot of magic and some artificial intelligence inside, but let’s keep it simple for the time being...Everytime you find something you want to remember, you just save it to mymind.
+        - img "Blank" [ref=f32e50]
+      - generic [ref=f32e944]:
+        - img "Bubble" [ref=f32e947]
+        - paragraph [ref=f32e950]:
+          - generic [ref=f32e951]: Yes! No need to waste time categorizing or organizing anything, your new mind magically does it all for you.This way you can immediately find what you need later with a simple search.
+      - generic [ref=f32e954]:
+        - generic:
+          - generic:
+            - generic:
+              - img "Blank" [ref=f32e956]
+              - img "Blank" [ref=f32e958]
+              - img "Blank" [ref=f32e960]
+        - generic [ref=f32e963]:
+          - paragraph [ref=f32e966]: MYMIND IS MADE FOR
+          - paragraph [ref=f32e969]: Designers, writers, marketers, researches, developers and visual minds of all kind.
+        - generic [ref=f32e970]:
+          - generic [ref=f32e972]:
+            - generic [ref=f32e973]:
+              - generic:
+                - generic:
+                  - link "FOR DESIGNERS":
+                    - /url: "#"
+            - paragraph [ref=f32e976]: Your moodboard & visual inspiration
+            - paragraph [ref=f32e979]: Designers use mymind to collect visual inspiration, save their favorite online resources and generate moodboards on the fly within seconds.
+            - paragraph [ref=f32e982]: WHY DESIGNERS LOVE IT
+            - paragraph [ref=f32e985]:
+              - link "Generate moodboards in seconds" [ref=f32e987] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#same-vibe
+            - paragraph [ref=f32e990]:
+              - link "Search images by color" [ref=f32e992] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#saving-images
+            - paragraph [ref=f32e995]:
+              - link "Save favorite colors & color palettes" [ref=f32e997] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#save-colors
+            - paragraph [ref=f32e1000]:
+              - link "Easily save visual references with one click" [ref=f32e1002] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=c-mHnkDWQwQ
+          - img "01" [ref=f32e1007]
+        - generic [ref=f32e1008]:
+          - generic [ref=f32e1010]:
+            - generic [ref=f32e1011]:
+              - generic:
+                - generic:
+                  - link "FOR WRITERS":
+                    - /url: "#"
+            - paragraph [ref=f32e1014]:
+              - text: Distraction free
+              - generic [ref=f32e1015]: writing & ideation.
+            - paragraph [ref=f32e1018]: Writers use mymind to take notes, free-write drafts, save text highlights from the web and collect inspiration for their next big article or award winning ad.
+            - paragraph [ref=f32e1021]: WHY WRITERS LOVE IT
+            - paragraph [ref=f32e1024]:
+              - link "Quick & effortless note taking" [ref=f32e1026] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=5_H41A9_5do
+            - paragraph [ref=f32e1029]:
+              - link "Beautiful focused writing in focus mode" [ref=f32e1031] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=5_H41A9_5do
+            - paragraph [ref=f32e1034]:
+              - link "Save writing references with one click" [ref=f32e1036] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#save-anything-with-one-click
+            - paragraph [ref=f32e1039]:
+              - link "Collect highlights & inspiration" [ref=f32e1041] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=4J666uPWKa0
+          - img "02" [ref=f32e1046]
+        - generic [ref=f32e1047]:
+          - generic [ref=f32e1049]:
+            - generic [ref=f32e1050]:
+              - generic:
+                - generic:
+                  - link "FOR MARKETERS":
+                    - /url: "#"
+            - paragraph [ref=f32e1053]: A marketersswipe-file.
+            - paragraph [ref=f32e1056]: Every marketer should keep a swipe file with inspiration and best practices for copywriting, sales or campaign strategy. mymind is exactly that.
+            - paragraph [ref=f32e1059]: WHY MARKETERS LOVE IT
+            - paragraph [ref=f32e1062]:
+              - link "One-click saving of visual references" [ref=f32e1064] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#save-anything-with-one-click
+            - paragraph [ref=f32e1067]:
+              - link "OCR text recognition for finding text in visuals" [ref=f32e1069] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=KwHCfDFh1AE
+            - paragraph [ref=f32e1072]:
+              - link "Contextual notes & todos for swipe files" [ref=f32e1074] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#marketing-swap-file
+            - paragraph [ref=f32e1077]:
+              - link "Collect highlights & inspiration" [ref=f32e1079] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=4J666uPWKa0
+          - img "03" [ref=f32e1084]
+        - generic [ref=f32e1085]:
+          - generic [ref=f32e1087]:
+            - generic [ref=f32e1088]:
+              - generic:
+                - generic:
+                  - link "FOR DEVELOPERS":
+                    - /url: "#"
+            - paragraph [ref=f32e1091]: Inspiration andresource hub.
+            - paragraph [ref=f32e1094]: Developers use mymind to bookmark and organize their go-to resources. Keep all your code snippets in one place. Easy to find when you need them.
+            - paragraph [ref=f32e1097]: WHY DEVELOPERS LOVE IT
+            - paragraph [ref=f32e1100]:
+              - link "Quick & effortless markdown note taking" [ref=f32e1102] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=5_H41A9_5do
+            - paragraph [ref=f32e1105]:
+              - link "Keep track of todos" [ref=f32e1107] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#todo-app
+            - paragraph [ref=f32e1110]:
+              - link "Easy save & recall of code snippets" [ref=f32e1112] [cursor=pointer]:
+                - /url: /videos#save-quotes-highlights
+            - paragraph [ref=f32e1115]:
+              - link "Collect inspiration & resource material" [ref=f32e1117] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#save-anything-with-one-click
+          - img "04" [ref=f32e1122]
+        - generic [ref=f32e1123]:
+          - generic [ref=f32e1125]:
+            - generic [ref=f32e1126]:
+              - generic:
+                - generic:
+                  - link "FOR RESEARCHERS":
+                    - /url: "#"
+            - paragraph [ref=f32e1129]: Your privateknowledge-base.
+            - paragraph [ref=f32e1132]: Researchers use mymind to collect data and find unexpected connections between bits of information. From web clippings, PDFs to articles and research papers. All in one place.
+            - paragraph [ref=f32e1135]: WHY RESEARCHERS LOVE IT
+            - paragraph [ref=f32e1138]:
+              - link "Easy to add contextual notes to material" [ref=f32e1140] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=NuBA95moY_E
+            - paragraph [ref=f32e1143]:
+              - link "Reading Mode for articles & research papers" [ref=f32e1145] [cursor=pointer]:
+                - /url: https://www.youtube.com/watch?v=TvwE9nhZUuI
+            - paragraph [ref=f32e1148]:
+              - generic [ref=f32e1149]:
+                - link "Text highlights" [ref=f32e1150] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=4J666uPWKa0
+                - text: "&"
+                - link [ref=f32e1151] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=4J666uPWKa0
+                - link "OCR text recognition" [ref=f32e1152] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=KwHCfDFh1AE
+            - paragraph [ref=f32e1155]:
+              - link "Collect PDFs and research papers" [ref=f32e1157] [cursor=pointer]:
+                - /url: /videos?preview_id=1516&preview=true#pdfs
+          - img "05" [ref=f32e1162]
+        - generic [ref=f32e1163]:
+          - generic [ref=f32e1165]:
+            - generic [ref=f32e1166]:
+              - generic:
+                - generic:
+                  - link "FOR EVERYONE":
+                    - /url: /
+            - paragraph [ref=f32e1169]: An extensionfor your mind.
+            - paragraph [ref=f32e1172]:
+              - generic [ref=f32e1173]:
+                - text: Use it for your
+                - link "recipes" [ref=f32e1175] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=vuJ6MDrDuQU
+                - text: . Your
+                - link "meme collection" [ref=f32e1177] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=MBvP5Gerqos
+                - text: . Your poems. Your reading list. Your
+                - link "vision board" [ref=f32e1179] [cursor=pointer]:
+                  - /url: https://www.youtube.com/watch?v=UjpNEYJlxKo
+                - text: . Your to-do list. Or all of the above. There are no rules. It’s your mind, and you can use it as you please.Everyone’s mind looks and works different. But the easy to use nature of mymind makes it adapt to your specific use cases. Your mind might look and work differently than someone elses, and that’s totally okay.
+          - img "06" [ref=f32e1184]
+      - generic [ref=f32e1189]:
+        - img "Closing Icon" [ref=f32e1192]
+        - paragraph [ref=f32e1195]:
+          - generic [ref=f32e1196]: We’re trying to do something different with mymind.It’s a refreshing approach to remembering the things you deeply care about.
+        - link "CREATE YOUR NEW MIND CREATE YOUR NEW MIND CREATE YOUR NEW MIND" [ref=f32e1200] [cursor=pointer]:
+          - /url: https://access.mymind.com/signin
+          - text: CREATE YOUR NEW MIND
+          - generic [ref=f32e1201]: CREATE YOUR NEW MIND
+          - text: CREATE YOUR NEW MIND
+      - generic [ref=f32e1204]:
+        - generic [ref=f32e1205]:
+          - generic [ref=f32e1207]:
+            - img "Astore" [ref=f32e1210]
+            - paragraph [ref=f32e1213]: iOS
+            - link "GET APP" [ref=f32e1217] [cursor=pointer]:
+              - /url: https://apps.apple.com/us/app/mymind-extend-your-mind/id1520332347
+          - generic [ref=f32e1221]:
+            - img "PStore" [ref=f32e1224]
+            - paragraph [ref=f32e1227]: Android
+            - link "GET APP" [ref=f32e1231] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=com.mymind.access&hl=en_US
+          - generic [ref=f32e1235]:
+            - img "Google Chrome" [ref=f32e1238]
+            - paragraph [ref=f32e1241]: Chrome
+            - link "INSTALL" [ref=f32e1245] [cursor=pointer]:
+              - /url: https://chrome.google.com/webstore/detail/mymind-%E2%80%94-an-extension-for/nmgcefdhjpjefhgcpocffdlibknajbmj
+          - generic [ref=f32e1249]:
+            - img "Explorer" [ref=f32e1252]
+            - paragraph [ref=f32e1255]: Edge
+            - link "INSTALL" [ref=f32e1259] [cursor=pointer]:
+              - /url: https://chrome.google.com/webstore/detail/mymind-%E2%80%94-an-extension-for/nmgcefdhjpjefhgcpocffdlibknajbmj
+          - generic [ref=f32e1263]:
+            - img "Safari" [ref=f32e1266]
+            - paragraph [ref=f32e1269]: Safari
+            - link "INSTALL" [ref=f32e1273] [cursor=pointer]:
+              - /url: https://apps.apple.com/us/app/mymind-extend-your-mind/id1532801185?mt=12
+        - paragraph [ref=f32e1281]:
+          - link "Looking for another browser?" [ref=f32e1283] [cursor=pointer]:
+            - /url: https://mymind.helpscoutdocs.com/article/97-install-browser-extension
+    - generic [ref=f32e1285]:
+      - generic [ref=f32e1286]:
+        - img "mymind_footer_logo" [ref=f32e1291]
+        - generic [ref=f32e1293]:
+          - paragraph [ref=f32e1296]:
+            - link "See how it works" [ref=f32e1298] [cursor=pointer]:
+              - /url: /videos
+          - paragraph [ref=f32e1301]:
+            - link "mymind walkthroughs" [ref=f32e1303] [cursor=pointer]:
+              - /url: /videos
+      - generic [ref=f32e1304]:
+        - generic [ref=f32e1306]:
+          - paragraph [ref=f32e1309]:
+            - link "Why people love mymind" [ref=f32e1310] [cursor=pointer]:
+              - /url: /reviews
+          - paragraph [ref=f32e1313]:
+            - link "Our pricing" [ref=f32e1314] [cursor=pointer]:
+              - /url: /pricing
+          - paragraph [ref=f32e1317]:
+            - link "See how it works" [ref=f32e1318] [cursor=pointer]:
+              - /url: /videos
+          - paragraph [ref=f32e1321]:
+            - link "mymind & ADHD" [ref=f32e1322] [cursor=pointer]:
+              - /url: /adhd
+        - generic [ref=f32e1326]:
+          - paragraph [ref=f32e1330]: OUR APPS
+          - paragraph [ref=f32e1334]:
+            - generic [ref=f32e1335]:
+              - link "iOS app" [ref=f32e1336] [cursor=pointer]:
+                - /url: https://apps.apple.com/us/app/mymind-extend-your-mind/id1520332347
+              - link "Android app" [ref=f32e1337] [cursor=pointer]:
+                - /url: https://play.google.com/store/apps/details?id=com.mymind.access&ah=oIVxiLViPVHlzc0SrH49usBzYi0
+              - link "Browser extension" [ref=f32e1338] [cursor=pointer]:
+                - /url: /browser-extensions
+              - link "MacOS app" [ref=f32e1339] [cursor=pointer]:
+                - /url: https://apps.apple.com/us/app/mymind-extend-your-mind/id1532801185?mt=12
+        - generic [ref=f32e1341]:
+          - paragraph [ref=f32e1345]: ABOUT US
+          - paragraph [ref=f32e1349]:
+            - generic [ref=f32e1350]:
+              - link "Our manifesto" [ref=f32e1351] [cursor=pointer]:
+                - /url: /manifesto
+              - link "Our promise" [ref=f32e1352] [cursor=pointer]:
+                - /url: /our-promise
+              - link "Mind Palace" [ref=f32e1353] [cursor=pointer]:
+                - /url: /palace
+              - link "Interviews" [ref=f32e1354] [cursor=pointer]:
+                - /url: /interviews
+        - generic [ref=f32e1356]:
+          - paragraph [ref=f32e1360]: HELP AND CONTACT
+          - paragraph [ref=f32e1364]:
+            - link "@mymind on Twitter" [ref=f32e1366] [cursor=pointer]:
+              - /url: https://twitter.com/mymind
+          - paragraph [ref=f32e1370]:
+            - link "Guides & contact form" [ref=f32e1372] [cursor=pointer]:
+              - /url: https://mymind.helpscoutdocs.com/
+          - paragraph [ref=f32e1376]:
+            - link "Video tutorials" [ref=f32e1378] [cursor=pointer]:
+              - /url: /videos
+          - paragraph [ref=f32e1382]:
+            - link "Sign in to mymind" [ref=f32e1384] [cursor=pointer]:
+              - /url: https://access.mymind.com/signin
+          - paragraph [ref=f32e1388]:
+            - link "Create an account" [ref=f32e1390] [cursor=pointer]:
+              - /url: https://access.mymind.com/
+      - generic [ref=f32e1398]:
+        - paragraph [ref=f32e1404]: © mymind, inc. 2025
+        - paragraph [ref=f32e1410]: Made with love ♡ from New York City, NY
+        - paragraph [ref=f32e1416]:
+          - generic [ref=f32e1417]:
+            - link "Terms & Conditions" [ref=f32e1418] [cursor=pointer]:
+              - /url: /terms
+            - text: ∙
+            - link "Privacy Policy" [ref=f32e1419] [cursor=pointer]:
+              - /url: /privacypolicy
+            - text: ∙
+            - link "FAQ" [ref=f32e1420] [cursor=pointer]:
+              - /url: /faq

@@ -1,0 +1,359 @@
+- generic [active] [ref=f13e1]:
+  - link "Skip to main content" [ref=f13e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=f13e4]:
+    - text: See every side of every news story
+    - link "Get Started" [ref=f13e6] [cursor=pointer]:
+      - /url: /subscribe
+  - banner [ref=f13e7]:
+    - region "Site utilities" [ref=f13e8]:
+      - generic [ref=f13e10]:
+        - link "Browser Extension" [ref=f13e12] [cursor=pointer]:
+          - /url: /extension
+        - generic [ref=f13e13]:
+          - generic [ref=f13e14]:
+            - time [ref=f13e15]:
+              - time [ref=f13e16]: Monday, November 16, 2026
+            - button "Set Location" [ref=f13e17] [cursor=pointer]
+          - button "US Edition" [ref=f13e19] [cursor=pointer]
+    - generic [ref=f13e24]:
+      - generic [ref=f13e25]:
+        - generic [ref=f13e26]:
+          - button "Open menu" [ref=f13e27] [cursor=pointer]:
+            - img "Section Icon" [ref=f13e28]
+          - link "Ground News Home" [ref=f13e31] [cursor=pointer]:
+            - /url: /
+            - img "News Logo" [ref=f13e33]
+        - navigation "Primary" [ref=f13e46]:
+          - link "Home" [ref=f13e48] [cursor=pointer]:
+            - /url: /
+          - link "For You" [ref=f13e51] [cursor=pointer]:
+            - /url: /my
+          - link "Local" [ref=f13e54] [cursor=pointer]:
+            - /url: /local
+          - link "Blindspot" [ref=f13e57] [cursor=pointer]:
+            - /url: /blindspot
+      - generic [ref=f13e59]:
+        - generic [ref=f13e61] [cursor=pointer]:
+          - generic [ref=f13e62]:
+            - img "Search Icon" [ref=f13e63]
+            - generic [ref=f13e66]: Search
+          - textbox "Search Icon Search" [ref=f13e71]:
+            - /placeholder: Enter an article's Web Address, URL, or type to search...
+        - generic [ref=f13e72]:
+          - link "Subscribe" [ref=f13e74] [cursor=pointer]:
+            - /url: /subscribe
+          - link "Login" [ref=f13e76] [cursor=pointer]:
+            - /url: /login?redirect=/about
+    - generic [ref=f13e82]:
+      - img "Trending Icon" [ref=f13e83]
+      - generic [ref=f13e87]:
+        - link "Robert Pattinson" [ref=f13e88] [cursor=pointer]:
+          - /url: /interest/robert-pattinson
+        - button "Follow Robert Pattinson" [ref=f13e89] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e90]
+      - generic [ref=f13e91]:
+        - link "Grammy Awards" [ref=f13e92] [cursor=pointer]:
+          - /url: /interest/grammy-awards
+        - button "Follow Grammy Awards" [ref=f13e93] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e94]
+      - generic [ref=f13e95]:
+        - link "FAA" [ref=f13e96] [cursor=pointer]:
+          - /url: /interest/faa
+        - button "Follow FAA" [ref=f13e97] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e98]
+      - generic [ref=f13e99]:
+        - link "American Football" [ref=f13e100] [cursor=pointer]:
+          - /url: /interest/american-football
+        - button "Follow American Football" [ref=f13e101] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e102]
+      - generic [ref=f13e103]:
+        - link "Black Friday" [ref=f13e104] [cursor=pointer]:
+          - /url: /interest/black-friday
+        - button "Follow Black Friday" [ref=f13e105] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e106]
+      - generic [ref=f13e107]:
+        - link "APEC" [ref=f13e108] [cursor=pointer]:
+          - /url: /interest/apec_3352b2
+        - button "Follow APEC" [ref=f13e109] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e110]
+      - generic [ref=f13e111]:
+        - link "NCAA" [ref=f13e112] [cursor=pointer]:
+          - /url: /interest/ncaa_f919c3
+        - button "Follow NCAA" [ref=f13e113] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e114]
+      - generic [ref=f13e115]:
+        - link "Basketball" [ref=f13e116] [cursor=pointer]:
+          - /url: /interest/basketball
+        - button "Follow Basketball" [ref=f13e117] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e118]
+      - generic [ref=f13e119]:
+        - link "Jensen Huang" [ref=f13e120] [cursor=pointer]:
+          - /url: /interest/jensen-huang
+        - button "Follow Jensen Huang" [ref=f13e121] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e122]
+      - generic [ref=f13e123]:
+        - link "Nvidia" [ref=f13e124] [cursor=pointer]:
+          - /url: /interest/nvidia_7cf156
+        - button "Follow Nvidia" [ref=f13e125] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e126]
+      - generic [ref=f13e127]:
+        - link "Artificial Intelligence" [ref=f13e128] [cursor=pointer]:
+          - /url: /interest/ai
+        - button "Follow Artificial Intelligence" [ref=f13e129] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e130]
+      - generic [ref=f13e131]:
+        - link "Donald Trump" [ref=f13e132] [cursor=pointer]:
+          - /url: /interest/donald-trump
+        - button "Follow Donald Trump" [ref=f13e133] [cursor=pointer]:
+          - img "Plus Icon" [ref=f13e134]
+  - main [ref=f13e135]:
+    - generic [ref=f13e138]:
+      - generic [ref=f13e139]:
+        - heading "What is Ground News" [level=1] [ref=f13e140]
+        - generic [ref=f13e141]: Ground News is a platform that makes it easy to compare news sources, read between the lines of media bias and break free from algorithms.
+      - generic [ref=f13e143]:
+        - generic [ref=f13e144]: Index
+        - button "Media Bias" [ref=f13e145] [cursor=pointer]
+        - button "Mission" [ref=f13e146] [cursor=pointer]
+        - button "How it works" [ref=f13e147] [cursor=pointer]
+        - button "How we rate media bias" [ref=f13e148] [cursor=pointer]
+        - button "Bias Checker Tools" [ref=f13e149] [cursor=pointer]
+        - button "Newsletters" [ref=f13e150] [cursor=pointer]
+        - button "Team" [ref=f13e151] [cursor=pointer]
+        - button "Founders" [ref=f13e152] [cursor=pointer]
+        - button "Investors" [ref=f13e153] [cursor=pointer]
+        - button "Get in Touch" [ref=f13e154] [cursor=pointer]
+    - generic [ref=f13e156]:
+      - heading "The Problem with Partisan Media" [level=2] [ref=f13e158]
+      - generic [ref=f13e159]:
+        - generic [ref=f13e160]: Over the past decade, online news and ad-driven algorithms have made it profitable for news outlets to embrace a position on the bias spectrum to target specific consumers.
+        - generic [ref=f13e162]: Bias in the media affects everything from what events receive coverage, to how a news outlet frames those events in their reporting.As media outlets narrow their perspective and range of coverage, it’s become impossible to consult a single news story for a well-rounded view on important issues.
+    - generic [ref=f13e165]:
+      - generic [ref=f13e167]:
+        - heading "Thinking Freely" [level=2] [ref=f13e168]
+        - generic [ref=f13e169]:
+          - generic [ref=f13e170]: Ground News was created to offer clarity in an increasingly chaotic media landscape. Our vision is positive coexistence where cooperative, civil debate is the norm, media is accountable, and critical thought is the baseline of our information consumption. We’re on a mission to well inform the world by empowering readers to think freely about the issues of our times.
+          - link "Read about our mission here" [ref=f13e171] [cursor=pointer]:
+            - /url: /mission
+      - generic [ref=f13e175]:
+        - heading "A Better Way to Read the News" [level=2] [ref=f13e176]
+        - generic [ref=f13e177]: Every day we process nearly 60,000 news articles from over 50,000 different news sources. Articles from different outlets covering the same event are merged into a single story, making it possible to get multiple perspectives in one place.
+    - generic [ref=f13e180]:
+      - heading "See the Whole Picture" [level=2] [ref=f13e181]
+      - paragraph [ref=f13e182]:
+        - text: "The Ground News rating system adds context and transparency to every news story. Readers from all walks of life can conveniently identify media bias, check source credibility, and view ownership data for news outlets around the world. The bias and factuality ratings are determined using three independent news monitoring organizations: AllSides, Ad Fontes Media, and Media Bias Fact Check. The ownership categories were researched and developed by Ground News."
+        - link "Learn more about our methodology here" [ref=f13e183] [cursor=pointer]:
+          - /url: /rating-system
+      - generic [ref=f13e186]:
+        - generic [ref=f13e187]:
+          - generic [ref=f13e188]: Bias
+          - generic [ref=f13e189]: What is the political bias of a news outlet? This score takes into account wording, story choices and political affiliation.
+        - generic [ref=f13e190]:
+          - generic [ref=f13e191]: Factuality
+          - generic [ref=f13e192]: How reliable are the reporting practices of the news outlets covering a story? This score takes into account the credibility of sources used, the speed at which corrections are made, and whether the language retains context.
+        - generic [ref=f13e193]:
+          - generic [ref=f13e194]: Ownership
+          - generic [ref=f13e195]: Who owns the news you read? We researched, analyzed and hand-coded ownership data for 2,276 news outlets and counting.
+    - generic [ref=f13e197]:
+      - heading "Ground News is everywhere you need it." [level=2] [ref=f13e198]
+      - generic [ref=f13e199]:
+        - generic [ref=f13e202]:
+          - paragraph [ref=f13e203]: View bias and factuality ratings at a glance, so you can focus on getting a balanced perspective on today’s major news events.
+          - img "products" [ref=f13e204]
+        - generic [ref=f13e207]:
+          - paragraph [ref=f13e208]: Scan this QR code to download the Ground News mobile app.
+          - img "qr-code" [ref=f13e209]
+    - generic [ref=f13e211]:
+      - heading "Bias Checker Tools" [level=2] [ref=f13e212]
+      - generic [ref=f13e213]:
+        - img "Ground News browser extension" [ref=f13e214]
+        - generic [ref=f13e215]:
+          - heading "Browser Extension" [level=3] [ref=f13e216]
+          - generic [ref=f13e217]: Get the breakdown of how news outlets from across the political spectrum are reporting on the same story with the Ground News Media Bias Checker Extension.
+          - generic [ref=f13e218]: "TIP: It also works on news articles shared on social media platforms like Facebook, Twitter, and Reddit."
+          - link "Get the Extension" [ref=f13e219] [cursor=pointer]:
+            - /url: /extension
+    - generic [ref=f13e223]:
+      - generic [ref=f13e224]:
+        - heading "Not Your Average Newsletters" [level=2] [ref=f13e225]
+        - generic [ref=f13e226]: Get the latest breaking news, see underreported stories across the political spectrum and discover important issues outside your algorithm.
+        - link "See Newsletters" [ref=f13e228] [cursor=pointer]:
+          - /url: /newsletters
+      - img "Ground News Newsletters - Daily Ground, Blindspot Report, Burst Your Bubble" [ref=f13e229]
+    - generic [ref=f13e232]:
+      - generic [ref=f13e233]:
+        - heading "Our Team" [level=2] [ref=f13e234]
+        - generic [ref=f13e235]:
+          - paragraph [ref=f13e236]: Ground News is based in Kitchener, Ontario, in Canada's KW tech corridor. Harleen Kaur and Sukh Singh, siblings with backgrounds in aerospace engineering and nanotech, founded the company in 2017 out of the University of Waterloo's Velocity incubator.
+          - paragraph [ref=f13e237]: Supporting them is a team of curious and ambitious employees dedicated to our mission of helping readers better understand the news. They bring a diversity of perspectives, nationalities, and professional experience, including work at Vice, SmartNews, Google, Strava, Spotify, and a range of high-growth startups.
+        - link "To see open positions at Ground News, check out our Careers page" [ref=f13e238] [cursor=pointer]:
+          - /url: /careers
+      - generic [ref=f13e239]:
+        - generic [ref=f13e240]:
+          - img "Ground News team members standing together in an office beside a Velocity banner" [ref=f13e241]
+          - img "Three Ground News team members sitting together at a table" [ref=f13e242]
+        - generic [ref=f13e243]:
+          - img "Ground News team standing together in a restaurant" [ref=f13e244]
+          - img "Three Ground News team members sitting at a table with laptops" [ref=f13e245]
+    - generic [ref=f13e248]:
+      - heading "Our Founders" [level=2] [ref=f13e249]
+      - img "Harleen Kaur and Sukh Singh" [ref=f13e253]
+      - generic [ref=f13e255]:
+        - generic [ref=f13e256]:
+          - heading [level=3] [ref=f13e257]:
+            - button "Harleen Kaur CEO & Co-Founder" [expanded] [ref=f13e258] [cursor=pointer]:
+              - generic [ref=f13e259]:
+                - generic [ref=f13e260]: Harleen Kaur
+                - generic [ref=f13e261]: CEO & Co-Founder
+            - link "Harleen Kaur on LinkedIn" [ref=f13e262] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/harleenkaurjolly/
+              - img "LinkedIn" [ref=f13e263]
+            - button [expanded] [ref=f13e267] [cursor=pointer]:
+              - img "Plus Icon" [ref=f13e269]
+          - region "Harleen Kaur CEO & Co-Founder" [ref=f13e270]:
+            - generic [ref=f13e271]:
+              - paragraph [ref=f13e272]: With a degree in aerospace engineering, Harleen started her career at NASA where she worked on the Pluto-bound spacecraft New Horizons. She went on to join a startup in Berlin to help build and launch five earth-observation satellites. She was later recruited to Rolls-Royce, where she became the youngest and first female vice president in their jet engine customer business division.
+              - paragraph [ref=f13e273]: After working in an area as complex as space itself, Harleen found it strange that we don't have an easy way to find out what's happening on our own planet. In 2017, she co-founded Ground News so readers could better understand how the media ecosystem operates and easily access reliable, diverse coverage for any story without the influence of engagement-maximizing algorithms. She lives in Kitchener, Ontario with her husband and their son.
+        - generic [ref=f13e274]:
+          - heading [level=3] [ref=f13e275]:
+            - button "Sukh Singh CTO & Co-Founder" [expanded] [ref=f13e276] [cursor=pointer]:
+              - generic [ref=f13e277]:
+                - generic [ref=f13e278]: Sukh Singh
+                - generic [ref=f13e279]: CTO & Co-Founder
+            - link "Sukh Singh on LinkedIn" [ref=f13e280] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/sukh-singh-589933b0/
+              - img "LinkedIn" [ref=f13e281]
+            - button [expanded] [ref=f13e285] [cursor=pointer]:
+              - img "Plus Icon" [ref=f13e287]
+          - region "Sukh Singh CTO & Co-Founder" [ref=f13e288]:
+            - paragraph [ref=f13e290]: Sukh is a University of Waterloo Nanotechnology Engineering graduate. He launched his first startup through the university’s E-co-op program at age 19, working on solid-phase microextraction technology for medical applications. After gaining experience in sales at Procter & Gamble and R&D at Danaher, Sukh spent three years as a management consultant at Bain & Company where he advised companies in industries spanning telecom, retail, and insurance. Sukh co-founded Ground News with his sister, Harleen Kaur, in 2017. He lives in Kitchener, Ontario with his wife and their daughter.
+    - generic [ref=f13e293]:
+      - generic [ref=f13e294]:
+        - heading "Our Investors" [level=2] [ref=f13e295]
+        - paragraph [ref=f13e297]: Ground News is supported by our subscribers and independently controlled and operated by our founders and team. We have also raised funding from investors who value our mission of building a more well-informed world. Our investors come from across the political spectrum and have founded and led companies including the Associated Press, USA Today, Riot Games, TD Ameritrade, and Shopify.
+      - generic [ref=f13e299]:
+        - link [ref=f13e300] [cursor=pointer]:
+          - /url: https://www.techstars.com/
+          - img "Techstars" [ref=f13e301]
+        - link [ref=f13e302] [cursor=pointer]:
+          - /url: https://www.oc-innovation.ca/programs/ready-4-market/
+          - img "OCI" [ref=f13e303]
+        - link [ref=f13e304] [cursor=pointer]:
+          - /url: https://velocity.fund/
+          - img "Velocity Fund" [ref=f13e305]
+        - link [ref=f13e306] [cursor=pointer]:
+          - /url: https://www.37angels.com/
+          - img "37 Angels" [ref=f13e307]
+      - generic [ref=f13e309]:
+        - heading [level=3] [ref=f13e311]:
+          - button "Marc Merrill Co-Founder, Co-Chairman & Chief Product Officer, Riot Games Plus Icon" [ref=f13e312] [cursor=pointer]:
+            - generic [ref=f13e313]:
+              - generic [ref=f13e314]: Marc Merrill
+              - generic [ref=f13e315]: Co-Founder, Co-Chairman & Chief Product Officer, Riot Games
+            - img "Plus Icon" [ref=f13e317]
+        - heading [level=3] [ref=f13e319]:
+          - button "Ashley Merrill Founder, Lunya; Principal, NaHCO3 Plus Icon" [ref=f13e320] [cursor=pointer]:
+            - generic [ref=f13e321]:
+              - generic [ref=f13e322]: Ashley Merrill
+              - generic [ref=f13e323]: Founder, Lunya; Principal, NaHCO3
+            - img "Plus Icon" [ref=f13e325]
+        - heading [level=3] [ref=f13e327]:
+          - button "J. Joe Ricketts Founder, TD Ameritrade Plus Icon" [ref=f13e328] [cursor=pointer]:
+            - generic [ref=f13e329]:
+              - generic [ref=f13e330]: J. Joe Ricketts
+              - generic [ref=f13e331]: Founder, TD Ameritrade
+            - img "Plus Icon" [ref=f13e333]
+        - heading [level=3] [ref=f13e335]:
+          - button "Tom Curley Former President & CEO, The Associated Press Plus Icon" [ref=f13e336] [cursor=pointer]:
+            - generic [ref=f13e337]:
+              - generic [ref=f13e338]: Tom Curley
+              - generic [ref=f13e339]: Former President & CEO, The Associated Press
+            - img "Plus Icon" [ref=f13e341]
+        - heading [level=3] [ref=f13e343]:
+          - button "Payman Pouladdej Angel investor Plus Icon" [ref=f13e344] [cursor=pointer]:
+            - generic [ref=f13e345]:
+              - generic [ref=f13e346]: Payman Pouladdej
+              - generic [ref=f13e347]: Angel investor
+            - img "Plus Icon" [ref=f13e349]
+        - heading [level=3] [ref=f13e351]:
+          - button "Ryan Close Founder & CEO, Bartesian Plus Icon" [ref=f13e352] [cursor=pointer]:
+            - generic [ref=f13e353]:
+              - generic [ref=f13e354]: Ryan Close
+              - generic [ref=f13e355]: Founder & CEO, Bartesian
+            - img "Plus Icon" [ref=f13e357]
+        - heading [level=3] [ref=f13e359]:
+          - button "Jon Hallett Executive Chairman, Gridline Plus Icon" [ref=f13e360] [cursor=pointer]:
+            - generic [ref=f13e361]:
+              - generic [ref=f13e362]: Jon Hallett
+              - generic [ref=f13e363]: Executive Chairman, Gridline
+            - img "Plus Icon" [ref=f13e365]
+        - heading [level=3] [ref=f13e367]:
+          - button "Craig Miller Former Chief Product Officer, Chief Marketing Officer at Shopify Plus Icon" [ref=f13e368] [cursor=pointer]:
+            - generic [ref=f13e369]:
+              - generic [ref=f13e370]: Craig Miller
+              - generic [ref=f13e371]: Former Chief Product Officer, Chief Marketing Officer at Shopify
+            - img "Plus Icon" [ref=f13e373]
+    - generic [ref=f13e376]:
+      - heading "Get in Touch" [level=2] [ref=f13e377]
+      - generic [ref=f13e378]:
+        - text: "Support, feedback, and questions:"
+        - link "feedback@ground.news" [ref=f13e379] [cursor=pointer]:
+          - /url: mailto:feedback@ground.news
+        - text: "Ground Education inquiries:"
+        - link "ground-ed@ground.news" [ref=f13e380] [cursor=pointer]:
+          - /url: mailto:ground-ed@ground.news
+        - text: .
+      - link "Contact Us" [ref=f13e382] [cursor=pointer]:
+        - /url: /contact-us
+      - generic [ref=f13e383]: Want to learn more?
+      - generic [ref=f13e384]:
+        - text: Check out our
+        - link "FAQ" [ref=f13e385] [cursor=pointer]:
+          - /url: /frequently-asked-questions
+  - generic [ref=f13e386]:
+    - separator [ref=f13e387]
+    - generic [ref=f13e388]:
+      - img "News Logo" [ref=f13e391]
+      - separator [ref=f13e403]
+      - generic [ref=f13e404]:
+        - generic [ref=f13e405]:
+          - generic [ref=f13e408] [cursor=pointer]
+          - generic [ref=f13e411]:
+            - link [ref=f13e412] [cursor=pointer]:
+              - /url: https://apps.apple.com/app/apple-store/id1324203419?pt=107503821&ct=unknown&mt=8
+              - img "App Store Icon" [ref=f13e413]
+            - link [ref=f13e414] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=com.checkitt&referrer=utm_source%3Dunknown
+              - img "Play Store Icon" [ref=f13e415]
+          - link "Visit Ground News on Facebook" [ref=f13e416] [cursor=pointer]:
+            - /url: https://www.facebook.com/ground.newsapp
+            - img "Facebook Icon" [ref=f13e417]
+          - link "Visit Ground News on Twitter" [ref=f13e420] [cursor=pointer]:
+            - /url: https://twitter.com/Ground_app
+            - img "Twitter Icon" [ref=f13e421]
+          - link "Visit Ground News on Instagram" [ref=f13e423] [cursor=pointer]:
+            - /url: https://www.instagram.com/groundnews
+            - img "Instagram Icon" [ref=f13e424]
+          - link "Visit Ground News on LinkedIn" [ref=f13e426] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/groundnews
+            - img "LinkedIn Icon" [ref=f13e427]
+          - link "Visit Ground News on Reddit" [ref=f13e432] [cursor=pointer]:
+            - /url: https://reddit.com/r/News_Blindspot
+            - img "Reddit Icon" [ref=f13e433]
+        - generic [ref=f13e436]:
+          - link "Gift Ground News subscription" [ref=f13e437] [cursor=pointer]:
+            - /url: /gift
+            - text: Gift
+          - link "Read our Privacy Policy" [ref=f13e438] [cursor=pointer]:
+            - /url: /privacy-policy
+            - text: Privacy Policy
+          - button "Manage Cookies" [ref=f13e440] [cursor=pointer]
+          - button "Privacy Preferences" [ref=f13e442] [cursor=pointer]
+          - link "Read our Terms and Conditions" [ref=f13e443] [cursor=pointer]:
+            - /url: /terms-and-conditions
+            - text: Terms and Conditions
+      - separator [ref=f13e444]
+      - generic [ref=f13e445]: © 2026 Snapwise Inc
+  - region "Notifications alt+T"
+  - alert [ref=f13e448]

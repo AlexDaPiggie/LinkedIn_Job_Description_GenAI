@@ -1,0 +1,138 @@
+- generic [active] [ref=f24e1]:
+  - navigation [ref=f24e2]:
+    - link "LinkedInGenAI" [ref=f24e3] [cursor=pointer]:
+      - /url: /
+    - link "Home" [ref=f24e4] [cursor=pointer]:
+      - /url: /
+    - link "Templates" [ref=f24e5] [cursor=pointer]:
+      - /url: /templates/
+    - link "How it works" [ref=f24e6] [cursor=pointer]:
+      - /url: /architecture.html
+    - link "Evaluation" [ref=f24e7] [cursor=pointer]:
+      - /url: /eval.html
+    - link "Authors" [ref=f24e8] [cursor=pointer]:
+      - /url: /#authors
+  - generic [ref=f24e9]:
+    - banner [ref=f24e10]:
+      - heading "LinkedIn Job Description Templates" [level=1] [ref=f24e11]
+      - paragraph [ref=f24e12]: Nine copy-ready job descriptions with typical pay. Edit before you post.
+    - generic [ref=f24e13]:
+      - generic [ref=f24e14]:
+        - generic [ref=f24e15]: Engineering
+        - heading "Software Engineer" [level=2] [ref=f24e16]
+        - paragraph [ref=f24e17]: We are seeking a talented Software Engineer to design, build, and scale high-impact features across our web platform and microservices.
+        - generic [ref=f24e18]:
+          - generic [ref=f24e19]: 2 - 5 years
+          - generic [ref=f24e20]: $110,000 - $165,000 / year
+        - generic [ref=f24e21]:
+          - link "View template" [ref=f24e22] [cursor=pointer]:
+            - /url: /templates/software-engineer/
+          - link "AI Custom" [ref=f24e23] [cursor=pointer]:
+            - /url: /?role=Software+Engineer#generator
+      - generic [ref=f24e24]:
+        - generic [ref=f24e25]: Product & Design
+        - heading "Product Manager" [level=2] [ref=f24e26]
+        - paragraph [ref=f24e27]: We are looking for a Product Manager to lead product discovery, drive roadmap execution, and deliver intuitive user experiences that fuel company growth.
+        - generic [ref=f24e28]:
+          - generic [ref=f24e29]: 3 - 6 years
+          - generic [ref=f24e30]: $120,000 - $175,000 / year
+        - generic [ref=f24e31]:
+          - link "View template" [ref=f24e32] [cursor=pointer]:
+            - /url: /templates/product-manager/
+          - link "AI Custom" [ref=f24e33] [cursor=pointer]:
+            - /url: /?role=Product+Manager#generator
+      - generic [ref=f24e34]:
+        - generic [ref=f24e35]: Data & AI
+        - heading "Data Scientist" [level=2] [ref=f24e36]
+        - paragraph [ref=f24e37]: Join our AI & Data team as a Data Scientist to build predictive models, extract actionable insights, and deploy machine learning solutions into production.
+        - generic [ref=f24e38]:
+          - generic [ref=f24e39]: 3 - 6 years
+          - generic [ref=f24e40]: $125,000 - $180,000 / year
+        - generic [ref=f24e41]:
+          - link "View template" [ref=f24e42] [cursor=pointer]:
+            - /url: /templates/data-scientist/
+          - link "AI Custom" [ref=f24e43] [cursor=pointer]:
+            - /url: /?role=Data+Scientist#generator
+      - generic [ref=f24e44]:
+        - generic [ref=f24e45]: Data & AI
+        - heading "Data Analyst" [level=2] [ref=f24e46]
+        - paragraph [ref=f24e47]: We are looking for a detail-oriented Data Analyst to turn raw business data into actionable dashboards, reports, and strategic recommendations.
+        - generic [ref=f24e48]:
+          - generic [ref=f24e49]: 2 - 4 years
+          - generic [ref=f24e50]: $80,000 - $120,000 / year
+        - generic [ref=f24e51]:
+          - link "View template" [ref=f24e52] [cursor=pointer]:
+            - /url: /templates/data-analyst/
+          - link "AI Custom" [ref=f24e53] [cursor=pointer]:
+            - /url: /?role=Data+Analyst#generator
+      - generic [ref=f24e54]:
+        - generic [ref=f24e55]: Engineering
+        - heading "DevOps Engineer" [level=2] [ref=f24e56]
+        - paragraph [ref=f24e57]: We are seeking an experienced DevOps / Cloud Platform Engineer to automate deployments, ensure 99.99% system availability, and manage infrastructure as code.
+        - generic [ref=f24e58]:
+          - generic [ref=f24e59]: 3 - 6 years
+          - generic [ref=f24e60]: $120,000 - $170,000 / year
+        - generic [ref=f24e61]:
+          - link "View template" [ref=f24e62] [cursor=pointer]:
+            - /url: /templates/devops-engineer/
+          - link "AI Custom" [ref=f24e63] [cursor=pointer]:
+            - /url: /?role=DevOps+Engineer#generator
+      - generic [ref=f24e64]:
+        - generic [ref=f24e65]: Sales & Marketing
+        - heading "Marketing Manager" [level=2] [ref=f24e66]
+        - paragraph [ref=f24e67]: We are looking for a creative and data-driven Marketing Manager to spearhead our multi-channel marketing campaigns, boost inbound leads, and elevate brand awareness.
+        - generic [ref=f24e68]:
+          - generic [ref=f24e69]: 3 - 5 years
+          - generic [ref=f24e70]: $95,000 - $140,000 / year
+        - generic [ref=f24e71]:
+          - link "View template" [ref=f24e72] [cursor=pointer]:
+            - /url: /templates/marketing-manager/
+          - link "AI Custom" [ref=f24e73] [cursor=pointer]:
+            - /url: /?role=Marketing+Manager#generator
+      - generic [ref=f24e74]:
+        - generic [ref=f24e75]: Sales & Marketing
+        - heading "Sales Development Representative (SDR)" [level=2] [ref=f24e76]
+        - paragraph [ref=f24e77]: Kickstart your tech sales career! We are looking for an ambitious Sales Development Representative to discover new prospect accounts, book qualified demos, and drive pipeline.
+        - generic [ref=f24e78]:
+          - generic [ref=f24e79]: 0 - 2 years
+          - generic [ref=f24e80]: $60,000 base + $30,000 OTE ($90,000 total)
+        - generic [ref=f24e81]:
+          - link "View template" [ref=f24e82] [cursor=pointer]:
+            - /url: /templates/sales-development-representative/
+          - link "AI Custom" [ref=f24e83] [cursor=pointer]:
+            - /url: /?role=Sales+Development+Representative+(SDR)#generator
+      - generic [ref=f24e84]:
+        - generic [ref=f24e85]: Product & Design
+        - heading "UI/UX Designer" [level=2] [ref=f24e86]
+        - paragraph [ref=f24e87]: We are seeking a talented UI/UX Designer to craft beautiful, intuitive web and mobile experiences that solve complex user problems and elevate our brand identity.
+        - generic [ref=f24e88]:
+          - generic [ref=f24e89]: 3 - 5 years
+          - generic [ref=f24e90]: $100,000 - $150,000 / year
+        - generic [ref=f24e91]:
+          - link "View template" [ref=f24e92] [cursor=pointer]:
+            - /url: /templates/ui-ux-designer/
+          - link "AI Custom" [ref=f24e93] [cursor=pointer]:
+            - /url: /?role=UI/UX+Designer#generator
+      - generic [ref=f24e94]:
+        - generic [ref=f24e95]: Operations & HR
+        - heading "Customer Success Manager" [level=2] [ref=f24e96]
+        - paragraph [ref=f24e97]: We are looking for an empathetic, proactive Customer Success Manager to guide enterprise customers through onboarding, maximize product adoption, and minimize churn.
+        - generic [ref=f24e98]:
+          - generic [ref=f24e99]: 2 - 5 years
+          - generic [ref=f24e100]: $85,000 - $125,000 / year
+        - generic [ref=f24e101]:
+          - link "View template" [ref=f24e102] [cursor=pointer]:
+            - /url: /templates/customer-success-manager/
+          - link "AI Custom" [ref=f24e103] [cursor=pointer]:
+            - /url: /?role=Customer+Success+Manager#generator
+    - contentinfo [ref=f24e104]:
+      - generic [ref=f24e105]: © 2026 LinkedInGenAI. All rights reserved.
+      - generic [ref=f24e106]:
+        - link "AI Generator" [ref=f24e107] [cursor=pointer]:
+          - /url: /
+        - link "Templates Library" [ref=f24e108] [cursor=pointer]:
+          - /url: /templates/
+        - link "Features" [ref=f24e109] [cursor=pointer]:
+          - /url: /#features
+        - link "FAQ" [ref=f24e110] [cursor=pointer]:
+          - /url: /#faq

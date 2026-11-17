@@ -1,0 +1,1065 @@
+[
+  {
+    "title": "AI Model & API Providers Analysis | Artificial Analysis",
+    "h1_text": "Independent analysis of AI",
+    "h1_font": "victorSerifBasic",
+    "h1_size": "80px",
+    "h1_weight": "400",
+    "h1_line_height": "80px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(0, 0, 0)",
+    "body_font": "suisseIntl",
+    "body_size": "16px",
+    "page_bg": "rgb(255, 255, 255)",
+    "fonts": [
+      [
+        "suisseIntl",
+        459
+      ],
+      [
+        "victorSerifBasic",
+        31
+      ]
+    ],
+    "has_mono": false,
+    "distinct_font_sizes": 12,
+    "distinct_weights": 4,
+    "text_colors": [
+      [
+        "rgb(0, 0, 0)",
+        358
+      ],
+      [
+        "rgb(148, 148, 148)",
+        67
+      ],
+      [
+        "rgb(67, 0, 59)",
+        21
+      ],
+      [
+        "rgb(77, 77, 77)",
+        16
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(255, 255, 255)",
+        67
+      ],
+      [
+        "rgb(67, 0, 59)",
+        23
+      ],
+      [
+        "rgb(0, 0, 0)",
+        19
+      ],
+      [
+        "rgb(241, 242, 244)",
+        18
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(231, 231, 231)",
+        64
+      ],
+      [
+        "rgb(217, 217, 217)",
+        36
+      ],
+      [
+        "rgb(255, 255, 255)",
+        2
+      ]
+    ],
+    "radii": [
+      [
+        "8px",
+        84
+      ],
+      [
+        "pill",
+        59
+      ],
+      [
+        "4px",
+        12
+      ],
+      [
+        "2px",
+        11
+      ],
+      [
+        "24px",
+        9
+      ]
+    ],
+    "shadows": 23,
+    "gradients": 8,
+    "blurs": 3,
+    "common_widths": [
+      [
+        "1130",
+        68
+      ],
+      [
+        "1160",
+        45
+      ],
+      [
+        "1100",
+        14
+      ]
+    ],
+    "section_padding_top": [
+      64,
+      36
+    ],
+    "scroll_height": 13353,
+    "mobile_overflow": false,
+    "url": "https://artificialanalysis.ai",
+    "name": "artificialanalysis-ai"
+  },
+  {
+    "title": "Just a moment...",
+    "h1_text": "arena.ai",
+    "h1_font": "system-ui",
+    "h1_size": "40px",
+    "h1_weight": "600",
+    "h1_line_height": "50px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(49, 49, 49)",
+    "body_font": "system-ui",
+    "body_size": "16px",
+    "page_bg": "rgba(0, 0, 0, 0)",
+    "fonts": [
+      [
+        "system-ui",
+        7
+      ],
+      [
+        "monospace",
+        1
+      ]
+    ],
+    "has_mono": true,
+    "distinct_font_sizes": 4,
+    "distinct_weights": 2,
+    "text_colors": [
+      [
+        "rgb(49, 49, 49)",
+        6
+      ],
+      [
+        "rgb(0, 0, 238)",
+        2
+      ]
+    ],
+    "bg_colors": [],
+    "border_colors": [
+      [
+        "rgb(217, 217, 217)",
+        1
+      ]
+    ],
+    "radii": [],
+    "shadows": 0,
+    "gradients": 0,
+    "blurs": 0,
+    "common_widths": [
+      [
+        "900",
+        6
+      ],
+      [
+        "960",
+        2
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 900,
+    "mobile_overflow": false,
+    "url": "https://lmarena.ai",
+    "name": "lmarena-ai"
+  },
+  {
+    "title": "Epoch AI",
+    "h1_text": "Investigating the trajectory of AI for the benefit of society.",
+    "h1_font": "Messina Sans",
+    "h1_size": "46px",
+    "h1_weight": "600",
+    "h1_line_height": "50.6px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(9, 12, 12)",
+    "body_font": "Messina Sans",
+    "body_size": "16px",
+    "page_bg": "rgba(0, 0, 0, 0)",
+    "fonts": [
+      [
+        "Messina Sans",
+        201
+      ]
+    ],
+    "has_mono": false,
+    "distinct_font_sizes": 10,
+    "distinct_weights": 2,
+    "text_colors": [
+      [
+        "rgb(58, 72, 72)",
+        58
+      ],
+      [
+        "rgb(0, 0, 0)",
+        27
+      ],
+      [
+        "rgb(33, 42, 42)",
+        26
+      ],
+      [
+        "rgb(9, 12, 12)",
+        21
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(255, 255, 255)",
+        9
+      ],
+      [
+        "rgb(238, 238, 238)",
+        8
+      ],
+      [
+        "rgb(112, 239, 209)",
+        4
+      ],
+      [
+        "rgb(230, 254, 243)",
+        4
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(227, 228, 228)",
+        18
+      ],
+      [
+        "rgb(52, 210, 185)",
+        10
+      ]
+    ],
+    "radii": [
+      [
+        "50px",
+        30
+      ],
+      [
+        "10px",
+        24
+      ],
+      [
+        "5px",
+        11
+      ],
+      [
+        "50%",
+        10
+      ],
+      [
+        "4px",
+        10
+      ]
+    ],
+    "shadows": 6,
+    "gradients": 0,
+    "blurs": 0,
+    "common_widths": [
+      [
+        "1320",
+        28
+      ],
+      [
+        "1260",
+        14
+      ],
+      [
+        "660",
+        11
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 5190,
+    "mobile_overflow": false,
+    "url": "https://epoch.ai",
+    "name": "epoch-ai"
+  },
+  {
+    "title": "Our World in Data",
+    "h1_text": null,
+    "h1_font": null,
+    "h1_size": null,
+    "h1_weight": null,
+    "h1_line_height": null,
+    "h1_tracking": null,
+    "h1_color": null,
+    "body_font": "Lato",
+    "body_size": "16px",
+    "page_bg": "rgb(255, 255, 255)",
+    "fonts": [
+      [
+        "Lato",
+        388
+      ],
+      [
+        "Playfair Display",
+        31
+      ]
+    ],
+    "has_mono": false,
+    "distinct_font_sizes": 8,
+    "distinct_weights": 5,
+    "text_colors": [
+      [
+        "rgb(29, 61, 99)",
+        291
+      ],
+      [
+        "rgb(66, 101, 145)",
+        45
+      ],
+      [
+        "rgb(255, 255, 255)",
+        28
+      ],
+      [
+        "rgb(152, 169, 189)",
+        15
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(255, 255, 255)",
+        12
+      ],
+      [
+        "rgb(219, 229, 240)",
+        10
+      ],
+      [
+        "rgb(0, 33, 71)",
+        9
+      ],
+      [
+        "rgb(240, 244, 250)",
+        9
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(219, 229, 240)",
+        9
+      ],
+      [
+        "rgb(87, 114, 145)",
+        4
+      ],
+      [
+        "rgb(235, 238, 242)",
+        4
+      ]
+    ],
+    "radii": [
+      [
+        "32px",
+        13
+      ],
+      [
+        "50%",
+        6
+      ],
+      [
+        "3px",
+        2
+      ],
+      [
+        "2px",
+        1
+      ]
+    ],
+    "shadows": 3,
+    "gradients": 0,
+    "blurs": 0,
+    "common_widths": [
+      [
+        "1280",
+        27
+      ],
+      [
+        "790",
+        9
+      ],
+      [
+        "1230",
+        8
+      ]
+    ],
+    "section_padding_top": [
+      24
+    ],
+    "scroll_height": 4902,
+    "mobile_overflow": false,
+    "url": "https://ourworldindata.org",
+    "name": "ourworldindata-org"
+  },
+  {
+    "title": "The Pudding",
+    "h1_text": null,
+    "h1_font": null,
+    "h1_size": null,
+    "h1_weight": null,
+    "h1_line_height": null,
+    "h1_tracking": null,
+    "h1_color": null,
+    "body_font": "Gooper SemiCondensed",
+    "body_size": "16px",
+    "page_bg": "rgb(255, 255, 255)",
+    "fonts": [
+      [
+        "Atlas Typewriter",
+        66
+      ],
+      [
+        "Atlas Grotesk",
+        46
+      ],
+      [
+        "Gooper SemiCondensed",
+        33
+      ]
+    ],
+    "has_mono": true,
+    "distinct_font_sizes": 5,
+    "distinct_weights": 3,
+    "text_colors": [
+      [
+        "rgb(38, 38, 38)",
+        111
+      ],
+      [
+        "rgb(109, 109, 109)",
+        28
+      ],
+      [
+        "rgb(255, 255, 255)",
+        3
+      ],
+      [
+        "rgb(0, 0, 0)",
+        3
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(38, 38, 38)",
+        4
+      ],
+      [
+        "rgb(255, 255, 255)",
+        4
+      ],
+      [
+        "rgb(185, 28, 28)",
+        1
+      ],
+      [
+        "rgb(233, 36, 32)",
+        1
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(38, 38, 38)",
+        27
+      ],
+      [
+        "rgba(48, 48, 48, 0.4)",
+        3
+      ]
+    ],
+    "radii": [
+      [
+        "28px",
+        27
+      ],
+      [
+        "2px",
+        9
+      ],
+      [
+        "6px",
+        3
+      ],
+      [
+        "3px",
+        1
+      ]
+    ],
+    "shadows": 3,
+    "gradients": 1,
+    "blurs": 2,
+    "common_widths": [
+      [
+        "1280",
+        7
+      ],
+      [
+        "720",
+        2
+      ],
+      [
+        "780",
+        1
+      ]
+    ],
+    "section_padding_top": [
+      32
+    ],
+    "scroll_height": 6818,
+    "mobile_overflow": false,
+    "url": "https://pudding.cool",
+    "name": "pudding-cool"
+  },
+  {
+    "title": "Just a moment...",
+    "h1_text": "radar.cloudflare.com",
+    "h1_font": "system-ui",
+    "h1_size": "40px",
+    "h1_weight": "600",
+    "h1_line_height": "50px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(49, 49, 49)",
+    "body_font": "system-ui",
+    "body_size": "16px",
+    "page_bg": "rgba(0, 0, 0, 0)",
+    "fonts": [
+      [
+        "system-ui",
+        7
+      ],
+      [
+        "monospace",
+        1
+      ]
+    ],
+    "has_mono": true,
+    "distinct_font_sizes": 4,
+    "distinct_weights": 2,
+    "text_colors": [
+      [
+        "rgb(49, 49, 49)",
+        6
+      ],
+      [
+        "rgb(0, 0, 238)",
+        2
+      ]
+    ],
+    "bg_colors": [],
+    "border_colors": [
+      [
+        "rgb(49, 49, 49)",
+        4
+      ],
+      [
+        "rgb(217, 217, 217)",
+        1
+      ]
+    ],
+    "radii": [
+      [
+        "50%",
+        4
+      ]
+    ],
+    "shadows": 0,
+    "gradients": 0,
+    "blurs": 0,
+    "common_widths": [
+      [
+        "900",
+        3
+      ],
+      [
+        "960",
+        2
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 900,
+    "mobile_overflow": false,
+    "url": "https://radar.cloudflare.com",
+    "name": "radar-cloudflare-com"
+  },
+  {
+    "title": "Linear Method \u2013 Practices for building",
+    "h1_text": "Practices for building",
+    "h1_font": "Tiempos Headline",
+    "h1_size": "128px",
+    "h1_weight": "400",
+    "h1_line_height": "128px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(247, 248, 248)",
+    "body_font": "Inter Variable",
+    "body_size": "16px",
+    "page_bg": "rgb(8, 9, 10)",
+    "fonts": [
+      [
+        "Inter Variable",
+        67
+      ],
+      [
+        "Tiempos Headline",
+        1
+      ]
+    ],
+    "has_mono": false,
+    "distinct_font_sizes": 5,
+    "distinct_weights": 2,
+    "text_colors": [
+      [
+        "rgb(138, 143, 152)",
+        55
+      ],
+      [
+        "rgb(247, 248, 248)",
+        9
+      ],
+      [
+        "rgb(98, 102, 109)",
+        3
+      ],
+      [
+        "rgb(8, 9, 10)",
+        1
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(8, 9, 10)",
+        2
+      ],
+      [
+        "rgb(229, 229, 230)",
+        1
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(62, 62, 68)",
+        2
+      ],
+      [
+        "rgb(229, 229, 230)",
+        1
+      ],
+      [
+        "rgb(35, 37, 42)",
+        1
+      ]
+    ],
+    "radii": [
+      [
+        "pill",
+        8
+      ],
+      [
+        "50%",
+        6
+      ],
+      [
+        "6px",
+        1
+      ]
+    ],
+    "shadows": 1,
+    "gradients": 1,
+    "blurs": 1,
+    "common_widths": [
+      [
+        "690",
+        19
+      ],
+      [
+        "740",
+        1
+      ],
+      [
+        "1120",
+        1
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 2731,
+    "mobile_overflow": false,
+    "url": "https://linear.app/method",
+    "name": "linear-app"
+  },
+  {
+    "title": "LLM Rankings | OpenRouter",
+    "h1_text": "AI Model Rankings",
+    "h1_font": "gordita",
+    "h1_size": "20px",
+    "h1_weight": "600",
+    "h1_line_height": "24px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(3, 8, 10)",
+    "body_font": "Plus Jakarta Sans",
+    "body_size": "14px",
+    "page_bg": "rgb(252, 252, 254)",
+    "fonts": [
+      [
+        "Plus Jakarta Sans",
+        658
+      ],
+      [
+        "gordita",
+        1
+      ]
+    ],
+    "has_mono": false,
+    "distinct_font_sizes": 5,
+    "distinct_weights": 3,
+    "text_colors": [
+      [
+        "rgba(3, 8, 10, 0.69)",
+        407
+      ],
+      [
+        "rgb(3, 8, 10)",
+        205
+      ],
+      [
+        "rgb(0, 117, 68)",
+        14
+      ],
+      [
+        "rgba(3, 8, 10, 0.44)",
+        13
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgba(3, 8, 10, 0.03)",
+        456
+      ],
+      [
+        "rgb(252, 252, 254)",
+        68
+      ],
+      [
+        "rgb(255, 255, 255)",
+        15
+      ],
+      [
+        "rgb(255, 128, 66)",
+        4
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgba(3, 8, 10, 0.08)",
+        28
+      ],
+      [
+        "rgba(0, 0, 0, 0)",
+        1
+      ],
+      [
+        "oklab(0.512065 -0.0347985 -0.211117 / 0.3)",
+        1
+      ]
+    ],
+    "radii": [
+      [
+        "6px",
+        428
+      ],
+      [
+        "4px",
+        184
+      ],
+      [
+        "pill",
+        96
+      ],
+      [
+        "8px",
+        1
+      ]
+    ],
+    "shadows": 80,
+    "gradients": 0,
+    "blurs": 1,
+    "common_widths": [
+      [
+        "1010",
+        149
+      ],
+      [
+        "880",
+        8
+      ],
+      [
+        "970",
+        8
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 13473,
+    "mobile_overflow": false,
+    "url": "https://openrouter.ai/rankings",
+    "name": "openrouter-ai"
+  },
+  {
+    "title": "Research \\ Anthropic",
+    "h1_text": "Our research teams study the inner workings of AI models, stress-test their limi",
+    "h1_font": "anthropicSans",
+    "h1_size": "42.3529px",
+    "h1_weight": "600",
+    "h1_line_height": "47.4353px",
+    "h1_tracking": "normal",
+    "h1_color": "rgb(20, 20, 19)",
+    "body_font": "anthropicSans",
+    "body_size": "16.6863px",
+    "page_bg": "rgb(250, 249, 245)",
+    "fonts": [
+      [
+        "anthropicSans",
+        176
+      ],
+      [
+        "anthropicMono",
+        6
+      ]
+    ],
+    "has_mono": true,
+    "distinct_font_sizes": 6,
+    "distinct_weights": 3,
+    "text_colors": [
+      [
+        "rgb(94, 93, 89)",
+        103
+      ],
+      [
+        "rgb(20, 20, 19)",
+        42
+      ],
+      [
+        "rgb(135, 134, 127)",
+        15
+      ],
+      [
+        "rgb(250, 249, 245)",
+        9
+      ]
+    ],
+    "bg_colors": [
+      [
+        "rgb(232, 230, 220)",
+        49
+      ],
+      [
+        "rgb(20, 20, 19)",
+        18
+      ],
+      [
+        "rgb(245, 244, 237)",
+        14
+      ],
+      [
+        "rgb(38, 38, 36)",
+        10
+      ]
+    ],
+    "border_colors": [
+      [
+        "rgb(222, 220, 209)",
+        39
+      ],
+      [
+        "rgb(61, 61, 58)",
+        19
+      ],
+      [
+        "rgb(232, 230, 220)",
+        14
+      ]
+    ],
+    "radii": [
+      [
+        "pill",
+        36
+      ],
+      [
+        "4px",
+        24
+      ],
+      [
+        "8px",
+        15
+      ]
+    ],
+    "shadows": 0,
+    "gradients": 0,
+    "blurs": 0,
+    "common_widths": [
+      [
+        "1430",
+        23
+      ],
+      [
+        "840",
+        22
+      ],
+      [
+        "1270",
+        17
+      ]
+    ],
+    "section_padding_top": [
+      48,
+      48
+    ],
+    "scroll_height": 9825,
+    "mobile_overflow": false,
+    "url": "https://www.anthropic.com/research",
+    "name": "anthropic-com"
+  },
+  {
+    "title": "Observable",
+    "h1_text": null,
+    "h1_font": null,
+    "h1_size": null,
+    "h1_weight": null,
+    "h1_line_height": null,
+    "h1_tracking": null,
+    "h1_color": null,
+    "body_font": "Inter Variable",
+    "body_size": "16px",
+    "page_bg": "rgba(0, 0, 0, 0)",
+    "fonts": [
+      [
+        "Spline Sans Mono Variable",
+        731
+      ],
+      [
+        "Inter Variable",
+        253
+      ],
+      [
+        "Source Serif 4 Variable",
+        35
+      ]
+    ],
+    "has_mono": true,
+    "distinct_font_sizes": 10,
+    "distinct_weights": 4,
+    "text_colors": [
+      [
+        "rgb(27, 30, 35)",
+        271
+      ],
+      [
+        "rgb(0, 92, 197)",
+        218
+      ],
+      [
+        "color(srgb 0.195294 0.205882 0.223529)",
+        165
+      ],
+      [
+        "rgb(227, 98, 9)",
+        119
+      ]
+    ],
+    "bg_colors": [
+      [
+        "lab(65.9269 -0.832707 -8.17473)",
+        46
+      ],
+      [
+        "lab(98.2596 -0.247031 -0.706708)",
+        38
+      ],
+      [
+        "oklab(0.871997 -0.00203001 -0.00977266 / 0.849794)",
+        17
+      ],
+      [
+        "rgb(255, 255, 255)",
+        7
+      ]
+    ],
+    "border_colors": [
+      [
+        "lab(85.1236 -0.612259 -3.7138)",
+        106
+      ],
+      [
+        "rgba(0, 0, 0, 0)",
+        4
+      ],
+      [
+        "lab(91.6229 -0.159115 -2.26791)",
+        2
+      ]
+    ],
+    "radii": [
+      [
+        "6px",
+        123
+      ],
+      [
+        "4px",
+        121
+      ],
+      [
+        "pill",
+        40
+      ],
+      [
+        "20px",
+        1
+      ],
+      [
+        "8px",
+        1
+      ]
+    ],
+    "shadows": 0,
+    "gradients": 8,
+    "blurs": 5,
+    "common_widths": [
+      [
+        "1150",
+        58
+      ],
+      [
+        "700",
+        9
+      ],
+      [
+        "1410",
+        8
+      ]
+    ],
+    "section_padding_top": [],
+    "scroll_height": 10875,
+    "mobile_overflow": false,
+    "url": "https://observablehq.com",
+    "name": "observablehq-com"
+  }
+]

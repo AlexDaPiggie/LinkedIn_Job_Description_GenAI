@@ -3748,3 +3748,8 @@ body.rail-away .question-rail { transform: translate(-18px, -50%); }
 @view-transition { navigation: auto; }
 .nav-bar { view-transition-name: site-nav; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 160ms; }
+
+/* Quality score: light gradient badge, same family as the answered question numbers */
+.q-score.q-good { border: 1px solid rgba(8, 120, 82, 0.45); background: linear-gradient(145deg, #0b8f61 0%, #2fcf95 100%); box-shadow: 0 8px 16px rgba(8, 120, 82, 0.2); }
+.q-score.q-ok { border: 1px solid rgba(194, 124, 0, 0.45); background: linear-gradient(145deg, #c27c00 0%, #f0b84a 100%); box-shadow: 0 8px 16px rgba(194, 124, 0, 0.2); }
+.q-score.q-bad { border: 1px solid rgba(180, 35, 24, 0.45); background: linear-gradient(145deg, #b42318 0%, #ef6b5e 100%); box-shadow: 0 8px 16px rgba(180, 35, 24, 0.2); }

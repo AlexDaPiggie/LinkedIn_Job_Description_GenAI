@@ -1,0 +1,29 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - link "mymind" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e19]:
+        - list [ref=e20]:
+          - listitem [ref=e21]:
+            - link "What" [ref=e22] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e23]:
+            - link "Why" [ref=e24] [cursor=pointer]:
+              - /url: /why
+          - listitem [ref=e25]:
+            - link "How" [ref=e26] [cursor=pointer]:
+              - /url: /how
+          - listitem [ref=e27]:
+            - link "Log in" [ref=e28] [cursor=pointer]:
+              - /url: https://access.mymind.com/signin
+          - listitem [ref=e29]:
+            - link "Sign up" [ref=e30] [cursor=pointer]:
+              - /url: https://access.mymind.com/
+  - main [ref=e34]:
+    - generic [ref=e36]:
+      - heading "404 - Not found" [level=1] [ref=e37]
+      - generic [ref=e38]:
+        - text: This page slipped our mind.Continue to the
+        - link "Homepage" [ref=e39] [cursor=pointer]:
+          - /url: /

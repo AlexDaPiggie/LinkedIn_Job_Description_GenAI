@@ -1,0 +1,5 @@
+[     685ms] TypeError: window.mixpanel.opt_in_tracking is not a function
+    at https://wise.com/gb/blog/how-do-banks-move-your-money:37:25
+    at y (https://wise.com/cookie-consent.js:7:16939)
+    at https://wise.com/cookie-consent.js:7:17189
+    at https://wise.com/cookie-consent.js:7:17194

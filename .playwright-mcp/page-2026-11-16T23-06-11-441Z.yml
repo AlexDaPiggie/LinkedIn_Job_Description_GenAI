@@ -1,0 +1,342 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "LinkedInGenAI" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - button "Home" [ref=e4] [cursor=pointer]
+    - link "Templates" [ref=e5] [cursor=pointer]:
+      - /url: /templates/
+    - link "How it works" [ref=e6] [cursor=pointer]:
+      - /url: /architecture.html
+    - link "Evaluation" [ref=e7] [cursor=pointer]:
+      - /url: /eval.html
+    - button "Authors" [ref=e8] [cursor=pointer]
+  - navigation "Question navigation" [ref=e9]:
+    - generic [aria-hidden]:
+      - generic: Hover
+      - generic: Question
+    - button "Toggle navigation pin" [pressed] [ref=e10] [cursor=pointer]
+    - generic [ref=e13]:
+      - 'button "Go to question 1: Company Name" [ref=e14] [cursor=pointer]': "01"
+      - 'button "Go to question 2: Role Title" [ref=e15] [cursor=pointer]': "02"
+      - 'button "Go to question 3: Role Summary" [ref=e16] [cursor=pointer]': "03"
+      - 'button "Go to question 4: Responsibilities" [ref=e17] [cursor=pointer]': "04"
+      - 'button "Go to question 5: Requirements" [ref=e18] [cursor=pointer]': "05"
+      - 'button "Go to question 6: Nice To Have" [ref=e19] [cursor=pointer]': "06"
+      - 'button "Go to question 7: Company Description" [ref=e20] [cursor=pointer]': "07"
+      - 'button "Go to question 8: Team Context" [ref=e21] [cursor=pointer]': "08"
+      - 'button "Go to question 9: Why Join Us" [ref=e22] [cursor=pointer]': "09"
+      - 'button "Go to question 10: Benefits" [ref=e23] [cursor=pointer]': "10"
+  - main [ref=e24]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - heading "J J J ob Description Generator" [level=1] [ref=e28]:
+          - generic [ref=e29]: J J J
+          - text: ob Description Generator
+        - paragraph [ref=e30]: Answer a few questions and get a LinkedIn-ready job description in minutes. Generating is free with no account. Refine it with AI and export to Word.
+      - button "Sign In" [ref=e32] [cursor=pointer]
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - heading "Answer the questions" [level=2] [ref=e38]
+            - button "Clear answers & draft" [ref=e39] [cursor=pointer]
+          - generic [ref=e40]:
+            - generic [ref=e41]: Have an existing Job Description?
+            - button "Upload file & Auto-fill" [ref=e42] [cursor=pointer]
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - button "01 Company Name Required Close" [expanded] [ref=e50] [cursor=pointer]:
+                - generic [ref=e51]: "01"
+                - generic [ref=e52]:
+                  - strong [ref=e53]: Company Name
+                  - generic [ref=e54]: Required
+                - generic [ref=e55]: Close
+              - generic [ref=e58]:
+                - paragraph [ref=e59]: What is your company name?
+                - textbox "Type your answer." [ref=e60]
+                - generic [ref=e61]:
+                  - generic [ref=e62]: Answer before generating.
+                  - generic [ref=e63]: Required
+            - generic [ref=e64]:
+              - button "02 Role Title Required Expand" [ref=e65] [cursor=pointer]:
+                - generic [ref=e66]: "02"
+                - generic [ref=e67]:
+                  - strong [ref=e68]: Role Title
+                  - generic [ref=e69]: Required
+                - generic [ref=e70]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e72]: What role are you hiring for?
+                  - textbox "Type your answer." [ref=e73]
+                  - generic [ref=e74]:
+                    - generic [ref=e75]: Answer before generating.
+                    - generic [ref=e76]: Required
+            - generic [ref=e77]:
+              - button "03 Role Summary Required Expand" [ref=e78] [cursor=pointer]:
+                - generic [ref=e79]: "03"
+                - generic [ref=e80]:
+                  - strong [ref=e81]: Role Summary
+                  - generic [ref=e82]: Required
+                - generic [ref=e83]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e85]: Why is the company hiring this role, and what should this person help accomplish?
+                  - textbox "Type your answer." [ref=e86]
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: Answer before generating.
+                    - generic [ref=e89]: Required
+            - generic [ref=e90]:
+              - button "04 Responsibilities Required Expand" [ref=e91] [cursor=pointer]:
+                - generic [ref=e92]: "04"
+                - generic [ref=e93]:
+                  - strong [ref=e94]: Responsibilities
+                  - generic [ref=e95]: Required
+                - generic [ref=e96]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e98]: What are the primary responsibilities for this role?
+                  - textbox "Add one item per line." [ref=e99]
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: Use separate lines for multiple items.
+                    - generic [ref=e102]: Required
+            - generic [ref=e103]:
+              - button "05 Requirements Required Expand" [ref=e104] [cursor=pointer]:
+                - generic [ref=e105]: "05"
+                - generic [ref=e106]:
+                  - strong [ref=e107]: Requirements
+                  - generic [ref=e108]: Required
+                - generic [ref=e109]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e111]: What skills, experience, or qualifications are required?
+                  - textbox "Add one item per line." [ref=e112]
+                  - generic [ref=e113]:
+                    - generic [ref=e114]: Use separate lines for multiple items.
+                    - generic [ref=e115]: Required
+            - generic [ref=e116]:
+              - button "06 Nice To Have Optional Expand" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]: "06"
+                - generic [ref=e119]:
+                  - strong [ref=e120]: Nice To Have
+                  - generic [ref=e121]: Optional
+                - generic [ref=e122]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e124]: What skills or experience would be nice to have, but not required?
+                  - textbox "Add one item per line." [ref=e125]
+                  - generic [ref=e126]:
+                    - generic [ref=e127]: Use separate lines for multiple items.
+                    - generic [ref=e128]: Optional
+            - generic [ref=e129]:
+              - button "07 Company Description Optional Expand" [ref=e130] [cursor=pointer]:
+                - generic [ref=e131]: "07"
+                - generic [ref=e132]:
+                  - strong [ref=e133]: Company Description
+                  - generic [ref=e134]: Optional
+                - generic [ref=e135]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e137]: How would you describe the company in a few sentences?
+                  - textbox "Type your answer." [ref=e138]
+                  - generic [ref=e139]:
+                    - generic [ref=e140]: Answer before generating.
+                    - generic [ref=e141]: Optional
+            - generic [ref=e142]:
+              - button "08 Team Context Optional Expand" [ref=e143] [cursor=pointer]:
+                - generic [ref=e144]: "08"
+                - generic [ref=e145]:
+                  - strong [ref=e146]: Team Context
+                  - generic [ref=e147]: Optional
+                - generic [ref=e148]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e150]: Who will this person work with? (team size, manager, partner teams)
+                  - textbox "Type your answer." [ref=e151]
+                  - generic [ref=e152]:
+                    - generic [ref=e153]: Answer before generating.
+                    - generic [ref=e154]: Optional
+            - generic [ref=e155]:
+              - button "09 Why Join Us Optional Expand" [ref=e156] [cursor=pointer]:
+                - generic [ref=e157]: "09"
+                - generic [ref=e158]:
+                  - strong [ref=e159]: Why Join Us
+                  - generic [ref=e160]: Optional
+                - generic [ref=e161]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e163]: Why should candidates be excited to join this company or team? (mission, culture, growth, impact, or interesting work.)
+                  - textbox "Type your answer." [ref=e164]
+                  - generic [ref=e165]:
+                    - generic [ref=e166]: Answer before generating.
+                    - generic [ref=e167]: Optional
+            - generic [ref=e168]:
+              - button "10 Benefits Optional Expand" [ref=e169] [cursor=pointer]:
+                - generic [ref=e170]: "10"
+                - generic [ref=e171]:
+                  - strong [ref=e172]: Benefits
+                  - generic [ref=e173]: Optional
+                - generic [ref=e174]: Expand
+              - generic:
+                - generic:
+                  - paragraph [ref=e176]: Are there any benefit, perk, or compensation details you would like to include?
+                  - textbox "Add one item per line." [ref=e177]
+                  - generic [ref=e178]:
+                    - generic [ref=e179]: Use separate lines for multiple items.
+                    - generic [ref=e180]: Optional
+          - region "Pay range" [ref=e181]:
+            - generic [ref=e182]:
+              - heading "Pay range" [level=3] [ref=e183]
+              - generic [ref=e184]: Optional
+            - generic [ref=e185]:
+              - generic [ref=e186]:
+                - generic [ref=e187]: Minimum
+                - spinbutton "Minimum" [ref=e188]
+              - generic [ref=e189]:
+                - generic [ref=e190]: Maximum
+                - spinbutton "Maximum" [ref=e191]
+              - generic [ref=e192]:
+                - generic [ref=e193]: Currency
+                - combobox "Currency" [ref=e194]:
+                  - option "USD" [selected]
+                  - option "CAD"
+                  - option "EUR"
+                  - option "GBP"
+              - generic [ref=e195]:
+                - generic [ref=e196]: Per
+                - combobox "Per" [ref=e197]:
+                  - option "Year" [selected]
+                  - option "Month"
+                  - option "Hour"
+            - paragraph [ref=e198]: Leave it empty to skip. If you add it, it appears exactly as you type it. The AI never writes pay numbers.
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - heading "Generate the job description" [level=2] [ref=e203]
+            - generic [ref=e204]:
+              - button "Copy" [disabled] [ref=e205]
+              - button "Word" [disabled] [ref=e206]
+              - button "Generate" [ref=e207] [cursor=pointer]
+          - generic "Starting settings for the first draft. After it is written, use 'Change this draft' below it." [ref=e208]:
+            - generic [ref=e209]: Start with
+            - generic [ref=e210]:
+              - generic [ref=e211]: Tone
+              - combobox "Tone" [ref=e212] [cursor=pointer]:
+                - option "Professional & Authoritative" [selected]
+                - option "Conversational & Warm"
+                - option "Fast-Paced & Startup-like"
+                - option "Bold, Modern & Visionary"
+            - generic [ref=e213]:
+              - generic [ref=e214]: Length
+              - generic [ref=e215]:
+                - button "Short" [ref=e216] [cursor=pointer]
+                - button "Medium" [ref=e217] [cursor=pointer]
+                - button "Long" [ref=e218] [cursor=pointer]
+            - generic [ref=e219]:
+              - generic [ref=e220]: EEO
+              - button "What is EEO?" [ref=e222] [cursor=pointer]
+              - generic [ref=e225]:
+                - button "Yes" [ref=e226] [cursor=pointer]
+                - button "No" [ref=e227] [cursor=pointer]
+          - article [ref=e228]: Generate a draft to preview the job description.
+          - generic [ref=e229]:
+            - generic [ref=e230]: Refine with your own words
+            - textbox "Refine with your own words" [ref=e231]:
+              - /placeholder: "Example: Mention that the team is fully remote and add a line about mentoring."
+            - button "Refine · 1 credit" [disabled] [ref=e232]
+          - button "Suggest screening questions" [disabled] [ref=e234]
+      - region "Pricing" [ref=e235]:
+        - heading "Free to write. Pay only to refine." [level=2] [ref=e236]
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - paragraph [ref=e239]: No account
+            - paragraph [ref=e240]: Free
+            - list [ref=e241]:
+              - listitem [ref=e242]: Full job description, not a preview
+              - listitem [ref=e243]: Upload your old JD to auto-fill
+              - listitem [ref=e244]: Copy to LinkedIn and Word export
+          - generic [ref=e245]:
+            - paragraph [ref=e246]: Free account
+            - paragraph [ref=e247]: 20 free refine credits
+            - list [ref=e248]:
+              - listitem [ref=e249]: Type your own change request, 1 credit each
+              - listitem [ref=e250]: A failed refine returns the credit
+          - generic [ref=e251]:
+            - paragraph [ref=e252]: Need more?
+            - paragraph [ref=e253]: $5 = 20 refines
+            - list [ref=e254]:
+              - listitem [ref=e255]: $10 = 40 refines, $20 = 80 refines
+              - listitem [ref=e256]: One-time payment, no subscription
+      - region "About the LinkedIn Job Description Generator" [ref=e257]:
+        - generic [ref=e258]:
+          - generic [ref=e259]:
+            - heading "How Our LinkedIn Job Description Generator & JD Writer Works" [level=2] [ref=e260]
+            - paragraph [ref=e261]: A good LinkedIn job post needs specific duties, a real pay range, and wording that does not put people off. This tool asks for those facts, writes the draft, then checks it against a fixed list of rules.
+          - generic [ref=e262]:
+            - generic [ref=e263]:
+              - generic [ref=e264]: "01"
+              - heading "Guided Role Intake" [level=3] [ref=e265]
+              - paragraph [ref=e266]: Answer focused questions about role objectives, responsibilities, required qualifications, and company perks. No blank-page syndrome.
+            - generic [ref=e267]:
+              - generic [ref=e268]: "02"
+              - heading "Real-Time AI Generation" [level=3] [ref=e269]
+              - paragraph [ref=e270]: Watch your LinkedIn job post stream live with customizable tone settings (e.g. startup, professional, energetic) and requirements that are not in your answers are marked so you can check them.
+            - generic [ref=e271]:
+              - generic [ref=e272]: "03"
+              - heading "Refine, Copy & Export" [level=3] [ref=e273]
+              - paragraph [ref=e274]: Use conversational refinement to tweak sections, copy plain text directly for LinkedIn, or export a styled Word (.docx) document.
+          - generic [ref=e275]:
+            - heading "Everything You Need to Know" [level=2] [ref=e276]
+            - generic [ref=e277]:
+              - group [ref=e278]:
+                - strong [ref=e280] [cursor=pointer]: What is the LinkedIn Job Description Generator & JD Writer?
+                - paragraph [ref=e281]: It is an AI LinkedIn JD writer and generator built specifically for recruiters, hiring managers, and startup founders. It turns brief intake notes into publication-ready LinkedIn job descriptions formatted with clean sections, bullet points, and equal-opportunity statements.
+              - group [ref=e282]:
+                - strong [ref=e284] [cursor=pointer]: How do you keep the draft accurate?
+              - group [ref=e285]:
+                - strong [ref=e287] [cursor=pointer]: Can I export my job description to Microsoft Word or Google Docs?
+              - group [ref=e288]:
+                - strong [ref=e290] [cursor=pointer]: Can I refine the generated draft?
+          - generic [ref=e291]:
+            - heading "Free LinkedIn Job Description Templates" [level=2] [ref=e292]
+            - paragraph [ref=e293]: "Looking for pre-written job templates? Browse our library of copy-ready job descriptions optimized for LinkedIn hiring posts. Copy directly or customize with our AI generator in seconds:"
+            - generic [ref=e294]:
+              - link "Software Engineer JD" [ref=e295] [cursor=pointer]:
+                - /url: /templates/software-engineer/
+              - link "Product Manager JD" [ref=e296] [cursor=pointer]:
+                - /url: /templates/product-manager/
+              - link "Data Scientist JD" [ref=e297] [cursor=pointer]:
+                - /url: /templates/data-scientist/
+              - link "Data Analyst JD" [ref=e298] [cursor=pointer]:
+                - /url: /templates/data-analyst/
+              - link "DevOps Engineer JD" [ref=e299] [cursor=pointer]:
+                - /url: /templates/devops-engineer/
+              - link "Marketing Manager JD" [ref=e300] [cursor=pointer]:
+                - /url: /templates/marketing-manager/
+              - link "SDR Job Description" [ref=e301] [cursor=pointer]:
+                - /url: /templates/sales-development-representative/
+              - link "UI/UX Designer JD" [ref=e302] [cursor=pointer]:
+                - /url: /templates/ui-ux-designer/
+              - link "Customer Success Manager JD" [ref=e303] [cursor=pointer]:
+                - /url: /templates/customer-success-manager/
+            - link "→ Browse All Job Description Templates Directory" [ref=e305] [cursor=pointer]:
+              - /url: /templates/
+      - generic [ref=e306]:
+        - generic [ref=e307]:
+          - generic [ref=e308]:
+            - paragraph [ref=e309]: LinkedInGenAI
+            - paragraph [ref=e310]: Built for hiring teams, recruiters, and founders who want better LinkedIn job descriptions, faster.
+          - navigation "Product" [ref=e311]:
+            - paragraph [ref=e312]: Product
+            - link "Generator" [ref=e313] [cursor=pointer]:
+              - /url: /
+            - link "Templates" [ref=e314] [cursor=pointer]:
+              - /url: /templates/
+            - link "How it works" [ref=e315] [cursor=pointer]:
+              - /url: /architecture.html
+            - link "Model evaluation" [ref=e316] [cursor=pointer]:
+              - /url: /eval.html
+            - button "Authors" [ref=e317] [cursor=pointer]
+          - navigation "Resources" [ref=e318]:
+            - paragraph [ref=e319]: Resources
+            - link "Documentation" [ref=e320] [cursor=pointer]:
+              - /url: https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator_Documentation
+        - paragraph [ref=e321]: © 2026 LinkedIn GenAI

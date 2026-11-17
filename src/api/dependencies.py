@@ -18,6 +18,7 @@ def extract_bearer_token(authorization: str | None) -> str | None:
     """
     if not authorization or not authorization.startswith(BEARER_PREFIX):
         return None
+
     return authorization.split(" ")[1]
 
 

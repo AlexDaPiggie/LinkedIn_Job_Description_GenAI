@@ -1,0 +1,296 @@
+- generic [active] [ref=f8e1]:
+  - link "Skip to content" [ref=f8e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "Kickstarter blog home" [ref=f8e5] [cursor=pointer]:
+        - /url: https://updates.kickstarter.com
+        - img "Kickstarter" [ref=f8e6]
+        - generic [ref=f8e7]: Blog
+      - navigation "Blog topics" [ref=f8e8]:
+        - list [ref=f8e9]:
+          - listitem [ref=f8e10]:
+            - link "News" [ref=f8e11] [cursor=pointer]:
+              - /url: https://updates.kickstarter.com/tag/news/?ref=blog_homepage_topnav
+          - listitem [ref=f8e12]:
+            - link "Creator Tips" [ref=f8e13] [cursor=pointer]:
+              - /url: https://updates.kickstarter.com/tag/creator-tips/?ref=blog_homepage_topnav
+          - listitem [ref=f8e14]:
+            - link "Product Updates" [ref=f8e15] [cursor=pointer]:
+              - /url: https://updates.kickstarter.com/tag/product-updates/?ref=blog_homepage_topnav
+          - listitem [ref=f8e16]:
+            - link "Case Studies" [ref=f8e17] [cursor=pointer]:
+              - /url: https://updates.kickstarter.com/tag/case-studies/?ref=blog_homepage_topnav
+      - generic [ref=f8e18]:
+        - button "Search the blog" [ref=f8e19] [cursor=pointer]
+        - link "Start a project" [ref=f8e23] [cursor=pointer]:
+          - /url: https://www.kickstarter.com/learn?ref=ksr_blog_nav
+  - main [ref=f8e24]:
+    - article [ref=f8e25]:
+      - generic [ref=f8e26]:
+        - navigation "Breadcrumb" [ref=f8e27]:
+          - link "Blog" [ref=f8e28] [cursor=pointer]:
+            - /url: https://updates.kickstarter.com
+        - 'heading "How Crowdfunding Works: A Guide for Creators" [level=1] [ref=f8e29]'
+        - paragraph [ref=f8e30]: Learn how crowdfunding work, how backers support creative projects, and how to launch and fund your idea with Kickstarter.
+        - generic [ref=f8e33]:
+          - paragraph [ref=f8e34]:
+            - link "Kickstarter" [ref=f8e35] [cursor=pointer]:
+              - /url: /author/kickstarter-2/
+          - paragraph [ref=f8e36]:
+            - time [ref=f8e37]: September 11, 2026
+            - generic [aria-hidden] [ref=f8e38]: ·
+            - generic [ref=f8e39]: 7 min read
+      - figure "iStock" [ref=f8e40]:
+        - 'img "How Crowdfunding Works: A Guide for Creators" [ref=f8e41]'
+      - generic [ref=f8e43]:
+        - paragraph [ref=f8e44]:
+          - link "Crowdfunding is a way to raise money" [ref=f8e45] [cursor=pointer]:
+            - /url: https://help.kickstarter.com/en-us/articles/16236556-what-is-kickstarter?ref=updates.kickstarter.com
+          - text: for a project by inviting a large group of people to contribute, usually through an online platform. Instead of relying on a single investor, lender, publisher, or other traditional funding source, creators can go directly to the people who want to see their ideas exist.
+        - paragraph [ref=f8e46]: For creators, crowdfunding can do more than provide funding. It can help you test demand, find an audience, build a community around your work, and bring a project to life while maintaining creative ownership.
+        - paragraph [ref=f8e47]: Here’s how crowdfunding works and what to know before starting a campaign of your own.
+        - heading [level=2] [ref=f8e48]:
+          - strong [ref=f8e49]: What is crowdfunding?
+        - paragraph [ref=f8e50]: Crowdfunding is a funding model in which many people contribute money to support a project, business, product, cause, or creator.
+        - paragraph [ref=f8e51]: "There are four common types of crowdfunding:"
+        - paragraph [ref=f8e52]:
+          - strong [ref=f8e53]: Reward-based crowdfunding
+          - text: lets people pledge money to a project, often in exchange for a reward such as the thing being created, early access, a limited edition, or a unique experience. Kickstarter uses this model.
+        - paragraph [ref=f8e54]:
+          - strong [ref=f8e55]: Donation-based crowdfunding
+          - text: allows people to contribute without expecting anything in return and is often used for personal expenses, emergencies, or charitable causes.
+        - paragraph [ref=f8e56]:
+          - strong [ref=f8e57]: Equity crowdfunding
+          - text: allows people to invest in a company in exchange for an ownership stake.
+        - paragraph [ref=f8e58]:
+          - strong [ref=f8e59]: Debt crowdfunding
+          - text: involves lending money with the expectation of repayment.
+        - paragraph [ref=f8e60]: For artists, filmmakers, musicians, writers, designers, game makers, and other independent creators, reward-based crowdfunding offers a way to fund a project without taking out a loan or giving investors ownership of the work.
+        - heading [level=2] [ref=f8e61]:
+          - strong [ref=f8e62]: How does crowdfunding work?
+        - paragraph [ref=f8e63]: Every crowdfunding platform is different, but reward-based crowdfunding generally follows four steps.
+        - heading [level=3] [ref=f8e64]:
+          - strong [ref=f8e65]: 1. Create your project
+        - figure "The Tharpe" [ref=f8e66]:
+          - link [ref=f8e67] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/projects/thetharpe/the-tharpe-black-music-past-and-present?ref=discover_saved_projects&category_id=361
+        - paragraph [ref=f8e69]: Start with a clear idea of what you want to make and how much money you'll need to make it happen.
+        - paragraph [ref=f8e70]: Your crowdfunding campaign explains your idea, funding goal, timeline, and how you'll use the money. You can also offer rewards at different pledge levels, from the thing you're creating to limited editions or unique experiences.
+        - paragraph [ref=f8e71]:
+          - text: Check out our
+          - link "Creator Handbook" [ref=f8e72] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/help/handbook?ref=updates.kickstarter.com
+          - text: for additional resources.
+        - heading [level=3] [ref=f8e73]:
+          - strong [ref=f8e74]: 2. Backers pledge to your project
+        - paragraph [ref=f8e75]:
+          - text: Once your campaign goes live, people can
+          - strong [ref=f8e76]: back
+          - text: it by pledging money toward your funding goal. These supporters are called
+          - strong [ref=f8e77]: backers
+          - text: .
+        - paragraph [ref=f8e78]: On Kickstarter, backers choose how much they want to pledge. They can simply support the project or select a reward offered at a particular pledge level. For example, someone backing a new board game might pledge for a copy of the finished game, while a higher pledge level could include a special edition or additional rewards.
+        - paragraph [ref=f8e79]: "Backing isn't the same as investing in a company: backers don't receive equity or ownership in the project. And it isn't quite the same as shopping, either. Backers are helping fund the process of creating something new."
+        - paragraph [ref=f8e80]: Creators typically share their campaigns with their existing communities, while Kickstarter also gives them the opportunity to reach people looking to discover and support new creative ideas.
+        - figure [ref=f8e81]:
+          - 'link "How to Back a Crowdfunding Project on Kickstarter Everything you need to know before and after supporting your first creative project. Kickstarter Blog: Crowdfunding Tips, Stories & Insights •Kickstarter" [ref=f8e82] [cursor=pointer]':
+            - /url: https://updates.kickstarter.com/how-to-back-a-crowdfunding-project-on-kickstarter/
+            - generic [ref=f8e83]:
+              - generic [ref=f8e84]: How to Back a Crowdfunding Project on Kickstarter
+              - generic [ref=f8e85]: Everything you need to know before and after supporting your first creative project.
+              - generic [ref=f8e86]:
+                - generic [ref=f8e87]: "Kickstarter Blog: Crowdfunding Tips, Stories & Insights"
+                - generic [ref=f8e88]: •Kickstarter
+        - heading [level=3] [ref=f8e90]:
+          - strong [ref=f8e91]: 3. Reach your funding goal
+        - paragraph [ref=f8e92]:
+          - text: Kickstarter uses an
+          - link [ref=f8e93] [cursor=pointer]:
+            - /url: https://help.kickstarter.com/en-us/articles/16236582-why-is-funding-all-or-nothing?ref=updates.kickstarter.com
+            - strong [ref=f8e94]: all-or-nothing funding model
+          - text: . If a project reaches its
+          - link "funding goal" [ref=f8e95] [cursor=pointer]:
+            - /url: https://updates.kickstarter.com/how-to-set-the-right-funding-goal-for-your-kickstarter-campaign/
+          - text: by the deadline, backers are charged, and the creator receives the funds, minus applicable fees. If it doesn't reach its goal, no one is charged.
+        - paragraph [ref=f8e96]: All-or-nothing funding helps ensure creators have the money they need to deliver what they promised while reducing risk for backers. It can also build momentum as a project gets closer to its goal.
+        - paragraph [ref=f8e97]: Projects that reach their goal can continue raising money until the campaign ends.
+        - figure "Old Flip Japan" [ref=f8e98]:
+          - link [ref=f8e99] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/projects/oldflip-japan/vintage-kimono-hoodie/posts/4767998?ref=updates.kickstarter.com
+        - heading [level=3] [ref=f8e101]:
+          - strong [ref=f8e102]: 4. Bring your project to life
+        - paragraph [ref=f8e103]: Once a project is successfully funded, the creator gets to work.
+        - paragraph [ref=f8e104]: That might mean manufacturing a product, printing a book, recording an album, finishing a film, developing a game, or producing and shipping rewards. Creators keep backers informed about their progress and work to deliver what they promised.
+        - paragraph [ref=f8e105]: That's what makes crowdfunding different from traditional ecommerce. Backers aren't simply buying something already sitting on a shelf. They're helping make something new possible.
+        - figure [ref=f8e106]:
+          - 'link "From Concept to Fulfillment: The Complete Kickstarter Journey A realistic Kickstarter campaign timeline can help you plan for everything from pre-launch testing and audience building to launch day, backer communication, and what comes next. Kickstarter Blog: Crowdfunding Tips, Stories & Insights •TCF Team" [ref=f8e107] [cursor=pointer]':
+            - /url: https://updates.kickstarter.com/from-concept-to-fulfillment-the-complete-kickstarter-journey/
+            - generic [ref=f8e108]:
+              - generic [ref=f8e109]: "From Concept to Fulfillment: The Complete Kickstarter Journey"
+              - generic [ref=f8e110]: A realistic Kickstarter campaign timeline can help you plan for everything from pre-launch testing and audience building to launch day, backer communication, and what comes next.
+              - generic [ref=f8e111]:
+                - generic [ref=f8e112]: "Kickstarter Blog: Crowdfunding Tips, Stories & Insights"
+                - generic [ref=f8e113]: •TCF Team
+        - heading [level=2] [ref=f8e115]:
+          - strong [ref=f8e116]: What are the pros and cons of crowdfunding?
+        - figure "iStock" [ref=f8e117]
+        - paragraph [ref=f8e119]: Crowdfunding can offer creators more than access to funding.
+        - paragraph [ref=f8e120]:
+          - strong [ref=f8e121]: Maintain ownership.
+          - text: Kickstarter creators retain 100% ownership of their work. You don't have to give investors equity or repay the funding like a loan.
+        - paragraph [ref=f8e122]:
+          - strong [ref=f8e123]: Test your idea.
+          - text: A campaign can show whether people are willing to support an idea before you invest heavily in producing it.
+        - paragraph [ref=f8e124]:
+          - strong [ref=f8e125]: Build an audience.
+          - text: Crowdfunding can turn early supporters into a community that follows your work, shares your project, and potentially returns for whatever you create next.
+        - paragraph [ref=f8e126]:
+          - strong [ref=f8e127]: Connect directly with supporters.
+          - text: Creators can take an idea directly to the people most likely to care about it rather than relying entirely on traditional gatekeepers.
+        - paragraph [ref=f8e128]: Crowdfunding also takes work. A successful campaign requires planning, promotion, communication, and careful budgeting. Even successfully funded projects can encounter production delays, rising costs, and other unexpected challenges.
+        - figure [ref=f8e129]:
+          - 'link "How to Fund Your Idea: A Complete Guide for Creators Every creative project starts with the same question: How am I going to pay for this? Kickstarter Blog: Crowdfunding Tips, Stories & Insights •Kickstarter" [ref=f8e130] [cursor=pointer]':
+            - /url: https://updates.kickstarter.com/how-to-fund-your-idea-a-complete-guide-for-creators/
+            - generic [ref=f8e131]:
+              - generic [ref=f8e132]: "How to Fund Your Idea: A Complete Guide for Creators"
+              - generic [ref=f8e133]: "Every creative project starts with the same question: How am I going to pay for this?"
+              - generic [ref=f8e134]:
+                - generic [ref=f8e135]: "Kickstarter Blog: Crowdfunding Tips, Stories & Insights"
+                - generic [ref=f8e136]: •Kickstarter
+        - heading [level=2] [ref=f8e138]:
+          - strong [ref=f8e139]: How do crowdfunding platforms compare?
+        - paragraph [ref=f8e140]: Different crowdfunding platforms are designed for different goals.
+        - table [ref=f8e141]:
+          - rowgroup [ref=f8e147]:
+            - row [ref=f8e148]:
+              - cell [ref=f8e149]:
+                - paragraph [ref=f8e150]: Platform
+              - cell [ref=f8e151]:
+                - paragraph [ref=f8e152]: Type
+              - cell [ref=f8e153]:
+                - paragraph [ref=f8e154]: Best for
+              - cell [ref=f8e155]:
+                - paragraph [ref=f8e156]: Funding model
+            - row [ref=f8e157]:
+              - cell [ref=f8e158]:
+                - paragraph [ref=f8e159]: Kickstarter
+              - cell [ref=f8e160]:
+                - paragraph [ref=f8e161]: Reward-based
+              - cell [ref=f8e162]:
+                - paragraph [ref=f8e163]: Creative projects
+              - cell [ref=f8e164]:
+                - paragraph [ref=f8e165]: All-or-nothing
+            - row [ref=f8e166]:
+              - cell [ref=f8e167]:
+                - paragraph [ref=f8e168]: GoFundMe
+              - cell [ref=f8e169]:
+                - paragraph [ref=f8e170]: Donation-based
+              - cell [ref=f8e171]:
+                - paragraph [ref=f8e172]: Personal needs, emergencies, and charitable causes
+              - cell [ref=f8e173]:
+                - paragraph [ref=f8e174]: Flexible
+            - row [ref=f8e175]:
+              - cell [ref=f8e176]:
+                - paragraph [ref=f8e177]: Indiegogo
+              - cell [ref=f8e178]:
+                - paragraph [ref=f8e179]: Reward-based
+              - cell [ref=f8e180]:
+                - paragraph [ref=f8e181]: Products and technology
+              - cell [ref=f8e182]:
+                - paragraph [ref=f8e183]: Funding options vary
+            - row [ref=f8e184]:
+              - cell [ref=f8e185]:
+                - paragraph [ref=f8e186]: Patreon
+              - cell [ref=f8e187]:
+                - paragraph [ref=f8e188]: Membership
+              - cell [ref=f8e189]:
+                - paragraph [ref=f8e190]: Ongoing creator work
+              - cell [ref=f8e191]:
+                - paragraph [ref=f8e192]: Recurring support
+        - paragraph [ref=f8e193]: The best crowdfunding platform depends on what you're trying to fund. Someone raising money for an emergency has different needs from a designer launching a new product or a filmmaker finishing a documentary.
+        - paragraph [ref=f8e194]: For creators with a defined creative project, Kickstarter is built specifically to help new ideas find the people who want to bring them to life.
+        - heading [level=2] [ref=f8e195]:
+          - strong [ref=f8e196]: Why use Kickstarter for crowdfunding?
+        - paragraph [ref=f8e197]: Kickstarter has helped bring creative projects to life since 2009. Today, more than 26 million people from around the world have helped fund Kickstarter projects across games, publishing, film, music, art, design, technology, and more.
+        - paragraph [ref=f8e198]: Creators also retain 100% ownership of their work. Kickstarter doesn't take equity or ownership in the projects it hosts.
+        - paragraph [ref=f8e199]: Projects launched on Kickstarter have gone on to become bestselling books, award-winning films, hit games, innovative products, and successful creative businesses.
+        - figure "WeirdCo" [ref=f8e200]:
+          - link [ref=f8e201] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/projects/cyberpunktcg/the-official-cyberpunk-trading-card-game?ref=updates.kickstarter.com
+        - paragraph [ref=f8e203]:
+          - text: "But crowdfunding isn't only about blockbuster campaigns. At its core, Kickstarter gives creators a way to ask:"
+          - strong [ref=f8e204]: Do enough people want this idea to exist?
+        - paragraph [ref=f8e205]: If the answer is yes, those people can help make it possible.
+        - paragraph [ref=f8e206]:
+          - strong [ref=f8e207]: How do you start a crowdfunding campaign?
+        - paragraph [ref=f8e208]:
+          - text: "Start by getting clear about three things:"
+          - strong [ref=f8e209]: what you're making, how much it will cost, and who will care about it.
+        - paragraph [ref=f8e210]:
+          - text: From there, you can build your campaign,
+          - link "create rewards" [ref=f8e211] [cursor=pointer]:
+            - /url: https://updates.kickstarter.com/kickstarter-lessons/reward-strategy/
+          - text: ", set a funding goal and timeline, grow your audience, and prepare for launch."
+        - paragraph [ref=f8e212]: It's free to start building a project on Kickstarter. If your project is successfully funded, Kickstarter collects a 5% platform fee, plus payment processing fees of roughly 3–5%. If it doesn't reach its goal, no fees are collected.
+        - paragraph [ref=f8e213]:
+          - link "Visit our Help Center to learn more about fees on Kickstarter →" [ref=f8e214] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/help/fees?ref=updates.kickstarter.com
+        - paragraph [ref=f8e215]: You don't need to have every detail figured out before you begin. You can start building your project for free and develop your campaign before you're ready to launch.
+        - paragraph [ref=f8e216]:
+          - strong [ref=f8e217]: Have an idea worth bringing to life?
+          - link [ref=f8e218] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/creators?ref=nav
+            - strong [ref=f8e219]: Start a Kickstarter project →
+        - heading [level=2] [ref=f8e220]:
+          - strong [ref=f8e221]: Crowdfunding FAQ
+        - heading [level=3] [ref=f8e222]:
+          - strong [ref=f8e223]: What happens if a Kickstarter doesn't reach its goal?
+        - paragraph [ref=f8e224]: Kickstarter uses all-or-nothing funding, so backers are only charged if the project reaches its funding goal by the deadline. If it doesn't, no money changes hands.
+        - heading [level=3] [ref=f8e225]:
+          - strong [ref=f8e226]: Do you have to pay crowdfunding money back?
+        - paragraph [ref=f8e227]: It depends on the type of crowdfunding. Reward-based crowdfunding generally doesn't require repayment like a loan. On Kickstarter, creators don't repay backers or give up equity.
+        - heading [level=3] [ref=f8e228]:
+          - strong [ref=f8e229]: Do Kickstarter backers own part of a project?
+        - paragraph [ref=f8e230]: No. Kickstarter creators retain 100% ownership of their work. Backers may receive rewards, but they don't receive equity or ownership in the project.
+        - heading [level=2] [ref=f8e231]:
+          - strong [ref=f8e232]: Bring your idea to life
+        - paragraph [ref=f8e233]: Crowdfunding gives you a way to find your audience, fund your idea, and bring something new into the world while keeping ownership of your work.
+        - paragraph [ref=f8e234]: Ready to get started? Launch your next big idea on Kickstarter.
+        - link "Launch a Kickstarter project" [ref=f8e236] [cursor=pointer]:
+          - /url: https://www.kickstarter.com/creators?ref=nav
+    - region "Have something you want to make?" [ref=f8e238]:
+      - generic [ref=f8e239]:
+        - heading "Have something you want to make?" [level=2] [ref=f8e240]
+        - paragraph [ref=f8e241]: Find the people who want it to exist. Start with our creator resources, then build your project when you're ready.
+        - generic [ref=f8e242]:
+          - link "Explore creator resources" [ref=f8e243] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/learn?ref=ksr_blog_cta
+          - link "Get Kickstarter newsletters" [ref=f8e244] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/newsletters?ref=ksr_blog_cta
+  - contentinfo [ref=f8e245]:
+    - generic [ref=f8e246]:
+      - generic [ref=f8e247]:
+        - generic [ref=f8e248]:
+          - link "Kickstarter" [ref=f8e249] [cursor=pointer]:
+            - /url: https://www.kickstarter.com/?ref=ksr_blog_footer
+            - img "Kickstarter" [ref=f8e250]
+          - paragraph [ref=f8e251]: Crowdfunding tips, trends, and success stories to bring ideas to life.
+        - navigation "Footer" [ref=f8e252]:
+          - list [ref=f8e253]:
+            - listitem [ref=f8e254]:
+              - link "Start Your Project" [ref=f8e255] [cursor=pointer]:
+                - /url: https://www.kickstarter.com/learn/?ref=updatesblog
+            - listitem [ref=f8e256]:
+              - link "The Creative Independent" [ref=f8e257] [cursor=pointer]:
+                - /url: https://thecreativeindependent.com/
+            - listitem [ref=f8e258]:
+              - link "Get In Touch" [ref=f8e259] [cursor=pointer]:
+                - /url: https://help.kickstarter.com/hc/en-us/requests/new
+            - listitem [ref=f8e260]:
+              - link "Ideas in Action" [ref=f8e261] [cursor=pointer]:
+                - /url: https://features.kickstarter.com/?ref=updates.kickstarter.com
+      - generic [ref=f8e262]:
+        - paragraph [ref=f8e263]: © 2026 Kickstarter, PBC
+        - link "RSS feed" [ref=f8e264] [cursor=pointer]:
+          - /url: https://updates.kickstarter.com/rss/

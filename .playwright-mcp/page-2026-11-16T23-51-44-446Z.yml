@@ -1,0 +1,388 @@
+- generic [ref=f36e1]:
+  - generic [ref=f36e2]:
+    - banner [ref=f36e3]:
+      - generic [ref=f36e5]:
+        - link [ref=f36e7] [cursor=pointer]:
+          - /url: https://blog.duolingo.com/en
+        - navigation [ref=f36e11]:
+          - list [ref=f36e12]:
+            - listitem [ref=f36e13] [cursor=pointer]:
+              - generic [ref=f36e14]: SUBJECTS
+            - listitem [ref=f36e20] [cursor=pointer]:
+              - generic [ref=f36e21]: INSIDE DUOLINGO
+            - listitem [ref=f36e27] [cursor=pointer]:
+              - generic [ref=f36e28]: SITE LANGUAGE
+          - textbox [ref=f36e43]:
+            - /placeholder: Search...
+    - main [ref=f36e44]:
+      - article [ref=f36e45]:
+        - generic [ref=f36e46]:
+          - generic [ref=f36e47]:
+            - generic [ref=f36e48]:
+              - 'heading "The Duolingo Method: 5 key principles that make learning fun and effective" [level=1] [ref=f36e49]'
+              - paragraph [ref=f36e50]: Fun, effective, driven by science—here’s how Duolingo develops research-based courses.
+              - generic [ref=f36e51]:
+                - time [ref=f36e53]: February 2, 2023
+                - link "Cassie Freeman, Ph.D." [ref=f36e57] [cursor=pointer]:
+                  - /url: /author/cassie/
+            - img "Illustration of the Duolingo app icon on a phone screen" [ref=f36e59]
+          - main [ref=f36e60]:
+            - generic [ref=f36e61]:
+              - paragraph [ref=f36e62]:
+                - text: Duolingo makes learning fun and accessible, but our courses are built on serious learning science! Our teaching methods are grounded in decades of research, and our lessons use national and international standards—so you can be confident that your time is well spent. Here’s how we do it, with the
+                - strong [ref=f36e63]: Duolingo Method!
+              - heading "What is the Duolingo Method?" [level=2] [ref=f36e64]
+              - paragraph [ref=f36e65]:
+                - text: We call our approach to teaching and learning with apps the
+                - strong [ref=f36e66]: "Duolingo Method:"
+                - text: 5 principles that guide how we create new learning content, design engaging lessons, and build courses that are as effective as they are fun! Our learning, product, and design teams have developed this approach by combining research on teaching and learning, our experiences as teachers, and the results of more than a decade studying how our self-guided learners learn best.
+              - paragraph [ref=f36e67]:
+                - strong [ref=f36e68]: 1. Our courses are interactive, so you learn new skills right from the start.
+                - strong [ref=f36e69]: 2. Our courses use AI and learning science to personalize your learning.
+                - strong [ref=f36e70]: 3. Our courses teach the most important content and skills.
+                - strong [ref=f36e71]: 4. Our courses motivate you to reach your goals.
+                - strong [ref=f36e72]: 5. Our courses are designed to entertain and delight.
+              - paragraph [ref=f36e73]:
+                - img "a visual enumeration of the five elements of the Duolingo Method with Duo in the center. They are 1. Learn by doing. Interactive lessons grounded in learning science help your brain learn. 2. Learn in a personalized way. Lessons adapt to your individual needs so you can learn faster. 3. Focus on what matters. National and international standards inform our curricula so you can learn what matters. 4. Stay motivated. Bite-sized lessons and gamification features help you make learning a habit. 5. Feel the delight. Delightful experiences bring you joy and help build you confidence." [ref=f36e74]
+              - heading "Our courses are interactive, so you learn new skills right from the start." [level=2] [ref=f36e75]
+              - heading "💡 Learn by doing" [level=5] [ref=f36e76]
+              - paragraph [ref=f36e77]: In every Duolingo lesson, you’ll work through interactive lessons that put you at the center of your own learning. We naturally pick up on patterns around us, even if we don’t realize it—it’s just how our brains are built! Duolingo leverages this natural ability with lessons that draw learners’ attention to important patterns, from verb conjugations, to spelling rules, to creating fractions, to cement those patterns in your brain!
+              - paragraph [ref=f36e78]:
+                - strong [ref=f36e79]: "What this means for you:"
+                - text: When you start a lesson on Duolingo, you dive right into what you want to learn. 💪 The exercises and exact content are tailored so you start with simpler material in easier exercises—to get you noticing those patterns—and then lead you through more challenging examples so you can apply what you’ve learned to new contexts. We also build in features to help keep you on the right track, like optional hints and bite-sized explanations.
+              - paragraph:
+                - img
+              - heading "Our courses use AI and learning science to personalize your learning." [level=2] [ref=f36e80]
+              - heading "💡 Learn in a personalized way" [level=5] [ref=f36e81]
+              - paragraph [ref=f36e82]:
+                - text: Personalized lessons help you learn at your own pace and (cool tech alert!) they adapt to your strengths and weaknesses as you progress through your course. Our
+                - link "AI model" [ref=f36e83] [cursor=pointer]:
+                  - /url: https://blog.duolingo.com/learning-how-to-help-you-learn-introducing-birdbrain/
+                - text: tracks what you learn and adjusts the order and difficulty of the exercises you see so that you’re always seeing a balance of familiar and more challenging content. Research shows that giving you just the right level of difficulty—right at the edge of what you know, pushing you toward developing new skills—leads to more engagement and better learning! We also use algorithms to create unique practice sessions that help you strengthen the skills where you could use the most help.
+              - paragraph [ref=f36e84]:
+                - strong [ref=f36e85]: "What this means for you:"
+                - text: Your Duolingo course is unique to YOU! 🎁 The exercises you see get more advanced for the concepts you’ve aced (you’re ready for the challenge!), and you’ll see more foundational practice for content you need to review. This combination of AI and learning science gets you to the edge of your learning so that you’re constantly building new skills and rising to new challenges!
+              - heading "Our courses teach the most important content and skills." [level=2] [ref=f36e86]
+              - heading "💡 Focus on what matters" [level=5] [ref=f36e87]
+              - paragraph [ref=f36e88]:
+                - text: Duolingo courses teach the most important information, the content you really need to know—we want you to develop nimble skills that will serve you well, no matter where you take your new skills! That’s why we use
+                - link "national" [ref=f36e89] [cursor=pointer]:
+                  - /url: https://www.thecorestandards.org/?ref=blog.duolingo.com
+                - text: and
+                - link "international" [ref=f36e90] [cursor=pointer]:
+                  - /url: https://www.coe.int/en/web/common-european-framework-reference-languages/level-descriptions?ref=blog.duolingo.com
+                - text: standards to guide decisions about what we include in your course. We then complement these documented standards with our learning experts’ experience to develop well-rounded courses that give you a strong foundation and all the tools to take your learning out into the world!
+              - paragraph [ref=f36e91]:
+                - strong [ref=f36e92]: "What this means for you:"
+                - text: You can trust that your Duolingo course is using research-backed standards that have been tested for decades, so the content you’re learning focuses on the most valuable topics. 🧠 Since schools and institutes also rely on these standards, you can easily describe your learning and progress to people around the world!
+              - heading "Our courses motivate you to reach your goals." [level=2] [ref=f36e93]
+              - heading "💡 Stay motivated" [level=5] [ref=f36e94]
+              - paragraph [ref=f36e95]:
+                - text: The whole Duolingo experience is designed to help you stick with your learning, for the long-term! It’s easy to fit in study time with our bite-sized lessons that take just a few minutes to complete. And the gamification that’s built into each course keeps you
+                - emphasis [ref=f36e96]: wanting
+                - text: "to return: Completing lessons earns you points and extends your learning streak, and you’ll find lots of opportunities to partner with (and compete against!) friends. These tools help you feel accomplished and motivated to reach your goals—and research shows they help keep you engaged and learning better, too!"
+              - paragraph [ref=f36e97]:
+                - strong [ref=f36e98]: "What this means for you:"
+                - text: You bring your interest in learning, and Duolingo will take care of the rest! 👯‍♀️ Your study time will fly by as you rack up points, compete with learners around the world, and collect rounds of virtual high fives from your friends as you pass big milestones. All these tools help keep you motivated, and you might be surprised that learning can be this much fun!
+              - paragraph:
+                - img "three screens demonstrating how duolingo’s apps support streaks. The first screen is from the language app and shows a flaming number five with the words 5 day streak. Underneath it has the days of the week Sunday through Saturday with check marks for the first five days. It also explains “A streak counts how many days you’ve practiced in a row.” A continue button is at the bottom. The second screen is from Duolingo ABC and shows the first part of a daily joke. Fofo is asking a young Bea “What do you call a boomerang that won’t come back?” A right pointing arrow is at the bottom. The third screen is from the math app and shows a flame with a 5 next to it in the upper right hand corner of the screen. In the center of the screen it reads “Streak extended” and shows a flaming Duo in cube form, wearing sunglasses. A continue button is at the bottom."
+              - heading "Our courses are designed to entertain and delight." [level=2] [ref=f36e99]
+              - heading "💡 Feel the delight" [level=5] [ref=f36e100]
+              - paragraph [ref=f36e101]:
+                - text: Learning with Duolingo is a blast! We know people learn better when they have joyful experiences, so we build light-hearted learning into every course and lesson. Our cheerful characters, with their own personalities and backstories, show up throughout your course and make the learning experience more interesting and meaningful. You’ll also find encouraging words and supportive messages from Duo the owl! And this fun spirit is in the lessons, too, because
+                - link "funny content sticks with you" [ref=f36e102] [cursor=pointer]:
+                  - /url: https://blog.duolingo.com/how-silly-sentences-can-help-you-learn/
+                - text: and makes learning more memorable.
+              - paragraph [ref=f36e103]:
+                - strong [ref=f36e104]: "What this means for you:"
+                - text: Your Duolingo lessons are filled with warmth, color, and—yes—a little sass! 😊 While you’re learning new content, you’ll also be uncovering more about the silly and sweet personalities of our family of characters. They’ll cheer you on between exercises, celebrate your accomplishments, and become your pals on a learning journey like no other.
+              - heading "Learning with Duolingo is free, fun, and effective!" [level=2] [ref=f36e105]
+              - paragraph [ref=f36e106]:
+                - text: The Duolingo Method is how we make sure that our apps are effective and fun! These guidelines help us create
+                - link "learning experiences that really work" [ref=f36e107] [cursor=pointer]:
+                  - /url: https://duolingo.com/efficacy?ref=blog.duolingo.com
+                - text: and bring high-quality education tools to learners around the world.
+              - paragraph [ref=f36e108]:
+                - text: To get started on your own learning journey, download Duolingo for language learning (on
+                - link "iOS" [ref=f36e109] [cursor=pointer]:
+                  - /url: https://apps.apple.com/us/app/duolingo-language-lessons/id570060128?ref=blog.duolingo.com
+                - text: ","
+                - link "Android" [ref=f36e110] [cursor=pointer]:
+                  - /url: https://play.google.com/store/apps/details?id=com.duolingo&hl=en_US&gl=US&pli=1&ref=blog.duolingo.com
+                - text: ", and"
+                - link "web" [ref=f36e111] [cursor=pointer]:
+                  - /url: https://www.duolingo.com/?ref=blog.duolingo.com
+                - text: ), Duolingo ABC for reading and literacy (on
+                - link "iOS" [ref=f36e112] [cursor=pointer]:
+                  - /url: https://apps.apple.com/app/apple-store/id1440502568?pt=1374442&ct=Web%20splash&mt=8&ref=blog.duolingo.com
+                - text: and
+                - link "Android" [ref=f36e113] [cursor=pointer]:
+                  - /url: https://play.google.com/store/apps/details?id=com.duolingo.literacy&ref=blog.duolingo.com
+                - text: ), and Duolingo Math for elementary math and brain training (on
+                - link "iOS" [ref=f36e114] [cursor=pointer]:
+                  - /url: https://itunes.apple.com/us/app/duolingo/id1598161822?ref=blog.duolingo.com
+                - text: ).
+              - paragraph [ref=f36e115]:
+                - emphasis [ref=f36e116]:
+                  - link "Click here" [ref=f36e117] [cursor=pointer]:
+                    - /url: https://duolingo-papers.s3.amazonaws.com/reports/duolingo-method-whitepaper.pdf?ref=blog.duolingo.com
+                  - text: to read more about the science behind the Duolingo Method, or watch our 2023 Duocon talk below!
+              - iframe [ref=f36e118]:
+                - generic [ref=f37e1]:
+                  - generic "YouTube Video Player" [ref=f37e3]
+                  - generic [ref=f37e5]:
+                    - generic:
+                      - generic:
+                        - generic [ref=f37e6] [cursor=pointer]
+                        - button "Play video" [ref=f37e10] [cursor=pointer]
+                        - button "Hide player controls" [ref=f37e12] [cursor=pointer]
+                        - generic [ref=f37e14]:
+                          - generic [ref=f37e21]:
+                            - generic [ref=f37e22]:
+                              - link "Introducing The Duolingo Method - How does Duolingo teach new subjects?" [ref=f37e23] [cursor=pointer]:
+                                - /url: https://www.youtube.com/watch?v=OVTSGL4BdDU
+                              - link "Duolingo" [ref=f37e24] [cursor=pointer]:
+                                - /url: /channel/UCG98ruDeyp55THxbpBCIv3g
+                            - generic [ref=f37e26]:
+                              - button [ref=f37e27] [cursor=pointer]
+                              - generic [ref=f37e29]:
+                                - generic: Duolingo
+                                - generic: 7.1M subscribers
+                          - generic [ref=f37e30]:
+                            - button "Share" [ref=f37e33] [cursor=pointer]
+                            - link "Watch on YouTube" [ref=f37e44] [cursor=pointer]:
+                              - /url: https://www.youtube.com/watch?v=OVTSGL4BdDU
+                              - generic [ref=f37e45]: Watch on
+          - generic [ref=f36e119]:
+            - generic [ref=f36e120]: TAGS
+            - generic [ref=f36e121]:
+              - link "Company" [ref=f36e123] [cursor=pointer]:
+                - /url: /tag/company
+              - link "Learning" [ref=f36e125] [cursor=pointer]:
+                - /url: /tag/learning
+              - link "Announcements" [ref=f36e127] [cursor=pointer]:
+                - /url: /tag/announcements
+              - link "Language" [ref=f36e129] [cursor=pointer]:
+                - /url: /tag/language
+              - link "Math" [ref=f36e131] [cursor=pointer]:
+                - /url: /tag/math
+              - link "Music" [ref=f36e133] [cursor=pointer]:
+                - /url: /tag/music
+              - link "Research" [ref=f36e135] [cursor=pointer]:
+                - /url: /tag/research
+              - link "Duolingo 101" [ref=f36e137] [cursor=pointer]:
+                - /url: /tag/duolingo-101
+              - link "Efficacy" [ref=f36e139] [cursor=pointer]:
+                - /url: /tag/efficacy
+              - link "Brain" [ref=f36e141] [cursor=pointer]:
+                - /url: /tag/brain
+              - link "Motivation" [ref=f36e143] [cursor=pointer]:
+                - /url: /tag/motivation
+              - link "Chess" [ref=f36e145] [cursor=pointer]:
+                - /url: /tag/chess
+          - generic [ref=f36e146]:
+            - generic [ref=f36e147]: SHARE ARTICLE
+            - generic [ref=f36e149]:
+              - link "LinkedIn" [ref=f36e150] [cursor=pointer]:
+                - /url: https://www.linkedin.com/shareArticle?url=https://blog.duolingo.com/duolingo-teaching-method/&title=The%20Duolingo%20Method%3A%205%20key%20principles%20that%20make%20learning%20fun%20and%20effective&summary=Fun%2C%20effective%2C%20driven%20by%20science%E2%80%94here%E2%80%99s%20how%20Duolingo%20develops%20research-based%20courses.&source=
+              - link "Facebook" [ref=f36e154] [cursor=pointer]:
+                - /url: https://www.facebook.com/sharer/sharer.php?u=https://blog.duolingo.com/duolingo-teaching-method/
+              - link "Twitter" [ref=f36e158] [cursor=pointer]:
+                - /url: https://twitter.com/intent/tweet?url=https://blog.duolingo.com/duolingo-teaching-method/&text=The%20Duolingo%20Method%3A%205%20key%20principles%20that%20make%20learning%20fun%20and%20effective&media=https%3A%2F%2Fstorage.ghost.io%2Fc%2F7a%2F33%2F7a33d0f4-927d-4fe8-a6bf-96131b5e76d4%2Fcontent%2Fimages%2F2024%2F05%2Fcover_duo-method.png
+              - link "Share on KakaoTalk" [ref=f36e162] [cursor=pointer]:
+                - /url: https://story.kakao.com/share?url=https://blog.duolingo.com/duolingo-teaching-method/&title=The%20Duolingo%20Method%3A%205%20key%20principles%20that%20make%20learning%20fun%20and%20effective&media=https%3A%2F%2Fstorage.ghost.io%2Fc%2F7a%2F33%2F7a33d0f4-927d-4fe8-a6bf-96131b5e76d4%2Fcontent%2Fimages%2F2024%2F05%2Fcover_duo-method.png
+              - link "WhatsApp" [ref=f36e166] [cursor=pointer]:
+                - /url: whatsapp://send?text=The%20Duolingo%20Method%3A%205%20key%20principles%20that%20make%20learning%20fun%20and%20effective%20https://blog.duolingo.com/duolingo-teaching-method/
+              - link "Email" [ref=f36e171] [cursor=pointer]:
+                - /url: "mailto:?subject=Check out this post from Duolingo&body=Hi! I thought you might enjoy this post:%20The Duolingo Method: 5 key principles that make learning fun and effective%0D%0A%0D%0Ahttps://blog.duolingo.com/duolingo-teaching-method/"
+        - generic [ref=f36e179]:
+          - heading "RELATED ARTICLES" [level=3] [ref=f36e180]
+          - generic [ref=f36e182]:
+            - generic [ref=f36e184]:
+              - link [ref=f36e186] [cursor=pointer]:
+                - /url: /chess-habits-for-improving/
+              - generic [ref=f36e187]:
+                - generic [ref=f36e188]:
+                  - time [ref=f36e190]: Nov 3
+                  - link "Stefan Klepoch, B.A." [ref=f36e193] [cursor=pointer]:
+                    - /url: /author/stefan/
+                - link [ref=f36e195] [cursor=pointer]:
+                  - /url: /chess-habits-for-improving/
+                  - heading "5 habits for improving at chess" [level=3] [ref=f36e196]
+            - generic [ref=f36e198]:
+              - link [ref=f36e200] [cursor=pointer]:
+                - /url: /goldilocks-and-the-cefr-levels-which-proficiency-level-is-just-right/
+              - generic [ref=f36e201]:
+                - generic [ref=f36e202]:
+                  - time [ref=f36e204]: Oct 27
+                  - link "Cindy Blanco, Ph.D." [ref=f36e207] [cursor=pointer]:
+                    - /url: /author/cindy/
+                - link [ref=f36e209] [cursor=pointer]:
+                  - /url: /goldilocks-and-the-cefr-levels-which-proficiency-level-is-just-right/
+                  - heading "Which CEFR level is right for you?" [level=3] [ref=f36e210]
+            - generic [ref=f36e212]:
+              - link [ref=f36e214] [cursor=pointer]:
+                - /url: /how-to-castle-in-chess/
+              - generic [ref=f36e215]:
+                - generic [ref=f36e216]:
+                  - time [ref=f36e218]: Oct 22
+                  - link "Katherine Wise" [ref=f36e221] [cursor=pointer]:
+                    - /url: /author/katherine/
+                - link [ref=f36e223] [cursor=pointer]:
+                  - /url: /how-to-castle-in-chess/
+                  - heading "How to castle in chess" [level=3] [ref=f36e224]
+    - contentinfo [ref=f36e227]:
+      - generic [ref=f36e229]:
+        - generic [ref=f36e231]:
+          - generic [ref=f36e233]:
+            - heading "About us" [level=6] [ref=f36e234]
+            - list [ref=f36e235]:
+              - listitem [ref=f36e236]:
+                - link "Courses" [ref=f36e237] [cursor=pointer]:
+                  - /url: https://duolingo.com/courses
+              - listitem [ref=f36e238]:
+                - link "Mission" [ref=f36e239] [cursor=pointer]:
+                  - /url: https://duolingo.com/info
+              - listitem [ref=f36e240]:
+                - link "Approach" [ref=f36e241] [cursor=pointer]:
+                  - /url: https://duolingo.com/approach
+              - listitem [ref=f36e242]:
+                - link "Efficacy" [ref=f36e243] [cursor=pointer]:
+                  - /url: https://duolingo.com/efficacy
+              - listitem [ref=f36e244]:
+                - link "Team" [ref=f36e245] [cursor=pointer]:
+                  - /url: https://careers.duolingo.com/about
+              - listitem [ref=f36e246]:
+                - link "Research" [ref=f36e247] [cursor=pointer]:
+                  - /url: https://research.duolingo.com/
+              - listitem [ref=f36e248]:
+                - link "Careers" [ref=f36e249] [cursor=pointer]:
+                  - /url: https://careers.duolingo.com/
+              - listitem [ref=f36e250]:
+                - link "Brand guidelines" [ref=f36e251] [cursor=pointer]:
+                  - /url: https://design.duolingo.com/
+              - listitem [ref=f36e252]:
+                - link "Press" [ref=f36e253] [cursor=pointer]:
+                  - /url: https://press.duolingo.com/#about
+              - listitem [ref=f36e254]:
+                - link "Investors" [ref=f36e255] [cursor=pointer]:
+                  - /url: https://investors.duolingo.com/
+              - listitem [ref=f36e256]:
+                - link "Contact us" [ref=f36e257] [cursor=pointer]:
+                  - /url: https://duolingo.com/contact
+          - generic [ref=f36e258]:
+            - heading "Products" [level=6] [ref=f36e259]
+            - list [ref=f36e260]:
+              - listitem [ref=f36e261]:
+                - link "Duolingo" [ref=f36e262] [cursor=pointer]:
+                  - /url: https://duolingo.com/
+              - listitem [ref=f36e263]:
+                - link "Duolingo English Test" [ref=f36e264] [cursor=pointer]:
+                  - /url: https://englishtest.duolingo.com/
+              - listitem [ref=f36e265]:
+                - link "Duolingo for Business" [ref=f36e266] [cursor=pointer]:
+                  - /url: https://duolingo.com/business
+              - listitem [ref=f36e267]:
+                - link "Super Duolingo" [ref=f36e268] [cursor=pointer]:
+                  - /url: https://duolingo.com/super
+              - listitem [ref=f36e269]:
+                - link "Store" [ref=f36e270] [cursor=pointer]:
+                  - /url: https://store.duolingo.com/
+          - generic [ref=f36e271]:
+            - heading "Apps" [level=6] [ref=f36e272]
+            - list [ref=f36e273]:
+              - listitem [ref=f36e274]:
+                - link "Duolingo for Desktop" [ref=f36e275] [cursor=pointer]:
+                  - /url: http://duolingo.com/
+              - listitem [ref=f36e276]:
+                - link "Duolingo for Android" [ref=f36e277] [cursor=pointer]:
+                  - /url: https://play.google.com/store/apps/details?hl=en&id=com.duolingo&referrer=utm_source%3Dduolingo.com%26utm_medium%3Dduolingo_web%26utm_content%3Ddownload_button%26utm_campaign%3Dsite_map
+              - listitem [ref=f36e278]:
+                - link "Duolingo for iOS" [ref=f36e279] [cursor=pointer]:
+                  - /url: https://itunes.apple.com/app/duolingo-learn-spanish-french/id570060128?mt=8&at=1010lwpr
+          - generic [ref=f36e280]:
+            - generic [ref=f36e281]:
+              - heading "Help and support" [level=6] [ref=f36e282]
+              - list [ref=f36e283]:
+                - listitem [ref=f36e284]:
+                  - link "Duolingo FAQs" [ref=f36e285] [cursor=pointer]:
+                    - /url: https://duolingo.com/help
+                - listitem [ref=f36e286]:
+                  - link "Duolingo English Test FAQs" [ref=f36e287] [cursor=pointer]:
+                    - /url: https://englishtest.duolingo.com/faq
+                - listitem [ref=f36e288]:
+                  - link "Status" [ref=f36e289] [cursor=pointer]:
+                    - /url: https://status.duolingo.com/
+            - generic [ref=f36e291]:
+              - heading "Privacy and terms" [level=6] [ref=f36e292]
+              - list [ref=f36e293]:
+                - listitem [ref=f36e294]:
+                  - link "Community guidelines" [ref=f36e295] [cursor=pointer]:
+                    - /url: https://duolingo.com/guidelines
+                - listitem [ref=f36e296]:
+                  - link "Terms" [ref=f36e297] [cursor=pointer]:
+                    - /url: https://duolingo.com/terms
+                - listitem [ref=f36e298]:
+                  - link "Privacy" [ref=f36e299] [cursor=pointer]:
+                    - /url: https://duolingo.com/privacy
+                - listitem [ref=f36e300]:
+                  - link "Respecting your \"do not sell my personal information\" rights" [ref=f36e301] [cursor=pointer]:
+                    - /url: https://www.duolingo.com/privacy#california
+          - generic [ref=f36e302]:
+            - heading "Social" [level=6] [ref=f36e303]
+            - list [ref=f36e304]:
+              - listitem [ref=f36e305]:
+                - link "Blog" [ref=f36e306] [cursor=pointer]:
+                  - /url: https://blog.duolingo.com/
+              - listitem [ref=f36e307]:
+                - link "Instagram" [ref=f36e308] [cursor=pointer]:
+                  - /url: https://www.instagram.com/duolingo
+              - listitem [ref=f36e309]:
+                - link "Facebook" [ref=f36e310] [cursor=pointer]:
+                  - /url: https://www.facebook.com/duolingo
+              - listitem [ref=f36e311]:
+                - link "YouTube" [ref=f36e312] [cursor=pointer]:
+                  - /url: https://www.youtube.com/user/duolingo
+              - listitem [ref=f36e313]:
+                - link "TikTok" [ref=f36e314] [cursor=pointer]:
+                  - /url: https://www.tiktok.com/@duolingo
+              - listitem [ref=f36e315]:
+                - link "LinkedIn" [ref=f36e316] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/company/duolingo/
+              - listitem [ref=f36e317]:
+                - link "X" [ref=f36e318] [cursor=pointer]:
+                  - /url: https://x.com/duolingo
+        - generic [ref=f36e319]:
+          - generic [ref=f36e321]:
+            - heading "Site language:" [level=6] [ref=f36e322]
+            - list [ref=f36e323]:
+              - listitem [ref=f36e324]:
+                - link "Deutsch" [ref=f36e325] [cursor=pointer]:
+                  - /url: /de/
+              - listitem [ref=f36e326]:
+                - link "English" [ref=f36e327] [cursor=pointer]:
+                  - /url: /en/
+              - listitem [ref=f36e328]:
+                - link "Español" [ref=f36e329] [cursor=pointer]:
+                  - /url: /es/
+              - listitem [ref=f36e330]:
+                - link "Français" [ref=f36e331] [cursor=pointer]:
+                  - /url: /fr/
+              - listitem [ref=f36e332]:
+                - link "Português" [ref=f36e333] [cursor=pointer]:
+                  - /url: /pt/
+              - listitem [ref=f36e334]:
+                - link "日本語" [ref=f36e335] [cursor=pointer]:
+                  - /url: /ja/
+              - listitem [ref=f36e336]:
+                - link "한국어" [ref=f36e337] [cursor=pointer]:
+                  - /url: /ko/
+          - paragraph [ref=f36e338]: ©2026 Duolingo. All rights reserved.
+  - region "Cookie banner" [ref=f36e339]:
+    - alertdialog "Privacy" [ref=f36e340]:
+      - generic [ref=f36e342]:
+        - generic [ref=f36e343]: This website uses cookies to enhance user experience and to analyze performance and traffic on our website. We also share information about your use of our site with our social media, advertising and analytics partners.
+        - generic [ref=f36e347]:
+          - button "Do Not Sell My Personal Information" [active] [ref=f36e348] [cursor=pointer]
+          - button "Reject All" [ref=f36e349] [cursor=pointer]
+          - button "Accept Cookies" [ref=f36e350] [cursor=pointer]

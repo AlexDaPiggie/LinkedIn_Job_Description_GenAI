@@ -1,0 +1,56 @@
+- generic [active] [ref=f9e1]:
+  - navigation "Site" [ref=f9e2]:
+    - link "LinkedInGenAI" [ref=f9e3] [cursor=pointer]:
+      - /url: /
+    - link "Home" [ref=f9e4] [cursor=pointer]:
+      - /url: /
+    - link "Templates" [ref=f9e5] [cursor=pointer]:
+      - /url: /templates/
+    - link "How it works" [ref=f9e6] [cursor=pointer]:
+      - /url: /architecture.html
+    - link "Evaluation" [ref=f9e7] [cursor=pointer]:
+      - /url: /eval.html
+    - link "Authors" [ref=f9e8] [cursor=pointer]:
+      - /url: /#authors
+  - main [ref=f9e9]:
+    - generic [ref=f9e10]:
+      - heading "How we test the AI" [level=1] [ref=f9e11]
+      - paragraph [ref=f9e12]: Every model is run on the same four hiring scenarios. We check that the output is valid, then score how specific and faithful the writing is, and measure speed and cost on every call.
+      - paragraph [ref=f9e13]: Loading results...
+    - region "The chosen model" [ref=f9e14]:
+      - paragraph [ref=f9e15]: In use today
+      - heading "The chosen model" [level=2] [ref=f9e16]
+      - paragraph
+    - region "Quality against speed" [ref=f9e17]:
+      - heading "Quality against speed" [level=2] [ref=f9e18]
+      - figure "Each dot is one model. Higher is better quality, further left is faster. The model in use is blue. Hover a dot for its name." [ref=f9e19]
+    - region "How the test works" [ref=f9e21]:
+      - heading "How the test works" [level=2] [ref=f9e22]
+      - list [ref=f9e23]:
+        - listitem [ref=f9e24]:
+          - generic [ref=f9e25]: Scenarios
+          - generic [ref=f9e26]:
+            - heading "Four fixed hiring cases" [level=3] [ref=f9e27]
+            - paragraph [ref=f9e28]: Only the required fields, every field filled, a mix of fields, and a tricky edge case. Each also has a refinement request.
+        - listitem [ref=f9e29]:
+          - generic [ref=f9e30]: Rule checks
+          - generic [ref=f9e31]:
+            - heading "Is the output usable?" [level=3] [ref=f9e32]
+            - paragraph [ref=f9e33]: It must be valid JSON that matches the required structure, include the facts it was given, and leave out facts it was not given.
+        - listitem [ref=f9e34]:
+          - generic [ref=f9e35]: Quality score
+          - generic [ref=f9e36]:
+            - heading "A second AI model judges" [level=3] [ref=f9e37]
+            - paragraph [ref=f9e38]: It rates specificity, tone, faithfulness to the input, LinkedIn-readiness and how well the refinement was applied, from 1 to 5.
+        - listitem [ref=f9e39]:
+          - generic [ref=f9e40]: Speed and cost
+          - generic [ref=f9e41]:
+            - heading "Measured on every call" [level=3] [ref=f9e42]
+            - paragraph [ref=f9e43]: Timings and token counts come from the real calls, and cost is estimated from the token prices.
+    - region "All models" [ref=f9e44]:
+      - heading "All models" [level=2] [ref=f9e45]
+      - group [ref=f9e46]:
+        - generic "Show the full table" [ref=f9e47] [cursor=pointer]
+      - paragraph [ref=f9e48]: "Limits: a small test (a handful of runs per model over four scenarios), and an AI judge can be biased. Treat quality gaps under about 0.1 as ties. Results reflect the models and prompts at the time they were run."
+  - contentinfo [ref=f9e49]:
+    - generic [ref=f9e50]: LinkedInGenAI. Numbers come straight from the evaluation harness in the repository.
