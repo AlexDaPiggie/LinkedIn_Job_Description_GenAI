@@ -7,6 +7,7 @@ PRODUCTION_ORIGINS = [
     "https://linkedingenai.com",
     "https://www.linkedingenai.com",
     "https://www.linkedingenai.tech",
+    "https://linkedingenai-795443191021.us-central1.run.app",
 ]
 LOCAL_HOSTS = {"localhost", "127.0.0.1"}
 

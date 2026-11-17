@@ -1,7 +1,7 @@
 """Job description endpoints: config, questions, generate, refine, edits, upload.
 
 Billing rule: only `/refine` (typed feedback) costs a credit. Generating,
-one-click edits, section rewrites, quality checks, screening questions and
+one-click edits, section rewrites, quality checks and
 uploads are free and open to guests, protected by Turnstile, a per-IP daily
 limit and a global daily cap instead of credits.
 """
@@ -22,7 +22,6 @@ from src.api.schemas import (
     QuestionResponse,
     QuickEditRequest,
     RefineRequest,
-    ScreeningRequest,
     SectionRequest,
 )
 from src.api.services import (
@@ -283,22 +282,6 @@ def quality(payload: QualityRequest):
     """Lints a draft with rule-based checks. No AI call, so it is always free."""
     report = build_quality_report(payload.draft.model_dump(), payload.job_info)
     return report.model_dump()
-
-
-@router.post("/screening-questions")
-def screening_questions(
-    payload: ScreeningRequest,
-    request: Request,
-    user_id: str | None = Depends(get_optional_user_id_from_auth),
-    x_turnstile_token: str | None = Header(default=None),
-):
-    """Suggests screening questions for the role (free)."""
-    _guard_free_llm_call(request, user_id, x_turnstile_token)
-    try:
-        questions = JobAgent().screening_questions(payload.current_draft, payload.provider, payload.model)
-        return {"questions": questions}
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=_public_error(exc))
 
 
 @router.post("/events", status_code=204)

@@ -93,35 +93,3 @@ def parse_section(text: str, section: str, is_list: bool) -> list[str] | str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"Section '{section}' came back empty")
     return value.strip()
-
-
-def parse_screening_questions(text: str) -> list[dict]:
-    """Parses screening questions from LLM output.
-
-    Args:
-        text: Raw LLM output containing a `questions` list.
-
-    Returns:
-        Up to 10 dicts with `question`, `type` and `ideal_answer` keys.
-
-    Raises:
-        ValueError: If the JSON is invalid or has no usable questions.
-    """
-    try:
-        data = json.loads(strip_json(text))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"Invalid screening JSON: {exc}") from exc
-    raw = data.get("questions") if isinstance(data, dict) else None
-    if not isinstance(raw, list):
-        raise ValueError("Screening questions missing")
-    questions = []
-    for item in raw[:10]:
-        if isinstance(item, dict) and str(item.get("question", "")).strip():
-            questions.append({
-                "question": str(item["question"]).strip(),
-                "type": str(item.get("type", "must_have")),
-                "ideal_answer": str(item.get("ideal_answer", "")).strip(),
-            })
-    if not questions:
-        raise ValueError("No screening questions returned")
-    return questions

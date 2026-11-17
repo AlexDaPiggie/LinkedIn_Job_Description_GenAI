@@ -5,7 +5,7 @@ import json
 import pytest
 
 from src.agent.job_agent import JobAgent
-from src.agent.parser import parse_screening_questions, parse_section
+from src.agent.parser import parse_section
 from src.agent.prompts import (
     QUICK_ACTIONS,
     build_extraction_prompt,
@@ -136,7 +136,3 @@ def test_parsers():
     assert parse_section('```json\n{"why_join_us": "Hi"}\n```', "why_join_us", False) == "Hi"
     with pytest.raises(ValueError):
         parse_section('{"requirements": "text"}', "requirements", True)
-    qs = parse_screening_questions('{"questions": [{"question": "Why us?", "type": "culture", "ideal_answer": "x"}, {"nope": 1}]}')
-    assert len(qs) == 1 and qs[0]["question"] == "Why us?"
-    with pytest.raises(ValueError):
-        parse_screening_questions('{"questions": []}')

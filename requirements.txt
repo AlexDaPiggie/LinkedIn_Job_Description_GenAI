@@ -8,8 +8,6 @@ sqlalchemy
 requests
 openai
 google-genai
-huggingface_hub
-transformers
 pydantic
 python-multipart
 bcrypt

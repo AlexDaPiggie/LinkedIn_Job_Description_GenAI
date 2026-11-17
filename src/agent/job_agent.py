@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 from src.agent.parser import (
     parse_job_description,
-    parse_screening_questions,
     parse_section,
 )
 from src.agent.prompts import (
@@ -14,7 +13,6 @@ from src.agent.prompts import (
     build_generation_prompt,
     build_quick_action_prompt,
     build_refinement_prompt,
-    build_screening_questions_prompt,
     build_section_prompt,
 )
 from src.rendering.pay import format_pay_range
@@ -342,30 +340,3 @@ class JobAgent:
             draft, company_name=company_name, skipped_fields=skipped_fields or []
         )
         return AgentResult(draft=draft, markdown=markdown, llm_result=llm_result)
-
-    def screening_questions(
-        self,
-        current_draft: JobDescriptionDraft,
-        provider: str,
-        model: str,
-    ) -> list[dict]:
-        """Suggests screening questions for the role.
-
-        Args:
-            current_draft: Draft describing the role.
-            provider: LLM provider name.
-            model: Model identifier.
-
-        Returns:
-            Dicts with `question`, `type` and `ideal_answer`.
-
-        Raises:
-            ValueError: If the output is invalid.
-        """
-        prompt = build_screening_questions_prompt(current_draft)
-        llm_result = self._call_llm(prompt, provider, model)
-        try:
-            return parse_screening_questions(llm_result.text)
-        except ValueError:
-            llm_result = self._call_llm(prompt, provider, model)
-            return parse_screening_questions(llm_result.text)

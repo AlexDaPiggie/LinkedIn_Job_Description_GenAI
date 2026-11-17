@@ -132,14 +132,6 @@ class QualityRequest(BaseModel):
     job_info: dict = Field(default_factory=dict)
 
 
-class ScreeningRequest(BaseModel):
-    """Request body for suggesting screening questions."""
-
-    current_draft: JobDescriptionDraft
-    provider: str = DEFAULT_PROVIDER
-    model: str = DEFAULT_MODEL
-
-
 class EventRequest(BaseModel):
     """A usage event (which button was clicked). Holds no personal data."""
 
