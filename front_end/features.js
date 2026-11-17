@@ -419,31 +419,66 @@
 
   // ---------- screening questions ----------
 
+  const SCREENING_STORAGE_KEY = "linkedinJobGeneratorScreening";
+
+  function saveScreening(questions) {
+    try {
+      localStorage.setItem(SCREENING_STORAGE_KEY, JSON.stringify(questions));
+    } catch (err) {
+      console.warn("Could not save screening questions to localStorage:", err);
+    }
+  }
+
+  function loadScreening() {
+    try {
+      const raw = localStorage.getItem(SCREENING_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : null;
+      return Array.isArray(parsed) && parsed.length ? parsed : null;
+    } catch (err) {
+      console.warn("Could not load screening questions from localStorage:", err);
+      return null;
+    }
+  }
+
+  function clearScreening() {
+    try {
+      localStorage.removeItem(SCREENING_STORAGE_KEY);
+    } catch (err) {
+      console.warn("Could not clear screening questions from localStorage:", err);
+    }
+  }
+
+  function renderScreening(questions) {
+    const list = $("screeningList");
+    if (!list) return;
+    const labels = { must_have: "Must-have", culture: "Culture", logistics: "Logistics" };
+    list.classList.remove("hidden");
+    list.innerHTML = `<ol>${questions
+      .map(
+        (item) => `<li><span class="tag">${escapeHtml(labels[item.type] || item.type)}</span>
+          <strong>${escapeHtml(item.question)}</strong>
+          ${item.ideal_answer ? `<em>Good answer: ${escapeHtml(item.ideal_answer)}</em>` : ""}</li>`
+      )
+      .join("")}</ol>
+      <button type="button" class="secondary-button" id="copyScreeningBtn">Copy questions</button>`;
+    $("copyScreeningBtn").addEventListener("click", async () => {
+      const text = questions.map((item, index) => `${index + 1}. ${item.question}`).join("\n");
+      await navigator.clipboard.writeText(text);
+      showButtonSuccess($("copyScreeningBtn"), "Copied");
+    });
+  }
+
   async function onScreeningClick() {
     if (!state.currentDraft || busy) return;
     const button = $("screeningBtn");
-    const list = $("screeningList");
     busy = true;
     button.disabled = true;
     button.textContent = "Writing questions...";
     try {
       const headers = await guestHeaders();
       const data = await callApi("/screening-questions", { current_draft: state.currentDraft }, headers);
-      const labels = { must_have: "Must-have", culture: "Culture", logistics: "Logistics" };
-      list.classList.remove("hidden");
-      list.innerHTML = `<ol>${data.questions
-        .map(
-          (item) => `<li><span class="tag">${escapeHtml(labels[item.type] || item.type)}</span>
-            <strong>${escapeHtml(item.question)}</strong>
-            ${item.ideal_answer ? `<em>Good answer: ${escapeHtml(item.ideal_answer)}</em>` : ""}</li>`
-        )
-        .join("")}</ol>
-        <button type="button" class="secondary-button" id="copyScreeningBtn">Copy questions</button>`;
-      $("copyScreeningBtn").addEventListener("click", async () => {
-        const text = data.questions.map((item, index) => `${index + 1}. ${item.question}`).join("\n");
-        await navigator.clipboard.writeText(text);
-        showButtonSuccess($("copyScreeningBtn"), "Copied");
-      });
+      saveScreening(data.questions);
+      renderScreening(data.questions);
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -461,6 +496,7 @@
     state.quality = null;
     originalDoc = { text: "", name: "" };
     persistVersions();
+    clearScreening();
     ["diffPanel", "screeningList", "changeNote"].forEach((id) => {
       const node = $(id);
       if (node) node.classList.add("hidden");
@@ -485,6 +521,8 @@
   function init() {
     loadVersions();
     bind();
+    const savedScreening = state.currentDraft ? loadScreening() : null;
+    if (savedScreening) renderScreening(savedScreening);
     if (state.currentDraft && !versions.length) {
       versions = [{ label: "Restored draft", draft: state.currentDraft, markdown: state.currentMarkdown, quality: null, at: Date.now() }];
       versionIndex = 0;
