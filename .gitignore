@@ -1,4 +1,5 @@
-docs
+docs/*_plan.md
+.playwright-mcp/
 src/API_Key.py
 src/agent/__pycache__
 src/llm/__pycache__

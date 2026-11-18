@@ -1,207 +1,141 @@
-# [Linked In GenAI(Click to see the Website)](https://www.linkedingenai.com)
-# [Youtube Demo (Click to see)](https://www.youtube.com/watch?v=-ngDrYsJpZk)
+# LinkedInGenAI
+
 ## Authors
 
 | **Phong Nguyen (Alex)** | **Huy Phan (Hertzy)** |
 |:---|:---|
 | **AI Engineering & Database** | **Web Developing & Database** |
-| Built backend, state machine, multi-provider LLM client (OpenAI, Hugging Face, OpenRouter), prompt engineering pipeline, evaluation harness, FastAPI backend, Supabase auth/DB, Stripe credit billing, and AI evaluation. Handled SEO (meta tags, structured data) and refined the UI/UX using AI agents for design research and iteration. | Built responsive SPA frontend using HTML5, CSS3, and Vanilla JavaScript (ES6+), integrated client-side document export (docx.js), and designed core relational database schemas in Supabase. |
+| Built FastAPI backend, AI-powered features, Supabase auth/DB, Stripe credit billing, and AI evaluation. Handled SEO (meta tags, structured data) and refined the UI/UX using AI agents for design research and iteration. | Built responsive SPA frontend using HTML5, CSS3, and Vanilla JavaScript (ES6+), integrated client-side document export (docx.js), and designed core relational database schemas in Supabase. |
 | GitHub: [@AlexDaPiggie](https://github.com/AlexDaPiggie)<br>LinkedIn: [Hoai Phong Nguyen](https://www.linkedin.com/in/hoai-phong-nguyen-9367a4384/)<br>Portfolio: [Phong Nguyen](https://phongnguyen.vercel.app/) | GitHub: [@hertzy-da-poet](https://github.com/hertzy-da-poet)<br>Portfolio: [Huy Phan Portfolio](https://hertzy-da-poet.github.io/Hugo-Portfolio/) |
 
-
 ---
 
-## About
-- An end-to-end GenAI web-app to generate LinkedIn-ready Job Description Forms from user's descriptions. 
-- Better than most free-tier AI models, our app guarantees the output with professional LinkedIn Layout, with user-friendly interface, and very detailed output.
-- Different from other apps on the market which just generate, [linked-in-gen-ai](https://www.linkedingenai.com) goes even further, allowing users to refine their output as much as they want withotu losing any information. 
-- The App supports EXPORT Word file or COPY & PASTE straight to LinkedIn
-- Generating a full job description is free with no account. Only typed **Refine** requests cost 1 credit: 20 free credits on signup, then $5 = 20, $10 = 40, $20 = 80 credits. A failed refine is refunded automatically.
+LinkedInGenAI turns a short role brief into a LinkedIn-ready job description, then lets you refine it, check its wording and export it to Word.
 
----
+[Live site](https://www.linkedingenai.com) · [2-min demo](https://www.youtube.com/watch?v=-ngDrYsJpZk) · [Architecture](docs/ARCHITECTURE.md) · [Model benchmark](docs/EVALS.md)
 
-## Primary Features
+[![tests](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator/actions/workflows/tests.yml) [![license](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
-- **Simple Guiding Questions**: Provide simple questions for users to describe their form (e.g. company's name, length, tone,...). 
+![Demo: generate a draft, refine it, check quality, edit and copy](docs/images/demo.gif)
 
-- **Auto-fill questions from JD**: Upload Job Description file and the website uses **google/gemini-2.5-flash-lite** to fill in the answers automatically.
+## What it does
 
-- **Guarantee LinkedIn Format**: Model outputs clean JSON matching Pydantic schema in `JobDescriptionDraft`, guaranteeing the ouptut to always follow LinkedIn format, minimize hallucination.
+- **Structured output, not free text.** The model returns JSON that is validated against a Pydantic schema; broken or cut-off JSON is retried once.
+- **Refine in your own words.** Type a change ("make it more senior") and get a full new draft. Changing your answers locks refine until you regenerate, so versions never mix.
+- **Quality check with plain rules.** Gender-coded and age-coded words, hype words, missing pay range, bullet caps and reading level. No second AI call, so the same draft always gets the same result.
+- **The AI never writes pay.** Pay ranges are added by code from what you typed.
+- **Upload and auto-fill.** Upload an old job description; its text is treated as untrusted data and mapped onto the questions.
+- **Free to generate, 1 credit to refine.** 20 free credits on signup, then Stripe Checkout packs ($5 = 20, $10 = 40, $20 = 80). Failed refines are refunded automatically.
+- **Abuse protection.** Cloudflare Turnstile, per-IP and global daily limits, disposable-email blocking.
 
-- **Markdown Format**: From JSON draft, this feature converst the messy JSON data into well-formatted Markdown file with headers & bullet points.
+## How it works
 
-- **Refine requests**: After receiving the draft of the Job Description Form, users can type their feedbacks of how the draft should be improved.
+```mermaid
+flowchart LR
+    B[Browser] -->|Turnstile token| API[FastAPI on Cloud Run]
+    API -->|prompt| OR[OpenRouter<br/>primary + fallbacks]
+    OR -->|JSON draft| V[Schema check<br/>+ quality rules]
+    V --> B
+    API <-->|auth, credit ledger| SB[(Supabase)]
+    B -->|Checkout| ST[Stripe]
+    ST -->|signed webhook| API
+```
 
-- **Prevent mismatch between different versions**: In case users change their answers after having generated a draft, the web app will blocks `refine` feature until user clicks `generate` to generate a new draft again. 
+- **FastAPI** serves the API and the static front end from one container.
+- **OpenRouter** gives one client for many models; the app tries the primary model, then an ordered fallback list.
+- **Supabase** handles sign-in and Postgres. Credits change only through SQL functions with idempotency keys.
+- **Stripe** webhooks are signature-checked and credited once per Checkout session.
 
-- **User Login/Signup & Payment**: Supabase login with email confirmation, and Stripe Checkout credit packs ($5/$10/$20) with an atomic credit ledger and idempotent webhooks.
-- **Free quality check**: rule-based linter for gender-coded and age-coded words, pay range, bullet caps and reading level (`src/quality`). No extra AI cost.
-- **Pay range by location**: optional pay fields; pick a location to see whether a range is usually required. The AI never writes pay numbers.
-- **Free quick edits**: one-click Shorter, More inclusive, Simplify, and per-section Rewrite, with undo and highlighted changes.
-- **Upload and improve**: upload an old JD (no account), then see what changed.
-- **Abuse protection**: Cloudflare Turnstile, per-IP and global daily limits, disposable-email blocking.
-- **Public proof**: `/architecture.html` and `/eval.html` (model comparison from the evaluation harness).
+Details, request lifecycle and code map: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-Setup steps for the new features are in [docs/ROADMAP_SETUP_CHECKLIST.md](docs/ROADMAP_SETUP_CHECKLIST.md).
+## Model choice: cost, latency and quality
 
----
+We benchmarked 18 models on the real generate and refine prompts before picking one. Setup: 4 job scenarios x (generate + refine) x 3 runs = 421 calls on 2026-11-18, fallbacks off, costs from OpenRouter list prices on 2026-11-17, quality scored by `anthropic/claude-haiku-4.5` (not a candidate) at temperature 0.
 
-## Architecture Pipeline
-<p align="center">
-  <img src="front_end\images\Workflow.drawio.png" alt="LinkedIn Job Description GenAI Architecture Workflow" width="100%"/>
-</p>
+![Cost per call vs tokens used](docs/images/eval_cost_and_tokens.png)
 
-1. **Intake (`JobAgent + SessionState`)**: Collects required info (title, company, duties, skills) and optional info (salary, benefits, tone, length).
-2. **Draft Generation (`build_generation_prompt`)**: Prompts LLM to expand short notes into professional job description while forbidding fake facts.
-3. **Parsing & Validation (`parse_json_markdown`)**: Cleans markdown code fences, parses JSON, validates against `JobDescriptionDraft`.
-4. **Markdown Rendering (`MarkdownRenderer`)**: Formats sections into `# Title`, `## About the Role`, `## Responsibilities`, `## Requirements`, `## Benefits`.
-5. **Refinement (`build_refinement_prompt`)**: Takes existing JSON draft + user edit request -> Returns updated full JSON draft.
-6. **Billing & Auth Check**: Deducts 1 credit in Supabase before running LLM. Blocks if out of credits or rate-limited.
+![Latency vs judge score](docs/images/eval_latency_and_quality.png)
 
+| Model | Role | Median / p90 latency | $ per 1k calls | Term checks | All core sections | Judge (1-5) |
+|---|---|---|---|---|---|---|
+| `google/gemini-2.5-flash-lite` | primary | **2.0 / 2.7 s** | 0.31 | 22/24 | **19/24** | 3.77 |
+| `openai/gpt-4o-mini` | fallback 1 | 7.0 / 9.7 s | 0.40 | 20/24 | 16/24 | 3.75 |
+| `mistralai/mistral-small-24b-instruct-2501` | fallback 2 | 9.5 / 17.9 s | **0.10** | 21/24 | 9/24 | 3.69 |
+| `meta-llama/llama-3.1-70b-instruct` | fallback 3 | 4.8 / 9.2 s | 1.00 | 18/24 | 9/24 | 3.75 |
+| `openai/gpt-4o` | - | 2.4 / 4.7 s | 5.79 | 22/24 | 6/24 | 3.88 |
+| `nvidia/nemotron-3-super-120b-a12b` | - | 9.0 / 20.9 s | 1.04 | 22/24 | 7/24 | **4.40** |
+| `google/gemini-2.5-pro` | - | 18.3 / 29.7 s | 25.10 | 18/24 | 7/24 | 4.34 |
 
----
+**Why gemini-2.5-flash-lite.** It was the fastest model (median 2.0 s, p90 2.7 s), the third cheapest, completed every call, and most often filled every core section. The two best-judged models score about 0.6 higher but are 4-9x slower at the median, and gemini-2.5-pro costs about 80x more per call. For a tool people use interactively, we chose speed and reliability over that gap. All 18 models, every metric and the method: [docs/EVALS.md](docs/EVALS.md).
 
-## How to Run this on Local?
+## Design decisions
 
-### Prerequisites
-- Python 3.11+
-- API Keys: `OPENAI_API_KEY`, `HUGGINGFACE_API_KEY` (optional), `SUPABASE_URL`, `SUPABASE_KEY`, `STRIPE_SECRET_KEY`
+- **Credits only change inside Postgres**, through one function per operation with a unique key, so retries never charge twice. [0001](docs/decisions/0001-credit-ledger-in-postgres.md)
+- **Stripe payments are credited per Checkout session**, and the event is recorded only after the credits land. [0002](docs/decisions/0002-stripe-webhook-idempotency.md)
+- **One OpenRouter client with benchmarked fallbacks** instead of one client per provider. [0003](docs/decisions/0003-openrouter-with-fallbacks.md)
+- **Free generate, paid refine**, with bot checks and a global cap on the free path. [0004](docs/decisions/0004-free-generate-paid-refine.md)
+- **Rules, not a second LLM, for the quality check**: free, instant, repeatable. [0005](docs/decisions/0005-rule-based-quality-check.md)
+- **Benchmark with fallbacks off, real prices and an outside judge.** [0006](docs/decisions/0006-eval-harness-design.md)
 
-### 1. Backend Setup
+## Tests
 
 ```bash
-# Clone repository
-git clone https://github.com/AlexDaPiggie/LinkedIn_Job_Description_GenAI.git
-cd LinkedIn_Job_Description_GenAI
+python -m pytest            # 80 offline tests, about 3 s
+python -m pytest -m live    # paid: one real call per model through OpenRouter
+```
 
-# Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate      # Windows
-# source venv/bin/activate # Linux/macOS
+Offline tests use fakes for the LLM, Supabase and Stripe. They cover billing and limits (credit spend, refunds, webhook signatures and duplicates, rate limits, Turnstile), the quality linter, prompts and parsing, and the benchmark metrics. CI runs them on every push. Security risks and the tests that cover them: [docs/SECURITY.md](docs/SECURITY.md).
 
-# Install dependencies
+## Run locally
+
+Requires Python 3.11+.
+
+```bash
+git clone https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator.git
+cd LinkedIn_Job_Description_Generator
 pip install -r requirements.txt
-
-# Configure environment variables (.env)
-# OPENAI_API_KEY=your_openai_key
-# SUPABASE_URL=your_supabase_url
-# SUPABASE_KEY=your_supabase_key
-
-# Run FastAPI backend
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+cp .env.example .env        # add at least OPENROUTER_API_KEY
+uvicorn src.api.main:app --reload
 ```
 
-- API Base URL: `http://localhost:8000`
-- Swagger Docs: `http://localhost:8000/docs`
+Open http://localhost:8000. API docs are at http://localhost:8000/docs. Sign-in and payments also need the Supabase and Stripe keys and the SQL migration - see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-### 2. Frontend Setup
+## Limitations
 
-Open `front_end/index.html` directly in a browser or serve using Live Server / HTTP server:
+- The benchmark uses 4 synthetic scenarios. It shows relative differences between models, not real-world quality.
+- Latency was measured from one location over a few hours; OpenRouter may route a model to different hosts.
+- The judge is another LLM. It has known biases (for example toward longer answers), so word counts are reported next to its scores.
+- Model prices change; costs use the OpenRouter list price on the date shown.
+- Rate-limit counters live in memory and reset when the container restarts.
+- The quality check is a screening aid for wording, not legal advice.
 
-```bash
-cd front_end
-python -m http.server 3000
-```
+## Tech stack
 
-### 3. Run Benchmark (Optional)
+| Layer | Tool | Why |
+|---|---|---|
+| API | FastAPI, Pydantic | Typed requests and schema-validated LLM output |
+| LLM access | OpenRouter (OpenAI SDK) | One client, many models, easy fallbacks |
+| Auth and data | Supabase (Postgres) | Email auth plus SQL functions for the credit ledger |
+| Payments | Stripe Checkout and webhooks | Hosted checkout, no card data in the app |
+| Bot check | Cloudflare Turnstile | Free, no puzzles for real users |
+| Front end | Vanilla JS, HTML, CSS, docx.js | No build step; Word export in the browser |
+| Hosting | Docker on Google Cloud Run, behind Cloudflare | Scales to zero, one container |
 
-Run the automated LLM evaluation across test scenarios:
+## Where to look
 
-```bash
-# Run benchmark across all models
-python -m src.evaluation.runner
+| Path | What lives there |
+|---|---|
+| `src/api/` | FastAPI app and routes |
+| `src/agent/` | Generate, refine and edit logic; prompts; JSON parsing |
+| `src/llm/` | OpenRouter client, retries, fallback chain |
+| `src/quality/` | Rule-based linter ([its own README](src/quality/README.md)) |
+| `src/credits/`, `docs/migrations/` | Credit packs, ledger client, SQL |
+| `src/security/` | Rate limits, Turnstile, email checks |
+| `src/evaluation/`, `scripts/` | Benchmark harness and chart rendering |
+| `eval_results/` | Raw benchmark data, price snapshot, summary table |
+| `front_end/` | Static site |
+| `tests/` | Offline and live tests |
 
-# Or evaluate a specific model
-python -m src.evaluation.runner --model "google/gemini-2.5-flash-lite"
-```
+## License
 
-- Results saved to: [`eval_results/model_comparison.csv`](eval_results/model_comparison.csv) and [`eval_results/model_comparison.json`](eval_results/model_comparison.json)
-- Visual analysis notebook: [`src/evaluation/Model_Comparison_Analysis.ipynb`](src/evaluation/Model_Comparison_Analysis.ipynb)
-
----
-
-## Model Evaluation & Benchmarking
-
-The project features an automated [benchmarking script](src/evaluation/runner.py) and evaluation analysis notebook ([Model_Comparison_Analysis.ipynb](src/evaluation/Model_Comparison_Analysis.ipynb)) testing models across structured scenarios.
-
-```bash
-# Run benchmark across models and scenarios
-python -m src.evaluation.runner
-```
-
-### 1. Token Usage & Cost Efficiency
-
-Measures the trade-off between input/output token consumption and cost per generation.
-
-<p align="center">
-  <img src="src/output/eval_cost_and_tokens.png" alt="Estimated Cost vs Token Usage" width="85%"/>
-</p>
-
-* **Most Cost-Effective**: `phi4`, `llama-3.3-70b`, `mistral-small`, and `gpt-4o-mini` achieved the lowest cost profile while maintaining concise output length.
-* **Token Efficiency**: Models like `gpt-4o-mini` generated structured drafts without token hike, keeping API latency and expenses minimal.
-
-### 2. Generation Latency
-
-Measures end-to-end response time (seconds) across all test scenarios.
-
-<p align="center">
-  <img src="src/output/eval_latency_comparison.png" alt="Average Generation Latency per Model" width="85%"/>
-</p>
-
-* Fast models like `gemini-2.5-flash-lite` and `gpt-4o-mini` can generate a draft in less that 2 seconds, which is highly suitable for this project.
-* Larger open-weight models showed much higher latency depending on endpoint hosting infrastructure.
-
-## Model Sequencing & Fallback Architecture
-
-Based on benchmark results (see more in [Model_Comparison.ipynb](src/evaluation/Model_Comparison_Analysis.ipynb)), I created an automated model sequence and fallback options in case the current one is unavailable:
-
-* **Primary Model: google/gemini-2.5-flash-lite**
-  * Chosen for its top overall performance: latency < 2s, 100% test-case pass rate, and high LinkedIn readiness scores with low token costs.
-* **Fallback Options**:
-  * openai/gpt-4o-mini
-  * mistralai/mistral-small-24b-instruct-2501
-  * meta-llama/llama-3.1-70b-instruct
-  
----
-
-## Repository Structure
-
-```
-LinkedIn_Job_Description_GenAI/
-├── eval_results/               # Automated benchmark CSVs & analysis notebooks
-├── front_end/                  # Frontend UI (HTML, CSS, JS)
-├── src/
-│   ├── agent/
-│   │   ├── job_agent.py        # Orchestration for generation & refinement
-│   │   ├── parser.py           # JSON parsing & validation helpers
-│   │   ├── prompts.py          # System & user prompt templates
-│   │   ├── questions.py        # Intake questions definition & skip logic
-│   │   └── state.py            # SessionState & QuestionAnswer data classes
-│   ├── api/
-│   │   ├── main.py             # FastAPI app setup (CORS, routers, static frontend)
-│   │   ├── dependencies.py     # Bearer-token / signed-in user dependencies
-│   │   ├── routers/
-│   │   │   ├── auth.py         # Signup, login, OTP, password reset, profile
-│   │   │   ├── jobs.py         # Questions, generate, refine, document upload
-│   │   │   └── payments.py     # Stripe checkout, webhook, credit balance
-│   │   ├── schemas.py          # Request / Response Pydantic models
-│   │   └── services.py         # Business logic connectors
-│   ├── auth/                   # Supabase authentication & OTP service
-│   ├── database/               # Supabase PostgreSQL client & credit queries
-│   ├── evaluation/
-│   │   ├── metrics.py          # Schema validation, cost calculation & judge
-│   │   ├── runner.py           # Benchmark test harness
-│   │   └── scenarios.py        # Test cases across diverse industry roles
-│   ├── llm/
-│   │   ├── client.py           # Unified client interface
-│   │   ├── models.py           # Supported models configuration
-│   │   └── providers.py        # OpenRouter adapter (generate & stream)
-│   ├── rendering/
-│   │   └── markdown.py         # JSON-to-Markdown renderer
-│   └── schema/
-│       ├── job_description.py  # JobDescriptionDraft Pydantic model
-│       └── job_info.py         # JobInfo input schema
-├── pyproject.toml              # Project metadata
-├── requirements.txt            # Python dependencies
-└── README.md                   # Project overview
-```
+[Apache License 2.0](LICENSE).

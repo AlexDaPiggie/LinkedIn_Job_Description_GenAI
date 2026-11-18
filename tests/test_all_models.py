@@ -4,6 +4,9 @@ from src.llm.client import generate_text
 from src.llm.models import MODELS_TO_EVALUATE
 from dotenv import load_dotenv
 
+# Paid OpenRouter calls: skipped by default, run with `pytest -m live`.
+pytestmark = pytest.mark.live
+
 #overriding local .env with global environment variable
 load_dotenv(override=True)
 

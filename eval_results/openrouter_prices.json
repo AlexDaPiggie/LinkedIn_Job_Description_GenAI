@@ -1,0 +1,82 @@
+{
+  "fetched_on": "2026-11-17",
+  "source": "https://openrouter.ai/api/v1/models",
+  "usd_per_million_tokens": {
+    "openai/gpt-4o-mini": [
+      0.15,
+      0.6
+    ],
+    "openai/gpt-4o": [
+      2.5,
+      10.0
+    ],
+    "deepseek/deepseek-chat-v3.1": [
+      0.25,
+      0.95
+    ],
+    "google/gemini-2.5-pro": [
+      1.25,
+      10.0
+    ],
+    "google/gemini-2.5-flash-lite": [
+      0.1,
+      0.4
+    ],
+    "cohere/command-r-08-2024": [
+      0.15,
+      0.6
+    ],
+    "cohere/command-r-plus-08-2024": [
+      2.5,
+      10.0
+    ],
+    "meta-llama/llama-3.3-70b-instruct": [
+      0.71,
+      0.71
+    ],
+    "meta-llama/llama-3.1-8b-instruct": [
+      0.02,
+      0.04
+    ],
+    "meta-llama/llama-3.1-70b-instruct": [
+      0.72,
+      0.72
+    ],
+    "qwen/qwen-2.5-72b-instruct": [
+      0.36,
+      0.4
+    ],
+    "qwen/qwen-2.5-coder-32b-instruct": [
+      0.66,
+      1.0
+    ],
+    "qwen/qwen3.5-flash-02-23": [
+      0.065,
+      0.26
+    ],
+    "mistralai/mistral-small-24b-instruct-2501": [
+      0.05,
+      0.08
+    ],
+    "mistralai/mixtral-8x22b-instruct": [
+      2.0,
+      6.0
+    ],
+    "nvidia/nemotron-3-nano-30b-a3b": [
+      0.06,
+      0.24
+    ],
+    "nvidia/nemotron-3-super-120b-a12b": [
+      0.075,
+      0.4
+    ],
+    "microsoft/phi-4": [
+      0.07,
+      0.14
+    ],
+    "anthropic/claude-haiku-4.5": [
+      1.0,
+      5.0
+    ]
+  }
+}

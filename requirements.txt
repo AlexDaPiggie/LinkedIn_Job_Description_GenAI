@@ -4,12 +4,8 @@ stripe
 supabase
 python-dotenv
 slowapi
-sqlalchemy
-requests
 openai
-google-genai
 pydantic
 python-multipart
-bcrypt
 pypdf
 python-docx

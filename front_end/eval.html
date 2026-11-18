@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Model Evaluation | LinkedIn Job Description Generator</title>
-    <meta name="description" content="How the AI model behind the LinkedIn Job Description Generator was chosen: 22 models tested on the same hiring scenarios for quality, speed, reliability and cost." />
+    <meta name="description" content="How the AI model behind the LinkedIn Job Description Generator was chosen: 18 models tested on the same hiring scenarios for quality, speed, reliability and cost." />
     <link rel="canonical" href="https://www.linkedingenai.com/eval.html" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,8 +53,8 @@
         <ul class="rows two">
           <li><span class="label">Scenarios</span><div><h3>Four fixed hiring cases</h3><p>Only the required fields, every field filled, a mix of fields, and a tricky edge case. Each also has a refinement request.</p></div></li>
           <li><span class="label">Rule checks</span><div><h3>Is the output usable?</h3><p>It must be valid JSON that matches the required structure, include the facts it was given, and leave out facts it was not given.</p></div></li>
-          <li><span class="label">Quality score</span><div><h3>A second AI model judges</h3><p>It rates specificity, tone, faithfulness to the input, LinkedIn-readiness and how well the refinement was applied, from 1 to 5.</p></div></li>
-          <li><span class="label">Speed and cost</span><div><h3>Measured on every call</h3><p>Timings and token counts come from the real calls, and cost is estimated from the token prices.</p></div></li>
+          <li><span class="label">Quality score</span><div><h3>A second AI model judges</h3><p>A model from a family we did not test rates specificity, tone, faithfulness to the input, LinkedIn-readiness and how well the refinement was applied, from 1 to 5.</p></div></li>
+          <li><span class="label">Speed and cost</span><div><h3>Measured on every call</h3><p>Timings and token counts come from the real calls, and cost uses the OpenRouter list price on a fixed date.</p></div></li>
         </ul>
       </section>
 
@@ -81,7 +81,7 @@
         </details>
         <p class="note">
           Limits: a small test (a handful of runs per model over four scenarios), and an AI judge can be biased.
-          Treat quality gaps under about 0.1 as ties. Results reflect the models and prompts at the time they were run.
+          Treat quality gaps under about 0.3 as ties. Results reflect the models and prompts at the time they were run.
         </p>
       </section>
     </main>

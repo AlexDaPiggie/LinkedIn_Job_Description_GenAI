@@ -9,7 +9,9 @@ MODEL_FALLBACKS = {
     ]
 }
 
-# Models compared by src.evaluation.runner. Each entry has a unique display
+# Models compared by src.evaluation.runner. Models OpenRouter has delisted
+# (deepseek-r1, qwen-2.5-7b, wizardlm-2-8x22b, claude-3-haiku) were removed.
+# Each entry has a unique display
 # `name`, a `provider`, an OpenRouter `model_id`, and a short `purpose`.
 MODELS_TO_EVALUATE = [
     {
@@ -29,12 +31,6 @@ MODELS_TO_EVALUATE = [
         "provider": "openrouter",
         "model_id": "deepseek/deepseek-chat-v3.1",
         "purpose": "Incredibly cheap, high-intelligence chat and coding model",
-    },
-    {
-        "name": "openrouter_deepseek_r1",
-        "provider": "openrouter",
-        "model_id": "deepseek/deepseek-r1",
-        "purpose": "SOTA open reasoning model for text generating tasks",
     },    
     {
         "name": "gemini_2_5_Pro",
@@ -89,12 +85,6 @@ MODELS_TO_EVALUATE = [
         "provider": "openrouter",
         "model_id": "qwen/qwen-2.5-coder-32b-instruct",
         "purpose": "Fine-tuned coder version of the 32b version for fomratting complexed structures",
-    },
-    {
-        "name": "openrouter_qwen_2_5_7b",
-        "provider": "openrouter",
-        "model_id": "qwen/qwen-2.5-7b-instruct",
-        "purpose": "Fast and cheap model with great structural data support",
     },    
     {
         "name": "openrouter_qwen_3_5_flash",
@@ -125,19 +115,7 @@ MODELS_TO_EVALUATE = [
         "provider": "openrouter",
         "model_id": "nvidia/nemotron-3-super-120b-a12b",
         "purpose": "Nvidia heavire model optimized for text2text purposes, potentially be a better sidekick for the nano version",
-    },            
-    {
-        "name": "openrouter_wizardlm_2_8x22b",
-        "provider": "openrouter",
-        "model_id": "microsoft/wizardlm-2-8x22b",
-        "purpose": "A very cheap and speedy model open weighted from microsoft",
-    },  
-    {
-        "name": "openrouter_claude_3_haiku",
-        "provider": "openrouter",
-        "model_id": "anthropic/claude-3-haiku",
-        "purpose": "Lightweight, highly accurate structured JSON generator",
-    },
+    },              
     {
         "name": "openrouter_phi_4",
         "provider": "openrouter",

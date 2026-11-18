@@ -10,7 +10,8 @@ class LLMResult(BaseModel):
     Attributes:
         text: Generated text.
         provider: Provider that served the call.
-        model: Model that produced the text.
+        model: Model that was requested.
+        served_model: Model ID OpenRouter reports as having served the call.
         latency_seconds: Wall-clock duration of the call.
         input_tokens: Prompt tokens used, if reported.
         output_tokens: Completion tokens used, if reported.
@@ -20,6 +21,7 @@ class LLMResult(BaseModel):
     text: str
     provider: str = "openrouter"
     model: str
+    served_model: str | None = None
     latency_seconds: float
     input_tokens: int | None = None
     output_tokens: int | None = None
@@ -31,6 +33,7 @@ def generate_text(
     provider: str = "openrouter",
     model: str | None = None,
     fallback_models: list[str] | None = None,
+    temperature: float | None = None,
 ) -> LLMResult:
     """Generates text with OpenRouter, trying fallback models on failure.
 
@@ -44,6 +47,7 @@ def generate_text(
         provider: Provider name (keyword form).
         model: Model identifier (keyword form).
         fallback_models: Models to try, in order, if the primary fails.
+        temperature: Sampling temperature; None keeps the provider default.
 
     Returns:
         The result of the first model that succeeds.
@@ -69,7 +73,7 @@ def generate_text(
 
     for candidate_model in candidate_models:
         try:
-            return generate_with_openrouter(prompt, candidate_model)
+            return generate_with_openrouter(prompt, candidate_model, temperature=temperature)
         except Exception as error:
             last_error = error
             if fallback_models:

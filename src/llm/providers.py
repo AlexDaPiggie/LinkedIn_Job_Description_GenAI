@@ -52,7 +52,7 @@ def count_tokens(text: str, model: str | None = None) -> int:
     return max(1, int(len(text.split()) * 1.33))
 
 
-def generate_with_openrouter(prompt: str, model: str):
+def generate_with_openrouter(prompt: str, model: str, temperature: float | None = None):
     """Sends a prompt to one OpenRouter model and returns the full reply.
 
     Retries with exponential backoff on rate-limit and gateway errors.
@@ -60,6 +60,7 @@ def generate_with_openrouter(prompt: str, model: str):
     Args:
         prompt: User prompt text.
         model: OpenRouter model identifier, for example "openai/gpt-4o-mini".
+        temperature: Sampling temperature; None keeps the provider default.
 
     Returns:
         An `LLMResult` with the text, latency and token usage.
@@ -80,10 +81,12 @@ def generate_with_openrouter(prompt: str, model: str):
     for attempt in range(MAX_RETRIES):
         try:
             start_time = time.perf_counter()
+            optional_args = {"temperature": temperature} if temperature is not None else {}
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
                 extra_headers=OPENROUTER_HEADERS,
+                **optional_args,
             )
             latency_seconds = time.perf_counter() - start_time
             break
@@ -104,6 +107,7 @@ def generate_with_openrouter(prompt: str, model: str):
         text=text,
         provider="openrouter",
         model=model,
+        served_model=getattr(response, "model", None),
         latency_seconds=latency_seconds,
         input_tokens=input_tokens,
         output_tokens=output_tokens,

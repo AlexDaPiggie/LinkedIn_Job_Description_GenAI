@@ -1,21 +1,19 @@
 [project]
-name = "linkedin-job-description-generator" 
+name = "linkedin-job-description-generator"
 version = "0.1.0"
 description = "LinkedIn Job Description Generator"
 requires-python = ">=3.11"
+license = "Apache-2.0"
 dependencies = [
     "pydantic>=2.7.0",
     "python-dotenv>=1.0.1",
     "openai>=1.40.0",
     "fastapi>=0.111.0",
     "uvicorn[standard]>=0.30.0",
-    "google-genai>=0.1.0",
     "stripe>=10.0.0",
     "supabase>=2.5.0",
     "slowapi>=0.1.9",
-    "sqlalchemy>=2.0.0",
     "python-multipart>=0.0.9",
-    "bcrypt>=4.0.0",
     "pypdf>=4.0.0",
     "python-docx>=1.1.0",
 ]
@@ -23,8 +21,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=8.2.0",
+    "httpx>=0.27.0",
+    "matplotlib>=3.8.0",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = [
+    "live: calls paid external APIs (OpenRouter); run with -m live",
+]
