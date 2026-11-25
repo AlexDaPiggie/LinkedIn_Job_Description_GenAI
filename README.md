@@ -14,7 +14,7 @@ LinkedInGenAI turns a short role brief into a LinkedIn-ready job description, th
 
 [Live site](https://www.linkedingenai.com) · [2-min demo](https://www.youtube.com/watch?v=-ngDrYsJpZk) · [Architecture](docs/ARCHITECTURE.md) · [Model benchmark](docs/EVALS.md)
 
-[![tests](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator/actions/workflows/tests.yml) [![license](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+[![tests](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_GenAI/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/AlexDaPiggie/LinkedIn_Job_Description_GenAI/actions/workflows/tests.yml) [![license](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
 ![Demo: generate a draft, refine it, check quality, edit and copy](docs/images/demo.gif)
 
@@ -91,8 +91,8 @@ Offline tests use fakes for the LLM, Supabase and Stripe. They cover billing and
 Requires Python 3.11+.
 
 ```bash
-git clone https://github.com/AlexDaPiggie/LinkedIn_Job_Description_Generator.git
-cd LinkedIn_Job_Description_Generator
+git clone https://github.com/AlexDaPiggie/LinkedIn_Job_Description_GenAI.git
+cd LinkedIn_Job_Description_GenAI
 pip install -r requirements.txt
 cp .env.example .env        # add at least OPENROUTER_API_KEY
 uvicorn src.api.main:app --reload

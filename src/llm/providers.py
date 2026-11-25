@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_HEADERS = {
-    "HTTP-Referer": "https://github.com/alexdapiggie/LinkedIn_Job_Description_Generator",
+    "HTTP-Referer": "https://github.com/AlexDaPiggie/LinkedIn_Job_Description_GenAI",
     "X-Title": "LinkedIn Job Description Generator",
 }
 RETRYABLE_STATUS_CODES = (429, 502, 503, 504)
