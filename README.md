@@ -5,7 +5,7 @@
 | **Phong Nguyen (Alex)** | **Huy Phan (Hertzy)** |
 |:---|:---|
 | **AI Engineering & Database** | **Web Developing & Database** |
-| Built FastAPI backend, AI-powered features, Supabase auth/DB, Stripe credit billing, and AI evaluation. Handled SEO (meta tags, structured data) and refined the UI/UX using AI agents for design research and iteration. | Built responsive SPA frontend using HTML5, CSS3, and Vanilla JavaScript (ES6+), integrated client-side document export (docx.js), and designed core relational database schemas in Supabase. |
+| Built FastAPI backend, AI-powered features, Supabase auth/DB, and AI evaluation. Handled SEO (meta tags, structured data) and refined the UI/UX using AI agents for design research and iteration. | Built responsive SPA frontend using HTML5, CSS3, and Vanilla JavaScript (ES6+), integrated client-side document export (docx.js), and designed core relational database schemas in Supabase. |
 | GitHub: [@AlexDaPiggie](https://github.com/AlexDaPiggie)<br>LinkedIn: [Hoai Phong Nguyen](https://www.linkedin.com/in/hoai-phong-nguyen-9367a4384/)<br>Portfolio: [Phong Nguyen](https://phongnguyen.vercel.app/) | GitHub: [@hertzy-da-poet](https://github.com/hertzy-da-poet)<br>Portfolio: [Huy Phan Portfolio](https://hertzy-da-poet.github.io/Hugo-Portfolio/) |
 
 ---
@@ -41,6 +41,10 @@ flowchart LR
     ST -->|signed webhook| API
 ```
 
+[![Animated tour: the system map draws itself](docs/images/explainer_how.gif)](https://www.linkedingenai.com/architecture.html)
+
+*Watch the full 3-minute animated tour, including file upload parsing and the credit ledger, on the [How it works](https://www.linkedingenai.com/architecture.html) page.*
+
 - **FastAPI** serves the API and the static front end from one container.
 - **OpenRouter** gives one client for many models; the app tries the primary model, then an ordered fallback list.
 - **Supabase** handles sign-in and Postgres. Credits change only through SQL functions with idempotency keys.
@@ -51,6 +55,10 @@ Details, request lifecycle and code map: [docs/ARCHITECTURE.md](docs/ARCHITECTUR
 ## Model choice: cost, latency and quality
 
 We benchmarked 18 models on the real generate and refine prompts before picking one. Setup: 4 job scenarios x (generate + refine) x 3 runs = 421 calls on 2026-11-18, fallbacks off, costs from OpenRouter list prices on 2026-11-17, quality scored by `anthropic/claude-haiku-4.5` (not a candidate) at temperature 0.
+
+[![Animated walkthrough of the cost and token chart](docs/images/explainer_eval.gif)](https://www.linkedingenai.com/eval.html)
+
+*Watch the full 4-minute walkthrough, including how each call is scored, on the [Evaluation](https://www.linkedingenai.com/eval.html) page.*
 
 ![Cost per call vs tokens used](docs/images/eval_cost_and_tokens.png)
 
@@ -66,7 +74,7 @@ We benchmarked 18 models on the real generate and refine prompts before picking 
 | `nvidia/nemotron-3-super-120b-a12b` | - | 9.0 / 20.9 s | 1.04 | 22/24 | 7/24 | **4.40** |
 | `google/gemini-2.5-pro` | - | 18.3 / 29.7 s | 25.10 | 18/24 | 7/24 | 4.34 |
 
-**Why gemini-2.5-flash-lite.** It was the fastest model (median 2.0 s, p90 2.7 s), the third cheapest, completed every call, and most often filled every core section. The two best-judged models score about 0.6 higher but are 4-9x slower at the median, and gemini-2.5-pro costs about 80x more per call. For a tool people use interactively, we chose speed and reliability over that gap. All 18 models, every metric and the method: [docs/EVALS.md](docs/EVALS.md).
+**Why gemini-2.5-flash-lite.** It was the fastest model (median 2.0 s, p90 2.7 s), completed every call, and was the third cheapest of the models with no failed calls (llama-3.1-8b is cheaper still, but failed 4 of 23). Of the models under 5 s at the median, it filled every core section most often (19/24). The two best-judged models score about 0.6 higher but are 4-9x slower at the median, and gemini-2.5-pro costs about 80x more per call. For a tool people use interactively, we chose speed and reliability over that gap. All 18 models, every metric and the method: [docs/EVALS.md](docs/EVALS.md).
 
 ## Design decisions
 

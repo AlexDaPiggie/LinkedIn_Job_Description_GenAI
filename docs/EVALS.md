@@ -52,7 +52,7 @@ What stands out:
 
 ## Decision
 
-Primary: `google/gemini-2.5-flash-lite` - fastest (median 2.0 s), third cheapest ($0.31 per 1k calls), 24/24 calls OK, best section completeness. The best-judged models (nemotron-3-super, gemini-2.5-pro) score about 0.6 higher but are 4-9x slower; gemini-2.5-pro also costs about 80x more.
+Primary: `google/gemini-2.5-flash-lite` - fastest (median 2.0 s), 24/24 calls OK, third cheapest of the models with no failed calls ($0.31 per 1k calls; llama-3.1-8b is cheaper but failed 4 of 23), and the best section completeness of the models under 5 s at the median (19/24; command-r models score higher but take 17-40 s). The best-judged models (nemotron-3-super, gemini-2.5-pro) score about 0.6 higher but are 4-9x slower; gemini-2.5-pro also costs about 80x more.
 
 Fallbacks, in order: `openai/gpt-4o-mini`, `mistralai/mistral-small-24b-instruct-2501`, `meta-llama/llama-3.1-70b-instruct`. All completed 24/24 calls. By this run, llama-3.1-70b is faster than mistral-small, so the order of the last two could be swapped.
 
