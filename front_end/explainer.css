@@ -1,0 +1,164 @@
+/* Animated explainer player (How it works page). Uses the tokens from info-pages.css. */
+.explainer { margin: 40px 0 0; }
+
+.ex-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ex-stage > svg { display: block; width: 100%; height: 100%; cursor: pointer; }
+
+.ex-head { font-family: var(--heading-font); }
+.ex-body { font-family: var(--body-font); }
+.ex-mono { font-family: var(--mono); }
+
+.ex-big-play {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 22px 10px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font: 600 1rem/1 var(--body-font);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+.ex-big-play:hover { background: var(--blue-deep); }
+.ex-big-play:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.ex-big-play[hidden] { display: none; }
+.ex-big-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--blue);
+}
+
+.ex-caption {
+  min-height: 3.4em;
+  margin: 0;
+  padding: 14px 2px 12px;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  border-bottom: 1px solid var(--line);
+}
+
+.ex-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.ex-btn {
+  display: inline-grid;
+  place-items: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 600 0.8125rem var(--mono);
+  cursor: pointer;
+}
+.ex-btn:hover { border-color: var(--blue); color: var(--blue); }
+.ex-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.ex-play { background: var(--blue); border-color: var(--blue); color: #fff; }
+.ex-play:hover { background: var(--blue-deep); color: #fff; }
+.ex-icon-pause { display: none; }
+.explainer.is-playing .ex-icon-pause { display: block; }
+.explainer.is-playing .ex-icon-play { display: none; }
+
+.ex-track { position: relative; flex: 1; height: 38px; display: flex; align-items: center; }
+.ex-seek {
+  --p: 0%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  margin: 0;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--blue) var(--p), var(--line) var(--p));
+  cursor: pointer;
+}
+.ex-seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--blue);
+}
+.ex-seek::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid var(--blue);
+}
+.ex-seek:focus-visible { outline: 2px solid var(--blue); outline-offset: 6px; }
+.ex-ticks { position: absolute; inset: 0; pointer-events: none; }
+.ex-ticks span {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 12px;
+  margin-top: -6px;
+  background: var(--canvas);
+}
+
+.ex-time { font: 500 0.8125rem var(--mono); color: var(--muted); white-space: nowrap; }
+
+.ex-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 4px 0 0;
+  list-style: none;
+}
+.ex-chapters button {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--ink-soft);
+  font: 600 0.8125rem var(--body-font);
+  cursor: pointer;
+}
+.ex-chapters button:hover { color: var(--blue); }
+.ex-chapters button.is-active { color: var(--blue); border-bottom-color: var(--blue); }
+.ex-chap-time { margin-right: 6px; font: 500 0.75rem var(--mono); color: var(--muted); }
+
+.explainer:fullscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 40px;
+  background: var(--canvas);
+}
+.explainer:fullscreen .ex-stage { width: min(100%, calc((100vh - 220px) * 16 / 9)); margin: 0 auto; }
+.explainer:fullscreen .ex-caption,
+.explainer:fullscreen .ex-controls,
+.explainer:fullscreen .ex-chapters { width: min(100%, calc((100vh - 220px) * 16 / 9)); margin-left: auto; margin-right: auto; }
+
+@media (max-width: 640px) {
+  .ex-time { display: none; }
+  .ex-caption { font-size: 0.9375rem; }
+  .ex-big-play { bottom: 12%; padding: 6px 16px 6px 6px; font-size: 0.875rem; }
+  .ex-big-icon { width: 34px; height: 34px; }
+}

@@ -241,3 +241,6 @@ details.tech[open] > summary { border-bottom: 1px solid var(--line); margin-bott
   .flow > li:not(:last-child)::after { content: "\2193"; top: auto; bottom: -2px; right: auto; left: 0; display: none; }
   .rows.steps > li { grid-template-columns: 1fr; }
 }
+
+/* Technical sections, shown openly (no toggle) */
+div.tech { border-top: 1px solid var(--ink); padding-top: 8px; margin-bottom: 72px; }

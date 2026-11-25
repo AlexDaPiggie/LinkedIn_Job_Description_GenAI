@@ -10,7 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="info-pages.css?v=4" />
+    <link rel="stylesheet" href="info-pages.css?v=5" />
+    <link rel="stylesheet" href="explainer.css?v=1" />
     <script src="config.js"></script>
   </head>
   <body>
@@ -37,7 +38,32 @@
         <p class="kicker">In use today</p>
         <h2 id="inUseHeading"><span id="modelName">The chosen model</span></h2>
         <dl class="stats" id="stats"></dl>
-        <p class="note" id="whyNote"></p>
+        <figure class="explainer" aria-label="Animated explainer: how the AI model was chosen">
+          <div class="ex-stage">
+            <svg id="exSvg" viewBox="0 0 1280 720" role="img" aria-label="Animated charts of the model benchmark: cost per call, tokens used, latency and judge score for 18 models"></svg>
+            <button type="button" class="ex-big-play" aria-label="Play the animated tour">
+              <span class="ex-big-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+              <span class="ex-big-label">Watch how we picked the model</span>
+            </button>
+          </div>
+          <p class="ex-caption"></p>
+          <div class="ex-controls">
+            <button type="button" class="ex-btn ex-play" aria-label="Play">
+              <svg class="ex-icon-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              <svg class="ex-icon-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>
+            </button>
+            <div class="ex-track">
+              <input type="range" class="ex-seek" min="0" max="1990" step="1" value="0" aria-label="Seek" />
+              <div class="ex-ticks" aria-hidden="true"></div>
+            </div>
+            <span class="ex-time">0:00</span>
+            <button type="button" class="ex-btn ex-speed" aria-label="Playback speed">1x</button>
+            <button type="button" class="ex-btn ex-fs" aria-label="Full screen">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+          </div>
+          <ol class="ex-chapters" aria-label="Chapters"></ol>
+        </figure>
       </section>
 
       <section aria-labelledby="chartHeading">
@@ -95,8 +121,16 @@
 
       function drawChart(models, chosenId) {
         const W = 760, H = 410, pad = { l: 56, r: 24, t: 36, b: 52 };
-        const xMin = 2, xMax = 140;
-        const yMin = 4.0, yMax = 5.0;
+        // Fit both axes to the data, so a new run never squashes dots onto an edge.
+        const plotted = models.filter((m) => typeof m.mean_latency_seconds === "number" && typeof m.overall_quality_score === "number");
+        const secs = plotted.map((m) => m.mean_latency_seconds);
+        const scores = plotted.map((m) => m.overall_quality_score);
+        const xMin = Math.min(2, Math.min(...secs) * 0.8);
+        const xMax = Math.max(140, Math.max(...secs) * 1.25);
+        const yMin = Math.floor((Math.min(...scores) - 0.05) * 4) / 4;
+        const yMax = Math.min(5, Math.ceil((Math.max(...scores) + 0.05) * 4) / 4);
+        const yTicks = [];
+        for (let v = yMin; v <= yMax + 1e-9; v += 0.25) yTicks.push(v);
         const x = (seconds) => pad.l + ((Math.log(seconds) - Math.log(xMin)) / (Math.log(xMax) - Math.log(xMin))) * (W - pad.l - pad.r);
         const y = (score) => H - pad.b - ((score - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
         const el = (name, attrs = {}, text) => {
@@ -106,11 +140,11 @@
           return node;
         };
         const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Quality against speed for each model" });
-        [2, 5, 10, 20, 50, 100].forEach((s) => {
+        [1, 2, 5, 10, 20, 50, 100, 200].filter((s) => s >= xMin && s <= xMax).forEach((s) => {
           svg.append(el("line", { x1: x(s), x2: x(s), y1: pad.t, y2: H - pad.b, stroke: "#d3dcee", "stroke-width": 1 }));
           svg.append(el("text", { x: x(s), y: H - pad.b + 20, "text-anchor": "middle" }, `${s}s`));
         });
-        [4.0, 4.25, 4.5, 4.75, 5.0].forEach((v) => {
+        yTicks.forEach((v) => {
           svg.append(el("line", { x1: pad.l, x2: W - pad.r, y1: y(v), y2: y(v), stroke: "#d3dcee", "stroke-width": 1 }));
           svg.append(el("text", { x: pad.l - 10, y: y(v) + 4, "text-anchor": "end" }, v.toFixed(2)));
         });
@@ -151,9 +185,6 @@
           cell("Speed", fmt(chosen.mean_latency_seconds, 1), "s per call", `Rank ${fastRank} of ${models.length}. The best-scoring model takes ${fmt(best.mean_latency_seconds, 1)} seconds.`, true) +
           cell("Valid structure", Math.round((chosen.schema_pass_rate || 0) * 100), "% of runs", "Output matched the required JSON structure.", false) +
           cell("Cost", "$" + fmt(chosen.mean_cost_usd, 4), "per call", "Estimated from real token counts.", false);
-        document.getElementById("whyNote").textContent =
-          "What the numbers say: a draft a recruiter waits for should arrive in seconds, so speed and a reliable structure matter as much as the last 0.1 of quality. " +
-          `Small test: ${chosen.runs} runs for this model over four scenarios, scored by an AI judge.`;
       }
 
       async function load() {
@@ -187,5 +218,7 @@
       }
       load();
     </script>
+    <script src="explainer-engine.js?v=3" defer></script>
+    <script src="eval-explainer.js?v=5" defer></script>
   </body>
 </html>
