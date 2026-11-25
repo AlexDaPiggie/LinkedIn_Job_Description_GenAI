@@ -52,6 +52,17 @@ def _metadata_username(user) -> str | None:
     return user.user_metadata.get("username") if user.user_metadata else None
 
 
+def _profiles():
+    """Returns a query on `profiles` using the service-role client.
+
+    `profiles` has row level security, so the anon client sees no rows unless
+    a user session happens to be attached to the shared client. Every lookup
+    here is keyed by a verified user id or by the email/username being
+    registered, so server-side access is safe.
+    """
+    return get_service_client().table("profiles")
+
+
 def _lookup_username(user) -> str | None:
     """Finds a user's username, preferring the profile row over metadata.
 
@@ -61,8 +72,7 @@ def _lookup_username(user) -> str | None:
     Returns:
         The username, or None if neither source has one.
     """
-    # Service-role read: the anon client cannot see `profiles` rows under RLS.
-    profile_rows = get_service_client().table("profiles").select("username").eq("id", user.id).execute()
+    profile_rows = _profiles().select("username").eq("id", user.id).execute()
     if profile_rows.data and profile_rows.data[0].get("username"):
         return profile_rows.data[0]["username"]
     return _metadata_username(user)
@@ -88,11 +98,11 @@ def signup_user(email: str, password: str, username: str) -> dict:
     clean_email = email.strip()
     clean_username = username.strip()
 
-    existing_email = supabase.table("profiles").select("*").eq("email", clean_email).execute()
+    existing_email = _profiles().select("id").eq("email", clean_email).execute()
     if existing_email.data:
         raise ValueError("Email is already registered")
 
-    existing_username = supabase.table("profiles").select("id").eq("username", clean_username).execute()
+    existing_username = _profiles().select("id").eq("username", clean_username).execute()
     if existing_username.data:
         raise ValueError("Username is already taken")
 
@@ -146,7 +156,7 @@ def resend_signup_otp(email: str) -> dict:
     if not clean_email:
         raise ValueError("Email is required")
 
-    existing_profile = supabase.table("profiles").select("id").eq("email", clean_email).execute()
+    existing_profile = _profiles().select("id").eq("email", clean_email).execute()
     if existing_profile.data:
         raise ValueError("This email is already verified. Please sign in instead.")
 
@@ -190,10 +200,10 @@ def verify_user_otp(email: str, token: str) -> dict:
 
     user_id = response.user.id
     metadata_username = _metadata_username(response.user)
-    existing_profile = supabase.table("profiles").select("*").eq("id", user_id).execute()
+    existing_profile = _profiles().select("*").eq("id", user_id).execute()
 
     if not existing_profile.data:
-        supabase.table("profiles").insert({
+        _profiles().insert({
             "id": user_id,
             "email": email,
             "username": metadata_username,
@@ -226,8 +236,13 @@ def get_current_user_profile(token: str) -> dict:
     Raises:
         ValueError: If the token is invalid or expired.
     """
-    response = supabase.auth.get_user(token)
-    if not response.user:
+    try:
+        response = supabase.auth.get_user(token)
+    except Exception as exc:
+        # Supabase raises AuthApiError for bad or expired tokens; the route
+        # maps ValueError to 401 instead of a 500.
+        raise ValueError("Invalid or expired session") from exc
+    if not response or not response.user:
         raise ValueError("Invalid or expired session")
     return _build_auth_payload(token, response.user.id, response.user.email, _lookup_username(response.user))
 
