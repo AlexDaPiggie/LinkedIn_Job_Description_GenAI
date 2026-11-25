@@ -1,10 +1,14 @@
 """Credit balance operations on the Supabase `profiles` table."""
 
-from src.database.supabase_client import supabase
+from src.database.supabase_client import get_service_client, supabase
 
 
 def get_supabase_credits(user_id: str) -> int:
     """Fetches a user's credit balance.
+
+    Uses the service-role client: `profiles` has row level security, so the
+    anon client sees no rows (and reads 0) unless a user session happens to
+    be attached to it. `user_id` always comes from a verified token.
 
     Args:
         user_id: ID of the user.
@@ -12,7 +16,7 @@ def get_supabase_credits(user_id: str) -> int:
     Returns:
         The balance, or 0 if the profile does not exist.
     """
-    result = supabase.table("profiles").select("credits").eq("id", user_id).execute()
+    result = get_service_client().table("profiles").select("credits").eq("id", user_id).execute()
     if not result.data:
         return 0
     return result.data[0]["credits"] or 0

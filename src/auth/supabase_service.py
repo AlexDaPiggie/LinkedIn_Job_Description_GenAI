@@ -4,7 +4,7 @@ import os
 
 from supabase import create_client
 
-from src.database.supabase_client import supabase
+from src.database.supabase_client import get_service_client, supabase
 from src.credits.ledger import claim_free_grant
 from src.credits.packs import FREE_SIGNUP_CREDITS
 from src.database.supabase_credits import get_supabase_credits
@@ -61,7 +61,8 @@ def _lookup_username(user) -> str | None:
     Returns:
         The username, or None if neither source has one.
     """
-    profile_rows = supabase.table("profiles").select("username").eq("id", user.id).execute()
+    # Service-role read: the anon client cannot see `profiles` rows under RLS.
+    profile_rows = get_service_client().table("profiles").select("username").eq("id", user.id).execute()
     if profile_rows.data and profile_rows.data[0].get("username"):
         return profile_rows.data[0]["username"]
     return _metadata_username(user)
